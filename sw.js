@@ -1,4 +1,4 @@
-const CACHE_NAME = 'if-hardware-selector-v6';
+const CACHE_NAME = 'if-hardware-selector-v7';
 const ASSETS = [
   './',
   './index.html',
@@ -19,7 +19,12 @@ const ASSETS = [
   './battery-dial-9.png',
   './battery-dial-10.png',
   './battery-dial-11.png',
-  './battery-dial-12.png'
+  './battery-dial-12.png',
+  './ispl-15.png',
+  './ispl-30.png',
+  './ispl-60.png',
+  './ispl-125.png',
+  './ispl-250.png'
 ];
 
 self.addEventListener('install', (e) => {

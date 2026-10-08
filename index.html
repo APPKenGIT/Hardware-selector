@@ -936,11 +936,19 @@
             <div class="drawing-container">
               <span class="drawing-badge" id="assembly-badge">Exploded View</span>
               
-              <!-- Authentieke Batterijdop Indicator met Realistische Pijl -->
-              <div id="battery-dial-preview" style="position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.96); backdrop-filter: blur(6px); border: 1.5px solid var(--border); border-radius: 12px; padding: 8px 10px; box-shadow: 0 4px 14px rgba(0,0,0,0.08); text-align: center; max-width: 120px; z-index: 5;">
-                <div style="font-size: 8.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 4px;">Batterijdop Stand</div>
-                <img id="battery-dial-img" src="battery-dial-1.png" alt="Draaischijf stand" style="width: 90px; height: auto; display: block; margin: 0 auto; border-radius: 6px; box-shadow: 0 1px 4px rgba(0,0,0,0.1);"/>
-                <div id="battery-dial-caption" style="font-size: 11px; font-weight: 900; color: var(--primary); margin-top: 5px;">Stand: 1 Maand</div>
+              <!-- Authentieke ISPL Unit & Batterijdop Indicator Kaart -->
+              <div id="ispl-real-preview" style="position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.96); backdrop-filter: blur(6px); border: 1.5px solid var(--border); border-radius: 12px; padding: 8px 10px; box-shadow: 0 4px 14px rgba(0,0,0,0.08); text-align: center; z-index: 5; display: flex; gap: 8px; align-items: center;">
+                <div style="text-align: center; min-width: 65px;">
+                  <div style="font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 3px;">ISPL Unit</div>
+                  <img id="preview-ispl-img" src="ispl-125.png" alt="ISPL unit" style="max-height: 70px; max-width: 55px; object-fit: contain; display: block; margin: 0 auto;"/>
+                  <div id="preview-ispl-vol" style="font-size: 10px; font-weight: 900; color: var(--dark); margin-top: 3px;">125ml</div>
+                </div>
+                <div style="width: 1px; height: 75px; background: var(--border);"></div>
+                <div style="text-align: center; min-width: 75px;">
+                  <div style="font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 3px;">Draaischijf</div>
+                  <img id="battery-dial-img" src="battery-dial-6.png" alt="Draaischijf stand" style="width: 75px; height: auto; display: block; margin: 0 auto; border-radius: 5px; box-shadow: 0 1px 4px rgba(0,0,0,0.1);"/>
+                  <div id="battery-dial-caption" style="font-size: 10px; font-weight: 900; color: var(--primary); margin-top: 3px;">Stand: 6 mnd</div>
+                </div>
               </div>
 
               <!-- 3D Exploded View SVG -->
@@ -1817,11 +1825,19 @@
       const svg = document.getElementById('assembly-svg');
       let content = '';
 
-      // Update de fotorealistische batterijdop preview in de hoek van de kaart
+      const volKey = (cfg.lubricatorVol || '125ml').replace('ml', '');
+      const isplImgSrc = `ispl-${volKey}.png`;
+
+      // Update previews in het zwevende indicator-paneel
+      const previewIsplImg = document.getElementById('preview-ispl-img');
+      const previewIsplVol = document.getElementById('preview-ispl-vol');
+      if (previewIsplImg) previewIsplImg.src = isplImgSrc;
+      if (previewIsplVol) previewIsplVol.textContent = cfg.lubricatorVol;
+
       const dialImg = document.getElementById('battery-dial-img');
       const dialCap = document.getElementById('battery-dial-caption');
       if (dialImg) dialImg.src = `battery-dial-${cfg.months}.png`;
-      if (dialCap) dialCap.textContent = `Stand: ${cfg.months} Maand(en)`;
+      if (dialCap) dialCap.textContent = `Stand: ${cfg.months} mnd`;
 
       const isRVS = (cfg.material === 'RVS');
       const metalGrad = isRVS ? 'url(#rvsGrad)' : 'url(#brassGrad)';
@@ -1829,6 +1845,15 @@
       const metalText = isRVS ? '#1E293B' : '#92400E';
 
       if (cfg.mountType === 'direct') {
+        const isplLayouts = {
+          '250': { x: 22, y: 0,  w: 56, h: 155, bottom: 155 },
+          '125': { x: 18, y: 15, w: 64, h: 135, bottom: 150 },
+          '60':  { x: 20, y: 35, w: 60, h: 100, bottom: 135 },
+          '30':  { x: 20, y: 50, w: 60, h: 80,  bottom: 130 },
+          '15':  { x: 28, y: 15, w: 44, h: 135, bottom: 150 }
+        };
+        const layout = isplLayouts[volKey] || isplLayouts['125'];
+
         content = `
           <defs>
             <linearGradient id="rvsGrad" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -1843,18 +1868,6 @@
               <stop offset="65%" stop-color="#D97706"/>
               <stop offset="100%" stop-color="#78350F"/>
             </linearGradient>
-            <linearGradient id="isplBody3D" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#CBD5E1" stop-opacity="0.8"/>
-              <stop offset="20%" stop-color="#FFFFFF" stop-opacity="0.95"/>
-              <stop offset="70%" stop-color="#E2E8F0" stop-opacity="0.85"/>
-              <stop offset="100%" stop-color="#94A3B8" stop-opacity="0.8"/>
-            </linearGradient>
-            <linearGradient id="grease3D" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#FACC15"/>
-              <stop offset="35%" stop-color="#FEF08A"/>
-              <stop offset="80%" stop-color="#EAB308"/>
-              <stop offset="100%" stop-color="#CA8A04"/>
-            </linearGradient>
             <linearGradient id="bearing3D" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stop-color="#374151"/>
               <stop offset="50%" stop-color="#6B7280"/>
@@ -1865,35 +1878,19 @@
           <!-- Central Exploded Assembly Centerline -->
           <line x1="210" y1="20" x2="210" y2="450" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.6"/>
 
-          <!-- 1. ISPL LUBRICATOR MET ECHTE FOTO BATTERIJ-DRAAISCHIJF -->
-          <g transform="translate(160, 20)">
-            <!-- Realistische Batterijdop met juiste naaldstand -->
-            <image href="battery-dial-${cfg.months}.png" x="10" y="-18" width="80" height="58" preserveAspectRatio="xMidYMid meet"/>
+          <!-- 1. REALISTISCHE ISPL LUBRICATOR (FOTO PER GESELECTEERD VOLUME) -->
+          <g transform="translate(160, 10)">
+            <!-- Echte ISPL Productfoto -->
+            <image href="${isplImgSrc}" x="${layout.x}" y="${layout.y}" width="${layout.w}" height="${layout.h}" preserveAspectRatio="xMidYMid meet"/>
 
             <!-- Badge Boven Draaischijf -->
-            <rect x="25" y="-28" width="50" height="18" rx="4" fill="#E30613"/>
-            <text x="50" y="-16" font-size="9" font-weight="900" fill="#FFFFFF" text-anchor="middle">${cfg.months} MAAND</text>
-
-            <!-- Transparant reservoir & vetspiegel -->
-            <path d="M 6 30 C 6 30, 6 102, 6 102 C 6 114, 94 114, 94 102 C 94 102, 94 30, 94 30 Z" fill="url(#isplBody3D)" stroke="#94A3B8" stroke-width="1.5"/>
-            <path d="M 9 48 C 9 48, 9 98, 9 98 C 9 108, 91 108, 91 98 C 91 98, 91 48, 91 48 Z" fill="url(#grease3D)"/>
-            <ellipse cx="50" cy="48" rx="41" ry="6" fill="#FEF08A"/>
-
-            <!-- ISPL Type & Vet Label -->
-            <rect x="12" y="60" width="76" height="24" rx="4" fill="#0F172A"/>
-            <text x="50" y="72" font-size="9" font-weight="900" fill="#FFFFFF" text-anchor="middle">ISPL ${cfg.lubricatorVol}</text>
-            <text x="50" y="81" font-size="7.5" font-weight="bold" fill="#FACC15" text-anchor="middle">${cfg.greaseType}</text>
-
-            <!-- Thread Nipple G 1/4" M at base -->
-            <rect x="38" y="110" width="24" height="15" fill="${metalGrad}" stroke="${metalStroke}" stroke-width="1"/>
-            <line x1="38" y1="114" x2="62" y2="114" stroke="${metalStroke}"/>
-            <line x1="38" y1="118" x2="62" y2="118" stroke="${metalStroke}"/>
-            <line x1="38" y1="122" x2="62" y2="122" stroke="${metalStroke}"/>
+            <rect x="25" y="-12" width="50" height="18" rx="4" fill="#E30613"/>
+            <text x="50" y="0" font-size="9" font-weight="900" fill="#FFFFFF" text-anchor="middle">${cfg.months} MAAND</text>
 
             <!-- Exploded Thread Annotation -->
-            <line x1="62" y1="117" x2="110" y2="117" stroke="#0F172A" stroke-width="1"/>
-            <rect x="110" y="107" width="165" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1"/>
-            <text x="115" y="121" font-size="10" font-weight="900" fill="#E30613">ISPL Aansluiting: G 1/4" M</text>
+            <line x1="62" y1="${layout.bottom - 4}" x2="110" y2="${layout.bottom - 4}" stroke="#0F172A" stroke-width="1"/>
+            <rect x="110" y="${layout.bottom - 14}" width="165" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1"/>
+            <text x="115" y="${layout.bottom}" font-size="10" font-weight="900" fill="#E30613">ISPL Aansluiting: G 1/4" M</text>
           </g>
 
           <!-- 2. VERLENGSTUK (Exploded gap) -->
@@ -1962,6 +1959,17 @@
         `;
       } else {
         // REMOTE MOUNT EXPLODED VIEW (Pulsarlube 2000RC-1)
+        const remLayouts = {
+          '250': { x: 5,  y: 0,  w: 50, h: 120 },
+          '125': { x: 4,  y: 12, w: 52, h: 108 },
+          '60':  { x: 5,  y: 35, w: 50, h: 85 },
+          '30':  { x: 5,  y: 48, w: 50, h: 72 },
+          '15':  { x: 14, y: 12, w: 34, h: 108 }
+        };
+        const remL = remLayouts[volKey] || remLayouts['125'];
+
+        svg.setAttribute('viewBox', '0 0 460 490');
+
         content = `
           <defs>
             <linearGradient id="rvsGrad" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -1976,18 +1984,6 @@
               <stop offset="65%" stop-color="#D97706"/>
               <stop offset="100%" stop-color="#78350F"/>
             </linearGradient>
-            <linearGradient id="isplBody3D" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#CBD5E1" stop-opacity="0.8"/>
-              <stop offset="20%" stop-color="#FFFFFF" stop-opacity="0.95"/>
-              <stop offset="70%" stop-color="#E2E8F0" stop-opacity="0.85"/>
-              <stop offset="100%" stop-color="#94A3B8" stop-opacity="0.8"/>
-            </linearGradient>
-            <linearGradient id="grease3D" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#FACC15"/>
-              <stop offset="35%" stop-color="#FEF08A"/>
-              <stop offset="80%" stop-color="#EAB308"/>
-              <stop offset="100%" stop-color="#CA8A04"/>
-            </linearGradient>
             <linearGradient id="bearing3D" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stop-color="#374151"/>
               <stop offset="50%" stop-color="#6B7280"/>
@@ -1996,21 +1992,20 @@
           </defs>
 
           <!-- ISPL on Bracket (Left, Exploded Gap) -->
-          <g transform="translate(35, 20)">
-            <!-- Realistische Batterijdop met juiste naaldstand -->
-            <image href="battery-dial-${cfg.months}.png" x="5" y="-18" width="50" height="38" preserveAspectRatio="xMidYMid meet"/>
-            <rect x="5" y="-28" width="50" height="16" rx="4" fill="#E30613"/>
-            <text x="30" y="-17" font-size="8.5" font-weight="900" fill="#FFFFFF" text-anchor="middle">${cfg.months} MND</text>
+          <g transform="translate(35, 10)">
+            <!-- Echte ISPL Productfoto -->
+            <image href="${isplImgSrc}" x="${remL.x}" y="${remL.y}" width="${remL.w}" height="${remL.h}" preserveAspectRatio="xMidYMid meet"/>
 
-            <path d="M 0 16 C 0 16, 0 78, 0 78 C 0 86, 60 86, 60 78 C 60 78, 60 16, 60 16 Z" fill="url(#isplBody3D)" stroke="#94A3B8"/>
-            <path d="M 3 30 C 3 30, 3 74, 3 74 C 3 82, 57 82, 57 74 C 57 74, 57 30, 57 30 Z" fill="url(#grease3D)"/>
-            
-            <rect x="6" y="40" width="48" height="20" rx="3" fill="#0F172A"/>
-            <text x="30" y="52" font-size="8" font-weight="900" fill="#FFFFFF" text-anchor="middle">ISPL ${cfg.lubricatorVol}</text>
-            <text x="30" y="58" font-size="6.5" font-weight="bold" fill="#FACC15" text-anchor="middle">${cfg.greaseType}</text>
+            <!-- Badge Boven Draaischijf -->
+            <rect x="5" y="-14" width="50" height="16" rx="4" fill="#E30613"/>
+            <text x="30" y="-3" font-size="8.5" font-weight="900" fill="#FFFFFF" text-anchor="middle">${cfg.months} MND</text>
 
-            <rect x="24" y="82" width="12" height="10" fill="${metalGrad}" stroke="${metalStroke}"/>
-            <text x="70" y="90" font-size="10" font-weight="900" fill="#E30613">ISPL: G 1/4" M</text>
+            <rect x="68" y="40" width="115" height="24" rx="4" fill="#0F172A"/>
+            <text x="73" y="52" font-size="8.5" font-weight="900" fill="#FFFFFF">ISPL ${cfg.lubricatorVol}</text>
+            <text x="73" y="60" font-size="7" font-weight="bold" fill="#FACC15">${cfg.greaseType}</text>
+
+            <line x1="45" y1="120" x2="68" y2="120" stroke="#0F172A" stroke-width="1"/>
+            <text x="72" y="124" font-size="9" font-weight="900" fill="#E30613">G 1/4" M</text>
           </g>
 
           <!-- Pulsarlube 2000RC-1 Mounting Bracket -->
@@ -2444,14 +2439,24 @@
                   </table>
                 </div>
 
-                <div style="display: flex; gap: 12px; justify-content: flex-end; align-items: center;">
-                  <div style="border: 1px solid #E2E8F0; border-radius: 8px; padding: 6px; text-align: center; width: 100px; background: #F8FAFC;">
-                    <div style="font-size: 8.5px; font-weight: 800; color: #64748B; margin-bottom: 2px;">BATTERIJDOP</div>
+                <div style="display: flex; gap: 10px; justify-content: flex-end; align-items: center;">
+                  <!-- ISPL Unit Foto -->
+                  <div style="border: 1px solid #E2E8F0; border-radius: 8px; padding: 6px; text-align: center; width: 85px; background: #FFFFFF;">
+                    <div style="font-size: 8px; font-weight: 800; color: #64748B; margin-bottom: 2px;">ISPL UNIT</div>
+                    <img src="ispl-${(p.lubricatorVol || '125ml').replace('ml', '')}.png" alt="ISPL ${p.lubricatorVol}" style="max-height: 80px; max-width: 65px; object-fit: contain; display: block; margin: 0 auto;">
+                    <div style="font-size: 9px; font-weight: 900; color: #0F172A; margin-top: 2px;">${p.lubricatorVol}</div>
+                  </div>
+
+                  <!-- Batterijdop -->
+                  <div style="border: 1px solid #E2E8F0; border-radius: 8px; padding: 6px; text-align: center; width: 95px; background: #F8FAFC;">
+                    <div style="font-size: 8px; font-weight: 800; color: #64748B; margin-bottom: 2px;">BATTERIJDOP</div>
                     <img src="battery-dial-${p.months}.png" alt="Draaischijf ${p.months}mnd" style="width: 75px; height: auto; border-radius: 4px; display: block; margin: 0 auto; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
                     <div style="font-size: 9.5px; font-weight: 900; color: #E30613; margin-top: 2px;">${p.months} mnd</div>
                   </div>
+
+                  <!-- Foto smeerpunt (indien aanwezig) -->
                   ${p.photo ? `
-                    <div style="border: 1px solid #CBD5E1; border-radius: 8px; overflow: hidden; width: 130px; height: 110px;">
+                    <div style="border: 1px solid #CBD5E1; border-radius: 8px; overflow: hidden; width: 120px; height: 100px;">
                       <img src="${p.photo}" style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
                   ` : ''}

@@ -1,8 +1,9 @@
-const CACHE_NAME = 'if-hardware-selector-v3';
+const CACHE_NAME = 'if-hardware-selector-v4';
 const ASSETS = [
   './',
   './index.html',
   './couplings-data.js',
+  './xlsx.full.min.js',
   './manifest.json',
   './icon-192.png',
   './icon-512.png'

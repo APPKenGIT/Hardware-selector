@@ -3,28 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Interflon Hardware Selector & Assembly Builder</title>
+  <title>Hardware Selector</title>
   <meta name="theme-color" content="#E30613">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icon-192.png">
+  <script src="xlsx.full.min.js"></script>
   <style>
     :root {
-      /* Official Interflon Brand Identity (Red, White, Black) */
-      --if-red: #E30613;
-      --if-red-dark: #B3000B;
-      --if-black: #111827;
-      --if-dark-gray: #1F2937;
-      --if-amber: #D97706;
-      --if-amber-bg: #FEF3C7;
-      --bg: #F4F5F7;
+      --primary: #E30613;
+      --primary-hover: #C50510;
+      --primary-soft: #FEE2E2;
+      --dark: #0F172A;
+      --dark-card: #1E293B;
+      --bg: #F8FAFC;
+      --sidebar-bg: #FFFFFF;
       --card-bg: #FFFFFF;
-      --text: #111827;
-      --text-muted: #6B7280;
-      --border: #E5E7EB;
-      --radius: 10px;
-      --shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+      --text: #0F172A;
+      --text-muted: #64748B;
+      --border: #E2E8F0;
+      --radius-pill: 26px;
+      --radius-card: 18px;
+      --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04);
+      --shadow-md: 0 4px 20px -2px rgba(15, 23, 42, 0.06);
     }
 
     * {
@@ -40,118 +42,275 @@
       color: var(--text);
       min-height: 100vh;
       display: flex;
-      flex-direction: column;
     }
 
-    /* Header in Interflon Black & Red */
-    header {
-      background: var(--if-black);
-      color: white;
-      padding: 10px 18px;
+    /* ======================================================================== */
+    /* LEFT SIDEBAR NAVIGATION                                                  */
+    /* ======================================================================== */
+    aside.sidebar {
+      width: 275px;
+      background: var(--sidebar-bg);
+      border-right: 1px solid var(--border);
       display: flex;
-      align-items: center;
-      justify-content: space-between;
+      flex-direction: column;
+      flex-shrink: 0;
+      min-height: 100vh;
+      padding: 22px 16px;
       position: sticky;
       top: 0;
+      height: 100vh;
+      overflow-y: auto;
       z-index: 100;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.25);
-      border-bottom: 3px solid var(--if-red);
     }
 
-    .brand {
+    .sidebar-header {
+      margin-bottom: 22px;
+      padding-left: 6px;
+    }
+
+    .brand-title {
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--dark);
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .brand-title span.dot {
+      color: var(--primary);
+    }
+
+    .brand-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Navigation Menu */
+    .nav-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+    }
+
+    .nav-pill-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      width: 100%;
+    }
+
+    .nav-pill {
       display: flex;
       align-items: center;
       gap: 12px;
+      padding: 11px 16px;
+      border-radius: var(--radius-pill);
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      width: 100%;
+      text-align: left;
+      transition: all 0.2s ease;
     }
 
-    /* Official Interflon Vector Logo */
-    .brand-logo svg {
-      height: 32px;
-      display: block;
+    .nav-pill:hover {
+      background: #F1F5F9;
+      color: var(--dark);
     }
 
-    .brand-subtitle {
-      font-size: 11px;
-      background: rgba(227, 6, 19, 0.2);
-      color: #FCA5A5;
-      border: 1px solid var(--if-red);
-      padding: 3px 8px;
-      border-radius: 4px;
-      font-weight: 800;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
+    .nav-pill.active {
+      background: var(--primary);
+      color: #FFFFFF;
+      box-shadow: 0 4px 14px rgba(227, 6, 19, 0.25);
     }
 
-    .header-actions {
-      display: flex;
-      gap: 8px;
+    .nav-pill svg {
+      width: 18px;
+      height: 18px;
+      stroke-width: 2.2;
+      flex-shrink: 0;
     }
 
-    .btn-header {
-      background: rgba(255,255,255,0.12);
-      border: 1px solid rgba(255,255,255,0.25);
+    /* Red Plus Button next to Configurator */
+    .btn-add-point-plus {
+      background: var(--primary);
       color: white;
-      padding: 6px 12px;
-      border-radius: 6px;
+      border: none;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      box-shadow: 0 3px 10px rgba(227, 6, 19, 0.25);
+      transition: all 0.2s;
+    }
+
+    .btn-add-point-plus:hover {
+      background: var(--primary-hover);
+      transform: scale(1.05);
+    }
+
+    /* Sidebar Actions */
+    .sidebar-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .btn-pill-primary {
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: var(--radius-pill);
+      padding: 11px 16px;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(227, 6, 19, 0.25);
+      transition: all 0.2s;
+      width: 100%;
+    }
+
+    .btn-pill-primary:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-pill-dark {
+      background: var(--dark);
+      color: white;
+      border: none;
+      border-radius: var(--radius-pill);
+      padding: 11px 16px;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+      width: 100%;
+    }
+
+    .btn-pill-dark:hover {
+      background: #1E293B;
+    }
+
+    .btn-pill-outline {
+      background: white;
+      color: var(--dark);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-pill);
+      padding: 9px 14px;
       font-size: 12px;
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 6px;
       transition: all 0.2s;
-    }
-
-    .btn-header:hover {
-      background: rgba(255,255,255,0.22);
-    }
-
-    .btn-admin {
-      background: #374151;
-      border: 1px solid #4B5563;
-      color: #F3F4F6;
-    }
-
-    .btn-admin:hover {
-      background: #4B5563;
-      color: white;
-    }
-
-    /* Navigation Tabs */
-    .nav-tabs {
-      background: white;
-      border-bottom: 2px solid var(--border);
-      display: flex;
-      position: sticky;
-      top: 55px;
-      z-index: 90;
-    }
-
-    .nav-tab {
-      flex: 1;
-      padding: 12px 6px;
-      text-align: center;
-      font-size: 13px;
-      font-weight: 800;
-      color: var(--text-muted);
-      cursor: pointer;
-      border-bottom: 3px solid transparent;
-      transition: all 0.2s ease;
-    }
-
-    .nav-tab.active {
-      color: var(--if-red);
-      border-bottom-color: var(--if-red);
-      background: #FEF2F2;
-    }
-
-    /* Main Container */
-    main {
-      flex: 1;
-      max-width: 1260px;
       width: 100%;
-      margin: 0 auto;
-      padding: 16px;
+    }
+
+    .btn-pill-outline:hover {
+      background: #F8FAFC;
+      border-color: #CBD5E1;
+    }
+
+    .sidebar-footer {
+      margin-top: 16px;
+      padding-top: 12px;
+      font-size: 11px;
+      color: #94A3B8;
+      text-align: center;
+    }
+
+    /* ======================================================================== */
+    /* MAIN CONTENT AREA                                                        */
+    /* ======================================================================== */
+    main.content-area {
+      flex: 1;
+      padding: 26px 34px;
+      overflow-y: auto;
+      max-width: 1400px;
+    }
+
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .page-title-box h1 {
+      font-size: 25px;
+      font-weight: 900;
+      color: var(--dark);
+      letter-spacing: -0.5px;
+    }
+
+    .page-title-box p {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    .header-badges {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .capsule-badge {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-pill);
+      padding: 7px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--dark);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .capsule-badge.red-accent {
+      border-color: #FECACA;
+      background: #FFF5F5;
+      color: var(--primary);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--primary);
+      box-shadow: 0 0 0 3px rgba(227, 6, 19, 0.2);
     }
 
     .tab-content {
@@ -162,113 +321,105 @@
       display: block;
     }
 
-    /* Cards */
     .card {
       background: var(--card-bg);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 16px;
-      margin-bottom: 16px;
-      box-shadow: var(--shadow);
+      border-radius: var(--radius-card);
+      padding: 22px;
+      margin-bottom: 18px;
+      box-shadow: var(--shadow-md);
     }
 
     .card-title {
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 900;
-      color: var(--if-black);
-      margin-bottom: 12px;
+      color: var(--dark);
+      margin-bottom: 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 2px solid #F3F4F6;
-      padding-bottom: 6px;
+      border-bottom: 1px solid #F1F5F9;
+      padding-bottom: 10px;
     }
 
-    .card-title span.badge-num {
-      background: var(--if-red);
-      color: white;
-      border-radius: 50%;
-      width: 20px;
-      height: 20px;
-      display: inline-flex;
+    .card-title-left {
+      display: flex;
       align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      margin-right: 6px;
+      gap: 8px;
+    }
+
+    .card-title-left svg {
+      width: 18px;
+      height: 18px;
+      color: var(--primary);
+      stroke-width: 2.2;
     }
 
     /* 2-Column Responsive Configurator Layout */
     .config-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 16px;
+      gap: 20px;
     }
 
-    @media (min-width: 900px) {
+    @media (min-width: 980px) {
       .config-grid {
-        grid-template-columns: 1.05fr 0.95fr;
+        grid-template-columns: 1.08fr 0.92fr;
         align-items: start;
       }
       .config-left-col, .config-right-col {
         display: flex;
         flex-direction: column;
-        gap: 16px;
+        gap: 18px;
       }
     }
 
-    /* Inputs */
-    .project-bar {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-
+    /* Form Controls */
     .input-group {
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
 
     .input-label {
       display: block;
       font-size: 11px;
       font-weight: 800;
-      color: var(--if-dark-gray);
-      margin-bottom: 4px;
+      color: #475569;
+      margin-bottom: 6px;
       text-transform: uppercase;
-      letter-spacing: 0.4px;
+      letter-spacing: 0.5px;
     }
 
-    select, input[type="text"], input[type="number"] {
+    select, input[type="text"], input[type="number"], input[type="password"], textarea {
       width: 100%;
-      padding: 8px 10px;
+      padding: 10px 14px;
       border: 1px solid var(--border);
-      border-radius: 6px;
-      font-size: 13px;
+      border-radius: 12px;
+      font-size: 13.5px;
       background: white;
-      color: var(--text);
+      color: var(--dark);
       outline: none;
       transition: all 0.2s;
     }
 
-    select:focus, input:focus {
-      border-color: var(--if-red);
-      box-shadow: 0 0 0 2px rgba(227, 6, 19, 0.15);
+    select:focus, input:focus, textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(227, 6, 19, 0.12);
     }
 
     .custom-input-box {
-      margin-top: 6px;
+      margin-top: 8px;
       background: #FFFBEB;
-      border: 1px dashed var(--if-amber);
-      border-radius: 6px;
-      padding: 8px;
+      border: 1px dashed #F59E0B;
+      border-radius: 10px;
+      padding: 10px;
     }
 
-    /* Exploded View 3D Drawing Canvas */
+    /* 3D Exploded View Canvas */
     .drawing-container {
       background: #FFFFFF;
       border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 12px;
+      border-radius: 14px;
+      padding: 16px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -276,49 +427,48 @@
       min-height: 480px;
       position: relative;
       overflow: hidden;
-      box-shadow: inset 0 0 10px rgba(0,0,0,0.02);
     }
 
     .drawing-badge {
       position: absolute;
-      top: 10px;
-      left: 10px;
-      background: #FEE2E2;
-      color: var(--if-red);
-      font-size: 10px;
-      font-weight: 900;
-      padding: 4px 8px;
-      border-radius: 4px;
+      top: 12px;
+      left: 12px;
+      background: #FFF5F5;
+      color: var(--primary);
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+      border: 1px solid #FECACA;
       text-transform: uppercase;
-      border: 1px solid #FCA5A5;
     }
 
     svg.assembly-svg {
       width: 100%;
       max-width: 520px;
-      height: 460px;
+      height: 480px;
       display: block;
     }
 
     /* Photo Upload Area */
     .photo-area {
       display: flex;
-      gap: 12px;
+      gap: 14px;
       align-items: center;
-      margin-top: 8px;
-      background: #F9FAFB;
+      margin-top: 10px;
+      background: #F8FAFC;
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 8px;
+      border-radius: 12px;
+      padding: 10px 14px;
     }
 
     .photo-preview {
-      width: 70px;
-      height: 70px;
-      border-radius: 6px;
+      width: 72px;
+      height: 72px;
+      border-radius: 10px;
       border: 1px solid var(--border);
       object-fit: cover;
-      background: #E5E7EB;
+      background: #E2E8F0;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -337,74 +487,35 @@
     .btn-photo {
       background: white;
       border: 1px solid var(--border);
-      color: var(--text);
-      padding: 7px 12px;
-      border-radius: 6px;
+      color: var(--dark);
+      padding: 8px 14px;
+      border-radius: var(--radius-pill);
       font-size: 12px;
       font-weight: 700;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      transition: all 0.2s;
     }
 
-    /* Calculator & Info Callout */
-    .calc-info-box {
-      background: #F0FDF4;
-      border: 1px solid #BBF7D0;
+    .badge-art-code {
+      background: #F1F5F9;
+      color: var(--dark);
+      border: 1px solid #CBD5E1;
+      padding: 4px 8px;
       border-radius: 6px;
-      padding: 8px 10px;
-      margin-top: 6px;
       font-size: 11px;
-      color: #166534;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .pulsarlube-box {
-      background: #EFF6FF;
-      border: 1px solid #BFDBFE;
-      border-radius: 6px;
-      padding: 8px 10px;
-      margin-bottom: 10px;
-      font-size: 11px;
-      color: #1E40AF;
-      line-height: 1.4;
-    }
-
-    /* Components List */
-    .component-pill {
-      background: #F9FAFB;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 8px 10px;
-      margin-bottom: 6px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .comp-name {
+      font-family: monospace;
       font-weight: 800;
-      font-size: 12px;
-      color: var(--text);
     }
 
-    .comp-desc {
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
-
-    /* Status badge for "aan te maken" */
     .badge-aan-te-maken {
       background: #FEF3C7;
       color: #92400E;
       border: 1px solid #F59E0B;
-      padding: 3px 6px;
-      border-radius: 4px;
+      padding: 4px 8px;
+      border-radius: 6px;
       font-size: 11px;
       font-weight: 900;
       display: inline-flex;
@@ -412,59 +523,61 @@
       gap: 4px;
     }
 
-    .badge-art-code {
-      background: #E5E7EB;
-      color: #1F2937;
-      border: 1px solid #D1D5DB;
-      padding: 3px 6px;
-      border-radius: 4px;
-      font-size: 11px;
-      font-family: monospace;
-      font-weight: 900;
-    }
-
-    /* Primary Action Buttons */
-    .btn-primary {
-      background: var(--if-red);
-      color: white;
-      border: none;
-      padding: 10px 16px;
-      border-radius: 6px;
-      font-size: 13px;
-      font-weight: 800;
-      cursor: pointer;
-      display: inline-flex;
+    .component-pill {
+      background: #F8FAFC;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
       align-items: center;
-      justify-content: center;
-      gap: 6px;
-      transition: background 0.2s;
+      gap: 10px;
     }
 
-    .btn-primary:hover {
-      background: var(--if-red-dark);
-    }
-
-    .btn-save-point {
-      background: var(--if-red);
-      color: white;
-      border: none;
-      padding: 12px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 900;
-      width: 100%;
-      cursor: pointer;
+    .calc-info-box {
+      background: #F0FDF4;
+      border: 1px solid #BBF7D0;
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-top: 8px;
+      font-size: 12px;
+      color: #166534;
       display: flex;
       align-items: center;
-      justify-content: center;
       gap: 8px;
-      box-shadow: 0 4px 10px rgba(227, 6, 19, 0.25);
-      margin-top: 8px;
-      transition: background 0.2s;
     }
 
-    .btn-save-point:hover {
-      background: var(--if-red-dark);
+    .pulsarlube-box {
+      background: #EFF6FF;
+      border: 1px solid #BFDBFE;
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin-bottom: 12px;
+      font-size: 12px;
+      color: #1E40AF;
+      line-height: 1.4;
+    }
+
+    table.bom-table, table.admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+      text-align: left;
+    }
+
+    table.bom-table th, table.admin-table th {
+      background: #F8FAFC;
+      color: #475569;
+      font-weight: 800;
+      padding: 10px 12px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    table.bom-table td, table.admin-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
     }
 
     /* Modals */
@@ -475,8 +588,8 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(17, 24, 39, 0.6);
-      backdrop-filter: blur(2px);
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
       z-index: 200;
       align-items: center;
       justify-content: center;
@@ -489,79 +602,58 @@
 
     .modal-card {
       background: white;
-      border-radius: 12px;
+      border-radius: 20px;
       width: 100%;
-      max-width: 550px;
+      max-width: 540px;
       max-height: 90vh;
       overflow-y: auto;
-      padding: 20px;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.25);
+      padding: 26px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
     }
 
     .modal-card-large {
-      max-width: 950px;
+      max-width: 960px;
     }
 
     .modal-title {
-      font-size: 16px;
+      font-size: 18px;
       font-weight: 900;
-      color: var(--if-black);
-      margin-bottom: 14px;
+      color: var(--dark);
+      margin-bottom: 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 2px solid #F3F4F6;
-      padding-bottom: 8px;
+      border-bottom: 2px solid #F1F5F9;
+      padding-bottom: 10px;
     }
 
     .radio-option {
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 10px;
-      margin-bottom: 8px;
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
       display: flex;
       align-items: flex-start;
-      gap: 10px;
+      gap: 12px;
       cursor: pointer;
-      background: #F9FAFB;
+      background: #F8FAFC;
     }
 
     .radio-option:hover {
-      background: #F3F4F6;
-    }
-
-    /* Tables */
-    table.bom-table, table.admin-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 12px;
-      text-align: left;
-    }
-
-    table.bom-table th, table.admin-table th {
-      background: #F3F4F6;
-      color: #374151;
-      font-weight: 800;
-      padding: 8px;
-      border-bottom: 2px solid var(--border);
-    }
-
-    table.bom-table td, table.admin-table td {
-      padding: 8px;
-      border-bottom: 1px solid var(--border);
-      vertical-align: middle;
+      background: #F1F5F9;
     }
 
     /* Print / PDF Mode */
     @media print {
-      header, .nav-tabs, .btn-primary, .btn-save-point, .btn-photo, .btn-header, input[type="file"], .no-print, .modal-backdrop {
+      aside.sidebar, .btn-pill-primary, .btn-pill-dark, .btn-pill-outline, .btn-photo, input[type="file"], .no-print, .modal-backdrop, .page-header {
         display: none !important;
       }
       body {
         background: white !important;
         color: black !important;
+        display: block !important;
       }
-      main {
+      main.content-area {
         max-width: 100% !important;
         padding: 0 !important;
       }
@@ -569,15 +661,15 @@
         box-shadow: none !important;
         border: 1px solid #ddd !important;
         page-break-inside: avoid !important;
-        margin-bottom: 12px !important;
+        margin-bottom: 14px !important;
       }
       .print-header {
         display: flex !important;
         justify-content: space-between;
         align-items: center;
-        border-bottom: 3px solid var(--if-red);
-        padding-bottom: 10px;
-        margin-bottom: 14px;
+        border-bottom: 3px solid var(--primary);
+        padding-bottom: 12px;
+        margin-bottom: 16px;
       }
     }
 
@@ -585,66 +677,200 @@
       display: none;
     }
 
-    /* Compact Report Print Styling */
-    #compact-report-container {
+    #print-report-container {
       display: none;
+    }
+
+    @media (max-width: 850px) {
+      body {
+        flex-direction: column;
+      }
+      aside.sidebar {
+        width: 100%;
+        height: auto;
+        min-height: auto;
+        position: relative;
+        padding: 14px;
+      }
+      .nav-menu {
+        flex-direction: row;
+        overflow-x: auto;
+        padding-bottom: 6px;
+      }
+      .nav-pill {
+        white-space: nowrap;
+        padding: 10px 14px;
+      }
+      main.content-area {
+        padding: 16px;
+      }
     }
   </style>
 </head>
 <body>
 
-  <!-- Screen Header (Interflon Black, Red & White) -->
-  <header>
-    <div class="brand">
-      <div class="brand-logo">
-        <!-- Official Interflon Vector Logo (Red, White & Black) -->
-        <svg viewBox="0 0 200 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- Interflon Red Quad Badge -->
-          <rect x="0" y="4" width="28" height="28" rx="3" fill="#E30613"/>
-          <path d="M7 18 L14 11 L21 18 L14 25 Z" fill="#FFFFFF"/>
-          <!-- Wordmark: INTERFLON in Bold White -->
-          <text x="36" y="26" fill="#FFFFFF" font-size="22" font-weight="900" font-style="italic" letter-spacing="1">INTERFLON</text>
-        </svg>
+  <!-- ======================================================================== -->
+  <!-- LEFT SIDEBAR NAVIGATION                                                  -->
+  <!-- ======================================================================== -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="brand-title">
+        Hardware Selector<span class="dot">•</span>
       </div>
-      <span class="brand-subtitle">Hardware Selector</span>
+      <div class="brand-sub">Koppelingen & ISPL Builder</div>
     </div>
-    <div class="header-actions">
-      <button class="btn-header btn-admin" onclick="openDatabaseAuthModal()">
-        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        Database / Odoo Beheer
+
+    <!-- Navigation Menu -->
+    <nav class="nav-menu">
+      
+      <!-- 1. Algemene Gegevens (Bovenaan zoals gevraagd) -->
+      <button class="nav-pill" onclick="switchTab('general')">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Algemene Gegevens
       </button>
-      <button class="btn-header" style="background: var(--if-red); border-color: var(--if-red);" onclick="openExportModal()">
-        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-        PDF Rapport
+
+      <!-- 2. Configurator + Rode Plus Knop -->
+      <div class="nav-pill-row">
+        <button class="nav-pill active" style="flex: 1;" onclick="switchTab('config')">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          Configurator
+        </button>
+        <button class="btn-add-point-plus" title="Nieuw Smeerpunt Toevoegen" onclick="addNewPoint()">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+      </div>
+
+      <!-- 3. Projecten & Punten -->
+      <button class="nav-pill" onclick="switchTab('projects')">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+        Projecten & Punten
       </button>
+
+      <!-- 4. Stuklijst & Offerte -->
+      <button class="nav-pill" onclick="switchTab('bom')">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        Stuklijst & Offerte
+      </button>
+
+      <!-- 5. Database / Odoo Beheer -->
+      <button class="nav-pill" onclick="openDatabaseAuthModal()">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Database / Odoo
+      </button>
+    </nav>
+
+    <!-- Sidebar Primary Actions & Dossier Import/Export -->
+    <div class="sidebar-actions">
+      <button class="btn-pill-primary" onclick="openExportModal()">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        Rapport PDF
+      </button>
+
+      <button class="btn-pill-dark" onclick="exportOdooExcel()">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+        Odoo Offerte Excel
+      </button>
+
+      <!-- Dossier Export & Import Buttons -->
+      <button class="btn-pill-outline" onclick="exportDossierJSON()">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+        Dossier Exporteren
+      </button>
+
+      <label class="btn-pill-outline" style="cursor: pointer;">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+        Dossier Importeren
+        <input type="file" id="dossier-file-input" accept=".json" style="display: none;" onchange="importDossierJSON(event)">
+      </label>
     </div>
-  </header>
 
-  <!-- Navigation Tabs -->
-  <div class="nav-tabs">
-    <div class="nav-tab active" onclick="switchTab('config')">1. Configurator</div>
-    <div class="nav-tab" onclick="switchTab('projects')">2. Projecten & Punten</div>
-    <div class="nav-tab" onclick="switchTab('bom')">3. Stuklijst & Odoo Offerte</div>
-  </div>
+    <div class="sidebar-footer">
+      Hardware Selector v4.2 • Offline PWA
+    </div>
+  </aside>
 
-  <main>
+  <!-- ======================================================================== -->
+  <!-- MAIN CONTENT AREA                                                        -->
+  <!-- ======================================================================== -->
+  <main class="content-area">
 
-    <!-- Printable Header (Shown in Print / PDF Mode) -->
+    <!-- Printable Header (Only in PDF / Print Mode) -->
     <div class="print-header">
-      <div style="display: flex; align-items: center; gap: 12px;">
-        <svg viewBox="0 0 200 36" style="height: 32px;" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="0" y="4" width="28" height="28" rx="3" fill="#E30613"/>
-          <path d="M7 18 L14 11 L21 18 L14 25 Z" fill="#FFFFFF"/>
-          <text x="36" y="26" fill="#111827" font-size="22" font-weight="900" font-style="italic" letter-spacing="1">INTERFLON</text>
-        </svg>
-        <div>
-          <h2 style="color: #E30613; font-size: 16px; font-weight: 900; margin: 0;">TECHNISCH MONTAGE RAPPORT</h2>
-          <p style="color: #6B7280; font-size: 11px; margin: 0;">Single Point Lubricator & Koppelingen Specificatie</p>
-        </div>
+      <div>
+        <h2 style="color: var(--primary); font-size: 18px; font-weight: 900; margin: 0;">HARDWARE SELECTOR • TECHNISCH RAPPORT</h2>
+        <p style="color: var(--text-muted); font-size: 11.5px; margin-top: 2px;">
+          Klant: <strong id="print-header-client" style="color: #0F172A;">-</strong> | Project: <span id="print-header-project">-</span>
+        </p>
       </div>
       <div style="text-align: right; font-size: 11px;">
-        <p><strong id="print-date">Datum: 08-10-2026</strong></p>
-        <p style="color: #E30613; font-weight: 800;">Interflon Technical Support</p>
+        <p><strong id="print-date">Datum: 09-10-2026</strong></p>
+        <p style="color: var(--primary); font-weight: 800;">Technical Lubrication Support</p>
+      </div>
+    </div>
+
+    <!-- Top Page Header Bar -->
+    <div class="page-header">
+      <div class="page-title-box">
+        <h1 id="page-main-title">Configurator</h1>
+        <p id="page-main-sub">Koppelingsberekening & 3D Exploded View samenstelling van lager naar ISPL.</p>
+      </div>
+
+      <div class="header-badges">
+        <div class="capsule-badge red-accent">
+          <div class="status-dot"></div>
+          <span id="badge-client-label">Klant: Brouwerij De Halve Maan</span>
+        </div>
+        <div class="capsule-badge">
+          <span id="badge-mat-label">Messing vernikkeld</span>
+        </div>
+        <div class="capsule-badge">
+          <span id="badge-ispl-label">ISPL 125 ml + Grease MP2/3 (6 mnd)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================================================================== -->
+    <!-- TAB 0: ALGEMENE GEGEVENS (KLANT, PROJECT & DOSSIER DETAILS)          -->
+    <!-- ==================================================================== -->
+    <div id="tab-general" class="tab-content">
+      <div class="card" style="max-width: 800px;">
+        <div class="card-title">
+          <div class="card-title-left">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <span>Algemene Gegevens & Dossier</span>
+          </div>
+          <span style="font-size: 11px; color: var(--text-muted); font-weight: normal;">Geldt voor alle rapporten & configuraties</span>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" style="color: var(--primary);">Bedrijfsnaam / Klantnaam</label>
+          <input type="text" id="gen-client" value="Brouwerij De Halve Maan" oninput="updateGeneralInfo()" placeholder="bv. Brouwerij De Halve Maan">
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">Projectnaam / Omschrijving</label>
+          <input type="text" id="gen-project" value="Optimalisatie Smering Lijn 1" oninput="updateGeneralInfo()" placeholder="bv. Ombouw automatische smering bottelarij">
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+          <div class="input-group">
+            <label class="input-label">Contactpersoon Klant</label>
+            <input type="text" id="gen-contact" value="Dhr. Peeters (Hoofd TD)" oninput="updateGeneralInfo()" placeholder="bv. Jan Peeters">
+          </div>
+          <div class="input-group">
+            <label class="input-label">Opgesteld door (Adviseur)</label>
+            <input type="text" id="gen-advisor" value="Koen Demeester" oninput="updateGeneralInfo()" placeholder="bv. Uw naam">
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">Algemene Opmerkingen / Notities voor het rapport</label>
+          <textarea id="gen-notes" rows="3" oninput="updateGeneralInfo()" placeholder="Eventuele specifieke werf- of montage-instructies..."></textarea>
+        </div>
+
+        <button class="btn-pill-primary" style="margin-top: 10px;" onclick="switchTab('config')">
+          Naar Configurator ➔
+        </button>
       </div>
     </div>
 
@@ -658,26 +884,23 @@
         <!-- ===== LINKER KOLOM ===== -->
         <div class="config-left-col">
 
-          <!-- 1. BOVEN LINKS: Project en Locatie -->
+          <!-- 1. BOVEN LINKS: Locatie & Foto -->
           <div class="card">
             <div class="card-title">
-              <div><span class="badge-num">1</span> Project & Locatie</div>
-              <span style="font-size: 11px; color: var(--text-muted); font-weight: normal;">Smeerpunt identificatie</span>
+              <div class="card-title-left">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span>Machine & Smeerpunt Locatie</span>
+              </div>
+              <span id="cfg-client-display" style="font-size: 11px; color: var(--primary); font-weight: bold;">Brouwerij De Halve Maan</span>
             </div>
             
-            <div class="project-bar">
-              <div class="input-group">
-                <label class="input-label">Project / Bedrijf</label>
-                <input type="text" id="cfg-project" value="Brouwerij De Halve Maan" oninput="saveCurrentState()">
-              </div>
-              <div class="input-group">
-                <label class="input-label">Machine / Lijn</label>
-                <input type="text" id="cfg-machine" value="Flessenspoelmachine Lijn 1" oninput="saveCurrentState()">
-              </div>
+            <div class="input-group">
+              <label class="input-label">Machine / Installatie</label>
+              <input type="text" id="cfg-machine" value="Flessenspoelmachine Lijn 1" oninput="saveCurrentState()">
             </div>
 
             <div class="input-group" style="margin-bottom: 0;">
-              <label class="input-label">Smeerpunt Beschrijving (Tag / Locatie)</label>
+              <label class="input-label">Smeerpunt Omschrijving (Tag / Positie)</label>
               <input type="text" id="cfg-point" value="Aandrijfas Lager Positie 1" oninput="saveCurrentState()">
             </div>
 
@@ -690,55 +913,73 @@
                 <input type="file" id="camera-input" accept="image/*" capture="environment" style="display: none;" onchange="handlePhotoUpload(event)">
                 <button class="btn-photo" onclick="document.getElementById('camera-input').click()">
                   <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-                  Foto van smeerpunt maken / toevoegen
+                  Foto van smeerpunt toevoegen
                 </button>
                 <button class="btn-photo" id="btn-del-photo" style="display: none; color: #DC2626; margin-left: 6px;" onclick="deletePhoto()">
                   Verwijder
                 </button>
-                <div style="font-size: 10px; color: var(--text-muted); margin-top: 4px;">Wordt mee opgenomen in de PDF export</div>
+                <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Wordt mee opgenomen in het technisch rapport</div>
               </div>
             </div>
           </div>
 
-          <!-- 2. ONDER LINKS: Dynamische 3D Exploded View Tekening -->
+          <!-- 2. ONDER LINKS: 3D Exploded View Tekening -->
           <div class="card">
             <div class="card-title">
-              <div><span class="badge-num">2</span> 3D Exploded View Montage</div>
-              <span id="drawing-mode-label" style="font-size: 11px; background: #FEE2E2; color: var(--if-red); padding: 2px 8px; border-radius: 4px; font-weight: 800;">Directe montage</span>
+              <div class="card-title-left">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                <span>3D Exploded View Samenstelling</span>
+              </div>
+              <span id="drawing-mode-label" style="font-size: 11px; background: #FFF5F5; color: var(--primary); padding: 3px 10px; border-radius: var(--radius-pill); font-weight: 800; border: 1px solid #FECACA;">Directe montage</span>
             </div>
 
             <div class="drawing-container">
               <span class="drawing-badge" id="assembly-badge">Exploded View</span>
               
-              <!-- 3D Exploded View SVG with threaded annotations and gaps -->
-              <svg id="assembly-svg" class="assembly-svg" viewBox="0 0 460 480" xmlns="http://www.w3.org/2000/svg">
-                <!-- Dynamically populated by render3DExplodedSVG() -->
+              <!-- Authentieke ISPL Unit & Batterijdop Indicator Kaart -->
+              <div id="ispl-real-preview" style="position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.96); backdrop-filter: blur(6px); border: 1.5px solid var(--border); border-radius: 12px; padding: 8px 10px; box-shadow: 0 4px 14px rgba(0,0,0,0.08); text-align: center; z-index: 5; display: flex; gap: 8px; align-items: center;">
+                <div style="text-align: center; min-width: 65px;">
+                  <div style="font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 3px;">ISPL Unit</div>
+                  <img id="preview-ispl-img" src="ispl-125.png" alt="ISPL unit" style="max-height: 70px; max-width: 55px; object-fit: contain; display: block; margin: 0 auto;"/>
+                  <div id="preview-ispl-vol" style="font-size: 10px; font-weight: 900; color: var(--dark); margin-top: 3px;">125ml</div>
+                </div>
+                <div style="width: 1px; height: 75px; background: var(--border);"></div>
+                <div style="text-align: center; min-width: 75px;">
+                  <div style="font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 3px;">Draaischijf</div>
+                  <img id="battery-dial-img" src="battery-dial-6.png" alt="Draaischijf stand" style="width: 75px; height: auto; display: block; margin: 0 auto; border-radius: 5px; box-shadow: 0 1px 4px rgba(0,0,0,0.1);"/>
+                  <div id="battery-dial-caption" style="font-size: 10px; font-weight: 900; color: var(--primary); margin-top: 3px;">Stand: 6 mnd</div>
+                </div>
+              </div>
+
+              <!-- 3D Exploded View SVG -->
+              <svg id="assembly-svg" class="assembly-svg" viewBox="0 0 460 490" xmlns="http://www.w3.org/2000/svg">
+                <!-- Dynamically rendered -->
               </svg>
             </div>
           </div>
 
         </div>
 
-        <!-- ===== RECHTER KOLOM: Invulparameters & Onderdelen ===== -->
+        <!-- ===== RECHTER KOLOM: Invulparameters & Stuklijst ===== -->
         <div class="config-right-col">
 
           <!-- 3. Assembly Parameters Card -->
           <div class="card">
             <div class="card-title">
-              <div><span class="badge-num">3</span> Assembly Parameters</div>
-              <span style="font-size: 11px; color: var(--text-muted); font-weight: normal;">Volgorde: Lager ➔ ISPL</span>
+              <div class="card-title-left">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                <span>Assembly Parameters</span>
+              </div>
+              <span style="font-size: 11px; color: var(--text-muted); font-weight: normal;">Lager ➔ ISPL</span>
             </div>
 
-            <!-- EERSTE SELECTIE: Materiaal van de koppelingen -->
-            <div class="input-group" style="background: #F9FAFB; padding: 10px; border-radius: 8px; border: 1px solid var(--border);">
-              <label class="input-label" style="color: var(--if-red);">Selecteer Materiaal Koppelingen (Stap 1)</label>
+            <!-- EERSTE SELECTIE: Materiaal -->
+            <div class="input-group" style="background: #F8FAFC; padding: 12px; border-radius: 12px; border: 1px solid var(--border);">
+              <label class="input-label" style="color: var(--primary);">Materiaal van de koppelingen (Stap 1)</label>
               <select id="sel-material" onchange="onConfigChange()">
                 <option value="Messing vernikkeld" selected>Messing vernikkeld</option>
                 <option value="RVS">RVS (Roestvrij staal)</option>
               </select>
-              <div style="font-size: 10px; color: var(--text-muted); margin-top: 3px;">
-                Beperkt alle onderdelen automatisch tot het geselecteerde materiaal.
-              </div>
             </div>
 
             <!-- Montagewijze -->
@@ -758,19 +999,29 @@
               • Rechte insteekkoppeling 8 mm - G 1/8" M BSPP
             </div>
 
-            <!-- ISPL Type / Volume -->
+            <!-- ISPL Type / Volume (15ml, 30ml, 60ml, 125ml, 250ml) -->
             <div class="input-group">
               <label class="input-label">Interflon Single Point Lubricator (ISPL) Volume</label>
-              <select id="sel-lubricator" onchange="onConfigChange()">
-                <option value="60ml">Interflon Single Point Lubricator 60 ml (G 1/4" M)</option>
-                <option value="125ml" selected>Interflon Single Point Lubricator 125 ml (G 1/4" M)</option>
-                <option value="250ml">Interflon Single Point Lubricator 250 ml (G 1/4" M)</option>
+              <select id="sel-lubricator-vol" onchange="onISPLVolumeChange()">
+                <option value="15ml">15 ml</option>
+                <option value="30ml">30 ml</option>
+                <option value="60ml">60 ml</option>
+                <option value="125ml" selected>125 ml</option>
+                <option value="250ml">250 ml</option>
+              </select>
+            </div>
+
+            <!-- VETTYPE PARAMETER (Dynamisch gebaseerd op tabel) -->
+            <div class="input-group">
+              <label class="input-label" style="color: var(--primary);">Type Smeermiddel / Vet in ISPL</label>
+              <select id="sel-grease-type" onchange="onConfigChange()">
+                <!-- Populated dynamically based on chosen volume -->
               </select>
             </div>
 
             <!-- Looptijd / Maand-instelling -->
             <div class="input-group">
-              <label class="input-label">Looptijd / Maand-instelling (Draaischijf 1 - 12 maanden)</label>
+              <label class="input-label">Looptijd / Maand-instelling (1 - 12 maanden)</label>
               <select id="sel-months" onchange="onConfigChange()">
                 <option value="1">1 maand</option>
                 <option value="2">2 maanden</option>
@@ -790,7 +1041,7 @@
               </div>
             </div>
 
-            <!-- Aansluiting 1: Lagerzijde (waar vetnippel uitgeschroefd is) -->
+            <!-- Aansluiting 1: Lagerzijde -->
             <div class="input-group">
               <label class="input-label">Aansluiting 1: Lager Schroefdraad</label>
               <select id="sel-bearing-thread" onchange="onBearingThreadChange()">
@@ -806,9 +1057,9 @@
                 <option value="custom">+ Andere maat invoeren...</option>
               </select>
               <div id="custom-thread-box" class="custom-input-box" style="display: none;">
-                <label class="input-label" style="color: var(--if-amber);">Afwijkende maat Aansluiting 1:</label>
+                <label class="input-label" style="color: #92400E;">Afwijkende maat Aansluiting 1:</label>
                 <input type="text" id="custom-bearing-thread" placeholder="bv. M12x1.5, 3/8 NPT..." oninput="onConfigChange()">
-                <div style="font-size: 11px; color: var(--if-amber); margin-top: 4px;">
+                <div style="font-size: 11px; color: #92400E; margin-top: 4px;">
                   ⚠️ Artikelnummer wordt automatisch <strong>"aan te maken"</strong> voor de binnendienst.
                 </div>
               </div>
@@ -836,9 +1087,9 @@
                   <option value="custom">+ Afwijkende lengte...</option>
                 </select>
                 <div id="custom-ext-box" class="custom-input-box" style="display: none;">
-                  <label class="input-label" style="color: var(--if-amber);">Afwijkende verlenging:</label>
+                  <label class="input-label" style="color: #92400E;">Afwijkende verlenging:</label>
                   <input type="text" id="custom-ext-val" placeholder="bv. 75 mm, 100 mm..." oninput="onConfigChange()">
-                  <div style="font-size: 11px; color: var(--if-amber); margin-top: 4px;">
+                  <div style="font-size: 11px; color: #92400E; margin-top: 4px;">
                     ⚠️ Wordt gemarkeerd als <strong>"aan te maken"</strong>.
                   </div>
                 </div>
@@ -858,18 +1109,21 @@
 
           </div>
 
-          <!-- 4. Geselecteerde Onderdelenlijst -->
+          <!-- 4. Geselecteerde Onderdelenlijst & Opslaan -->
           <div class="card">
             <div class="card-title">
-              <div><span class="badge-num">4</span> Geselecteerde Onderdelen & Stuklijst</div>
-              <span style="font-size: 11px; color: var(--text-muted); font-weight: normal;">Volgorde: Lager ➔ ISPL</span>
+              <div class="card-title-left">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                <span>Geselecteerde Koppelingen & Stuklijst</span>
+              </div>
+              <span style="font-size: 11px; color: var(--text-muted); font-weight: normal;">Lager ➔ ISPL</span>
             </div>
 
             <div id="components-list">
               <!-- Dynamically populated -->
             </div>
 
-            <button class="btn-save-point" onclick="saveCurrentPoint()">
+            <button class="btn-pill-primary" style="margin-top: 14px; padding: 14px 20px; font-size: 14px;" onclick="saveCurrentPoint()">
               <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
               Smeerpunt Opslaan & Toevoegen aan Project
             </button>
@@ -887,11 +1141,14 @@
     <div id="tab-projects" class="tab-content">
       <div class="card">
         <div class="card-title">
-          <span>Opgeslagen Smeerpunten in dit Project</span>
-          <button class="btn-primary" style="padding: 6px 12px; font-size: 12px;" onclick="addNewPoint()">+ Nieuw Smeerpunt</button>
+          <div class="card-title-left">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+            <span>Opgeslagen Smeerpunten in dit Project</span>
+          </div>
+          <button class="btn-pill-primary" style="padding: 8px 16px; font-size: 12px;" onclick="addNewPoint()">+ Nieuw Smeerpunt</button>
         </div>
         <div id="saved-points-list">
-          <!-- Dynamically rendered list -->
+          <!-- Dynamically populated -->
         </div>
       </div>
     </div>
@@ -902,15 +1159,18 @@
     <div id="tab-bom" class="tab-content">
       <div class="card">
         <div class="card-title">
-          <span>Geaggregeerde Stuklijst voor Odoo Offerte</span>
+          <div class="card-title-left">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <span>Geaggregeerde Stuklijst voor Odoo Offerte</span>
+          </div>
           <span style="font-size: 11px; color: var(--text-muted); font-weight: normal;">Totaal overzicht</span>
         </div>
 
-        <div style="margin-bottom: 12px; font-size: 12px; color: var(--text-muted);">
-          Alle benodigde koppelingen, Pulsarlube kits en ISPL units zijn hier samengevoegd per uniek artikelnummer. Artikelen met code <strong style="color: var(--if-amber);">"aan te maken"</strong> moeten door de binnendienst in Odoo worden opgezocht/aangemaakt.
+        <div style="margin-bottom: 14px; font-size: 12.5px; color: var(--text-muted);">
+          Alle benodigde koppelingen, Pulsarlube kits en ISPL units zijn hier samengevoegd per uniek artikelnummer. Artikelen met code <strong style="color: #D97706;">"aan te maken"</strong> moeten door de binnendienst in Odoo worden opgezocht/aangemaakt.
         </div>
 
-        <div class="table-container">
+        <div style="overflow-x: auto;">
           <table class="bom-table">
             <thead>
               <tr>
@@ -927,22 +1187,22 @@
           </table>
         </div>
 
-        <div style="margin-top: 16px; display: flex; flex-wrap: wrap; gap: 10px;" class="no-print">
-          <button class="btn-primary" onclick="openExportModal()" style="flex: 1; min-width: 200px;">
-            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-            PDF Rapport Downloaden...
+        <div style="margin-top: 20px; display: flex; flex-wrap: wrap; gap: 12px;" class="no-print">
+          <button class="btn-pill-primary" onclick="openExportModal()" style="flex: 1; min-width: 200px;">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+            Rapport PDF Downloaden...
           </button>
-          <button class="btn-header" style="background: #10B981; color: white; border: none; padding: 10px 16px; font-weight: 800;" onclick="exportOdooExcel()">
-            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-            Excel / CSV Export voor Odoo Offerte
+          <button class="btn-pill-dark" style="flex: 1; min-width: 200px;" onclick="exportOdooExcel()">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+            Excel Export voor Odoo Offerte (.xlsx)
           </button>
         </div>
       </div>
     </div>
 
-    <!-- CONTAINER VOOR COMPACT PRINT RAPPORT (GEBRUIKT BIJ COMPACT EXPORT) -->
-    <div id="compact-report-container">
-      <!-- Dynamically filled during compact print -->
+    <!-- CONTAINER VOOR HET VOLLEDIGE PRINT / PDF RAPPORT -->
+    <div id="print-report-container">
+      <!-- Dynamically filled during PDF print -->
     </div>
 
   </main>
@@ -954,17 +1214,17 @@
     <div class="modal-card">
       <div class="modal-title">
         <span>PDF Rapport Opties</span>
-        <button onclick="closeExportModal()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: #9CA3AF;">✕</button>
+        <button onclick="closeExportModal()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: #94A3B8;">✕</button>
       </div>
 
-      <div style="margin-bottom: 14px;">
+      <div style="margin-bottom: 16px;">
         <label class="input-label">1. Detailniveau van het rapport:</label>
         
         <label class="radio-option">
           <input type="radio" name="pdf-detail" value="detail" checked>
           <div>
-            <strong>Gedetailleerd technisch rapport (met 3D Exploded View & foto)</strong>
-            <div style="font-size: 11px; color: var(--text-muted);">Inclusief visuele tekening, omgevingsfoto en technische fiche per smeerpunt.</div>
+            <strong>Gedetailleerd technisch rapport (met 3D tekening, foto & fiche)</strong>
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">Volledige technische fiche per smeerpunt met visuele montagetekening, foto, parameters en punt-specifieke stuklijst.</div>
           </div>
         </label>
         
@@ -972,7 +1232,7 @@
           <input type="radio" name="pdf-detail" value="compact">
           <div>
             <strong>Compact rapport (zonder tekening)</strong>
-            <div style="font-size: 11px; color: var(--text-muted);">Artikels gesommeerd opgesomd onder elk individueel smeerpunt + op het einde een geaggregeerde totaallijst.</div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">Artikels gesommeerd opgesomd onder elk individueel smeerpunt + op het einde een geaggregeerde totaallijst.</div>
           </div>
         </label>
         
@@ -980,23 +1240,23 @@
           <input type="radio" name="pdf-detail" value="bom-only">
           <div>
             <strong>Enkel Geaggregeerde Stuklijst (Offerte overzicht)</strong>
-            <div style="font-size: 11px; color: var(--text-muted);">Enkel de totale materiaallijst zonder smeerpunten, ideaal voor calculatie.</div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">Enkel de totale materiaallijst zonder individuele smeerpunten, ideaal voor calculatie.</div>
           </div>
         </label>
       </div>
 
-      <div style="margin-bottom: 16px;">
+      <div style="margin-bottom: 20px;">
         <label class="input-label">2. Selectie van machines in het rapport:</label>
-        <div id="machine-filter-list" style="background: #F9FAFB; border: 1px solid var(--border); border-radius: 6px; padding: 10px; max-height: 140px; overflow-y: auto;">
+        <div id="machine-filter-list" style="background: #F8FAFC; border: 1px solid var(--border); border-radius: 10px; padding: 12px; max-height: 140px; overflow-y: auto;">
           <!-- Dynamically populated -->
         </div>
       </div>
 
-      <div style="display: flex; gap: 8px;">
-        <button class="btn-primary" style="flex: 1;" onclick="executePDFExport()">
+      <div style="display: flex; gap: 10px;">
+        <button class="btn-pill-primary" style="flex: 1;" onclick="executePDFExport()">
           Download / Print PDF
         </button>
-        <button class="btn-header" style="background: #E5E7EB; color: #374151; border: none;" onclick="closeExportModal()">
+        <button class="btn-pill-outline" style="width: auto;" onclick="closeExportModal()">
           Annuleren
         </button>
       </div>
@@ -1004,74 +1264,72 @@
   </div>
 
   <!-- ==================================================================== -->
-  <!-- MODAL: WACHTWOORD VOOR DATABASE BEHEER                               -->
+  <!-- MODAL: WACHTWOORD VOOR DATABASE BEHEER ("Odoo-binnendienst")          -->
   <!-- ==================================================================== -->
   <div id="db-auth-modal" class="modal-backdrop">
     <div class="modal-card" style="max-width: 400px;">
       <div class="modal-title">
-        <span>🔒 Odoo Binnendienst Authenticatie</span>
-        <button onclick="closeDatabaseAuthModal()" style="background: none; border: none; font-size: 18px; cursor: pointer; color: #9CA3AF;">✕</button>
+        <span>🔒 Odoo Binnendienst</span>
+        <button onclick="closeDatabaseAuthModal()" style="background: none; border: none; font-size: 18px; cursor: pointer; color: #94A3B8;">✕</button>
       </div>
-      <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
-        Voer het wachtwoord in om de koppelingendatabase te bekijken, bewerken of exporteren:
+      <div style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 14px;">
+        Voer het wachtwoord in om de koppelingendatabase te openen, bewerken of exporteren in Excel:
       </div>
       <div class="input-group">
         <label class="input-label">Wachtwoord</label>
         <input type="password" id="db-pwd-input" placeholder="Wachtwoord invoeren..." onkeydown="if(event.key==='Enter')verifyDatabasePassword()">
       </div>
-      <div id="db-pwd-error" style="color: #DC2626; font-size: 11px; font-weight: bold; margin-bottom: 10px; display: none;">
+      <div id="db-pwd-error" style="color: #DC2626; font-size: 11px; font-weight: bold; margin-bottom: 12px; display: none;">
         Onjuist wachtwoord. Toegang geweigerd.
       </div>
-      <div style="display: flex; gap: 8px;">
-        <button class="btn-primary" style="flex: 1;" onclick="verifyDatabasePassword()">Inloggen</button>
-        <button class="btn-header" style="background: #E5E7EB; color: #374151; border: none;" onclick="closeDatabaseAuthModal()">Annuleren</button>
+      <div style="display: flex; gap: 10px;">
+        <button class="btn-pill-primary" style="flex: 1;" onclick="verifyDatabasePassword()">Inloggen</button>
+        <button class="btn-pill-outline" style="width: auto;" onclick="closeDatabaseAuthModal()">Annuleren</button>
       </div>
     </div>
   </div>
 
   <!-- ==================================================================== -->
-  <!-- MODAL: DATABASE / ODOO BEHEER INTERFACE                              -->
+  <!-- MODAL: DATABASE / ODOO BEHEER (EXCEL .XLSX DOWNLOAD & UPLOAD)        -->
   <!-- ==================================================================== -->
   <div id="db-manager-modal" class="modal-backdrop">
     <div class="modal-card modal-card-large">
       <div class="modal-title">
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <span>📦 Koppelingen Database & Odoo Beheer</span>
-          <span style="font-size: 11px; background: #DCFCE7; color: #166534; padding: 2px 6px; border-radius: 4px;">Ingelogd</span>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span>📦 Koppelingen & ISPL Database</span>
+          <span style="font-size: 11px; background: #DCFCE7; color: #166534; padding: 3px 8px; border-radius: var(--radius-pill); font-weight: bold;">Geautoriseerd</span>
         </div>
-        <button onclick="closeDatabaseManagerModal()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: #9CA3AF;">✕</button>
+        <button onclick="closeDatabaseManagerModal()" style="background: none; border: none; font-size: 22px; cursor: pointer; color: #94A3B8;">✕</button>
       </div>
 
-      <!-- Action Toolbar -->
-      <div style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+      <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: center; margin-bottom: 16px;">
         <div style="display: flex; gap: 8px; flex: 1; min-width: 240px;">
-          <input type="text" id="db-search-input" placeholder="🔍 Zoek op artikelcode, maat of omschrijving..." oninput="filterDatabaseTable()" style="padding: 6px 10px; font-size: 12px;">
+          <input type="text" id="db-search-input" placeholder="🔍 Zoek artikelcode, maat of omschrijving..." oninput="filterDatabaseTable()" style="padding: 8px 14px; font-size: 12.5px;">
         </div>
-        <div style="display: flex; gap: 6px;">
-          <button class="btn-header" style="background: #2563EB; border: none; padding: 6px 10px; font-size: 11px;" onclick="addNewArticleModal()">
+        <div style="display: flex; gap: 8px;">
+          <button class="btn-pill-outline" style="padding: 8px 14px; font-size: 12px;" onclick="addNewArticleModal()">
             + Nieuw Artikel
           </button>
-          <button class="btn-header" style="background: #10B981; border: none; padding: 6px 10px; font-size: 11px;" onclick="exportDatabaseExcel()">
-            ⬇️ Download Excel
+          <button class="btn-pill-primary" style="padding: 8px 16px; font-size: 12px; background: #10B981; border: none;" onclick="exportDatabaseExcelXLSX()">
+            ⬇️ Download Excel (.xlsx)
           </button>
-          <label class="btn-header" style="background: #4B5563; border: none; padding: 6px 10px; font-size: 11px; cursor: pointer;">
-            ⬆️ Upload Excel
-            <input type="file" id="db-file-upload" accept=".xlsx,.csv" style="display: none;" onchange="importDatabaseFile(event)">
+          <label class="btn-pill-dark" style="padding: 8px 16px; font-size: 12px; cursor: pointer;">
+            ⬆️ Upload Excel (.xlsx)
+            <input type="file" id="db-file-upload" accept=".xlsx,.xls" style="display: none;" onchange="importDatabaseFileXLSX(event)">
           </label>
         </div>
       </div>
 
-      <!-- Database Table Container -->
-      <div style="max-height: 440px; overflow-y: auto; border: 1px solid var(--border); border-radius: 6px;">
+      <div style="max-height: 460px; overflow-y: auto; border: 1px solid var(--border); border-radius: 12px;">
         <table class="admin-table">
           <thead>
             <tr>
-              <th style="width: 130px;">Artikelcode (Odoo)</th>
+              <th style="width: 140px;">Artikelcode (Odoo)</th>
               <th>Naam / Omschrijving</th>
               <th>Materiaal</th>
               <th>Aansluiting 1</th>
               <th>Aansluiting 2</th>
-              <th style="width: 70px; text-align: center;">Actie</th>
+              <th style="width: 60px; text-align: center;">Actie</th>
             </tr>
           </thead>
           <tbody id="db-table-body">
@@ -1080,22 +1338,30 @@
         </table>
       </div>
 
-      <div style="margin-top: 12px; display: flex; justify-content: space-between; align-items: center;">
-        <span id="db-item-count" style="font-size: 11px; color: var(--text-muted);">0 artikelen</span>
-        <button class="btn-primary" style="padding: 6px 14px; font-size: 12px;" onclick="closeDatabaseManagerModal()">Klaar / Sluiten</button>
+      <div style="margin-top: 14px; display: flex; justify-content: space-between; align-items: center;">
+        <span id="db-item-count" style="font-size: 11px; color: var(--text-muted);">0 artikelen geladen</span>
+        <button class="btn-pill-primary" style="padding: 8px 18px; font-size: 12px;" onclick="closeDatabaseManagerModal()">Klaar / Sluiten</button>
       </div>
     </div>
   </div>
 
   <script src="couplings-data.js"></script>
   <script>
-    const STORAGE_KEY = 'IF_HARDWARE_SELECTOR_DATA_V4';
-    const DB_STORAGE_KEY = 'IF_CUSTOM_COUPLINGS_DB_V4';
+    const STORAGE_KEY = 'IF_HARDWARE_SELECTOR_DATA_V6';
+    const DB_STORAGE_KEY = 'IF_CUSTOM_COUPLINGS_DB_V6';
     let currentPhotoBase64 = null;
     let savedPoints = [];
     let activePointId = null;
 
-    // Load active database (checks localStorage overrides)
+    // Global Project / Client Information
+    let generalInfo = {
+      client: "Brouwerij De Halve Maan",
+      project: "Optimalisatie Smering Lijn 1",
+      contact: "Dhr. Peeters (Hoofd TD)",
+      advisor: "Koen Demeester",
+      notes: ""
+    };
+
     function getActiveDatabase() {
       try {
         const stored = localStorage.getItem(DB_STORAGE_KEY);
@@ -1118,7 +1384,6 @@
       }
     }
 
-    // Load app state
     function loadSavedState() {
       try {
         const stored = localStorage.getItem(STORAGE_KEY);
@@ -1126,6 +1391,7 @@
           const parsed = JSON.parse(stored);
           savedPoints = parsed.points || [];
           activePointId = parsed.activeId || (savedPoints[0] ? savedPoints[0].id : null);
+          if (parsed.generalInfo) generalInfo = parsed.generalInfo;
         }
       } catch (e) {
         console.error("Storage error:", e);
@@ -1134,7 +1400,6 @@
       if (!savedPoints || savedPoints.length === 0) {
         savedPoints = [{
           id: 1,
-          project: "Brouwerij De Halve Maan",
           machine: "Flessenspoelmachine Lijn 1",
           point: "Aandrijfas Lager Positie 1",
           material: "Messing vernikkeld",
@@ -1145,7 +1410,8 @@
           extension: "25",
           customExtension: "",
           remoteFitting: "straight-kit",
-          lubricator: "125ml",
+          lubricatorVol: "125ml",
+          greaseType: "Grease MP2/3",
           months: 6,
           photo: null,
           components: []
@@ -1158,7 +1424,8 @@
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify({
           points: savedPoints,
-          activeId: activePointId
+          activeId: activePointId,
+          generalInfo: generalInfo
         }));
       } catch (e) {
         console.error("Storage save failed:", e);
@@ -1167,22 +1434,71 @@
 
     function init() {
       loadSavedState();
+
+      // Populate General Info Tab
+      document.getElementById('gen-client').value = generalInfo.client || '';
+      document.getElementById('gen-project').value = generalInfo.project || '';
+      document.getElementById('gen-contact').value = generalInfo.contact || '';
+      document.getElementById('gen-advisor').value = generalInfo.advisor || '';
+      document.getElementById('gen-notes').value = generalInfo.notes || '';
+      updateGeneralInfoLabels();
+
       const activeP = savedPoints.find(p => p.id === activePointId) || savedPoints[0];
       loadPointIntoForm(activeP);
-      onConfigChange();
       renderSavedPointsList();
       renderBOM();
       document.getElementById('print-date').innerText = 'Datum: ' + new Date().toLocaleDateString('nl-BE');
     }
 
+    function updateGeneralInfo() {
+      generalInfo.client = document.getElementById('gen-client').value.trim() || 'Onbekend';
+      generalInfo.project = document.getElementById('gen-project').value.trim() || 'Project';
+      generalInfo.contact = document.getElementById('gen-contact').value.trim();
+      generalInfo.advisor = document.getElementById('gen-advisor').value.trim();
+      generalInfo.notes = document.getElementById('gen-notes').value.trim();
+      updateGeneralInfoLabels();
+      saveCurrentState();
+    }
+
+    function updateGeneralInfoLabels() {
+      document.getElementById('badge-client-label').innerText = `Klant: ${generalInfo.client}`;
+      document.getElementById('cfg-client-display').innerText = generalInfo.client;
+      document.getElementById('print-header-client').innerText = generalInfo.client;
+      document.getElementById('print-header-project').innerText = generalInfo.project;
+    }
+
     function switchTab(tabId) {
-      document.querySelectorAll('.nav-tab').forEach((t, i) => {
-        t.classList.toggle('active', (tabId === 'config' && i === 0) || (tabId === 'projects' && i === 1) || (tabId === 'bom' && i === 2));
+      const pills = document.querySelectorAll('.nav-pill');
+      pills.forEach((p, idx) => {
+        p.classList.toggle('active', 
+          (tabId === 'general' && idx === 0) ||
+          (tabId === 'config' && idx === 1) || 
+          (tabId === 'projects' && idx === 2) || 
+          (tabId === 'bom' && idx === 3)
+        );
       });
+
       document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-      document.getElementById('tab-' + tabId).classList.add('active');
-      if (tabId === 'bom') renderBOM();
-      if (tabId === 'projects') renderSavedPointsList();
+      const activeEl = document.getElementById('tab-' + tabId);
+      if (activeEl) activeEl.classList.add('active');
+
+      const titleEl = document.getElementById('page-main-title');
+      const subEl = document.getElementById('page-main-sub');
+      if (tabId === 'general') {
+        titleEl.innerText = 'Algemene Gegevens';
+        subEl.innerText = 'Klant- en projectinformatie die automatisch op alle rapporten verschijnt.';
+      } else if (tabId === 'config') {
+        titleEl.innerText = 'Configurator';
+        subEl.innerText = 'Koppelingsberekening & 3D Exploded View samenstelling van lager naar ISPL.';
+      } else if (tabId === 'projects') {
+        titleEl.innerText = 'Projecten & Punten';
+        subEl.innerText = 'Overzicht van alle gespecificeerde smeerpunten binnen dit project.';
+        renderSavedPointsList();
+      } else if (tabId === 'bom') {
+        titleEl.innerText = 'Stuklijst & Offerte';
+        subEl.innerText = 'Geaggregeerde totaallijst van alle benodigde koppelingen voor Odoo offerte.';
+        renderBOM();
+      }
     }
 
     function onMountTypeChange() {
@@ -1206,6 +1522,29 @@
       onConfigChange();
     }
 
+    function onISPLVolumeChange() {
+      populateGreaseTypes();
+      onConfigChange();
+    }
+
+    function populateGreaseTypes(selectedGrease = null) {
+      const vol = document.getElementById('sel-lubricator-vol').value;
+      const select = document.getElementById('sel-grease-type');
+      
+      const available = (typeof ISPL_CATALOG !== 'undefined') ? 
+        ISPL_CATALOG.filter(item => item.volume === vol) : [];
+
+      select.innerHTML = available.map(item => `
+        <option value="${item.grease}" ${item.grease === selectedGrease ? 'selected' : ''}>
+          ${item.grease} (Art. ${item.code})
+        </option>
+      `).join('');
+
+      if (!select.value && available.length > 0) {
+        select.value = available[0].grease;
+      }
+    }
+
     function onConfigChange() {
       const material = document.getElementById('sel-material').value;
       const mountType = document.getElementById('sel-mount-type').value;
@@ -1222,29 +1561,35 @@
       }
 
       const remoteFitting = document.getElementById('sel-remote-fitting').value;
-      const lubricator = document.getElementById('sel-lubricator').value;
+      const lubricatorVol = document.getElementById('sel-lubricator-vol').value;
+      const greaseType = document.getElementById('sel-grease-type').value;
       const months = parseInt(document.getElementById('sel-months').value) || 6;
 
+      // Update header badges
+      document.getElementById('badge-mat-label').innerText = material;
+      document.getElementById('badge-ispl-label').innerText = `ISPL ${lubricatorVol} + ${greaseType} (${months} mnd)`;
       document.getElementById('drawing-mode-label').innerText = (mountType === 'remote') ? 
-        'Montage op afstand (Pulsarlube 2000RC-1)' : 'Directe montage';
-      document.getElementById('assembly-badge').innerText = `${material} | Lager ${bearingThread} ➔ ISPL ${lubricator}`;
+        'Afstandsmontage (Pulsarlube kit art. 1702)' : 'Directe montage';
+      document.getElementById('assembly-badge').innerText = `${material} | Lager ${bearingThread} ➔ ISPL ${lubricatorVol}`;
 
-      updateDispenseCalculator(lubricator, months);
+      updateDispenseCalculator(lubricatorVol, months);
 
       const components = resolveComponents({
-        material, mountType, bearingThread, angle, extension, remoteFitting, lubricator, months
+        material, mountType, bearingThread, angle, extension, remoteFitting, lubricatorVol, greaseType, months
       });
 
       renderComponentsList(components);
       render3DExplodedSVG({
-        material, mountType, bearingThread, angle, extension, remoteFitting, lubricator, months
+        material, mountType, bearingThread, angle, extension, remoteFitting, lubricatorVol, greaseType, months
       });
     }
 
-    function updateDispenseCalculator(lubricator, months) {
+    function updateDispenseCalculator(lubricatorVol, months) {
       let volMl = 125;
-      if (lubricator.includes('60')) volMl = 60;
-      else if (lubricator.includes('250')) volMl = 250;
+      if (lubricatorVol.includes('15')) volMl = 15;
+      else if (lubricatorVol.includes('30')) volMl = 30;
+      else if (lubricatorVol.includes('60')) volMl = 60;
+      else if (lubricatorVol.includes('250')) volMl = 250;
 
       const dailyCc = (volMl / (months * 30.5)).toFixed(2);
       const weeklyCc = (dailyCc * 7).toFixed(1);
@@ -1259,31 +1604,33 @@
       return db.find(predicate);
     }
 
-    // Resolves matching parts following the strict engineering rules:
-    // Lager ➔ Verloop (naar G1/4 F of G1/8 F) ➔ Kniestuk (G1/4 of G1/8) ➔ Verlengstuk (G1/4 of G1/8) ➔ ISPL / Kit
     function resolveComponents(cfg) {
       const comps = [];
       const mat = cfg.material;
 
-      // 1. ISPL Unit
-      let isplCode = `ISPL-${cfg.lubricator.toUpperCase()}`;
+      // 1. ISPL Unit gekoppeld aan exact artikelnummer uit ISPL_CATALOG
+      let isplCode = 'ISPL';
+      let isplName = `Interflon Single Point Lubricator ${cfg.lubricatorVol} + ${cfg.greaseType}`;
       if (typeof ISPL_CATALOG !== 'undefined') {
-        const isplItem = ISPL_CATALOG.find(i => i.volume === cfg.lubricator);
-        if (isplItem) isplCode = isplItem.code;
+        const matchISPL = ISPL_CATALOG.find(item => item.volume === cfg.lubricatorVol && item.grease === cfg.greaseType);
+        if (matchISPL) {
+          isplCode = matchISPL.code;
+          isplName = matchISPL.name;
+        }
       }
 
       comps.push({
         code: isplCode,
-        name: `Interflon Single Point Lubricator ${cfg.lubricator}`,
+        name: isplName,
         a1: 'G 1/4" M (buitendraad)',
         a2: `Instelling: ${cfg.months} maanden`,
         mat: 'Polycarbonaat / Kunststof',
-        desc: `Automatische smeerunit gevuld met hoogwaardig Interflon vet, ingesteld op ${cfg.months} maanden`,
+        desc: `Automatische smeerunit ${cfg.lubricatorVol} gevuld met Interflon ${cfg.greaseType}, ingesteld op ${cfg.months} maanden (art. ${isplCode})`,
         qty: 1
       });
 
       if (cfg.mountType === 'remote') {
-        // REMOTE: Pulsarlube 2000RC-1 Kit
+        // REMOTE: Pulsarlube 2000RC-1 Kit (Art. 1702)
         comps.push({
           code: '1702',
           name: 'Pulsarlube 2000RC-1 Installatiekit voor montage op afstand',
@@ -1294,7 +1641,6 @@
           qty: 1
         });
 
-        // Verloop aan het lager naar G 1/8" F (als lager niet al G 1/8" is)
         if (cfg.bearingThread !== 'G 1/8') {
           const matchAdapt = findInCatalog(item => 
             item.name.includes("Verloopstuk") && 
@@ -1326,9 +1672,7 @@
           }
         }
 
-        // Vraag over insteekkoppeling:
         if (cfg.remoteFitting === 'elbow-90') {
-          // Extra knie-insteekkoppeling 90°
           const matchElbowPush = findInCatalog(item => 
             item.name.includes("Knie-insteekkoppeling 90° 8 mm") && 
             item.name.includes('G 1/8"') &&
@@ -1358,8 +1702,6 @@
         }
       } else {
         // DIRECT: Lager ➔ Verloopstuk ➔ Kniestuk ➔ Verlengstuk ➔ ISPL
-        
-        // 1. Verloopstuk naar G 1/4" F (tenzij lager al G 1/4" is)
         if (cfg.bearingThread !== 'G 1/4') {
           const matchAdapt = findInCatalog(item => 
             item.name.includes("Verloopstuk") && 
@@ -1391,7 +1733,6 @@
           }
         }
 
-        // 2. Kniestuk (G 1/4" M x G 1/4" F)
         if (cfg.angle === '90') {
           const match90 = findInCatalog(item => 
             item.name.includes("Kniestuk 90° G 1/4\"") &&
@@ -1422,7 +1763,6 @@
           });
         }
 
-        // 3. Verlengstuk (G 1/4" M x G 1/4" F)
         if (cfg.extension !== '0') {
           const matchExt = findInCatalog(item => 
             item.name.includes("Verlengstuk G 1/4\"") && 
@@ -1471,7 +1811,7 @@
               ${isToCreate ? 
                 `<span class="badge-aan-te-maken">⚠️ aan te maken</span>` : 
                 `<span class="badge-art-code">${c.code}</span>`}
-              <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px; font-weight: bold;">Aantal: ${c.qty}</div>
+              <div style="font-size: 11px; color: var(--text-muted); margin-top: 3px; font-weight: bold;">Aantal: ${c.qty}</div>
             </div>
           </div>
         `;
@@ -1479,52 +1819,55 @@
     }
 
     // ========================================================================
-    // 3D EXPLODED VIEW VECTOR ASSEMBLY SVG RENDERING
+    // 3D EXPLODED VIEW VECTOR ASSEMBLY SVG RENDERING MET VERBETERDE DRAAISCHIJF
     // ========================================================================
     function render3DExplodedSVG(cfg) {
       const svg = document.getElementById('assembly-svg');
       let content = '';
 
-      // Material color definitions
+      const volKey = (cfg.lubricatorVol || '125ml').replace('ml', '');
+      const isplImgSrc = `ispl-${volKey}.png`;
+
+      // Update previews in het zwevende indicator-paneel
+      const previewIsplImg = document.getElementById('preview-ispl-img');
+      const previewIsplVol = document.getElementById('preview-ispl-vol');
+      if (previewIsplImg) previewIsplImg.src = isplImgSrc;
+      if (previewIsplVol) previewIsplVol.textContent = cfg.lubricatorVol;
+
+      const dialImg = document.getElementById('battery-dial-img');
+      const dialCap = document.getElementById('battery-dial-caption');
+      if (dialImg) dialImg.src = `battery-dial-${cfg.months}.png`;
+      if (dialCap) dialCap.textContent = `Stand: ${cfg.months} mnd`;
+
       const isRVS = (cfg.material === 'RVS');
       const metalGrad = isRVS ? 'url(#rvsGrad)' : 'url(#brassGrad)';
       const metalStroke = isRVS ? '#475569' : '#78350F';
       const metalText = isRVS ? '#1E293B' : '#92400E';
 
-      const dialDeg = ((cfg.months - 1) / 11) * 270 - 135;
-
       if (cfg.mountType === 'direct') {
+        const isplLayouts = {
+          '250': { x: 22, y: 0,  w: 56, h: 155, bottom: 155 },
+          '125': { x: 18, y: 15, w: 64, h: 135, bottom: 150 },
+          '60':  { x: 20, y: 35, w: 60, h: 100, bottom: 135 },
+          '30':  { x: 20, y: 50, w: 60, h: 80,  bottom: 130 },
+          '15':  { x: 28, y: 15, w: 44, h: 135, bottom: 150 }
+        };
+        const layout = isplLayouts[volKey] || isplLayouts['125'];
+
         content = `
           <defs>
-            <!-- RVS Metallic Gradient -->
             <linearGradient id="rvsGrad" x1="0%" y1="0%" x2="100%" y2="0%">
               <stop offset="0%" stop-color="#475569"/>
               <stop offset="25%" stop-color="#CBD5E1"/>
               <stop offset="65%" stop-color="#94A3B8"/>
               <stop offset="100%" stop-color="#334155"/>
             </linearGradient>
-            <!-- Messing Metallic Gradient -->
             <linearGradient id="brassGrad" x1="0%" y1="0%" x2="100%" y2="0%">
               <stop offset="0%" stop-color="#92400E"/>
               <stop offset="25%" stop-color="#FCD34D"/>
               <stop offset="65%" stop-color="#D97706"/>
               <stop offset="100%" stop-color="#78350F"/>
             </linearGradient>
-            <!-- ISPL Body Translucent Gradient -->
-            <linearGradient id="isplBody3D" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#CBD5E1" stop-opacity="0.8"/>
-              <stop offset="20%" stop-color="#FFFFFF" stop-opacity="0.95"/>
-              <stop offset="70%" stop-color="#E2E8F0" stop-opacity="0.85"/>
-              <stop offset="100%" stop-color="#94A3B8" stop-opacity="0.8"/>
-            </linearGradient>
-            <!-- Grease Fill Gradient -->
-            <linearGradient id="grease3D" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#FACC15"/>
-              <stop offset="35%" stop-color="#FEF08A"/>
-              <stop offset="80%" stop-color="#EAB308"/>
-              <stop offset="100%" stop-color="#CA8A04"/>
-            </linearGradient>
-            <!-- Bearing Cast Iron Gradient -->
             <linearGradient id="bearing3D" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stop-color="#374151"/>
               <stop offset="50%" stop-color="#6B7280"/>
@@ -1533,112 +1876,100 @@
           </defs>
 
           <!-- Central Exploded Assembly Centerline -->
-          <line x1="210" y1="20" x2="210" y2="440" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.6"/>
+          <line x1="210" y1="20" x2="210" y2="450" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.6"/>
 
-          <!-- 1. INTERFLON SINGLE POINT LUBRICATOR (Top, Exploded gap) -->
-          <g transform="translate(160, 20)">
-            <!-- Dial Cap -->
-            <ellipse cx="50" cy="8" rx="36" ry="8" fill="#E30613"/>
-            <rect x="14" y="8" width="72" height="12" fill="#111827"/>
-            <ellipse cx="50" cy="20" rx="36" ry="8" fill="#E30613"/>
+          <!-- 1. REALISTISCHE ISPL LUBRICATOR (FOTO PER GESELECTEERD VOLUME) -->
+          <g transform="translate(160, 10)">
+            <!-- Echte ISPL Productfoto -->
+            <image href="${isplImgSrc}" x="${layout.x}" y="${layout.y}" width="${layout.w}" height="${layout.h}" preserveAspectRatio="xMidYMid meet"/>
 
-            <!-- Month Setting Dial & Pointer -->
-            <circle cx="50" cy="8" r="6" fill="#FFFFFF"/>
-            <line x1="50" y1="8" x2="${50 + 10 * Math.cos(dialDeg * Math.PI / 180)}" y2="${8 + 6 * Math.sin(dialDeg * Math.PI / 180)}" stroke="#E30613" stroke-width="2.5" stroke-linecap="round"/>
-            <text x="50" y="3" font-size="7" font-weight="900" fill="#FFFFFF" text-anchor="middle">${cfg.months} MND</text>
-
-            <!-- Translucent Reservoir & Grease Level -->
-            <path d="M 6 28 C 6 28, 6 100, 6 100 C 6 112, 94 112, 94 100 C 94 100, 94 28, 94 28 Z" fill="url(#isplBody3D)" stroke="#9CA3AF" stroke-width="1.5"/>
-            <path d="M 9 45 C 9 45, 9 96, 9 96 C 9 106, 91 106, 91 96 C 91 96, 91 45, 91 45 Z" fill="url(#grease3D)"/>
-            <ellipse cx="50" cy="45" rx="41" ry="6" fill="#FEF08A"/>
-
-            <!-- Interflon Red Logo Badge -->
-            <rect x="15" y="58" width="70" height="22" rx="3" fill="#E30613"/>
-            <text x="50" y="73" font-size="10" font-weight="900" font-style="italic" fill="#FFFFFF" text-anchor="middle" letter-spacing="0.5">INTERFLON</text>
-
-            <!-- Thread Nipple G 1/4" M at base -->
-            <rect x="38" y="108" width="24" height="15" fill="${metalGrad}" stroke="${metalStroke}" stroke-width="1"/>
-            <line x1="38" y1="112" x2="62" y2="112" stroke="${metalStroke}"/>
-            <line x1="38" y1="116" x2="62" y2="116" stroke="${metalStroke}"/>
-            <line x1="38" y1="120" x2="62" y2="120" stroke="${metalStroke}"/>
+            <!-- Badge Boven Draaischijf -->
+            <rect x="25" y="-12" width="50" height="18" rx="4" fill="#E30613"/>
+            <text x="50" y="0" font-size="9" font-weight="900" fill="#FFFFFF" text-anchor="middle">${cfg.months} MAAND</text>
 
             <!-- Exploded Thread Annotation -->
-            <line x1="62" y1="115" x2="110" y2="115" stroke="#111827" stroke-width="1"/>
-            <rect x="110" y="105" width="165" height="20" rx="3" fill="#FFFFFF" stroke="#D1D5DB"/>
-            <text x="115" y="119" font-size="10" font-weight="900" fill="#E30613">ISPL Aansluiting: G 1/4" M</text>
+            <line x1="62" y1="${layout.bottom - 4}" x2="110" y2="${layout.bottom - 4}" stroke="#0F172A" stroke-width="1"/>
+            <rect x="110" y="${layout.bottom - 14}" width="165" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1"/>
+            <text x="115" y="${layout.bottom}" font-size="10" font-weight="900" fill="#E30613">ISPL Aansluiting: G 1/4" M</text>
           </g>
 
-          <!-- 2. VERLENGSTUK (Indien geselecteerd, Exploded gap) -->
+          <!-- 2. VERLENGSTUK (Exploded gap) -->
           ${cfg.extension !== '0' ? `
-          <g transform="translate(160, 165)">
+          <g transform="translate(160, 175)">
             <rect x="36" y="0" width="28" height="28" fill="${metalGrad}" stroke="${metalStroke}" stroke-width="1.5"/>
             <ellipse cx="50" cy="0" rx="14" ry="4" fill="#E5E7EB"/>
             <rect x="40" y="28" width="20" height="12" fill="${metalGrad}" stroke="${metalStroke}"/>
 
-            <line x1="20" y1="5" x2="36" y2="5" stroke="#111827" stroke-width="1"/>
-            <rect x="-140" y="-5" width="155" height="20" rx="3" fill="#FFFFFF" stroke="#D1D5DB"/>
+            <line x1="20" y1="5" x2="36" y2="5" stroke="#0F172A" stroke-width="1"/>
+            <rect x="-140" y="-5" width="155" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1"/>
             <text x="-135" y="9" font-size="10" font-weight="bold" fill="${metalText}">Binnendraad: G 1/4" F</text>
 
-            <line x1="64" y1="20" x2="110" y2="20" stroke="#111827" stroke-width="1"/>
-            <rect x="110" y="10" width="175" height="20" rx="3" fill="#FFFFFF" stroke="#D1D5DB"/>
+            <line x1="64" y1="20" x2="110" y2="20" stroke="#0F172A" stroke-width="1"/>
+            <rect x="110" y="10" width="175" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1"/>
             <text x="115" y="24" font-size="10" font-weight="bold" fill="#0284C7">Verlengstuk G 1/4" (L=${cfg.extension}mm)</text>
           </g>
           ` : ''}
 
-          <!-- 3. KNIESTUK (Indien geselecteerd, Exploded gap) -->
+          <!-- 3. KNIESTUK (Exploded gap) -->
           ${cfg.angle !== 'straight' ? `
-          <g transform="translate(160, ${cfg.extension !== '0' ? 220 : 175})">
+          <g transform="translate(160, ${cfg.extension !== '0' ? 230 : 185})">
             <path d="M 34 0 L 66 0 L 66 28 L 34 28 Z" fill="${metalGrad}" stroke="${metalStroke}" stroke-width="1.5"/>
             <circle cx="50" cy="14" r="6" fill="${metalStroke}"/>
             <rect x="40" y="28" width="20" height="12" fill="${metalGrad}" stroke="${metalStroke}"/>
 
-            <line x1="20" y1="5" x2="34" y2="5" stroke="#111827" stroke-width="1"/>
-            <rect x="-140" y="-5" width="155" height="20" rx="3" fill="#FFFFFF" stroke="#D1D5DB"/>
+            <line x1="20" y1="5" x2="34" y2="5" stroke="#0F172A" stroke-width="1"/>
+            <rect x="-140" y="-5" width="155" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1"/>
             <text x="-135" y="9" font-size="10" font-weight="bold" fill="${metalText}">Binnendraad: G 1/4" F</text>
 
-            <line x1="66" y1="18" x2="110" y2="18" stroke="#111827" stroke-width="1"/>
-            <rect x="110" y="8" width="165" height="20" rx="3" fill="#FFFFFF" stroke="#D1D5DB"/>
+            <line x1="66" y1="18" x2="110" y2="18" stroke="#0F172A" stroke-width="1"/>
+            <rect x="110" y="8" width="165" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1"/>
             <text x="115" y="22" font-size="10" font-weight="900" fill="#D97706">${cfg.angle}° Kniestuk G 1/4"</text>
           </g>
           ` : ''}
 
           <!-- 4. VERLOOPSTUK NAAR LAGER (Exploded gap) -->
-          <g transform="translate(160, ${cfg.angle !== 'straight' ? (cfg.extension !== '0' ? 280 : 235) : (cfg.extension !== '0' ? 225 : 175)})">
-            <!-- Hexagonal adapter body -->
+          <g transform="translate(160, ${cfg.angle !== 'straight' ? (cfg.extension !== '0' ? 290 : 245) : (cfg.extension !== '0' ? 235 : 185)})">
             <path d="M 30 0 L 70 0 L 78 12 L 70 24 L 30 24 L 22 12 Z" fill="${metalGrad}" stroke="${metalStroke}" stroke-width="1.5"/>
-            <!-- Thread that enters bearing -->
             <rect x="40" y="24" width="20" height="14" fill="${metalGrad}" stroke="${metalStroke}"/>
             <line x1="40" y1="28" x2="60" y2="28" stroke="${metalStroke}"/>
             <line x1="40" y1="32" x2="60" y2="32" stroke="${metalStroke}"/>
 
-            <!-- Top Thread Annotation -->
-            <line x1="20" y1="4" x2="30" y2="4" stroke="#111827" stroke-width="1"/>
-            <rect x="-140" y="-6" width="155" height="20" rx="3" fill="#FFFFFF" stroke="#D1D5DB"/>
+            <line x1="20" y1="4" x2="30" y2="4" stroke="#0F172A" stroke-width="1"/>
+            <rect x="-140" y="-6" width="155" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1"/>
             <text x="-135" y="8" font-size="10" font-weight="bold" fill="${metalText}">Binnendraad: G 1/4" F</text>
 
-            <!-- Bottom Thread Annotation -->
-            <line x1="70" y1="18" x2="110" y2="18" stroke="#111827" stroke-width="1"/>
-            <rect x="110" y="8" width="175" height="20" rx="3" fill="#FFFFFF" stroke="#D1D5DB"/>
-            <text x="115" y="22" font-size="10" font-weight="900" fill="#111827">Buitendraad: ${cfg.bearingThread} M</text>
+            <line x1="70" y1="18" x2="110" y2="18" stroke="#0F172A" stroke-width="1"/>
+            <rect x="110" y="8" width="175" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1"/>
+            <text x="115" y="22" font-size="10" font-weight="900" fill="#0F172A">Buitendraad: ${cfg.bearingThread} M</text>
           </g>
 
           <!-- 5. 3D ISOMETRIC BEARING (Exploded bottom) -->
-          <g transform="translate(70, 340)">
+          <g transform="translate(70, 350)">
             <path d="M 40 100 L 240 100 L 255 85 L 55 85 Z" fill="#1F2937"/>
-            <path d="M 60 85 C 55 50, 90 20, 150 20 C 210 20, 245 50, 240 85 Z" fill="url(#bearing3D)" stroke="#111827" stroke-width="2"/>
+            <path d="M 60 85 C 55 50, 90 20, 150 20 C 210 20, 245 50, 240 85 Z" fill="url(#bearing3D)" stroke="#0F172A" stroke-width="2"/>
             
-            <ellipse cx="150" cy="62" rx="34" ry="34" fill="#0F172A" stroke="#9CA3AF" stroke-width="2"/>
-            <ellipse cx="150" cy="62" rx="20" ry="20" fill="#D1D5DB"/>
+            <ellipse cx="150" cy="62" rx="34" ry="34" fill="#0F172A" stroke="#94A3B8" stroke-width="2"/>
+            <ellipse cx="150" cy="62" rx="20" ry="20" fill="#CBD5E1"/>
 
-            <!-- Lube Port Opening with Annotation -->
-            <ellipse cx="150" cy="18" rx="14" ry="5" fill="#E5E7EB" stroke="#111827" stroke-width="2"/>
-            <line x1="164" y1="18" x2="200" y2="18" stroke="#111827" stroke-width="1"/>
-            <rect x="200" y="8" width="165" height="20" rx="3" fill="#FFFFFF" stroke="#DC2626"/>
-            <text x="205" y="22" font-size="10" font-weight="900" fill="#DC2626">Lagerpoort: ${cfg.bearingThread}</text>
+            <ellipse cx="150" cy="18" rx="14" ry="5" fill="#E2E8F0" stroke="#0F172A" stroke-width="2"/>
+            <line x1="164" y1="18" x2="200" y2="18" stroke="#0F172A" stroke-width="1"/>
+            <rect x="200" y="8" width="165" height="20" rx="4" fill="#FFFFFF" stroke="#E30613"/>
+            <text x="205" y="22" font-size="10" font-weight="900" fill="#E30613">Lagerpoort: ${cfg.bearingThread}</text>
           </g>
         `;
       } else {
         // REMOTE MOUNT EXPLODED VIEW (Pulsarlube 2000RC-1)
+        const remLayouts = {
+          '250': { x: 5,  y: 0,  w: 50, h: 120 },
+          '125': { x: 4,  y: 12, w: 52, h: 108 },
+          '60':  { x: 5,  y: 35, w: 50, h: 85 },
+          '30':  { x: 5,  y: 48, w: 50, h: 72 },
+          '15':  { x: 14, y: 12, w: 34, h: 108 }
+        };
+        const remL = remLayouts[volKey] || remLayouts['125'];
+
+        svg.setAttribute('viewBox', '0 0 460 490');
+
         content = `
           <defs>
             <linearGradient id="rvsGrad" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -1653,18 +1984,6 @@
               <stop offset="65%" stop-color="#D97706"/>
               <stop offset="100%" stop-color="#78350F"/>
             </linearGradient>
-            <linearGradient id="isplBody3D" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#CBD5E1" stop-opacity="0.8"/>
-              <stop offset="20%" stop-color="#FFFFFF" stop-opacity="0.95"/>
-              <stop offset="70%" stop-color="#E2E8F0" stop-opacity="0.85"/>
-              <stop offset="100%" stop-color="#94A3B8" stop-opacity="0.8"/>
-            </linearGradient>
-            <linearGradient id="grease3D" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#FACC15"/>
-              <stop offset="35%" stop-color="#FEF08A"/>
-              <stop offset="80%" stop-color="#EAB308"/>
-              <stop offset="100%" stop-color="#CA8A04"/>
-            </linearGradient>
             <linearGradient id="bearing3D" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stop-color="#374151"/>
               <stop offset="50%" stop-color="#6B7280"/>
@@ -1672,45 +1991,48 @@
             </linearGradient>
           </defs>
 
-          <!-- ISPL & Bracket on Left (Exploded Gap) -->
-          <g transform="translate(35, 20)">
-            <ellipse cx="30" cy="6" rx="26" ry="6" fill="#E30613"/>
-            <rect x="4" y="6" width="52" height="8" fill="#111827"/>
-            <path d="M 0 14 C 0 14, 0 75, 0 75 C 0 84, 60 84, 60 75 C 60 75, 60 14, 60 14 Z" fill="url(#isplBody3D)" stroke="#9CA3AF"/>
-            <path d="M 3 28 C 3 28, 3 72, 3 72 C 3 80, 57 80, 57 72 C 57 72, 57 28, 57 28 Z" fill="url(#grease3D)"/>
-            
-            <rect x="8" y="38" width="44" height="18" rx="2" fill="#E30613"/>
-            <text x="30" y="51" font-size="8" font-weight="900" font-style="italic" fill="#FFFFFF" text-anchor="middle">INTERFLON</text>
+          <!-- ISPL on Bracket (Left, Exploded Gap) -->
+          <g transform="translate(35, 10)">
+            <!-- Echte ISPL Productfoto -->
+            <image href="${isplImgSrc}" x="${remL.x}" y="${remL.y}" width="${remL.w}" height="${remL.h}" preserveAspectRatio="xMidYMid meet"/>
 
-            <rect x="24" y="80" width="12" height="10" fill="${metalGrad}" stroke="${metalStroke}"/>
-            <text x="70" y="88" font-size="10" font-weight="900" fill="#E30613">ISPL: G 1/4" M</text>
+            <!-- Badge Boven Draaischijf -->
+            <rect x="5" y="-14" width="50" height="16" rx="4" fill="#E30613"/>
+            <text x="30" y="-3" font-size="8.5" font-weight="900" fill="#FFFFFF" text-anchor="middle">${cfg.months} MND</text>
+
+            <rect x="68" y="40" width="115" height="24" rx="4" fill="#0F172A"/>
+            <text x="73" y="52" font-size="8.5" font-weight="900" fill="#FFFFFF">ISPL ${cfg.lubricatorVol}</text>
+            <text x="73" y="60" font-size="7" font-weight="bold" fill="#FACC15">${cfg.greaseType}</text>
+
+            <line x1="45" y1="120" x2="68" y2="120" stroke="#0F172A" stroke-width="1"/>
+            <text x="72" y="124" font-size="9" font-weight="900" fill="#E30613">G 1/4" M</text>
           </g>
 
-          <!-- Pulsarlube 2000RC-1 Mounting Bracket (Exploded below ISPL) -->
-          <g transform="translate(25, 125)">
-            <rect x="0" y="0" width="90" height="14" fill="#374151" rx="2"/>
-            <line x1="8" y1="0" x2="8" y2="40" stroke="#111827" stroke-width="4"/>
+          <!-- Pulsarlube 2000RC-1 Mounting Bracket -->
+          <g transform="translate(25, 130)">
+            <rect x="0" y="0" width="90" height="14" fill="#334155" rx="3"/>
+            <line x1="8" y1="0" x2="8" y2="40" stroke="#0F172A" stroke-width="4"/>
             <rect x="34" y="14" width="16" height="14" fill="${metalGrad}" stroke="${metalStroke}"/>
             
-            <line x1="90" y1="7" x2="120" y2="7" stroke="#111827" stroke-width="1"/>
-            <rect x="120" y="-3" width="180" height="20" rx="3" fill="#EFF6FF" stroke="#3B82F6"/>
+            <line x1="90" y1="7" x2="120" y2="7" stroke="#0F172A" stroke-width="1"/>
+            <rect x="120" y="-3" width="180" height="20" rx="4" fill="#EFF6FF" stroke="#3B82F6"/>
             <text x="125" y="11" font-size="10" font-weight="900" fill="#1E40AF">Beugel G 1/4" F (Kit 1702)</text>
           </g>
 
           <!-- High-Pressure Hose 8 mm (MAX 20 CM) -->
-          <path d="M 68 155 C 75 250, 150 220, 230 280" fill="none" stroke="#111827" stroke-width="8" stroke-linecap="round"/>
-          <path d="M 68 155 C 75 250, 150 220, 230 280" fill="none" stroke="#2563EB" stroke-width="4" stroke-dasharray="6 3" stroke-linecap="round"/>
+          <path d="M 68 160 C 75 255, 150 225, 230 285" fill="none" stroke="#0F172A" stroke-width="8" stroke-linecap="round"/>
+          <path d="M 68 160 C 75 255, 150 225, 230 285" fill="none" stroke="#2563EB" stroke-width="4" stroke-dasharray="6 3" stroke-linecap="round"/>
 
-          <g transform="translate(110, 205)">
-            <rect x="0" y="0" width="155" height="22" rx="4" fill="#FEF3C7" stroke="#F59E0B" stroke-width="1.5"/>
+          <g transform="translate(110, 210)">
+            <rect x="0" y="0" width="155" height="22" rx="6" fill="#FEF3C7" stroke="#F59E0B" stroke-width="1.5"/>
             <text x="77" y="15" font-size="10" font-weight="900" fill="#92400E" text-anchor="middle">LEIDING 8 MM (MAX. 20 CM)</text>
           </g>
 
-          <!-- Push-in fitting at Bearing side (Straight in kit OR extra 90° elbow) -->
-          <g transform="translate(220, 275)">
-            <rect x="0" y="0" width="22" height="20" rx="2" fill="${metalGrad}" stroke="${metalStroke}" stroke-width="1.5"/>
-            <line x1="22" y1="10" x2="60" y2="10" stroke="#111827" stroke-width="1"/>
-            <rect x="60" y="0" width="175" height="20" rx="3" fill="#FFFFFF" stroke="#D1D5DB"/>
+          <!-- Push-in fitting at Bearing side -->
+          <g transform="translate(220, 280)">
+            <rect x="0" y="0" width="22" height="20" rx="3" fill="${metalGrad}" stroke="${metalStroke}" stroke-width="1.5"/>
+            <line x1="22" y1="10" x2="60" y2="10" stroke="#0F172A" stroke-width="1"/>
+            <rect x="60" y="0" width="175" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1"/>
             <text x="65" y="14" font-size="10" font-weight="bold" fill="${metalText}">
               ${cfg.remoteFitting === 'elbow-90' ? '90° Knie' : 'Recht'} Push-in ➔ G 1/8" M
             </text>
@@ -1718,23 +2040,23 @@
 
           <!-- Adapter to Bearing (Exploded below fitting if bearing != G 1/8) -->
           ${cfg.bearingThread !== 'G 1/8' ? `
-          <g transform="translate(220, 310)">
+          <g transform="translate(220, 315)">
             <path d="M 0 0 L 22 0 L 26 8 L 22 16 L 0 16 L -4 8 Z" fill="${metalGrad}" stroke="${metalStroke}"/>
             <rect x="3" y="16" width="16" height="10" fill="${metalGrad}" stroke="${metalStroke}"/>
-            <line x1="26" y1="8" x2="60" y2="8" stroke="#111827" stroke-width="1"/>
-            <rect x="60" y="-2" width="175" height="20" rx="3" fill="#FFFFFF" stroke="#D1D5DB"/>
-            <text x="65" y="12" font-size="10" font-weight="bold" fill="#000000">Verloop: ${cfg.bearingThread} M ➔ G 1/8" F</text>
+            <line x1="26" y1="8" x2="60" y2="8" stroke="#0F172A" stroke-width="1"/>
+            <rect x="60" y="-2" width="175" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1"/>
+            <text x="65" y="12" font-size="10" font-weight="bold" fill="#0F172A">Verloop: ${cfg.bearingThread} M ➔ G 1/8" F</text>
           </g>
           ` : ''}
 
           <!-- Bearing at bottom right -->
-          <g transform="translate(150, 340)">
+          <g transform="translate(150, 345)">
             <path d="M 30 95 L 180 95 L 195 80 L 45 80 Z" fill="#1F2937"/>
-            <path d="M 45 80 C 40 55, 65 25, 115 25 C 165 25, 190 55, 185 80 Z" fill="url(#bearing3D)" stroke="#111827" stroke-width="2"/>
+            <path d="M 45 80 C 40 55, 65 25, 115 25 C 165 25, 190 55, 185 80 Z" fill="url(#bearing3D)" stroke="#0F172A" stroke-width="2"/>
             <ellipse cx="115" cy="56" rx="26" ry="26" fill="#0F172A"/>
-            <ellipse cx="115" cy="56" rx="14" ry="14" fill="#D1D5DB"/>
+            <ellipse cx="115" cy="56" rx="14" ry="14" fill="#CBD5E1"/>
 
-            <ellipse cx="115" cy="22" rx="12" ry="4" fill="#E5E7EB" stroke="#111827" stroke-width="1.5"/>
+            <ellipse cx="115" cy="22" rx="12" ry="4" fill="#E2E8F0" stroke="#0F172A" stroke-width="1.5"/>
             <text x="115" y="12" font-size="10" font-weight="900" fill="#E30613" text-anchor="middle">Lagerpoort (${cfg.bearingThread})</text>
           </g>
         `;
@@ -1765,7 +2087,6 @@
     }
 
     function saveCurrentPoint() {
-      const project = document.getElementById('cfg-project').value.trim();
       const machine = document.getElementById('cfg-machine').value.trim();
       const point = document.getElementById('cfg-point').value.trim();
       const material = document.getElementById('sel-material').value;
@@ -1785,17 +2106,17 @@
       }
 
       const remoteFitting = document.getElementById('sel-remote-fitting').value;
-      const lubricator = document.getElementById('sel-lubricator').value;
+      const lubricatorVol = document.getElementById('sel-lubricator-vol').value;
+      const greaseType = document.getElementById('sel-grease-type').value;
       const months = parseInt(document.getElementById('sel-months').value) || 6;
 
       const components = resolveComponents({
-        material, mountType, bearingThread, angle, extension, remoteFitting, lubricator, months
+        material, mountType, bearingThread, angle, extension, remoteFitting, lubricatorVol, greaseType, months
       });
 
       const existingIndex = savedPoints.findIndex(p => p.id === activePointId);
       const pointObj = {
         id: activePointId,
-        project,
         machine,
         point,
         material,
@@ -1806,7 +2127,8 @@
         extension,
         customExtension,
         remoteFitting,
-        lubricator,
+        lubricatorVol,
+        greaseType,
         months,
         photo: currentPhotoBase64,
         components
@@ -1819,7 +2141,7 @@
       }
 
       saveCurrentState();
-      alert('Smeerpunt opgeslagen in project!');
+      alert('Smeerpunt succesvol opgeslagen in project!');
       renderSavedPointsList();
       renderBOM();
       switchTab('projects');
@@ -1838,7 +2160,6 @@
     function loadPointIntoForm(p) {
       if (!p) return;
       activePointId = p.id;
-      document.getElementById('cfg-project').value = p.project || '';
       document.getElementById('cfg-machine').value = p.machine || '';
       document.getElementById('cfg-point').value = p.point || '';
       document.getElementById('sel-material').value = p.material || 'Messing vernikkeld';
@@ -1846,7 +2167,6 @@
 
       onMountTypeChange();
 
-      // Bearing thread
       const standardThreads = ['M6x1', 'M8x1', 'M8x1.25', 'M10x1', 'M10x1.5', 'G 1/8', 'G 1/4', '1/8 NPT', '1/4 NPT'];
       if (!standardThreads.includes(p.bearingThread)) {
         document.getElementById('sel-bearing-thread').value = 'custom';
@@ -1859,7 +2179,6 @@
 
       document.getElementById('sel-angle').value = p.angle || 'straight';
 
-      // Extension
       const standardExts = ['0', '15', '25', '35', '50'];
       if (!standardExts.includes(p.extension)) {
         document.getElementById('sel-extension').value = 'custom';
@@ -1871,7 +2190,9 @@
       }
 
       document.getElementById('sel-remote-fitting').value = p.remoteFitting || 'straight-kit';
-      document.getElementById('sel-lubricator').value = p.lubricator || '125ml';
+      document.getElementById('sel-lubricator-vol').value = p.lubricatorVol || '125ml';
+      populateGreaseTypes(p.greaseType);
+
       document.getElementById('sel-months').value = p.months || 6;
 
       currentPhotoBase64 = p.photo;
@@ -1888,26 +2209,26 @@
     function renderSavedPointsList() {
       const container = document.getElementById('saved-points-list');
       if (savedPoints.length === 0) {
-        container.innerHTML = '<div style="color: var(--text-muted); font-size: 13px; padding: 15px 0;">Nog geen smeerpunten opgeslagen.</div>';
+        container.innerHTML = '<div style="color: var(--text-muted); font-size: 13px; padding: 20px 0;">Nog geen smeerpunten opgeslagen in dit project.</div>';
         return;
       }
 
       container.innerHTML = savedPoints.map(p => `
-        <div style="border: 1px solid var(--border); border-radius: 8px; padding: 10px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; background: white;">
-          <div style="display: flex; gap: 10px; align-items: center;">
-            <div style="width: 46px; height: 46px; border-radius: 6px; background: #E5E7EB; overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 9px; color: #6B7280;">
+        <div style="border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; background: white; box-shadow: var(--shadow-sm);">
+          <div style="display: flex; gap: 14px; align-items: center;">
+            <div style="width: 50px; height: 50px; border-radius: 8px; background: #E2E8F0; overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #64748B;">
               ${p.photo ? `<img src="${p.photo}" style="width: 100%; height: 100%; object-fit: cover;">` : 'Geen foto'}
             </div>
             <div>
-              <div style="font-weight: 800; font-size: 13px; color: var(--if-black);">${p.machine} ➔ ${p.point}</div>
-              <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">
-                ${p.mountType === 'remote' ? 'Afstandsmontage (Pulsarlube 1702)' : 'Directe montage'} | Materiaal: <strong>${p.material}</strong> | Lager: <strong>${p.bearingThread}</strong> | ISPL: <strong>${p.lubricator} (${p.months} mnd)</strong>
+              <div style="font-weight: 800; font-size: 14px; color: var(--dark);">${p.machine} ➔ ${p.point}</div>
+              <div style="font-size: 12px; color: var(--text-muted); margin-top: 3px;">
+                ${p.mountType === 'remote' ? 'Afstandsmontage (Pulsarlube 1702)' : 'Directe montage'} • Materiaal: <strong>${p.material}</strong> • Lager: <strong>${p.bearingThread}</strong> • ISPL: <strong>${p.lubricatorVol} + ${p.greaseType} (${p.months} mnd)</strong>
               </div>
             </div>
           </div>
-          <div style="display: flex; gap: 6px;">
-            <button class="btn-primary" style="padding: 5px 10px; font-size: 11px;" onclick="selectAndEditPoint(${p.id})">Bewerken</button>
-            <button class="btn-header" style="background: #FEE2E2; color: #DC2626; border-color: #FCA5A5; padding: 5px 8px; font-size: 11px;" onclick="deletePoint(${p.id})">✕</button>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn-pill-outline" style="padding: 6px 14px; font-size: 12px;" onclick="selectAndEditPoint(${p.id})">Bewerken</button>
+            <button class="btn-pill-outline" style="color: #DC2626; border-color: #FECACA; padding: 6px 10px; font-size: 12px;" onclick="deletePoint(${p.id})">✕</button>
           </div>
         </div>
       `).join('');
@@ -1946,7 +2267,7 @@
       });
 
       if (bomMap.size === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-muted); padding: 20px;">Nog geen onderdelen in de stuklijst.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-muted); padding: 25px;">Nog geen onderdelen in de stuklijst.</td></tr>';
         return;
       }
 
@@ -1962,14 +2283,63 @@
             <td><strong>${item.name}</strong><br><span style="font-size: 11px; color: var(--text-muted);">${item.desc}</span></td>
             <td><span style="font-size: 11px;">1: ${item.a1}<br>2: ${item.a2}</span></td>
             <td>${item.mat}</td>
-            <td style="text-align: center; font-weight: 900; font-size: 13px; color: var(--if-black);">${item.qty}</td>
+            <td style="text-align: center; font-weight: 900; font-size: 14px; color: var(--dark);">${item.qty}</td>
           </tr>
         `;
       }).join('');
     }
 
     // ========================================================================
-    // EXPORT MODAL & PDF EXPORT LOGIC
+    // DOSSIER EXPORT & IMPORT (JSON BACKUP VAN VOLLEDIG KLANTDOSSIER)
+    // ========================================================================
+    function exportDossierJSON() {
+      const data = {
+        app: "Hardware Selector Dossier",
+        version: "4.2",
+        exportedAt: new Date().toISOString(),
+        generalInfo: generalInfo,
+        points: savedPoints
+      };
+
+      const jsonStr = JSON.stringify(data, null, 2);
+      const blob = new Blob([jsonStr], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const cleanClient = (generalInfo.client || 'Dossier').replace(/[^a-zA-Z0-9_-]/g, '_');
+      a.href = url;
+      a.download = `Dossier_${cleanClient}_${new Date().toISOString().slice(0,10)}.json`;
+      a.click();
+    }
+
+    function importDossierJSON(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        try {
+          const imported = JSON.parse(evt.target.result);
+          if (imported.points && Array.isArray(imported.points)) {
+            savedPoints = imported.points;
+            if (imported.generalInfo) generalInfo = imported.generalInfo;
+            activePointId = savedPoints[0] ? savedPoints[0].id : null;
+
+            saveCurrentState();
+            init();
+            alert(`Dossier succesvol geladen voor klant: ${generalInfo.client} (${savedPoints.length} smeerpunten)!`);
+            switchTab('projects');
+          } else {
+            alert('Ongeldig dossierbestand.');
+          }
+        } catch (err) {
+          alert('Fout bij importeren van dossier: ' + err.message);
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    // ========================================================================
+    // EXPORT MODAL & PDF VOLLEDIG GEDETAILLEERD EN COMPACT RAPPORT
     // ========================================================================
     function openExportModal() {
       const container = document.getElementById('machine-filter-list');
@@ -2014,47 +2384,190 @@
       closeExportModal();
 
       if (detailType === 'bom-only') {
-        // Enkel de geaggregeerde stuklijst
         switchTab('bom');
         setTimeout(() => window.print(), 300);
         return;
       }
 
-      if (detailType === 'compact') {
-        // COMPACT RAPPORT:
-        // Artikels gesommeerd opgesomd ONDER elk smeerpunt titel + op het einde een geaggregeerde stuklijst
-        const filteredPoints = savedPoints.filter(p => selectedMachines.includes(p.machine || 'Algemeen'));
-        
-        let compactHtml = `
-          <div style="margin-bottom: 14px;">
-            <h3 style="color: #E30613; font-size: 14px; font-weight: 900; border-bottom: 2px solid #E30613; padding-bottom: 4px; margin-bottom: 10px;">
-              SMEERPUNTEN SPECIFICATIE & ONDERDELEN
+      const filteredPoints = savedPoints.filter(p => selectedMachines.includes(p.machine || 'Algemeen'));
+      const container = document.getElementById('print-report-container');
+
+      if (detailType === 'detail') {
+        // ====================================================================
+        // VOLLEDIG GEDETAILLEERD TECHNISCH RAPPORT MET ALLE FICHE DETAILS
+        // ====================================================================
+        let detailHtml = `
+          <div style="margin-bottom: 18px;">
+            <div style="border-bottom: 3px solid #E30613; padding-bottom: 8px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: flex-end;">
+              <div>
+                <h1 style="color: #E30613; font-size: 20px; font-weight: 900; margin: 0;">TECHNISCH MONTAGE DOSSIER</h1>
+                <div style="font-size: 13px; color: #0F172A; font-weight: bold; margin-top: 4px;">Klant: ${generalInfo.client} | Project: ${generalInfo.project}</div>
+                <div style="font-size: 11px; color: #64748B;">Contact: ${generalInfo.contact || '-'} | Adviseur: ${generalInfo.advisor || '-'}</div>
+              </div>
+              <div style="text-align: right; font-size: 11px; color: #64748B;">
+                Aantal smeerpunten: <strong>${filteredPoints.length}</strong><br>
+                Datum: ${new Date().toLocaleDateString('nl-BE')}
+              </div>
+            </div>
+            ${generalInfo.notes ? `<div style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 10px; border-radius: 8px; font-size: 11.5px; margin-bottom: 16px;"><strong>Projectnotities:</strong> ${generalInfo.notes}</div>` : ''}
+          </div>
+        `;
+
+        filteredPoints.forEach((p, idx) => {
+          detailHtml += `
+            <div style="border: 1px solid #CBD5E1; border-radius: 12px; padding: 16px; margin-bottom: 20px; background: white; page-break-inside: avoid;">
+              <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #F1F5F9; padding-bottom: 8px; margin-bottom: 12px;">
+                <div>
+                  <span style="background: #E30613; color: white; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 900; margin-right: 6px;">PUNT ${idx + 1}</span>
+                  <strong style="font-size: 15px; color: #0F172A;">${p.machine} ➔ ${p.point}</strong>
+                </div>
+                <div style="font-size: 11.5px; color: #64748B; font-weight: bold;">
+                  ${p.mountType === 'remote' ? 'Afstandsmontage (Pulsarlube 1702)' : 'Directe montage'} • ${p.material}
+                </div>
+              </div>
+
+              <!-- 2-koloms detailweergave: Specificaties & Foto/Tekening -->
+              <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 14px; margin-bottom: 14px;">
+                <div>
+                  <table style="width: 100%; border-collapse: collapse; font-size: 11.5px;">
+                    <tr><td style="padding: 4px 0; color: #64748B; width: 150px;">Aansluiting 1 (Lager):</td><td style="padding: 4px 0; font-weight: bold;">${p.bearingThread}</td></tr>
+                    <tr><td style="padding: 4px 0; color: #64748B;">ISPL Smeerunit:</td><td style="padding: 4px 0; font-weight: bold; color: #E30613;">${p.lubricatorVol} + ${p.greaseType}</td></tr>
+                    <tr><td style="padding: 4px 0; color: #64748B;">Looptijd instelling:</td><td style="padding: 4px 0; font-weight: bold;">${p.months} maanden</td></tr>
+                    <tr><td style="padding: 4px 0; color: #64748B;">Kniestuk / Hoek:</td><td style="padding: 4px 0; font-weight: bold;">${p.angle === 'straight' ? 'Recht (geen)' : p.angle + '° knie'}</td></tr>
+                    <tr><td style="padding: 4px 0; color: #64748B;">Verlengstuk:</td><td style="padding: 4px 0; font-weight: bold;">${p.extension === '0' ? 'Geen verlenging' : p.extension + ' mm'}</td></tr>
+                    <tr><td style="padding: 4px 0; color: #64748B;">Montagewijze:</td><td style="padding: 4px 0; font-weight: bold;">${p.mountType === 'remote' ? 'Afstand (Pulsarlube 2000RC-1 kit art. 1702)' : 'Direct op lager'}</td></tr>
+                  </table>
+                </div>
+
+                <div style="display: flex; gap: 10px; justify-content: flex-end; align-items: center;">
+                  <!-- ISPL Unit Foto -->
+                  <div style="border: 1px solid #E2E8F0; border-radius: 8px; padding: 6px; text-align: center; width: 85px; background: #FFFFFF;">
+                    <div style="font-size: 8px; font-weight: 800; color: #64748B; margin-bottom: 2px;">ISPL UNIT</div>
+                    <img src="ispl-${(p.lubricatorVol || '125ml').replace('ml', '')}.png" alt="ISPL ${p.lubricatorVol}" style="max-height: 80px; max-width: 65px; object-fit: contain; display: block; margin: 0 auto;">
+                    <div style="font-size: 9px; font-weight: 900; color: #0F172A; margin-top: 2px;">${p.lubricatorVol}</div>
+                  </div>
+
+                  <!-- Batterijdop -->
+                  <div style="border: 1px solid #E2E8F0; border-radius: 8px; padding: 6px; text-align: center; width: 95px; background: #F8FAFC;">
+                    <div style="font-size: 8px; font-weight: 800; color: #64748B; margin-bottom: 2px;">BATTERIJDOP</div>
+                    <img src="battery-dial-${p.months}.png" alt="Draaischijf ${p.months}mnd" style="width: 75px; height: auto; border-radius: 4px; display: block; margin: 0 auto; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                    <div style="font-size: 9.5px; font-weight: 900; color: #E30613; margin-top: 2px;">${p.months} mnd</div>
+                  </div>
+
+                  <!-- Foto smeerpunt (indien aanwezig) -->
+                  ${p.photo ? `
+                    <div style="border: 1px solid #CBD5E1; border-radius: 8px; overflow: hidden; width: 120px; height: 100px;">
+                      <img src="${p.photo}" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                  ` : ''}
+                </div>
+              </div>
+
+              <!-- Stuklijst tabel voor dit specifieke punt -->
+              <div style="margin-top: 8px;">
+                <div style="font-size: 11px; font-weight: 800; color: #475569; text-transform: uppercase; margin-bottom: 4px;">Benodigde Onderdelen voor dit smeerpunt:</div>
+                <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
+                  <thead>
+                    <tr style="background: #F1F5F9; text-align: left;">
+                      <th style="padding: 5px 8px; width: 110px;">Art. Code</th>
+                      <th style="padding: 5px 8px;">Omschrijving</th>
+                      <th style="padding: 5px 8px;">Aansluitingen</th>
+                      <th style="padding: 5px 8px; text-align: center; width: 50px;">Aantal</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${(p.components || []).map(c => `
+                      <tr style="border-bottom: 1px solid #F1F5F9;">
+                        <td style="padding: 5px 8px; font-family: monospace; font-weight: bold;">${c.code}</td>
+                        <td style="padding: 5px 8px;"><strong>${c.name}</strong></td>
+                        <td style="padding: 5px 8px; color: #64748B;">${c.a1} ➔ ${c.a2}</td>
+                        <td style="padding: 5px 8px; text-align: center; font-weight: 900;">${c.qty}</td>
+                      </tr>
+                    `).join('')}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          `;
+        });
+
+        // Totale stuklijst op het einde van het gedetailleerde rapport
+        const bomMap = new Map();
+        filteredPoints.forEach(p => {
+          (p.components || []).forEach(c => {
+            if (bomMap.has(c.code)) bomMap.get(c.code).qty += c.qty;
+            else bomMap.set(c.code, { ...c });
+          });
+        });
+
+        detailHtml += `
+          <div style="margin-top: 24px; page-break-inside: avoid;">
+            <h3 style="color: #0F172A; font-size: 14px; font-weight: 900; border-bottom: 2px solid #0F172A; padding-bottom: 4px; margin-bottom: 10px;">
+              TOTALE GEAGGREGEERDE STUKLIJST (VOOR OFFERTE & BESTELLING)
             </h3>
+            <table style="width: 100%; border-collapse: collapse; font-size: 11.5px;">
+              <thead>
+                <tr style="background: #F1F5F9; text-align: left;">
+                  <th style="padding: 6px 8px;">Artikelnummer</th>
+                  <th style="padding: 6px 8px;">Omschrijving</th>
+                  <th style="padding: 6px 8px;">Materiaal</th>
+                  <th style="padding: 6px 8px; text-align: center;">Totaal Aantal</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${Array.from(bomMap.values()).map(item => `
+                  <tr style="border-bottom: 1px solid #E2E8F0;">
+                    <td style="padding: 6px 8px; font-family: monospace; font-weight: bold;">${item.code}</td>
+                    <td style="padding: 6px 8px;"><strong>${item.name}</strong></td>
+                    <td style="padding: 6px 8px;">${item.mat}</td>
+                    <td style="padding: 6px 8px; text-align: center; font-weight: 900; font-size: 13px;">${item.qty}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        `;
+
+        container.innerHTML = detailHtml;
+      } else {
+        // COMPACT RAPPORT
+        let compactHtml = `
+          <div style="margin-bottom: 16px;">
+            <div style="border-bottom: 3px solid #E30613; padding-bottom: 6px; margin-bottom: 12px; display: flex; justify-content: space-between;">
+              <div>
+                <h1 style="color: #E30613; font-size: 18px; font-weight: 900; margin: 0;">COMPACT MONTAGE OVERZICHT</h1>
+                <div style="font-size: 12px; color: #0F172A; font-weight: bold;">Klant: ${generalInfo.client} | Project: ${generalInfo.project}</div>
+              </div>
+              <div style="text-align: right; font-size: 11px; color: #64748B;">
+                Datum: ${new Date().toLocaleDateString('nl-BE')}
+              </div>
+            </div>
+          </div>
         `;
 
         filteredPoints.forEach((p, idx) => {
           compactHtml += `
-            <div style="border: 1px solid #E5E7EB; border-radius: 6px; padding: 10px; margin-bottom: 10px; background: white; page-break-inside: avoid;">
-              <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #F3F4F6; padding-bottom: 4px; margin-bottom: 6px;">
-                <div style="font-weight: 900; font-size: 13px; color: #111827;">${idx + 1}. Machine: ${p.machine} ➔ Smeerpunt: ${p.point}</div>
-                <div style="font-size: 11px; color: #6B7280;">Lager: ${p.bearingThread} | ${p.material} | ${p.lubricator} (${p.months} mnd)</div>
+            <div style="border: 1px solid #E2E8F0; border-radius: 8px; padding: 12px; margin-bottom: 12px; background: white; page-break-inside: avoid;">
+              <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #F1F5F9; padding-bottom: 6px; margin-bottom: 8px;">
+                <div style="font-weight: 900; font-size: 13.5px; color: #0F172A;">${idx + 1}. Machine: ${p.machine} ➔ Smeerpunt: ${p.point}</div>
+                <div style="font-size: 11.5px; color: #64748B;">Lager: ${p.bearingThread} | ${p.material} | ${p.lubricatorVol} + ${p.greaseType} (${p.months} mnd)</div>
               </div>
               <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
                 <thead>
-                  <tr style="background: #F9FAFB; text-align: left;">
-                    <th style="padding: 4px 6px;">Art. Code</th>
-                    <th style="padding: 4px 6px;">Onderdeel</th>
-                    <th style="padding: 4px 6px;">Aansluitingen</th>
-                    <th style="padding: 4px 6px; text-align: center;">Aantal</th>
+                  <tr style="background: #F8FAFC; text-align: left;">
+                    <th style="padding: 5px 8px;">Art. Code</th>
+                    <th style="padding: 5px 8px;">Onderdeel</th>
+                    <th style="padding: 5px 8px;">Aansluitingen</th>
+                    <th style="padding: 5px 8px; text-align: center;">Aantal</th>
                   </tr>
                 </thead>
                 <tbody>
                   ${(p.components || []).map(c => `
-                    <tr style="border-bottom: 1px solid #F3F4F6;">
-                      <td style="padding: 4px 6px; font-weight: bold; font-family: monospace;">${c.code}</td>
-                      <td style="padding: 4px 6px;">${c.name}</td>
-                      <td style="padding: 4px 6px; color: #6B7280;">${c.a1} ➔ ${c.a2}</td>
-                      <td style="padding: 4px 6px; text-align: center; font-weight: 900;">${c.qty}</td>
+                    <tr style="border-bottom: 1px solid #F1F5F9;">
+                      <td style="padding: 5px 8px; font-weight: bold; font-family: monospace;">${c.code}</td>
+                      <td style="padding: 5px 8px;">${c.name}</td>
+                      <td style="padding: 5px 8px; color: #64748B;">${c.a1} ➔ ${c.a2}</td>
+                      <td style="padding: 5px 8px; text-align: center; font-weight: 900;">${c.qty}</td>
                     </tr>
                   `).join('')}
                 </tbody>
@@ -2063,7 +2576,7 @@
           `;
         });
 
-        // Totale samengevoegde artikellijst op het einde van het compacte rapport
+        // Totale stuklijst
         const bomMap = new Map();
         filteredPoints.forEach(p => {
           (p.components || []).forEach(c => {
@@ -2073,61 +2586,52 @@
         });
 
         compactHtml += `
-          <div style="margin-top: 18px; page-break-inside: avoid;">
-            <h3 style="color: #111827; font-size: 13px; font-weight: 900; border-bottom: 2px solid #111827; padding-bottom: 4px; margin-bottom: 8px;">
+          <div style="margin-top: 20px; page-break-inside: avoid;">
+            <h3 style="color: #0F172A; font-size: 14px; font-weight: 900; border-bottom: 2px solid #0F172A; padding-bottom: 4px; margin-bottom: 10px;">
               TOTALE GEAGGREGEERDE STUKLIJST (OFFERTE OVERZICHT)
             </h3>
-            <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 11.5px;">
               <thead>
-                <tr style="background: #F3F4F6; text-align: left;">
-                  <th style="padding: 6px;">Artikelnummer</th>
-                  <th style="padding: 6px;">Omschrijving</th>
-                  <th style="padding: 6px;">Materiaal</th>
-                  <th style="padding: 6px; text-align: center;">Totaal Aantal</th>
+                <tr style="background: #F1F5F9; text-align: left;">
+                  <th style="padding: 6px 8px;">Artikelnummer</th>
+                  <th style="padding: 6px 8px;">Omschrijving</th>
+                  <th style="padding: 6px 8px;">Materiaal</th>
+                  <th style="padding: 6px 8px; text-align: center;">Totaal Aantal</th>
                 </tr>
               </thead>
               <tbody>
                 ${Array.from(bomMap.values()).map(item => `
-                  <tr style="border-bottom: 1px solid #E5E7EB;">
-                    <td style="padding: 6px; font-family: monospace; font-weight: bold;">${item.code}</td>
-                    <td style="padding: 6px;"><strong>${item.name}</strong></td>
-                    <td style="padding: 6px;">${item.mat}</td>
-                    <td style="padding: 6px; text-align: center; font-weight: 900; font-size: 12px;">${item.qty}</td>
+                  <tr style="border-bottom: 1px solid #E2E8F0;">
+                    <td style="padding: 6px 8px; font-family: monospace; font-weight: bold;">${item.code}</td>
+                    <td style="padding: 6px 8px;"><strong>${item.name}</strong></td>
+                    <td style="padding: 6px 8px;">${item.mat}</td>
+                    <td style="padding: 6px 8px; text-align: center; font-weight: 900; font-size: 13px;">${item.qty}</td>
                   </tr>
                 `).join('')}
               </tbody>
             </table>
           </div>
-        </div>`;
+        `;
 
-        const container = document.getElementById('compact-report-container');
         container.innerHTML = compactHtml;
-        container.style.display = 'block';
-
-        // Hide normal tabs during print
-        document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
-        
-        setTimeout(() => {
-          window.print();
-          container.style.display = 'none';
-          document.querySelectorAll('.tab-content').forEach(c => c.style.display = '');
-          switchTab('projects');
-        }, 300);
-        return;
       }
 
-      // DETAIL: Met 3D tekening
-      switchTab('projects');
-      setTimeout(() => window.print(), 300);
+      container.style.display = 'block';
+      document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+
+      setTimeout(() => {
+        window.print();
+        container.style.display = 'none';
+        document.querySelectorAll('.tab-content').forEach(c => c.style.display = '');
+        switchTab('projects');
+      }, 300);
     }
 
     // ========================================================================
-    // EXCEL EXPORT VOOR ODOO OFFERTE
+    // ECHTE EXCEL (.XLSX) EXPORT VOOR ODOO OFFERTE
     // ========================================================================
     function exportOdooExcel() {
-      let csv = "default_code;name;product_uom_qty;uom_id;price_unit;description\n";
       const bomMap = new Map();
-
       savedPoints.forEach(p => {
         (p.components || []).forEach(c => {
           if (bomMap.has(c.code)) bomMap.get(c.code).qty += c.qty;
@@ -2135,22 +2639,38 @@
         });
       });
 
+      const rows = [];
       bomMap.forEach(item => {
-        const code = item.code || 'aan te maken';
-        csv += `"${code}";"${item.name}";${item.qty};"Units";"0.00";"${item.desc}"\n`;
+        rows.push({
+          "default_code": item.code || 'aan te maken',
+          "name": item.name,
+          "product_uom_qty": item.qty,
+          "uom_id": "Units",
+          "price_unit": 0.00,
+          "description": item.desc || ""
+        });
       });
 
-      const blob = new Blob(["\uFEFF" + csv], { type: 'text/csv;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      const proj = (document.getElementById('cfg-project').value || 'Interflon').replace(/\s+/g, '_');
-      a.href = url;
-      a.download = `Odoo_Offerte_Stuklijst_${proj}_${new Date().toISOString().slice(0,10)}.csv`;
-      a.click();
+      const ws = XLSX.utils.json_to_sheet(rows);
+      ws['!cols'] = [
+        { wch: 22 },
+        { wch: 45 },
+        { wch: 16 },
+        { wch: 10 },
+        { wch: 12 },
+        { wch: 45 }
+      ];
+
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Odoo_Offerte");
+
+      const cleanClient = (generalInfo.client || 'Offerte').replace(/[^a-zA-Z0-9_-]/g, '_');
+      const filename = `Odoo_Offerte_${cleanClient}_${new Date().toISOString().slice(0,10)}.xlsx`;
+      XLSX.writeFile(wb, filename);
     }
 
     // ========================================================================
-    // DATABASE / ODOO BEHEER MODAL & PASSWORD AUTH ("Odoo-binnendienst")
+    // DATABASE / ODOO BEHEER MODAL
     // ========================================================================
     function openDatabaseAuthModal() {
       document.getElementById('db-pwd-input').value = '';
@@ -2180,7 +2700,7 @@
 
     function closeDatabaseManagerModal() {
       document.getElementById('db-manager-modal').classList.remove('active');
-      onConfigChange(); // Refresh active configurator in case codes changed
+      onConfigChange();
     }
 
     function renderDatabaseTable(filterQuery = '') {
@@ -2197,25 +2717,25 @@
                (item.mat && item.mat.toLowerCase().includes(query));
       });
 
-      document.getElementById('db-item-count').innerText = `${filtered.length} van ${db.length} artikelen`;
+      document.getElementById('db-item-count').innerText = `${filtered.length} van ${db.length} artikelen in database`;
 
-      tbody.innerHTML = filtered.map((item, idx) => `
+      tbody.innerHTML = filtered.map(item => `
         <tr>
           <td>
             <input type="text" value="${item.default_code || ''}" 
-                   style="font-family: monospace; font-size: 11px; font-weight: bold; padding: 4px;"
+                   style="font-family: monospace; font-size: 11.5px; font-weight: bold; padding: 6px;"
                    onchange="updateDbField(${db.indexOf(item)}, 'default_code', this.value)">
           </td>
           <td>
             <input type="text" value="${item.name || ''}" 
-                   style="font-size: 11px; padding: 4px;"
+                   style="font-size: 11.5px; padding: 6px;"
                    onchange="updateDbField(${db.indexOf(item)}, 'name', this.value)">
           </td>
           <td style="font-size: 11px;">${item.mat || ''}</td>
-          <td style="font-size: 10px; color: #6B7280;">${item.a1 || ''}</td>
-          <td style="font-size: 10px; color: #6B7280;">${item.a2 || ''}</td>
+          <td style="font-size: 10px; color: var(--text-muted);">${item.a1 || ''}</td>
+          <td style="font-size: 10px; color: var(--text-muted);">${item.a2 || ''}</td>
           <td style="text-align: center;">
-            <button onclick="deleteDbItem(${db.indexOf(item)})" style="background: none; border: none; color: #DC2626; cursor: pointer; font-size: 14px;">🗑️</button>
+            <button onclick="deleteDbItem(${db.indexOf(item)})" style="background: none; border: none; color: #DC2626; cursor: pointer; font-size: 15px;">🗑️</button>
           </td>
         </tr>
       `).join('');
@@ -2267,55 +2787,95 @@
       alert('Artikel toegevoegd aan de live database!');
     }
 
-    function exportDatabaseExcel() {
+    function exportDatabaseExcelXLSX() {
       const db = getActiveDatabase();
-      let csv = "default_code;name;aansluiting 1;aansluiting 2;materiaal;description\n";
-      db.forEach(item => {
-        csv += `"${item.default_code || ''}";"${item.name || ''}";"${item.a1 || ''}";"${item.a2 || ''}";"${item.mat || ''}";"${item.desc || ''}"\n`;
-      });
+      const rows = db.map(item => ({
+        "default_code": item.default_code || "",
+        "name": item.name || "",
+        "aansluiting 1": item.a1 || "",
+        "aansluiting 2": item.a2 || "",
+        "materiaal": item.mat || "",
+        "categorie": item.cat || "",
+        "description": item.desc || ""
+      }));
 
-      const blob = new Blob(["\uFEFF" + csv], { type: 'text/csv;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `Interflon_Koppelingen_Database_${new Date().toISOString().slice(0,10)}.csv`;
-      a.click();
+      const ws = XLSX.utils.json_to_sheet(rows);
+      ws['!cols'] = [
+        { wch: 24 },
+        { wch: 42 },
+        { wch: 28 },
+        { wch: 28 },
+        { wch: 20 },
+        { wch: 25 },
+        { wch: 45 }
+      ];
+
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Koppelingen_Database");
+
+      const filename = `Koppelingen_Database_${new Date().toISOString().slice(0,10)}.xlsx`;
+      XLSX.writeFile(wb, filename);
     }
 
-    function importDatabaseFile(e) {
+    function importDatabaseFileXLSX(e) {
       const file = e.target.files[0];
       if (!file) return;
 
       const reader = new FileReader();
       reader.onload = function(evt) {
-        const content = evt.target.result;
-        const lines = content.split(/\r\n|\n/);
-        if (lines.length < 2) return;
+        try {
+          const data = new Uint8Array(evt.target.result);
+          const workbook = XLSX.read(data, { type: 'array' });
+          const firstSheet = workbook.SheetNames[0];
+          const sheet = workbook.Sheets[firstSheet];
+          const jsonRows = XLSX.utils.sheet_to_json(sheet);
 
-        const db = getActiveDatabase();
-        let updatedCount = 0;
-
-        for (let i = 1; i < lines.length; i++) {
-          const line = lines[i].trim();
-          if (!line) continue;
-          const parts = line.split(/[;,]/).map(p => p.replace(/^"|"$/g, '').trim());
-          if (parts.length >= 2) {
-            const code = parts[0];
-            const name = parts[1];
-            // Check if exists
-            const existing = db.find(item => item.name === name || item.default_code === code);
-            if (existing) {
-              existing.default_code = code;
-              updatedCount++;
-            }
+          if (!jsonRows || jsonRows.length === 0) {
+            alert('Geen geldige data gevonden in het Excel-bestand.');
+            return;
           }
-        }
 
-        saveActiveDatabase(db);
-        renderDatabaseTable();
-        alert(`${updatedCount} artikelen bijgewerkt vanuit geüpload bestand!`);
+          const db = getActiveDatabase();
+          let updatedCount = 0;
+
+          jsonRows.forEach(row => {
+            const code = row['default_code'] || row['Artikelcode'] || '';
+            const name = row['name'] || row['Naam'] || '';
+
+            if (code || name) {
+              const existing = db.find(item => 
+                (name && item.name === name) || 
+                (code && item.default_code === code)
+              );
+
+              if (existing) {
+                if (code) existing.default_code = String(code).trim();
+                if (name) existing.name = String(name).trim();
+                if (row['materiaal']) existing.mat = String(row['materiaal']).trim();
+                updatedCount++;
+              } else if (name) {
+                db.push({
+                  cat: row['categorie'] || 'Geïmporteerd',
+                  default_code: String(code).trim(),
+                  name: String(name).trim(),
+                  a1: row['aansluiting 1'] || '',
+                  a2: row['aansluiting 2'] || '',
+                  mat: row['materiaal'] || 'Messing vernikkeld',
+                  desc: row['description'] || ''
+                });
+                updatedCount++;
+              }
+            }
+          });
+
+          saveActiveDatabase(db);
+          renderDatabaseTable();
+          alert(`Succesvol ${updatedCount} artikelen bijgewerkt vanuit ${file.name}!`);
+        } catch (err) {
+          alert('Fout bij inlezen van Excel-bestand: ' + err.message);
+        }
       };
-      reader.readAsText(file);
+      reader.readAsArrayBuffer(file);
     }
 
     // Service Worker registration for offline PWA

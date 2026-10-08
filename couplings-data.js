@@ -1,6 +1,15 @@
 // Interflon Hardware Selector - Dataset van koppelingen
 const COUPLINGS_DATA = [
   {
+    "cat": "Montagekits",
+    "default_code": "1702",
+    "name": "Pulsarlube 2000RC-1 Installatiekit voor montage op afstand (max. 20 cm slang)",
+    "a1": "Montagebeugel G 1/4\" F",
+    "a2": "Hogedrukslang max. 20 cm incl. koppelingen",
+    "mat": "Verzinkt staal / RVS / Polyamide",
+    "desc": "Complete installatiekit Pulsarlube 2000RC-1 inclusief beugel, max. 20 cm hogedrukslang en fittingen voor ISPL afstandsmontage (art. 1702)"
+  },
+  {
     "cat": "Push-in koppelingen 6mm",
     "name": "Steekkoppeling recht 6mm - M6x1",
     "a1": "Push-in 6 mm",
@@ -991,5 +1000,44 @@ const COUPLINGS_DATA = [
     "a2": "1/4\" NPT F (binnendraad) - L=50mm",
     "mat": "Messing vernikkeld",
     "desc": "Verlengstuk buitendraad 1/4\" NPT x binnendraad 1/4\" NPT, effectieve lengte 50mm"
+  }
+];
+
+// Aparte artikellijst voor Interflon Single Point Lubricators en Pulsarlube installatiekit
+const ISPL_CATALOG = [
+  {
+    "code": "ISPL-60",
+    "name": "Interflon Single Point Lubricator 60 ml",
+    "volume": "60ml",
+    "vol_ml": 60,
+    "thread": "G 1/4\" M",
+    "mat": "Polycarbonaat / Kunststof",
+    "desc": "Elektromechanische automatische smeerunit 60 ml, instelbaar 1-12 maanden, aansluiting G 1/4\" M"
+  },
+  {
+    "code": "ISPL-125",
+    "name": "Interflon Single Point Lubricator 125 ml",
+    "volume": "125ml",
+    "vol_ml": 125,
+    "thread": "G 1/4\" M",
+    "mat": "Polycarbonaat / Kunststof",
+    "desc": "Elektromechanische automatische smeerunit 125 ml, instelbaar 1-12 maanden, aansluiting G 1/4\" M"
+  },
+  {
+    "code": "ISPL-250",
+    "name": "Interflon Single Point Lubricator 250 ml",
+    "volume": "250ml",
+    "vol_ml": 250,
+    "thread": "G 1/4\" M",
+    "mat": "Polycarbonaat / Kunststof",
+    "desc": "Elektromechanische automatische smeerunit 250 ml, instelbaar 1-12 maanden, aansluiting G 1/4\" M"
+  },
+  {
+    "code": "1702",
+    "name": "Pulsarlube 2000RC-1 Installatiekit voor montage op afstand (max. 20 cm slang)",
+    "volume": "Kit",
+    "thread": "G 1/4\" F naar G 1/4\" M",
+    "mat": "Verzinkt staal / RVS / Polyamide",
+    "desc": "Complete installatiekit Pulsarlube 2000RC-1 met beugel, koppelingen en max. 20 cm slang (art. 1702)"
   }
 ];

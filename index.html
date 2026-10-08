@@ -936,6 +936,13 @@
             <div class="drawing-container">
               <span class="drawing-badge" id="assembly-badge">Exploded View</span>
               
+              <!-- Authentieke Batterijdop Indicator met Realistische Pijl -->
+              <div id="battery-dial-preview" style="position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.96); backdrop-filter: blur(6px); border: 1.5px solid var(--border); border-radius: 12px; padding: 8px 10px; box-shadow: 0 4px 14px rgba(0,0,0,0.08); text-align: center; max-width: 120px; z-index: 5;">
+                <div style="font-size: 8.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 4px;">Batterijdop Stand</div>
+                <img id="battery-dial-img" src="battery-dial-1.png" alt="Draaischijf stand" style="width: 90px; height: auto; display: block; margin: 0 auto; border-radius: 6px; box-shadow: 0 1px 4px rgba(0,0,0,0.1);"/>
+                <div id="battery-dial-caption" style="font-size: 11px; font-weight: 900; color: var(--primary); margin-top: 5px;">Stand: 1 Maand</div>
+              </div>
+
               <!-- 3D Exploded View SVG -->
               <svg id="assembly-svg" class="assembly-svg" viewBox="0 0 460 490" xmlns="http://www.w3.org/2000/svg">
                 <!-- Dynamically rendered -->
@@ -1810,25 +1817,16 @@
       const svg = document.getElementById('assembly-svg');
       let content = '';
 
+      // Update de fotorealistische batterijdop preview in de hoek van de kaart
+      const dialImg = document.getElementById('battery-dial-img');
+      const dialCap = document.getElementById('battery-dial-caption');
+      if (dialImg) dialImg.src = `battery-dial-${cfg.months}.png`;
+      if (dialCap) dialCap.textContent = `Stand: ${cfg.months} Maand(en)`;
+
       const isRVS = (cfg.material === 'RVS');
       const metalGrad = isRVS ? 'url(#rvsGrad)' : 'url(#brassGrad)';
       const metalStroke = isRVS ? '#475569' : '#78350F';
       const metalText = isRVS ? '#1E293B' : '#92400E';
-
-      const dialDeg = ((cfg.months - 1) / 11) * 270 - 135;
-
-      // Render crisp radial ticks & numbers on dial
-      let dialMarks = '';
-      for (let m = 1; m <= 12; m++) {
-        const angle = ((m - 1) / 11) * 270 - 135;
-        const rad = angle * Math.PI / 180;
-        const x1 = 50 + 24 * Math.cos(rad);
-        const y1 = 12 + 10 * Math.sin(rad);
-        const x2 = 50 + 29 * Math.cos(rad);
-        const y2 = 12 + 12 * Math.sin(rad);
-        const isSelected = (m === cfg.months);
-        dialMarks += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${isSelected ? '#E30613' : '#64748B'}" stroke-width="${isSelected ? '2.5' : '1.2'}"/>`;
-      }
 
       if (cfg.mountType === 'direct') {
         content = `
@@ -1867,23 +1865,14 @@
           <!-- Central Exploded Assembly Centerline -->
           <line x1="210" y1="20" x2="210" y2="450" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.6"/>
 
-          <!-- 1. ISPL LUBRICATOR MET DUIDELIJKE HOOG-RESOLUTIE DRAAISCHIJF -->
+          <!-- 1. ISPL LUBRICATOR MET ECHTE FOTO BATTERIJ-DRAAISCHIJF -->
           <g transform="translate(160, 20)">
-            <!-- Top Batterij-dop & Draaischijf Bevel -->
-            <ellipse cx="50" cy="12" rx="38" ry="14" fill="#0F172A" stroke="#E30613" stroke-width="2"/>
-            <ellipse cx="50" cy="12" rx="30" ry="11" fill="#FFFFFF"/>
-            
-            <!-- Dial Marks -->
-            ${dialMarks}
-
-            <!-- Draaiknop / Pointer -->
-            <circle cx="50" cy="12" r="7" fill="#0F172A"/>
-            <circle cx="50" cy="12" r="3" fill="#E30613"/>
-            <line x1="50" y1="12" x2="${50 + 20 * Math.cos(dialDeg * Math.PI / 180)}" y2="${12 + 8 * Math.sin(dialDeg * Math.PI / 180)}" stroke="#E30613" stroke-width="3" stroke-linecap="round"/>
+            <!-- Realistische Batterijdop met juiste naaldstand -->
+            <image href="battery-dial-${cfg.months}.png" x="10" y="-18" width="80" height="58" preserveAspectRatio="xMidYMid meet"/>
 
             <!-- Badge Boven Draaischijf -->
-            <rect x="25" y="-14" width="50" height="18" rx="4" fill="#E30613"/>
-            <text x="50" y="-2" font-size="9" font-weight="900" fill="#FFFFFF" text-anchor="middle">${cfg.months} MAAND</text>
+            <rect x="25" y="-28" width="50" height="18" rx="4" fill="#E30613"/>
+            <text x="50" y="-16" font-size="9" font-weight="900" fill="#FFFFFF" text-anchor="middle">${cfg.months} MAAND</text>
 
             <!-- Transparant reservoir & vetspiegel -->
             <path d="M 6 30 C 6 30, 6 102, 6 102 C 6 114, 94 114, 94 102 C 94 102, 94 30, 94 30 Z" fill="url(#isplBody3D)" stroke="#94A3B8" stroke-width="1.5"/>
@@ -2008,9 +1997,10 @@
 
           <!-- ISPL on Bracket (Left, Exploded Gap) -->
           <g transform="translate(35, 20)">
-            <ellipse cx="30" cy="8" rx="26" ry="8" fill="#0F172A" stroke="#E30613"/>
-            <circle cx="30" cy="8" r="4" fill="#E30613"/>
-            <text x="30" y="-3" font-size="8" font-weight="900" fill="#E30613" text-anchor="middle">${cfg.months} MND</text>
+            <!-- Realistische Batterijdop met juiste naaldstand -->
+            <image href="battery-dial-${cfg.months}.png" x="5" y="-18" width="50" height="38" preserveAspectRatio="xMidYMid meet"/>
+            <rect x="5" y="-28" width="50" height="16" rx="4" fill="#E30613"/>
+            <text x="30" y="-17" font-size="8.5" font-weight="900" fill="#FFFFFF" text-anchor="middle">${cfg.months} MND</text>
 
             <path d="M 0 16 C 0 16, 0 78, 0 78 C 0 86, 60 86, 60 78 C 60 78, 60 16, 60 16 Z" fill="url(#isplBody3D)" stroke="#94A3B8"/>
             <path d="M 3 30 C 3 30, 3 74, 3 74 C 3 82, 57 82, 57 74 C 57 74, 57 30, 57 30 Z" fill="url(#grease3D)"/>
@@ -2454,9 +2444,14 @@
                   </table>
                 </div>
 
-                <div style="display: flex; gap: 10px; justify-content: flex-end; align-items: center;">
+                <div style="display: flex; gap: 12px; justify-content: flex-end; align-items: center;">
+                  <div style="border: 1px solid #E2E8F0; border-radius: 8px; padding: 6px; text-align: center; width: 100px; background: #F8FAFC;">
+                    <div style="font-size: 8.5px; font-weight: 800; color: #64748B; margin-bottom: 2px;">BATTERIJDOP</div>
+                    <img src="battery-dial-${p.months}.png" alt="Draaischijf ${p.months}mnd" style="width: 75px; height: auto; border-radius: 4px; display: block; margin: 0 auto; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                    <div style="font-size: 9.5px; font-weight: 900; color: #E30613; margin-top: 2px;">${p.months} mnd</div>
+                  </div>
                   ${p.photo ? `
-                    <div style="border: 1px solid #CBD5E1; border-radius: 8px; overflow: hidden; width: 140px; height: 120px;">
+                    <div style="border: 1px solid #CBD5E1; border-radius: 8px; overflow: hidden; width: 130px; height: 110px;">
                       <img src="${p.photo}" style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
                   ` : ''}

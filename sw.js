@@ -1,4 +1,4 @@
-const CACHE_NAME = 'if-hardware-selector-v5';
+const CACHE_NAME = 'if-hardware-selector-v6';
 const ASSETS = [
   './',
   './index.html',
@@ -6,7 +6,20 @@ const ASSETS = [
   './xlsx.full.min.js',
   './manifest.json',
   './icon-192.png',
-  './icon-512.png'
+  './icon-512.png',
+  './battery-dial.png',
+  './battery-dial-1.png',
+  './battery-dial-2.png',
+  './battery-dial-3.png',
+  './battery-dial-4.png',
+  './battery-dial-5.png',
+  './battery-dial-6.png',
+  './battery-dial-7.png',
+  './battery-dial-8.png',
+  './battery-dial-9.png',
+  './battery-dial-10.png',
+  './battery-dial-11.png',
+  './battery-dial-12.png'
 ];
 
 self.addEventListener('install', (e) => {

@@ -1043,6 +1043,26 @@
       </div>
 
       <!-- Action Toolbar -->
+      <!-- GitHub Online Synchronisatie & Backup Banner -->
+      <div style="background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 8px; padding: 12px; margin-bottom: 14px;">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 8px;">
+          <div>
+            <strong style="color: #1E40AF; font-size: 13px;">☁️ Automatische GitHub Publicatie & Backup</strong>
+            <div style="font-size: 11px; color: #2563EB;">
+              Maakt vóór wijzigingen automatisch een online backup aan in <code>backup database/</code> op GitHub en publiceert direct de update voor alle gebruikers.
+            </div>
+          </div>
+          <button class="btn-primary" style="background: #2563EB; font-size: 12px; padding: 8px 14px; font-weight: bold;" onclick="syncDatabaseToGitHub()">
+            🚀 Publiceer Nu naar GitHub (met backup)
+          </button>
+        </div>
+        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+          <input type="password" id="gh-token-input" placeholder="GitHub Personal Access Token (PAT) - eenmalig invoeren..." style="flex: 1; min-width: 250px; padding: 6px 10px; font-size: 11px;" onchange="saveGitHubToken(this.value)">
+          <span style="font-size: 11px; color: #64748B;">Repository: <strong>APPKenGIT/Hardware-selector</strong></span>
+        </div>
+        <div id="gh-sync-status" style="margin-top: 6px; font-size: 11px; font-weight: bold; display: none;"></div>
+      </div>
+
       <div style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; align-items: center; margin-bottom: 12px;">
         <div style="display: flex; gap: 8px; flex: 1; min-width: 240px;">
           <input type="text" id="db-search-input" placeholder="🔍 Zoek op artikelcode, maat of omschrijving..." oninput="filterDatabaseTable()" style="padding: 6px 10px; font-size: 12px;">
@@ -2175,6 +2195,9 @@
 
     function openDatabaseManagerModal() {
       renderDatabaseTable();
+      const token = getGitHubToken();
+      const tokenInput = document.getElementById('gh-token-input');
+      if (tokenInput && token) tokenInput.value = token;
       document.getElementById('db-manager-modal').classList.add('active');
     }
 
@@ -2316,6 +2339,151 @@
         alert(`${updatedCount} artikelen bijgewerkt vanuit geüpload bestand!`);
       };
       reader.readAsText(file);
+    }
+
+    // ========================================================================
+    // GITHUB CLOUD SYNCHRONISATIE MET AUTOMATISCHE ONLINE BACKUP
+    // ========================================================================
+    const GH_OWNER = 'APPKenGIT';
+    const GH_REPO = 'Hardware-selector';
+    const GH_TOKEN_KEY = 'IF_GH_PAT_TOKEN';
+
+    function getGitHubToken() {
+      return localStorage.getItem(GH_TOKEN_KEY) || (document.getElementById('gh-token-input') ? document.getElementById('gh-token-input').value.trim() : '');
+    }
+
+    function saveGitHubToken(token) {
+      if (token) localStorage.setItem(GH_TOKEN_KEY, token.trim());
+    }
+
+    async function syncDatabaseToGitHub() {
+      const token = getGitHubToken();
+      const statusEl = document.getElementById('gh-sync-status');
+      statusEl.style.display = 'block';
+      statusEl.style.color = '#2563EB';
+
+      if (!token) {
+        statusEl.style.color = '#DC2626';
+        statusEl.innerHTML = '⚠️ Voer eerst uw GitHub Personal Access Token (PAT) in (eenmalig).';
+        const input = document.getElementById('gh-token-input');
+        if (input) input.focus();
+        return;
+      }
+
+      try {
+        statusEl.innerHTML = '⏳ Stap 1/4: Huidige database ophalen van GitHub repository...';
+
+        // 1. Ophalen huidige couplings-data.js van GitHub
+        const getRes = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/couplings-data.js`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/vnd.github+json'
+          }
+        });
+
+        if (!getRes.ok) {
+          throw new Error(`Kan couplings-data.js niet ophalen (${getRes.status}: ${getRes.statusText}). Controleer uw token.`);
+        }
+
+        const currentFileData = await getRes.json();
+        const currentSha = currentFileData.sha;
+        const currentContentBase64 = currentFileData.content;
+
+        // 2. BACKUP: Commit huidige file naar backup database/couplings-data_backup_...
+        statusEl.innerHTML = '⏳ Stap 2/4: Online backup aanmaken in map "backup database/" op GitHub...';
+        const now = new Date();
+        const timestamp = now.getFullYear() +
+          String(now.getMonth() + 1).padStart(2, '0') +
+          String(now.getDate()).padStart(2, '0') + '_' +
+          String(now.getHours()).padStart(2, '0') +
+          String(now.getMinutes()).padStart(2, '0') +
+          String(now.getSeconds()).padStart(2, '0');
+        const backupPath = `backup database/couplings-data_backup_${timestamp}.js`;
+
+        await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${backupPath}`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/vnd.github+json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            message: `Automatische backup database voor wijziging (${now.toLocaleString('nl-BE')})`,
+            content: currentContentBase64
+          })
+        });
+
+        // 3. PUBLISH: Update couplings-data.js met de nieuwste database
+        statusEl.innerHTML = '⏳ Stap 3/4: Nieuwe database publiceren naar GitHub...';
+        const db = getActiveDatabase();
+        const newJsContent = `// Interflon Hardware Selector - Dataset van gestroomlijnde koppelingen (Messing vernikkeld & RVS)
+let COUPLINGS_DATA = ${JSON.stringify(db, null, 2)};
+
+// Aparte artikellijst voor Interflon Single Point Lubricators en Pulsarlube 2000RC-1 installatiekit
+let ISPL_CATALOG = ${JSON.stringify(typeof ISPL_CATALOG !== 'undefined' ? ISPL_CATALOG : [], null, 2)};
+`;
+
+        const encodedJs = btoa(unescape(encodeURIComponent(newJsContent)));
+
+        const updateRes = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/couplings-data.js`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/vnd.github+json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            message: `Update koppelingendatabase door Odoo-binnendienst (${now.toLocaleString('nl-BE')})`,
+            content: encodedJs,
+            sha: currentSha
+          })
+        });
+
+        if (!updateRes.ok) {
+          throw new Error(`Fout bij bijwerken van database op GitHub (${updateRes.status}: ${updateRes.statusText})`);
+        }
+
+        // 4. CACHE BUMP: sw.js bumpen zodat alle telefoons/tablets direct de update downloaden
+        statusEl.innerHTML = '⏳ Stap 4/4: App cache vernieuwen zodat alle gebruikers direct updaten...';
+        try {
+          const swRes = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/sw.js`, {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Accept': 'application/vnd.github+json'
+            }
+          });
+          if (swRes.ok) {
+            const swData = await swRes.json();
+            const swText = decodeURIComponent(escape(atob(swData.content.replace(/\s/g, ''))));
+            const newVer = 'v' + Date.now();
+            const updatedSw = swText.replace(/const CACHE_NAME = 'if-hardware-selector-[^']+';/, `const CACHE_NAME = 'if-hardware-selector-${newVer}';`);
+            const encodedSw = btoa(unescape(encodeURIComponent(updatedSw)));
+            await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/sw.js`, {
+              method: 'PUT',
+              headers: {
+                'Authorization': `Bearer ${token}`,
+                'Accept': 'application/vnd.github+json',
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                message: `Automatische cache-update ${newVer} voor database wijziging`,
+                content: encodedSw,
+                sha: swData.sha
+              })
+            });
+          }
+        } catch (e) {
+          console.warn('SW bump overgeslagen:', e);
+        }
+
+        statusEl.style.color = '#166534';
+        statusEl.innerHTML = `✅ <strong>Succesvol gepubliceerd naar GitHub!</strong><br>• Backup aangemaakt: <code>${backupPath}</code><br>• <code>couplings-data.js</code> bijgewerkt<br>• Alle gebruikers ontvangen deze update automatisch!`;
+        alert('Database succesvol gepubliceerd naar GitHub en backup online opgeslagen!');
+      } catch (err) {
+        statusEl.style.color = '#DC2626';
+        statusEl.innerHTML = `❌ Fout bij publiceren: ${err.message}`;
+        console.error(err);
+      }
     }
 
     // Service Worker registration for offline PWA

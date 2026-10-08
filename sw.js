@@ -1,9 +1,11 @@
-const CACHE_NAME = 'if-hardware-selector-v1';
+const CACHE_NAME = 'if-hardware-selector-v2';
 const ASSETS = [
   './',
   './index.html',
   './couplings-data.js',
-  './manifest.json'
+  './manifest.json',
+  './icon-192.png',
+  './icon-512.png'
 ];
 
 self.addEventListener('install', (e) => {

@@ -45,17 +45,17 @@
     }
 
     /* ======================================================================== */
-    /* LEFT SIDEBAR NAVIGATION (Matching Reference App Layout)                  */
+    /* LEFT SIDEBAR NAVIGATION                                                  */
     /* ======================================================================== */
     aside.sidebar {
-      width: 270px;
+      width: 275px;
       background: var(--sidebar-bg);
       border-right: 1px solid var(--border);
       display: flex;
       flex-direction: column;
       flex-shrink: 0;
       min-height: 100vh;
-      padding: 24px 18px;
+      padding: 22px 16px;
       position: sticky;
       top: 0;
       height: 100vh;
@@ -64,12 +64,12 @@
     }
 
     .sidebar-header {
-      margin-bottom: 28px;
+      margin-bottom: 22px;
       padding-left: 6px;
     }
 
     .brand-title {
-      font-size: 23px;
+      font-size: 22px;
       font-weight: 900;
       color: var(--dark);
       letter-spacing: -0.5px;
@@ -85,13 +85,13 @@
     .brand-sub {
       font-size: 11px;
       color: var(--text-muted);
-      margin-top: 3px;
-      font-weight: 600;
+      margin-top: 2px;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
 
-    /* Nav menu items (Pills) */
+    /* Navigation Menu */
     .nav-menu {
       display: flex;
       flex-direction: column;
@@ -99,11 +99,18 @@
       flex: 1;
     }
 
+    .nav-pill-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      width: 100%;
+    }
+
     .nav-pill {
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 12px 18px;
+      padding: 11px 16px;
       border-radius: var(--radius-pill);
       font-size: 13.5px;
       font-weight: 700;
@@ -124,7 +131,7 @@
     .nav-pill.active {
       background: var(--primary);
       color: #FFFFFF;
-      box-shadow: 0 4px 14px rgba(227, 6, 19, 0.3);
+      box-shadow: 0 4px 14px rgba(227, 6, 19, 0.25);
     }
 
     .nav-pill svg {
@@ -134,13 +141,35 @@
       flex-shrink: 0;
     }
 
-    /* Sidebar Action Buttons (Matching Screenshot) */
+    /* Red Plus Button next to Configurator */
+    .btn-add-point-plus {
+      background: var(--primary);
+      color: white;
+      border: none;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      box-shadow: 0 3px 10px rgba(227, 6, 19, 0.25);
+      transition: all 0.2s;
+    }
+
+    .btn-add-point-plus:hover {
+      background: var(--primary-hover);
+      transform: scale(1.05);
+    }
+
+    /* Sidebar Actions */
     .sidebar-actions {
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      margin-top: 24px;
-      padding-top: 20px;
+      gap: 8px;
+      margin-top: 18px;
+      padding-top: 16px;
       border-top: 1px solid var(--border);
     }
 
@@ -149,7 +178,7 @@
       color: white;
       border: none;
       border-radius: var(--radius-pill);
-      padding: 12px 18px;
+      padding: 11px 16px;
       font-size: 13px;
       font-weight: 800;
       cursor: pointer;
@@ -171,7 +200,7 @@
       color: white;
       border: none;
       border-radius: var(--radius-pill);
-      padding: 12px 18px;
+      padding: 11px 16px;
       font-size: 13px;
       font-weight: 800;
       cursor: pointer;
@@ -192,14 +221,14 @@
       color: var(--dark);
       border: 1px solid var(--border);
       border-radius: var(--radius-pill);
-      padding: 11px 18px;
-      font-size: 13px;
+      padding: 9px 14px;
+      font-size: 12px;
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 6px;
       transition: all 0.2s;
       width: 100%;
     }
@@ -210,8 +239,8 @@
     }
 
     .sidebar-footer {
-      margin-top: 20px;
-      padding-top: 14px;
+      margin-top: 16px;
+      padding-top: 12px;
       font-size: 11px;
       color: #94A3B8;
       text-align: center;
@@ -222,23 +251,22 @@
     /* ======================================================================== */
     main.content-area {
       flex: 1;
-      padding: 28px 36px;
+      padding: 26px 34px;
       overflow-y: auto;
       max-width: 1400px;
     }
 
-    /* Top Page Header */
     .page-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
       flex-wrap: wrap;
-      gap: 16px;
+      gap: 14px;
     }
 
     .page-title-box h1 {
-      font-size: 26px;
+      font-size: 25px;
       font-weight: 900;
       color: var(--dark);
       letter-spacing: -0.5px;
@@ -247,14 +275,13 @@
     .page-title-box p {
       font-size: 13px;
       color: var(--text-muted);
-      margin-top: 4px;
+      margin-top: 3px;
     }
 
-    /* Header Capsule Badges (Matching Screenshot) */
     .header-badges {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       flex-wrap: wrap;
     }
 
@@ -262,13 +289,13 @@
       background: white;
       border: 1px solid var(--border);
       border-radius: var(--radius-pill);
-      padding: 8px 16px;
+      padding: 7px 14px;
       font-size: 12px;
       font-weight: 700;
       color: var(--dark);
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       box-shadow: var(--shadow-sm);
     }
 
@@ -286,7 +313,6 @@
       box-shadow: 0 0 0 3px rgba(227, 6, 19, 0.2);
     }
 
-    /* Tabs Content */
     .tab-content {
       display: none;
     }
@@ -295,13 +321,12 @@
       display: block;
     }
 
-    /* Modern Cards */
     .card {
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: var(--radius-card);
-      padding: 24px;
-      margin-bottom: 20px;
+      padding: 22px;
+      margin-bottom: 18px;
       box-shadow: var(--shadow-md);
     }
 
@@ -309,7 +334,7 @@
       font-size: 15px;
       font-weight: 900;
       color: var(--dark);
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -327,7 +352,7 @@
       width: 18px;
       height: 18px;
       color: var(--primary);
-      stroke-width: 2.5;
+      stroke-width: 2.2;
     }
 
     /* 2-Column Responsive Configurator Layout */
@@ -339,24 +364,17 @@
 
     @media (min-width: 980px) {
       .config-grid {
-        grid-template-columns: 1.1fr 0.9fr;
+        grid-template-columns: 1.08fr 0.92fr;
         align-items: start;
       }
       .config-left-col, .config-right-col {
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        gap: 18px;
       }
     }
 
-    /* Inputs & Form Controls */
-    .project-bar {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-
+    /* Form Controls */
     .input-group {
       margin-bottom: 12px;
     }
@@ -371,7 +389,7 @@
       letter-spacing: 0.5px;
     }
 
-    select, input[type="text"], input[type="number"], input[type="password"] {
+    select, input[type="text"], input[type="number"], input[type="password"], textarea {
       width: 100%;
       padding: 10px 14px;
       border: 1px solid var(--border);
@@ -383,7 +401,7 @@
       transition: all 0.2s;
     }
 
-    select:focus, input:focus {
+    select:focus, input:focus, textarea:focus {
       border-color: var(--primary);
       box-shadow: 0 0 0 3px rgba(227, 6, 19, 0.12);
     }
@@ -428,7 +446,7 @@
     svg.assembly-svg {
       width: 100%;
       max-width: 520px;
-      height: 470px;
+      height: 480px;
       display: block;
     }
 
@@ -481,11 +499,6 @@
       transition: all 0.2s;
     }
 
-    .btn-photo:hover {
-      background: #F1F5F9;
-    }
-
-    /* Pill Badges */
     .badge-art-code {
       background: #F1F5F9;
       color: var(--dark);
@@ -510,7 +523,6 @@
       gap: 4px;
     }
 
-    /* Component List Item */
     .component-pill {
       background: #F8FAFC;
       border: 1px solid var(--border);
@@ -523,19 +535,6 @@
       gap: 10px;
     }
 
-    .comp-name {
-      font-weight: 800;
-      font-size: 13px;
-      color: var(--dark);
-    }
-
-    .comp-desc {
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
-
-    /* Calculator & Info Boxes */
     .calc-info-box {
       background: #F0FDF4;
       border: 1px solid #BBF7D0;
@@ -560,7 +559,6 @@
       line-height: 1.4;
     }
 
-    /* Tables */
     table.bom-table, table.admin-table {
       width: 100%;
       border-collapse: collapse;
@@ -647,7 +645,7 @@
 
     /* Print / PDF Mode */
     @media print {
-      aside.sidebar, .btn-pill-primary, .btn-pill-dark, .btn-pill-outline, .btn-photo, input[type="file"], .no-print, .modal-backdrop {
+      aside.sidebar, .btn-pill-primary, .btn-pill-dark, .btn-pill-outline, .btn-photo, input[type="file"], .no-print, .modal-backdrop, .page-header {
         display: none !important;
       }
       body {
@@ -679,11 +677,10 @@
       display: none;
     }
 
-    #compact-report-container {
+    #print-report-container {
       display: none;
     }
 
-    /* Responsive Mobile Adjustments */
     @media (max-width: 850px) {
       body {
         flex-direction: column;
@@ -693,7 +690,7 @@
         height: auto;
         min-height: auto;
         position: relative;
-        padding: 16px;
+        padding: 14px;
       }
       .nav-menu {
         flex-direction: row;
@@ -723,30 +720,46 @@
       <div class="brand-sub">Koppelingen & ISPL Builder</div>
     </div>
 
-    <!-- Navigation Pills -->
+    <!-- Navigation Menu -->
     <nav class="nav-menu">
-      <button class="nav-pill active" onclick="switchTab('config')">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-        Configurator
+      
+      <!-- 1. Algemene Gegevens (Bovenaan zoals gevraagd) -->
+      <button class="nav-pill" onclick="switchTab('general')">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Algemene Gegevens
       </button>
 
+      <!-- 2. Configurator + Rode Plus Knop -->
+      <div class="nav-pill-row">
+        <button class="nav-pill active" style="flex: 1;" onclick="switchTab('config')">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          Configurator
+        </button>
+        <button class="btn-add-point-plus" title="Nieuw Smeerpunt Toevoegen" onclick="addNewPoint()">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+      </div>
+
+      <!-- 3. Projecten & Punten -->
       <button class="nav-pill" onclick="switchTab('projects')">
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
         Projecten & Punten
       </button>
 
+      <!-- 4. Stuklijst & Offerte -->
       <button class="nav-pill" onclick="switchTab('bom')">
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
         Stuklijst & Offerte
       </button>
 
+      <!-- 5. Database / Odoo Beheer -->
       <button class="nav-pill" onclick="openDatabaseAuthModal()">
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
         Database / Odoo
       </button>
     </nav>
 
-    <!-- Sidebar Primary Actions -->
+    <!-- Sidebar Primary Actions & Dossier Import/Export -->
     <div class="sidebar-actions">
       <button class="btn-pill-primary" onclick="openExportModal()">
         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
@@ -758,14 +771,21 @@
         Odoo Offerte Excel
       </button>
 
-      <button class="btn-pill-outline" onclick="addNewPoint()">
-        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        Nieuw Smeerpunt
+      <!-- Dossier Export & Import Buttons -->
+      <button class="btn-pill-outline" onclick="exportDossierJSON()">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+        Dossier Exporteren
       </button>
+
+      <label class="btn-pill-outline" style="cursor: pointer;">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+        Dossier Importeren
+        <input type="file" id="dossier-file-input" accept=".json" style="display: none;" onchange="importDossierJSON(event)">
+      </label>
     </div>
 
     <div class="sidebar-footer">
-      Hardware Selector v4.0 • Offline PWA
+      Hardware Selector v4.2 • Offline PWA
     </div>
   </aside>
 
@@ -777,12 +797,14 @@
     <!-- Printable Header (Only in PDF / Print Mode) -->
     <div class="print-header">
       <div>
-        <h2 style="color: var(--primary); font-size: 18px; font-weight: 900; margin: 0;">HARDWARE SELECTOR • MONTAGE RAPPORT</h2>
-        <p style="color: var(--text-muted); font-size: 11px; margin: 0;">Single Point Lubricator & Koppelingen Specificatie</p>
+        <h2 style="color: var(--primary); font-size: 18px; font-weight: 900; margin: 0;">HARDWARE SELECTOR • TECHNISCH RAPPORT</h2>
+        <p style="color: var(--text-muted); font-size: 11.5px; margin-top: 2px;">
+          Klant: <strong id="print-header-client" style="color: #0F172A;">-</strong> | Project: <span id="print-header-project">-</span>
+        </p>
       </div>
       <div style="text-align: right; font-size: 11px;">
-        <p><strong id="print-date">Datum: 08-10-2026</strong></p>
-        <p style="color: var(--primary); font-weight: 800;">Technical Support</p>
+        <p><strong id="print-date">Datum: 09-10-2026</strong></p>
+        <p style="color: var(--primary); font-weight: 800;">Technical Lubrication Support</p>
       </div>
     </div>
 
@@ -796,14 +818,59 @@
       <div class="header-badges">
         <div class="capsule-badge red-accent">
           <div class="status-dot"></div>
-          <span id="badge-mount-label">Directe Montage</span>
+          <span id="badge-client-label">Klant: Brouwerij De Halve Maan</span>
         </div>
         <div class="capsule-badge">
           <span id="badge-mat-label">Messing vernikkeld</span>
         </div>
         <div class="capsule-badge">
-          <span id="badge-ispl-label">ISPL 125 ml (6 mnd)</span>
+          <span id="badge-ispl-label">ISPL 125 ml + Grease MP2/3 (6 mnd)</span>
         </div>
+      </div>
+    </div>
+
+    <!-- ==================================================================== -->
+    <!-- TAB 0: ALGEMENE GEGEVENS (KLANT, PROJECT & DOSSIER DETAILS)          -->
+    <!-- ==================================================================== -->
+    <div id="tab-general" class="tab-content">
+      <div class="card" style="max-width: 800px;">
+        <div class="card-title">
+          <div class="card-title-left">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <span>Algemene Gegevens & Dossier</span>
+          </div>
+          <span style="font-size: 11px; color: var(--text-muted); font-weight: normal;">Geldt voor alle rapporten & configuraties</span>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" style="color: var(--primary);">Bedrijfsnaam / Klantnaam</label>
+          <input type="text" id="gen-client" value="Brouwerij De Halve Maan" oninput="updateGeneralInfo()" placeholder="bv. Brouwerij De Halve Maan">
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">Projectnaam / Omschrijving</label>
+          <input type="text" id="gen-project" value="Optimalisatie Smering Lijn 1" oninput="updateGeneralInfo()" placeholder="bv. Ombouw automatische smering bottelarij">
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+          <div class="input-group">
+            <label class="input-label">Contactpersoon Klant</label>
+            <input type="text" id="gen-contact" value="Dhr. Peeters (Hoofd TD)" oninput="updateGeneralInfo()" placeholder="bv. Jan Peeters">
+          </div>
+          <div class="input-group">
+            <label class="input-label">Opgesteld door (Adviseur)</label>
+            <input type="text" id="gen-advisor" value="Koen Demeester" oninput="updateGeneralInfo()" placeholder="bv. Uw naam">
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">Algemene Opmerkingen / Notities voor het rapport</label>
+          <textarea id="gen-notes" rows="3" oninput="updateGeneralInfo()" placeholder="Eventuele specifieke werf- of montage-instructies..."></textarea>
+        </div>
+
+        <button class="btn-pill-primary" style="margin-top: 10px;" onclick="switchTab('config')">
+          Naar Configurator ➔
+        </button>
       </div>
     </div>
 
@@ -817,29 +884,23 @@
         <!-- ===== LINKER KOLOM ===== -->
         <div class="config-left-col">
 
-          <!-- 1. BOVEN LINKS: Project en Locatie -->
+          <!-- 1. BOVEN LINKS: Locatie & Foto -->
           <div class="card">
             <div class="card-title">
               <div class="card-title-left">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                <span>Project & Locatie</span>
+                <span>Machine & Smeerpunt Locatie</span>
               </div>
-              <span style="font-size: 11px; color: var(--text-muted); font-weight: normal;">Smeerpunt identificatie</span>
+              <span id="cfg-client-display" style="font-size: 11px; color: var(--primary); font-weight: bold;">Brouwerij De Halve Maan</span>
             </div>
             
-            <div class="project-bar">
-              <div class="input-group">
-                <label class="input-label">Project / Bedrijf</label>
-                <input type="text" id="cfg-project" value="Brouwerij De Halve Maan" oninput="saveCurrentState()">
-              </div>
-              <div class="input-group">
-                <label class="input-label">Machine / Lijn</label>
-                <input type="text" id="cfg-machine" value="Flessenspoelmachine Lijn 1" oninput="saveCurrentState()">
-              </div>
+            <div class="input-group">
+              <label class="input-label">Machine / Installatie</label>
+              <input type="text" id="cfg-machine" value="Flessenspoelmachine Lijn 1" oninput="saveCurrentState()">
             </div>
 
             <div class="input-group" style="margin-bottom: 0;">
-              <label class="input-label">Smeerpunt Beschrijving (Tag / Locatie)</label>
+              <label class="input-label">Smeerpunt Omschrijving (Tag / Positie)</label>
               <input type="text" id="cfg-point" value="Aandrijfas Lager Positie 1" oninput="saveCurrentState()">
             </div>
 
@@ -875,8 +936,8 @@
             <div class="drawing-container">
               <span class="drawing-badge" id="assembly-badge">Exploded View</span>
               
-              <!-- 3D Exploded View SVG with clear gaps and thread labels -->
-              <svg id="assembly-svg" class="assembly-svg" viewBox="0 0 460 480" xmlns="http://www.w3.org/2000/svg">
+              <!-- 3D Exploded View SVG -->
+              <svg id="assembly-svg" class="assembly-svg" viewBox="0 0 460 490" xmlns="http://www.w3.org/2000/svg">
                 <!-- Dynamically rendered -->
               </svg>
             </div>
@@ -923,19 +984,29 @@
               • Rechte insteekkoppeling 8 mm - G 1/8" M BSPP
             </div>
 
-            <!-- ISPL Type / Volume -->
+            <!-- ISPL Type / Volume (15ml, 30ml, 60ml, 125ml, 250ml) -->
             <div class="input-group">
               <label class="input-label">Interflon Single Point Lubricator (ISPL) Volume</label>
-              <select id="sel-lubricator" onchange="onConfigChange()">
-                <option value="60ml">Interflon Single Point Lubricator 60 ml (G 1/4" M)</option>
-                <option value="125ml" selected>Interflon Single Point Lubricator 125 ml (G 1/4" M)</option>
-                <option value="250ml">Interflon Single Point Lubricator 250 ml (G 1/4" M)</option>
+              <select id="sel-lubricator-vol" onchange="onISPLVolumeChange()">
+                <option value="15ml">15 ml</option>
+                <option value="30ml">30 ml</option>
+                <option value="60ml">60 ml</option>
+                <option value="125ml" selected>125 ml</option>
+                <option value="250ml">250 ml</option>
+              </select>
+            </div>
+
+            <!-- VETTYPE PARAMETER (Dynamisch gebaseerd op tabel) -->
+            <div class="input-group">
+              <label class="input-label" style="color: var(--primary);">Type Smeermiddel / Vet in ISPL</label>
+              <select id="sel-grease-type" onchange="onConfigChange()">
+                <!-- Populated dynamically based on chosen volume -->
               </select>
             </div>
 
             <!-- Looptijd / Maand-instelling -->
             <div class="input-group">
-              <label class="input-label">Looptijd / Maand-instelling (Draaischijf 1 - 12 maanden)</label>
+              <label class="input-label">Looptijd / Maand-instelling (1 - 12 maanden)</label>
               <select id="sel-months" onchange="onConfigChange()">
                 <option value="1">1 maand</option>
                 <option value="2">2 maanden</option>
@@ -1114,9 +1185,9 @@
       </div>
     </div>
 
-    <!-- CONTAINER VOOR COMPACT PRINT RAPPORT (GEBRUIKT BIJ COMPACT EXPORT) -->
-    <div id="compact-report-container">
-      <!-- Dynamically filled during compact print -->
+    <!-- CONTAINER VOOR HET VOLLEDIGE PRINT / PDF RAPPORT -->
+    <div id="print-report-container">
+      <!-- Dynamically filled during PDF print -->
     </div>
 
   </main>
@@ -1137,8 +1208,8 @@
         <label class="radio-option">
           <input type="radio" name="pdf-detail" value="detail" checked>
           <div>
-            <strong>Gedetailleerd technisch rapport (met 3D Exploded View & foto)</strong>
-            <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">Inclusief visuele samenstellingstekening, omgevingsfoto en technische specificaties per smeerpunt.</div>
+            <strong>Gedetailleerd technisch rapport (met 3D tekening, foto & fiche)</strong>
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">Volledige technische fiche per smeerpunt met visuele montagetekening, foto, parameters en punt-specifieke stuklijst.</div>
           </div>
         </label>
         
@@ -1204,19 +1275,18 @@
   </div>
 
   <!-- ==================================================================== -->
-  <!-- MODAL: DATABASE / ODOO BEHEER (MET EXCEL .XLSX DOWNLOAD & UPLOAD)   -->
+  <!-- MODAL: DATABASE / ODOO BEHEER (EXCEL .XLSX DOWNLOAD & UPLOAD)        -->
   <!-- ==================================================================== -->
   <div id="db-manager-modal" class="modal-backdrop">
     <div class="modal-card modal-card-large">
       <div class="modal-title">
         <div style="display: flex; align-items: center; gap: 10px;">
-          <span>📦 Koppelingen Database & Odoo Beheer</span>
+          <span>📦 Koppelingen & ISPL Database</span>
           <span style="font-size: 11px; background: #DCFCE7; color: #166534; padding: 3px 8px; border-radius: var(--radius-pill); font-weight: bold;">Geautoriseerd</span>
         </div>
         <button onclick="closeDatabaseManagerModal()" style="background: none; border: none; font-size: 22px; cursor: pointer; color: #94A3B8;">✕</button>
       </div>
 
-      <!-- Action Toolbar (Excel .xlsx Export & Import) -->
       <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: center; margin-bottom: 16px;">
         <div style="display: flex; gap: 8px; flex: 1; min-width: 240px;">
           <input type="text" id="db-search-input" placeholder="🔍 Zoek artikelcode, maat of omschrijving..." oninput="filterDatabaseTable()" style="padding: 8px 14px; font-size: 12.5px;">
@@ -1235,7 +1305,6 @@
         </div>
       </div>
 
-      <!-- Database Table Container -->
       <div style="max-height: 460px; overflow-y: auto; border: 1px solid var(--border); border-radius: 12px;">
         <table class="admin-table">
           <thead>
@@ -1263,13 +1332,21 @@
 
   <script src="couplings-data.js"></script>
   <script>
-    const STORAGE_KEY = 'IF_HARDWARE_SELECTOR_DATA_V5';
-    const DB_STORAGE_KEY = 'IF_CUSTOM_COUPLINGS_DB_V5';
+    const STORAGE_KEY = 'IF_HARDWARE_SELECTOR_DATA_V6';
+    const DB_STORAGE_KEY = 'IF_CUSTOM_COUPLINGS_DB_V6';
     let currentPhotoBase64 = null;
     let savedPoints = [];
     let activePointId = null;
 
-    // Load active database (checks localStorage overrides)
+    // Global Project / Client Information
+    let generalInfo = {
+      client: "Brouwerij De Halve Maan",
+      project: "Optimalisatie Smering Lijn 1",
+      contact: "Dhr. Peeters (Hoofd TD)",
+      advisor: "Koen Demeester",
+      notes: ""
+    };
+
     function getActiveDatabase() {
       try {
         const stored = localStorage.getItem(DB_STORAGE_KEY);
@@ -1292,7 +1369,6 @@
       }
     }
 
-    // Load app state
     function loadSavedState() {
       try {
         const stored = localStorage.getItem(STORAGE_KEY);
@@ -1300,6 +1376,7 @@
           const parsed = JSON.parse(stored);
           savedPoints = parsed.points || [];
           activePointId = parsed.activeId || (savedPoints[0] ? savedPoints[0].id : null);
+          if (parsed.generalInfo) generalInfo = parsed.generalInfo;
         }
       } catch (e) {
         console.error("Storage error:", e);
@@ -1308,7 +1385,6 @@
       if (!savedPoints || savedPoints.length === 0) {
         savedPoints = [{
           id: 1,
-          project: "Brouwerij De Halve Maan",
           machine: "Flessenspoelmachine Lijn 1",
           point: "Aandrijfas Lager Positie 1",
           material: "Messing vernikkeld",
@@ -1319,7 +1395,8 @@
           extension: "25",
           customExtension: "",
           remoteFitting: "straight-kit",
-          lubricator: "125ml",
+          lubricatorVol: "125ml",
+          greaseType: "Grease MP2/3",
           months: 6,
           photo: null,
           components: []
@@ -1332,7 +1409,8 @@
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify({
           points: savedPoints,
-          activeId: activePointId
+          activeId: activePointId,
+          generalInfo: generalInfo
         }));
       } catch (e) {
         console.error("Storage save failed:", e);
@@ -1341,21 +1419,47 @@
 
     function init() {
       loadSavedState();
+
+      // Populate General Info Tab
+      document.getElementById('gen-client').value = generalInfo.client || '';
+      document.getElementById('gen-project').value = generalInfo.project || '';
+      document.getElementById('gen-contact').value = generalInfo.contact || '';
+      document.getElementById('gen-advisor').value = generalInfo.advisor || '';
+      document.getElementById('gen-notes').value = generalInfo.notes || '';
+      updateGeneralInfoLabels();
+
       const activeP = savedPoints.find(p => p.id === activePointId) || savedPoints[0];
       loadPointIntoForm(activeP);
-      onConfigChange();
       renderSavedPointsList();
       renderBOM();
       document.getElementById('print-date').innerText = 'Datum: ' + new Date().toLocaleDateString('nl-BE');
+    }
+
+    function updateGeneralInfo() {
+      generalInfo.client = document.getElementById('gen-client').value.trim() || 'Onbekend';
+      generalInfo.project = document.getElementById('gen-project').value.trim() || 'Project';
+      generalInfo.contact = document.getElementById('gen-contact').value.trim();
+      generalInfo.advisor = document.getElementById('gen-advisor').value.trim();
+      generalInfo.notes = document.getElementById('gen-notes').value.trim();
+      updateGeneralInfoLabels();
+      saveCurrentState();
+    }
+
+    function updateGeneralInfoLabels() {
+      document.getElementById('badge-client-label').innerText = `Klant: ${generalInfo.client}`;
+      document.getElementById('cfg-client-display').innerText = generalInfo.client;
+      document.getElementById('print-header-client').innerText = generalInfo.client;
+      document.getElementById('print-header-project').innerText = generalInfo.project;
     }
 
     function switchTab(tabId) {
       const pills = document.querySelectorAll('.nav-pill');
       pills.forEach((p, idx) => {
         p.classList.toggle('active', 
-          (tabId === 'config' && idx === 0) || 
-          (tabId === 'projects' && idx === 1) || 
-          (tabId === 'bom' && idx === 2)
+          (tabId === 'general' && idx === 0) ||
+          (tabId === 'config' && idx === 1) || 
+          (tabId === 'projects' && idx === 2) || 
+          (tabId === 'bom' && idx === 3)
         );
       });
 
@@ -1365,7 +1469,10 @@
 
       const titleEl = document.getElementById('page-main-title');
       const subEl = document.getElementById('page-main-sub');
-      if (tabId === 'config') {
+      if (tabId === 'general') {
+        titleEl.innerText = 'Algemene Gegevens';
+        subEl.innerText = 'Klant- en projectinformatie die automatisch op alle rapporten verschijnt.';
+      } else if (tabId === 'config') {
         titleEl.innerText = 'Configurator';
         subEl.innerText = 'Koppelingsberekening & 3D Exploded View samenstelling van lager naar ISPL.';
       } else if (tabId === 'projects') {
@@ -1400,6 +1507,29 @@
       onConfigChange();
     }
 
+    function onISPLVolumeChange() {
+      populateGreaseTypes();
+      onConfigChange();
+    }
+
+    function populateGreaseTypes(selectedGrease = null) {
+      const vol = document.getElementById('sel-lubricator-vol').value;
+      const select = document.getElementById('sel-grease-type');
+      
+      const available = (typeof ISPL_CATALOG !== 'undefined') ? 
+        ISPL_CATALOG.filter(item => item.volume === vol) : [];
+
+      select.innerHTML = available.map(item => `
+        <option value="${item.grease}" ${item.grease === selectedGrease ? 'selected' : ''}>
+          ${item.grease} (Art. ${item.code})
+        </option>
+      `).join('');
+
+      if (!select.value && available.length > 0) {
+        select.value = available[0].grease;
+      }
+    }
+
     function onConfigChange() {
       const material = document.getElementById('sel-material').value;
       const mountType = document.getElementById('sel-mount-type').value;
@@ -1416,35 +1546,35 @@
       }
 
       const remoteFitting = document.getElementById('sel-remote-fitting').value;
-      const lubricator = document.getElementById('sel-lubricator').value;
+      const lubricatorVol = document.getElementById('sel-lubricator-vol').value;
+      const greaseType = document.getElementById('sel-grease-type').value;
       const months = parseInt(document.getElementById('sel-months').value) || 6;
 
       // Update header badges
-      document.getElementById('badge-mount-label').innerText = (mountType === 'remote') ? 
-        'Afstandsmontage (Pulsarlube 1702)' : 'Directe Montage';
       document.getElementById('badge-mat-label').innerText = material;
-      document.getElementById('badge-ispl-label').innerText = `ISPL ${lubricator} (${months} mnd)`;
-
+      document.getElementById('badge-ispl-label').innerText = `ISPL ${lubricatorVol} + ${greaseType} (${months} mnd)`;
       document.getElementById('drawing-mode-label').innerText = (mountType === 'remote') ? 
         'Afstandsmontage (Pulsarlube kit art. 1702)' : 'Directe montage';
-      document.getElementById('assembly-badge').innerText = `${material} | Lager ${bearingThread} ➔ ISPL ${lubricator}`;
+      document.getElementById('assembly-badge').innerText = `${material} | Lager ${bearingThread} ➔ ISPL ${lubricatorVol}`;
 
-      updateDispenseCalculator(lubricator, months);
+      updateDispenseCalculator(lubricatorVol, months);
 
       const components = resolveComponents({
-        material, mountType, bearingThread, angle, extension, remoteFitting, lubricator, months
+        material, mountType, bearingThread, angle, extension, remoteFitting, lubricatorVol, greaseType, months
       });
 
       renderComponentsList(components);
       render3DExplodedSVG({
-        material, mountType, bearingThread, angle, extension, remoteFitting, lubricator, months
+        material, mountType, bearingThread, angle, extension, remoteFitting, lubricatorVol, greaseType, months
       });
     }
 
-    function updateDispenseCalculator(lubricator, months) {
+    function updateDispenseCalculator(lubricatorVol, months) {
       let volMl = 125;
-      if (lubricator.includes('60')) volMl = 60;
-      else if (lubricator.includes('250')) volMl = 250;
+      if (lubricatorVol.includes('15')) volMl = 15;
+      else if (lubricatorVol.includes('30')) volMl = 30;
+      else if (lubricatorVol.includes('60')) volMl = 60;
+      else if (lubricatorVol.includes('250')) volMl = 250;
 
       const dailyCc = (volMl / (months * 30.5)).toFixed(2);
       const weeklyCc = (dailyCc * 7).toFixed(1);
@@ -1463,20 +1593,24 @@
       const comps = [];
       const mat = cfg.material;
 
-      // 1. ISPL Unit
-      let isplCode = `ISPL-${cfg.lubricator.toUpperCase()}`;
+      // 1. ISPL Unit gekoppeld aan exact artikelnummer uit ISPL_CATALOG
+      let isplCode = 'ISPL';
+      let isplName = `Interflon Single Point Lubricator ${cfg.lubricatorVol} + ${cfg.greaseType}`;
       if (typeof ISPL_CATALOG !== 'undefined') {
-        const isplItem = ISPL_CATALOG.find(i => i.volume === cfg.lubricator);
-        if (isplItem) isplCode = isplItem.code;
+        const matchISPL = ISPL_CATALOG.find(item => item.volume === cfg.lubricatorVol && item.grease === cfg.greaseType);
+        if (matchISPL) {
+          isplCode = matchISPL.code;
+          isplName = matchISPL.name;
+        }
       }
 
       comps.push({
         code: isplCode,
-        name: `Interflon Single Point Lubricator ${cfg.lubricator}`,
+        name: isplName,
         a1: 'G 1/4" M (buitendraad)',
         a2: `Instelling: ${cfg.months} maanden`,
         mat: 'Polycarbonaat / Kunststof',
-        desc: `Automatische smeerunit gevuld met hoogwaardig vet, ingesteld op ${cfg.months} maanden`,
+        desc: `Automatische smeerunit ${cfg.lubricatorVol} gevuld met Interflon ${cfg.greaseType}, ingesteld op ${cfg.months} maanden (art. ${isplCode})`,
         qty: 1
       });
 
@@ -1492,7 +1626,6 @@
           qty: 1
         });
 
-        // Verloop aan het lager naar G 1/8" F (als lager niet al G 1/8" is)
         if (cfg.bearingThread !== 'G 1/8') {
           const matchAdapt = findInCatalog(item => 
             item.name.includes("Verloopstuk") && 
@@ -1524,7 +1657,6 @@
           }
         }
 
-        // Vraag over insteekkoppeling:
         if (cfg.remoteFitting === 'elbow-90') {
           const matchElbowPush = findInCatalog(item => 
             item.name.includes("Knie-insteekkoppeling 90° 8 mm") && 
@@ -1555,8 +1687,6 @@
         }
       } else {
         // DIRECT: Lager ➔ Verloopstuk ➔ Kniestuk ➔ Verlengstuk ➔ ISPL
-        
-        // 1. Verloopstuk naar G 1/4" F (tenzij lager al G 1/4" is)
         if (cfg.bearingThread !== 'G 1/4') {
           const matchAdapt = findInCatalog(item => 
             item.name.includes("Verloopstuk") && 
@@ -1588,7 +1718,6 @@
           }
         }
 
-        // 2. Kniestuk (G 1/4" M x G 1/4" F)
         if (cfg.angle === '90') {
           const match90 = findInCatalog(item => 
             item.name.includes("Kniestuk 90° G 1/4\"") &&
@@ -1619,7 +1748,6 @@
           });
         }
 
-        // 3. Verlengstuk (G 1/4" M x G 1/4" F)
         if (cfg.extension !== '0') {
           const matchExt = findInCatalog(item => 
             item.name.includes("Verlengstuk G 1/4\"") && 
@@ -1676,7 +1804,7 @@
     }
 
     // ========================================================================
-    // 3D EXPLODED VIEW VECTOR ASSEMBLY SVG RENDERING
+    // 3D EXPLODED VIEW VECTOR ASSEMBLY SVG RENDERING MET VERBETERDE DRAAISCHIJF
     // ========================================================================
     function render3DExplodedSVG(cfg) {
       const svg = document.getElementById('assembly-svg');
@@ -1688,6 +1816,19 @@
       const metalText = isRVS ? '#1E293B' : '#92400E';
 
       const dialDeg = ((cfg.months - 1) / 11) * 270 - 135;
+
+      // Render crisp radial ticks & numbers on dial
+      let dialMarks = '';
+      for (let m = 1; m <= 12; m++) {
+        const angle = ((m - 1) / 11) * 270 - 135;
+        const rad = angle * Math.PI / 180;
+        const x1 = 50 + 24 * Math.cos(rad);
+        const y1 = 12 + 10 * Math.sin(rad);
+        const x2 = 50 + 29 * Math.cos(rad);
+        const y2 = 12 + 12 * Math.sin(rad);
+        const isSelected = (m === cfg.months);
+        dialMarks += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${isSelected ? '#E30613' : '#64748B'}" stroke-width="${isSelected ? '2.5' : '1.2'}"/>`;
+      }
 
       if (cfg.mountType === 'direct') {
         content = `
@@ -1724,42 +1865,51 @@
           </defs>
 
           <!-- Central Exploded Assembly Centerline -->
-          <line x1="210" y1="20" x2="210" y2="440" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.6"/>
+          <line x1="210" y1="20" x2="210" y2="450" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.6"/>
 
-          <!-- 1. ISPL LUBRICATOR (Top, Exploded gap) -->
+          <!-- 1. ISPL LUBRICATOR MET DUIDELIJKE HOOG-RESOLUTIE DRAAISCHIJF -->
           <g transform="translate(160, 20)">
-            <ellipse cx="50" cy="8" rx="36" ry="8" fill="#E30613"/>
-            <rect x="14" y="8" width="72" height="12" fill="#0F172A"/>
-            <ellipse cx="50" cy="20" rx="36" ry="8" fill="#E30613"/>
+            <!-- Top Batterij-dop & Draaischijf Bevel -->
+            <ellipse cx="50" cy="12" rx="38" ry="14" fill="#0F172A" stroke="#E30613" stroke-width="2"/>
+            <ellipse cx="50" cy="12" rx="30" ry="11" fill="#FFFFFF"/>
+            
+            <!-- Dial Marks -->
+            ${dialMarks}
 
-            <!-- Month Setting Dial & Pointer -->
-            <circle cx="50" cy="8" r="6" fill="#FFFFFF"/>
-            <line x1="50" y1="8" x2="${50 + 10 * Math.cos(dialDeg * Math.PI / 180)}" y2="${8 + 6 * Math.sin(dialDeg * Math.PI / 180)}" stroke="#E30613" stroke-width="2.5" stroke-linecap="round"/>
-            <text x="50" y="3" font-size="7" font-weight="900" fill="#FFFFFF" text-anchor="middle">${cfg.months} MND</text>
+            <!-- Draaiknop / Pointer -->
+            <circle cx="50" cy="12" r="7" fill="#0F172A"/>
+            <circle cx="50" cy="12" r="3" fill="#E30613"/>
+            <line x1="50" y1="12" x2="${50 + 20 * Math.cos(dialDeg * Math.PI / 180)}" y2="${12 + 8 * Math.sin(dialDeg * Math.PI / 180)}" stroke="#E30613" stroke-width="3" stroke-linecap="round"/>
 
-            <path d="M 6 28 C 6 28, 6 100, 6 100 C 6 112, 94 112, 94 100 C 94 100, 94 28, 94 28 Z" fill="url(#isplBody3D)" stroke="#9CA3AF" stroke-width="1.5"/>
-            <path d="M 9 45 C 9 45, 9 96, 9 96 C 9 106, 91 106, 91 96 C 91 96, 91 45, 91 45 Z" fill="url(#grease3D)"/>
-            <ellipse cx="50" cy="45" rx="41" ry="6" fill="#FEF08A"/>
+            <!-- Badge Boven Draaischijf -->
+            <rect x="25" y="-14" width="50" height="18" rx="4" fill="#E30613"/>
+            <text x="50" y="-2" font-size="9" font-weight="900" fill="#FFFFFF" text-anchor="middle">${cfg.months} MAAND</text>
 
-            <!-- ISPL Badge -->
-            <rect x="15" y="58" width="70" height="22" rx="4" fill="#0F172A"/>
-            <text x="50" y="73" font-size="10" font-weight="900" font-style="italic" fill="#FFFFFF" text-anchor="middle" letter-spacing="0.5">ISPL UNIT</text>
+            <!-- Transparant reservoir & vetspiegel -->
+            <path d="M 6 30 C 6 30, 6 102, 6 102 C 6 114, 94 114, 94 102 C 94 102, 94 30, 94 30 Z" fill="url(#isplBody3D)" stroke="#94A3B8" stroke-width="1.5"/>
+            <path d="M 9 48 C 9 48, 9 98, 9 98 C 9 108, 91 108, 91 98 C 91 98, 91 48, 91 48 Z" fill="url(#grease3D)"/>
+            <ellipse cx="50" cy="48" rx="41" ry="6" fill="#FEF08A"/>
+
+            <!-- ISPL Type & Vet Label -->
+            <rect x="12" y="60" width="76" height="24" rx="4" fill="#0F172A"/>
+            <text x="50" y="72" font-size="9" font-weight="900" fill="#FFFFFF" text-anchor="middle">ISPL ${cfg.lubricatorVol}</text>
+            <text x="50" y="81" font-size="7.5" font-weight="bold" fill="#FACC15" text-anchor="middle">${cfg.greaseType}</text>
 
             <!-- Thread Nipple G 1/4" M at base -->
-            <rect x="38" y="108" width="24" height="15" fill="${metalGrad}" stroke="${metalStroke}" stroke-width="1"/>
-            <line x1="38" y1="112" x2="62" y2="112" stroke="${metalStroke}"/>
-            <line x1="38" y1="116" x2="62" y2="116" stroke="${metalStroke}"/>
-            <line x1="38" y1="120" x2="62" y2="120" stroke="${metalStroke}"/>
+            <rect x="38" y="110" width="24" height="15" fill="${metalGrad}" stroke="${metalStroke}" stroke-width="1"/>
+            <line x1="38" y1="114" x2="62" y2="114" stroke="${metalStroke}"/>
+            <line x1="38" y1="118" x2="62" y2="118" stroke="${metalStroke}"/>
+            <line x1="38" y1="122" x2="62" y2="122" stroke="${metalStroke}"/>
 
             <!-- Exploded Thread Annotation -->
-            <line x1="62" y1="115" x2="110" y2="115" stroke="#0F172A" stroke-width="1"/>
-            <rect x="110" y="105" width="165" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1"/>
-            <text x="115" y="119" font-size="10" font-weight="900" fill="#E30613">ISPL Aansluiting: G 1/4" M</text>
+            <line x1="62" y1="117" x2="110" y2="117" stroke="#0F172A" stroke-width="1"/>
+            <rect x="110" y="107" width="165" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1"/>
+            <text x="115" y="121" font-size="10" font-weight="900" fill="#E30613">ISPL Aansluiting: G 1/4" M</text>
           </g>
 
           <!-- 2. VERLENGSTUK (Exploded gap) -->
           ${cfg.extension !== '0' ? `
-          <g transform="translate(160, 165)">
+          <g transform="translate(160, 175)">
             <rect x="36" y="0" width="28" height="28" fill="${metalGrad}" stroke="${metalStroke}" stroke-width="1.5"/>
             <ellipse cx="50" cy="0" rx="14" ry="4" fill="#E5E7EB"/>
             <rect x="40" y="28" width="20" height="12" fill="${metalGrad}" stroke="${metalStroke}"/>
@@ -1776,7 +1926,7 @@
 
           <!-- 3. KNIESTUK (Exploded gap) -->
           ${cfg.angle !== 'straight' ? `
-          <g transform="translate(160, ${cfg.extension !== '0' ? 220 : 175})">
+          <g transform="translate(160, ${cfg.extension !== '0' ? 230 : 185})">
             <path d="M 34 0 L 66 0 L 66 28 L 34 28 Z" fill="${metalGrad}" stroke="${metalStroke}" stroke-width="1.5"/>
             <circle cx="50" cy="14" r="6" fill="${metalStroke}"/>
             <rect x="40" y="28" width="20" height="12" fill="${metalGrad}" stroke="${metalStroke}"/>
@@ -1792,7 +1942,7 @@
           ` : ''}
 
           <!-- 4. VERLOOPSTUK NAAR LAGER (Exploded gap) -->
-          <g transform="translate(160, ${cfg.angle !== 'straight' ? (cfg.extension !== '0' ? 280 : 235) : (cfg.extension !== '0' ? 225 : 175)})">
+          <g transform="translate(160, ${cfg.angle !== 'straight' ? (cfg.extension !== '0' ? 290 : 245) : (cfg.extension !== '0' ? 235 : 185)})">
             <path d="M 30 0 L 70 0 L 78 12 L 70 24 L 30 24 L 22 12 Z" fill="${metalGrad}" stroke="${metalStroke}" stroke-width="1.5"/>
             <rect x="40" y="24" width="20" height="14" fill="${metalGrad}" stroke="${metalStroke}"/>
             <line x1="40" y1="28" x2="60" y2="28" stroke="${metalStroke}"/>
@@ -1808,7 +1958,7 @@
           </g>
 
           <!-- 5. 3D ISOMETRIC BEARING (Exploded bottom) -->
-          <g transform="translate(70, 340)">
+          <g transform="translate(70, 350)">
             <path d="M 40 100 L 240 100 L 255 85 L 55 85 Z" fill="#1F2937"/>
             <path d="M 60 85 C 55 50, 90 20, 150 20 C 210 20, 245 50, 240 85 Z" fill="url(#bearing3D)" stroke="#0F172A" stroke-width="2"/>
             
@@ -1858,20 +2008,23 @@
 
           <!-- ISPL on Bracket (Left, Exploded Gap) -->
           <g transform="translate(35, 20)">
-            <ellipse cx="30" cy="6" rx="26" ry="6" fill="#E30613"/>
-            <rect x="4" y="6" width="52" height="8" fill="#0F172A"/>
-            <path d="M 0 14 C 0 14, 0 75, 0 75 C 0 84, 60 84, 60 75 C 60 75, 60 14, 60 14 Z" fill="url(#isplBody3D)" stroke="#94A3B8"/>
-            <path d="M 3 28 C 3 28, 3 72, 3 72 C 3 80, 57 80, 57 72 C 57 72, 57 28, 57 28 Z" fill="url(#grease3D)"/>
-            
-            <rect x="8" y="38" width="44" height="18" rx="3" fill="#0F172A"/>
-            <text x="30" y="51" font-size="8" font-weight="900" font-style="italic" fill="#FFFFFF" text-anchor="middle">ISPL UNIT</text>
+            <ellipse cx="30" cy="8" rx="26" ry="8" fill="#0F172A" stroke="#E30613"/>
+            <circle cx="30" cy="8" r="4" fill="#E30613"/>
+            <text x="30" y="-3" font-size="8" font-weight="900" fill="#E30613" text-anchor="middle">${cfg.months} MND</text>
 
-            <rect x="24" y="80" width="12" height="10" fill="${metalGrad}" stroke="${metalStroke}"/>
-            <text x="70" y="88" font-size="10" font-weight="900" fill="#E30613">ISPL: G 1/4" M</text>
+            <path d="M 0 16 C 0 16, 0 78, 0 78 C 0 86, 60 86, 60 78 C 60 78, 60 16, 60 16 Z" fill="url(#isplBody3D)" stroke="#94A3B8"/>
+            <path d="M 3 30 C 3 30, 3 74, 3 74 C 3 82, 57 82, 57 74 C 57 74, 57 30, 57 30 Z" fill="url(#grease3D)"/>
+            
+            <rect x="6" y="40" width="48" height="20" rx="3" fill="#0F172A"/>
+            <text x="30" y="52" font-size="8" font-weight="900" fill="#FFFFFF" text-anchor="middle">ISPL ${cfg.lubricatorVol}</text>
+            <text x="30" y="58" font-size="6.5" font-weight="bold" fill="#FACC15" text-anchor="middle">${cfg.greaseType}</text>
+
+            <rect x="24" y="82" width="12" height="10" fill="${metalGrad}" stroke="${metalStroke}"/>
+            <text x="70" y="90" font-size="10" font-weight="900" fill="#E30613">ISPL: G 1/4" M</text>
           </g>
 
           <!-- Pulsarlube 2000RC-1 Mounting Bracket -->
-          <g transform="translate(25, 125)">
+          <g transform="translate(25, 130)">
             <rect x="0" y="0" width="90" height="14" fill="#334155" rx="3"/>
             <line x1="8" y1="0" x2="8" y2="40" stroke="#0F172A" stroke-width="4"/>
             <rect x="34" y="14" width="16" height="14" fill="${metalGrad}" stroke="${metalStroke}"/>
@@ -1882,16 +2035,16 @@
           </g>
 
           <!-- High-Pressure Hose 8 mm (MAX 20 CM) -->
-          <path d="M 68 155 C 75 250, 150 220, 230 280" fill="none" stroke="#0F172A" stroke-width="8" stroke-linecap="round"/>
-          <path d="M 68 155 C 75 250, 150 220, 230 280" fill="none" stroke="#2563EB" stroke-width="4" stroke-dasharray="6 3" stroke-linecap="round"/>
+          <path d="M 68 160 C 75 255, 150 225, 230 285" fill="none" stroke="#0F172A" stroke-width="8" stroke-linecap="round"/>
+          <path d="M 68 160 C 75 255, 150 225, 230 285" fill="none" stroke="#2563EB" stroke-width="4" stroke-dasharray="6 3" stroke-linecap="round"/>
 
-          <g transform="translate(110, 205)">
+          <g transform="translate(110, 210)">
             <rect x="0" y="0" width="155" height="22" rx="6" fill="#FEF3C7" stroke="#F59E0B" stroke-width="1.5"/>
             <text x="77" y="15" font-size="10" font-weight="900" fill="#92400E" text-anchor="middle">LEIDING 8 MM (MAX. 20 CM)</text>
           </g>
 
           <!-- Push-in fitting at Bearing side -->
-          <g transform="translate(220, 275)">
+          <g transform="translate(220, 280)">
             <rect x="0" y="0" width="22" height="20" rx="3" fill="${metalGrad}" stroke="${metalStroke}" stroke-width="1.5"/>
             <line x1="22" y1="10" x2="60" y2="10" stroke="#0F172A" stroke-width="1"/>
             <rect x="60" y="0" width="175" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1"/>
@@ -1902,7 +2055,7 @@
 
           <!-- Adapter to Bearing (Exploded below fitting if bearing != G 1/8) -->
           ${cfg.bearingThread !== 'G 1/8' ? `
-          <g transform="translate(220, 310)">
+          <g transform="translate(220, 315)">
             <path d="M 0 0 L 22 0 L 26 8 L 22 16 L 0 16 L -4 8 Z" fill="${metalGrad}" stroke="${metalStroke}"/>
             <rect x="3" y="16" width="16" height="10" fill="${metalGrad}" stroke="${metalStroke}"/>
             <line x1="26" y1="8" x2="60" y2="8" stroke="#0F172A" stroke-width="1"/>
@@ -1912,7 +2065,7 @@
           ` : ''}
 
           <!-- Bearing at bottom right -->
-          <g transform="translate(150, 340)">
+          <g transform="translate(150, 345)">
             <path d="M 30 95 L 180 95 L 195 80 L 45 80 Z" fill="#1F2937"/>
             <path d="M 45 80 C 40 55, 65 25, 115 25 C 165 25, 190 55, 185 80 Z" fill="url(#bearing3D)" stroke="#0F172A" stroke-width="2"/>
             <ellipse cx="115" cy="56" rx="26" ry="26" fill="#0F172A"/>
@@ -1949,7 +2102,6 @@
     }
 
     function saveCurrentPoint() {
-      const project = document.getElementById('cfg-project').value.trim();
       const machine = document.getElementById('cfg-machine').value.trim();
       const point = document.getElementById('cfg-point').value.trim();
       const material = document.getElementById('sel-material').value;
@@ -1969,17 +2121,17 @@
       }
 
       const remoteFitting = document.getElementById('sel-remote-fitting').value;
-      const lubricator = document.getElementById('sel-lubricator').value;
+      const lubricatorVol = document.getElementById('sel-lubricator-vol').value;
+      const greaseType = document.getElementById('sel-grease-type').value;
       const months = parseInt(document.getElementById('sel-months').value) || 6;
 
       const components = resolveComponents({
-        material, mountType, bearingThread, angle, extension, remoteFitting, lubricator, months
+        material, mountType, bearingThread, angle, extension, remoteFitting, lubricatorVol, greaseType, months
       });
 
       const existingIndex = savedPoints.findIndex(p => p.id === activePointId);
       const pointObj = {
         id: activePointId,
-        project,
         machine,
         point,
         material,
@@ -1990,7 +2142,8 @@
         extension,
         customExtension,
         remoteFitting,
-        lubricator,
+        lubricatorVol,
+        greaseType,
         months,
         photo: currentPhotoBase64,
         components
@@ -2003,7 +2156,7 @@
       }
 
       saveCurrentState();
-      alert('Smeerpunt succesvol opgeslagen!');
+      alert('Smeerpunt succesvol opgeslagen in project!');
       renderSavedPointsList();
       renderBOM();
       switchTab('projects');
@@ -2022,7 +2175,6 @@
     function loadPointIntoForm(p) {
       if (!p) return;
       activePointId = p.id;
-      document.getElementById('cfg-project').value = p.project || '';
       document.getElementById('cfg-machine').value = p.machine || '';
       document.getElementById('cfg-point').value = p.point || '';
       document.getElementById('sel-material').value = p.material || 'Messing vernikkeld';
@@ -2053,7 +2205,9 @@
       }
 
       document.getElementById('sel-remote-fitting').value = p.remoteFitting || 'straight-kit';
-      document.getElementById('sel-lubricator').value = p.lubricator || '125ml';
+      document.getElementById('sel-lubricator-vol').value = p.lubricatorVol || '125ml';
+      populateGreaseTypes(p.greaseType);
+
       document.getElementById('sel-months').value = p.months || 6;
 
       currentPhotoBase64 = p.photo;
@@ -2083,7 +2237,7 @@
             <div>
               <div style="font-weight: 800; font-size: 14px; color: var(--dark);">${p.machine} ➔ ${p.point}</div>
               <div style="font-size: 12px; color: var(--text-muted); margin-top: 3px;">
-                ${p.mountType === 'remote' ? 'Afstandsmontage (Pulsarlube 1702)' : 'Directe montage'} • Materiaal: <strong>${p.material}</strong> • Lager: <strong>${p.bearingThread}</strong> • ISPL: <strong>${p.lubricator} (${p.months} mnd)</strong>
+                ${p.mountType === 'remote' ? 'Afstandsmontage (Pulsarlube 1702)' : 'Directe montage'} • Materiaal: <strong>${p.material}</strong> • Lager: <strong>${p.bearingThread}</strong> • ISPL: <strong>${p.lubricatorVol} + ${p.greaseType} (${p.months} mnd)</strong>
               </div>
             </div>
           </div>
@@ -2151,7 +2305,56 @@
     }
 
     // ========================================================================
-    // EXPORT MODAL & PDF EXPORT
+    // DOSSIER EXPORT & IMPORT (JSON BACKUP VAN VOLLEDIG KLANTDOSSIER)
+    // ========================================================================
+    function exportDossierJSON() {
+      const data = {
+        app: "Hardware Selector Dossier",
+        version: "4.2",
+        exportedAt: new Date().toISOString(),
+        generalInfo: generalInfo,
+        points: savedPoints
+      };
+
+      const jsonStr = JSON.stringify(data, null, 2);
+      const blob = new Blob([jsonStr], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const cleanClient = (generalInfo.client || 'Dossier').replace(/[^a-zA-Z0-9_-]/g, '_');
+      a.href = url;
+      a.download = `Dossier_${cleanClient}_${new Date().toISOString().slice(0,10)}.json`;
+      a.click();
+    }
+
+    function importDossierJSON(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        try {
+          const imported = JSON.parse(evt.target.result);
+          if (imported.points && Array.isArray(imported.points)) {
+            savedPoints = imported.points;
+            if (imported.generalInfo) generalInfo = imported.generalInfo;
+            activePointId = savedPoints[0] ? savedPoints[0].id : null;
+
+            saveCurrentState();
+            init();
+            alert(`Dossier succesvol geladen voor klant: ${generalInfo.client} (${savedPoints.length} smeerpunten)!`);
+            switchTab('projects');
+          } else {
+            alert('Ongeldig dossierbestand.');
+          }
+        } catch (err) {
+          alert('Fout bij importeren van dossier: ' + err.message);
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    // ========================================================================
+    // EXPORT MODAL & PDF VOLLEDIG GEDETAILLEERD EN COMPACT RAPPORT
     // ========================================================================
     function openExportModal() {
       const container = document.getElementById('machine-filter-list');
@@ -2201,14 +2404,145 @@
         return;
       }
 
-      if (detailType === 'compact') {
-        const filteredPoints = savedPoints.filter(p => selectedMachines.includes(p.machine || 'Algemeen'));
-        
+      const filteredPoints = savedPoints.filter(p => selectedMachines.includes(p.machine || 'Algemeen'));
+      const container = document.getElementById('print-report-container');
+
+      if (detailType === 'detail') {
+        // ====================================================================
+        // VOLLEDIG GEDETAILLEERD TECHNISCH RAPPORT MET ALLE FICHE DETAILS
+        // ====================================================================
+        let detailHtml = `
+          <div style="margin-bottom: 18px;">
+            <div style="border-bottom: 3px solid #E30613; padding-bottom: 8px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: flex-end;">
+              <div>
+                <h1 style="color: #E30613; font-size: 20px; font-weight: 900; margin: 0;">TECHNISCH MONTAGE DOSSIER</h1>
+                <div style="font-size: 13px; color: #0F172A; font-weight: bold; margin-top: 4px;">Klant: ${generalInfo.client} | Project: ${generalInfo.project}</div>
+                <div style="font-size: 11px; color: #64748B;">Contact: ${generalInfo.contact || '-'} | Adviseur: ${generalInfo.advisor || '-'}</div>
+              </div>
+              <div style="text-align: right; font-size: 11px; color: #64748B;">
+                Aantal smeerpunten: <strong>${filteredPoints.length}</strong><br>
+                Datum: ${new Date().toLocaleDateString('nl-BE')}
+              </div>
+            </div>
+            ${generalInfo.notes ? `<div style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 10px; border-radius: 8px; font-size: 11.5px; margin-bottom: 16px;"><strong>Projectnotities:</strong> ${generalInfo.notes}</div>` : ''}
+          </div>
+        `;
+
+        filteredPoints.forEach((p, idx) => {
+          detailHtml += `
+            <div style="border: 1px solid #CBD5E1; border-radius: 12px; padding: 16px; margin-bottom: 20px; background: white; page-break-inside: avoid;">
+              <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #F1F5F9; padding-bottom: 8px; margin-bottom: 12px;">
+                <div>
+                  <span style="background: #E30613; color: white; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 900; margin-right: 6px;">PUNT ${idx + 1}</span>
+                  <strong style="font-size: 15px; color: #0F172A;">${p.machine} ➔ ${p.point}</strong>
+                </div>
+                <div style="font-size: 11.5px; color: #64748B; font-weight: bold;">
+                  ${p.mountType === 'remote' ? 'Afstandsmontage (Pulsarlube 1702)' : 'Directe montage'} • ${p.material}
+                </div>
+              </div>
+
+              <!-- 2-koloms detailweergave: Specificaties & Foto/Tekening -->
+              <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 14px; margin-bottom: 14px;">
+                <div>
+                  <table style="width: 100%; border-collapse: collapse; font-size: 11.5px;">
+                    <tr><td style="padding: 4px 0; color: #64748B; width: 150px;">Aansluiting 1 (Lager):</td><td style="padding: 4px 0; font-weight: bold;">${p.bearingThread}</td></tr>
+                    <tr><td style="padding: 4px 0; color: #64748B;">ISPL Smeerunit:</td><td style="padding: 4px 0; font-weight: bold; color: #E30613;">${p.lubricatorVol} + ${p.greaseType}</td></tr>
+                    <tr><td style="padding: 4px 0; color: #64748B;">Looptijd instelling:</td><td style="padding: 4px 0; font-weight: bold;">${p.months} maanden</td></tr>
+                    <tr><td style="padding: 4px 0; color: #64748B;">Kniestuk / Hoek:</td><td style="padding: 4px 0; font-weight: bold;">${p.angle === 'straight' ? 'Recht (geen)' : p.angle + '° knie'}</td></tr>
+                    <tr><td style="padding: 4px 0; color: #64748B;">Verlengstuk:</td><td style="padding: 4px 0; font-weight: bold;">${p.extension === '0' ? 'Geen verlenging' : p.extension + ' mm'}</td></tr>
+                    <tr><td style="padding: 4px 0; color: #64748B;">Montagewijze:</td><td style="padding: 4px 0; font-weight: bold;">${p.mountType === 'remote' ? 'Afstand (Pulsarlube 2000RC-1 kit art. 1702)' : 'Direct op lager'}</td></tr>
+                  </table>
+                </div>
+
+                <div style="display: flex; gap: 10px; justify-content: flex-end; align-items: center;">
+                  ${p.photo ? `
+                    <div style="border: 1px solid #CBD5E1; border-radius: 8px; overflow: hidden; width: 140px; height: 120px;">
+                      <img src="${p.photo}" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                  ` : ''}
+                </div>
+              </div>
+
+              <!-- Stuklijst tabel voor dit specifieke punt -->
+              <div style="margin-top: 8px;">
+                <div style="font-size: 11px; font-weight: 800; color: #475569; text-transform: uppercase; margin-bottom: 4px;">Benodigde Onderdelen voor dit smeerpunt:</div>
+                <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
+                  <thead>
+                    <tr style="background: #F1F5F9; text-align: left;">
+                      <th style="padding: 5px 8px; width: 110px;">Art. Code</th>
+                      <th style="padding: 5px 8px;">Omschrijving</th>
+                      <th style="padding: 5px 8px;">Aansluitingen</th>
+                      <th style="padding: 5px 8px; text-align: center; width: 50px;">Aantal</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${(p.components || []).map(c => `
+                      <tr style="border-bottom: 1px solid #F1F5F9;">
+                        <td style="padding: 5px 8px; font-family: monospace; font-weight: bold;">${c.code}</td>
+                        <td style="padding: 5px 8px;"><strong>${c.name}</strong></td>
+                        <td style="padding: 5px 8px; color: #64748B;">${c.a1} ➔ ${c.a2}</td>
+                        <td style="padding: 5px 8px; text-align: center; font-weight: 900;">${c.qty}</td>
+                      </tr>
+                    `).join('')}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          `;
+        });
+
+        // Totale stuklijst op het einde van het gedetailleerde rapport
+        const bomMap = new Map();
+        filteredPoints.forEach(p => {
+          (p.components || []).forEach(c => {
+            if (bomMap.has(c.code)) bomMap.get(c.code).qty += c.qty;
+            else bomMap.set(c.code, { ...c });
+          });
+        });
+
+        detailHtml += `
+          <div style="margin-top: 24px; page-break-inside: avoid;">
+            <h3 style="color: #0F172A; font-size: 14px; font-weight: 900; border-bottom: 2px solid #0F172A; padding-bottom: 4px; margin-bottom: 10px;">
+              TOTALE GEAGGREGEERDE STUKLIJST (VOOR OFFERTE & BESTELLING)
+            </h3>
+            <table style="width: 100%; border-collapse: collapse; font-size: 11.5px;">
+              <thead>
+                <tr style="background: #F1F5F9; text-align: left;">
+                  <th style="padding: 6px 8px;">Artikelnummer</th>
+                  <th style="padding: 6px 8px;">Omschrijving</th>
+                  <th style="padding: 6px 8px;">Materiaal</th>
+                  <th style="padding: 6px 8px; text-align: center;">Totaal Aantal</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${Array.from(bomMap.values()).map(item => `
+                  <tr style="border-bottom: 1px solid #E2E8F0;">
+                    <td style="padding: 6px 8px; font-family: monospace; font-weight: bold;">${item.code}</td>
+                    <td style="padding: 6px 8px;"><strong>${item.name}</strong></td>
+                    <td style="padding: 6px 8px;">${item.mat}</td>
+                    <td style="padding: 6px 8px; text-align: center; font-weight: 900; font-size: 13px;">${item.qty}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        `;
+
+        container.innerHTML = detailHtml;
+      } else {
+        // COMPACT RAPPORT
         let compactHtml = `
           <div style="margin-bottom: 16px;">
-            <h3 style="color: var(--primary); font-size: 15px; font-weight: 900; border-bottom: 2px solid var(--primary); padding-bottom: 4px; margin-bottom: 12px;">
-              SMEERPUNTEN SPECIFICATIE & ONDERDELEN
-            </h3>
+            <div style="border-bottom: 3px solid #E30613; padding-bottom: 6px; margin-bottom: 12px; display: flex; justify-content: space-between;">
+              <div>
+                <h1 style="color: #E30613; font-size: 18px; font-weight: 900; margin: 0;">COMPACT MONTAGE OVERZICHT</h1>
+                <div style="font-size: 12px; color: #0F172A; font-weight: bold;">Klant: ${generalInfo.client} | Project: ${generalInfo.project}</div>
+              </div>
+              <div style="text-align: right; font-size: 11px; color: #64748B;">
+                Datum: ${new Date().toLocaleDateString('nl-BE')}
+              </div>
+            </div>
+          </div>
         `;
 
         filteredPoints.forEach((p, idx) => {
@@ -2216,7 +2550,7 @@
             <div style="border: 1px solid #E2E8F0; border-radius: 8px; padding: 12px; margin-bottom: 12px; background: white; page-break-inside: avoid;">
               <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #F1F5F9; padding-bottom: 6px; margin-bottom: 8px;">
                 <div style="font-weight: 900; font-size: 13.5px; color: #0F172A;">${idx + 1}. Machine: ${p.machine} ➔ Smeerpunt: ${p.point}</div>
-                <div style="font-size: 11.5px; color: #64748B;">Lager: ${p.bearingThread} | ${p.material} | ${p.lubricator} (${p.months} mnd)</div>
+                <div style="font-size: 11.5px; color: #64748B;">Lager: ${p.bearingThread} | ${p.material} | ${p.lubricatorVol} + ${p.greaseType} (${p.months} mnd)</div>
               </div>
               <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
                 <thead>
@@ -2242,7 +2576,7 @@
           `;
         });
 
-        // Totale stuklijst op het einde van het compacte rapport
+        // Totale stuklijst
         const bomMap = new Map();
         filteredPoints.forEach(p => {
           (p.components || []).forEach(c => {
@@ -2277,29 +2611,24 @@
               </tbody>
             </table>
           </div>
-        </div>`;
+        `;
 
-        const container = document.getElementById('compact-report-container');
         container.innerHTML = compactHtml;
-        container.style.display = 'block';
-
-        document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
-        
-        setTimeout(() => {
-          window.print();
-          container.style.display = 'none';
-          document.querySelectorAll('.tab-content').forEach(c => c.style.display = '');
-          switchTab('projects');
-        }, 300);
-        return;
       }
 
-      switchTab('projects');
-      setTimeout(() => window.print(), 300);
+      container.style.display = 'block';
+      document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+
+      setTimeout(() => {
+        window.print();
+        container.style.display = 'none';
+        document.querySelectorAll('.tab-content').forEach(c => c.style.display = '');
+        switchTab('projects');
+      }, 300);
     }
 
     // ========================================================================
-    // ECHTE EXCEL (.XLSX) EXPORT VOOR ODOO OFFERTE (VIA SHEETJS)
+    // ECHTE EXCEL (.XLSX) EXPORT VOOR ODOO OFFERTE
     // ========================================================================
     function exportOdooExcel() {
       const bomMap = new Map();
@@ -2324,24 +2653,24 @@
 
       const ws = XLSX.utils.json_to_sheet(rows);
       ws['!cols'] = [
-        { wch: 22 }, // default_code
-        { wch: 45 }, // name
-        { wch: 16 }, // product_uom_qty
-        { wch: 10 }, // uom_id
-        { wch: 12 }, // price_unit
-        { wch: 45 }  // description
+        { wch: 22 },
+        { wch: 45 },
+        { wch: 16 },
+        { wch: 10 },
+        { wch: 12 },
+        { wch: 45 }
       ];
 
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, "Odoo_Offerte");
 
-      const proj = (document.getElementById('cfg-project').value || 'Hardware_Selector').replace(/\s+/g, '_');
-      const filename = `Odoo_Offerte_${proj}_${new Date().toISOString().slice(0,10)}.xlsx`;
+      const cleanClient = (generalInfo.client || 'Offerte').replace(/[^a-zA-Z0-9_-]/g, '_');
+      const filename = `Odoo_Offerte_${cleanClient}_${new Date().toISOString().slice(0,10)}.xlsx`;
       XLSX.writeFile(wb, filename);
     }
 
     // ========================================================================
-    // DATABASE / ODOO BEHEER MODAL (Wachtwoord: "Odoo-binnendienst")
+    // DATABASE / ODOO BEHEER MODAL
     // ========================================================================
     function openDatabaseAuthModal() {
       document.getElementById('db-pwd-input').value = '';
@@ -2458,9 +2787,6 @@
       alert('Artikel toegevoegd aan de live database!');
     }
 
-    // ========================================================================
-    // DATABASE EXCEL (.XLSX) DOWNLOAD & UPLOAD (100% IN ECHTE EXCEL SHEET)
-    // ========================================================================
     function exportDatabaseExcelXLSX() {
       const db = getActiveDatabase();
       const rows = db.map(item => ({
@@ -2475,13 +2801,13 @@
 
       const ws = XLSX.utils.json_to_sheet(rows);
       ws['!cols'] = [
-        { wch: 24 }, // default_code
-        { wch: 42 }, // name
-        { wch: 28 }, // a1
-        { wch: 28 }, // a2
-        { wch: 20 }, // mat
-        { wch: 25 }, // cat
-        { wch: 45 }  // desc
+        { wch: 24 },
+        { wch: 42 },
+        { wch: 28 },
+        { wch: 28 },
+        { wch: 20 },
+        { wch: 25 },
+        { wch: 45 }
       ];
 
       const wb = XLSX.utils.book_new();

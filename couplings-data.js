@@ -554,39 +554,303 @@ let COUPLINGS_DATA = [
 // Aparte artikellijst voor Interflon Single Point Lubricators en Pulsarlube 2000RC-1 installatiekit
 let ISPL_CATALOG = [
   {
-    "code": "ISPL-60",
-    "name": "Interflon Single Point Lubricator 60 ml",
+    "code": "1082",
+    "volume": "15ml",
+    "vol_ml": 15,
+    "grease": "Grease MP2/3",
+    "name": "Interflon Single Point Lubricator 15 ml + Grease MP2/3",
+    "thread": "G 1/4\" M",
+    "mat": "Polycarbonaat / Kunststof",
+    "desc": "Automatische smeerunit 15ml gevuld met Interflon Grease MP2/3 (art. 1082)"
+  },
+  {
+    "code": "1096",
+    "volume": "15ml",
+    "vol_ml": 15,
+    "grease": "Grease MP1",
+    "name": "Interflon Single Point Lubricator 15 ml + Grease MP1",
+    "thread": "G 1/4\" M",
+    "mat": "Polycarbonaat / Kunststof",
+    "desc": "Automatische smeerunit 15ml gevuld met Interflon Grease MP1 (art. 1096)"
+  },
+  {
+    "code": "1097",
+    "volume": "15ml",
+    "vol_ml": 15,
+    "grease": "Food grease HD2",
+    "name": "Interflon Single Point Lubricator 15 ml + Food grease HD2",
+    "thread": "G 1/4\" M",
+    "mat": "Polycarbonaat / Kunststof",
+    "desc": "Automatische smeerunit 15ml gevuld met Interflon Food grease HD2 (art. 1097)"
+  },
+  {
+    "code": "7612",
+    "volume": "15ml",
+    "vol_ml": 15,
+    "grease": "Food grease LT2",
+    "name": "Interflon Single Point Lubricator 15 ml + Food grease LT2",
+    "thread": "G 1/4\" M",
+    "mat": "Polycarbonaat / Kunststof",
+    "desc": "Automatische smeerunit 15ml gevuld met Interflon Food grease LT2 (art. 7612)"
+  },
+  {
+    "code": "1051",
+    "volume": "30ml",
+    "vol_ml": 30,
+    "grease": "Grease MP2/3",
+    "name": "Interflon Single Point Lubricator 30 ml + Grease MP2/3",
+    "thread": "G 1/4\" M",
+    "mat": "Polycarbonaat / Kunststof",
+    "desc": "Automatische smeerunit 30ml gevuld met Interflon Grease MP2/3 (art. 1051)"
+  },
+  {
+    "code": "1066",
+    "volume": "30ml",
+    "vol_ml": 30,
+    "grease": "Food grease LT2",
+    "name": "Interflon Single Point Lubricator 30 ml + Food grease LT2",
+    "thread": "G 1/4\" M",
+    "mat": "Polycarbonaat / Kunststof",
+    "desc": "Automatische smeerunit 30ml gevuld met Interflon Food grease LT2 (art. 1066)"
+  },
+  {
+    "code": "1042",
+    "volume": "30ml",
+    "vol_ml": 30,
+    "grease": "Food lube G150",
+    "name": "Interflon Single Point Lubricator 30 ml + Food lube G150",
+    "thread": "G 1/4\" M",
+    "mat": "Polycarbonaat / Kunststof",
+    "desc": "Automatische smeerunit 30ml gevuld met Interflon Food lube G150 (art. 1042)"
+  },
+  {
+    "code": "1053",
+    "volume": "30ml",
+    "vol_ml": 30,
+    "grease": "Food lube G220",
+    "name": "Interflon Single Point Lubricator 30 ml + Food lube G220",
+    "thread": "G 1/4\" M",
+    "mat": "Polycarbonaat / Kunststof",
+    "desc": "Automatische smeerunit 30ml gevuld met Interflon Food lube G220 (art. 1053)"
+  },
+  {
+    "code": "1071",
     "volume": "60ml",
     "vol_ml": 60,
+    "grease": "Grease MP2/3",
+    "name": "Interflon Single Point Lubricator 60 ml + Grease MP2/3",
     "thread": "G 1/4\" M",
     "mat": "Polycarbonaat / Kunststof",
-    "desc": "Elektromechanische automatische smeerunit 60 ml, instelbaar 1-12 maanden, aansluiting G 1/4\" M"
+    "desc": "Automatische smeerunit 60ml gevuld met Interflon Grease MP2/3 (art. 1071)"
   },
   {
-    "code": "ISPL-125",
-    "name": "Interflon Single Point Lubricator 125 ml",
+    "code": "1049",
+    "volume": "60ml",
+    "vol_ml": 60,
+    "grease": "Grease LS1/2",
+    "name": "Interflon Single Point Lubricator 60 ml + Grease LS1/2",
+    "thread": "G 1/4\" M",
+    "mat": "Polycarbonaat / Kunststof",
+    "desc": "Automatische smeerunit 60ml gevuld met Interflon Grease LS1/2 (art. 1049)"
+  },
+  {
+    "code": "1079",
+    "volume": "60ml",
+    "vol_ml": 60,
+    "grease": "Grease HD2",
+    "name": "Interflon Single Point Lubricator 60 ml + Grease HD2",
+    "thread": "G 1/4\" M",
+    "mat": "Polycarbonaat / Kunststof",
+    "desc": "Automatische smeerunit 60ml gevuld met Interflon Grease HD2 (art. 1079)"
+  },
+  {
+    "code": "1074",
+    "volume": "60ml",
+    "vol_ml": 60,
+    "grease": "Food grease 1",
+    "name": "Interflon Single Point Lubricator 60 ml + Food grease 1",
+    "thread": "G 1/4\" M",
+    "mat": "Polycarbonaat / Kunststof",
+    "desc": "Automatische smeerunit 60ml gevuld met Interflon Food grease 1 (art. 1074)"
+  },
+  {
+    "code": "1077",
+    "volume": "60ml",
+    "vol_ml": 60,
+    "grease": "Food grease EP",
+    "name": "Interflon Single Point Lubricator 60 ml + Food grease EP",
+    "thread": "G 1/4\" M",
+    "mat": "Polycarbonaat / Kunststof",
+    "desc": "Automatische smeerunit 60ml gevuld met Interflon Food grease EP (art. 1077)"
+  },
+  {
+    "code": "1078",
+    "volume": "60ml",
+    "vol_ml": 60,
+    "grease": "Food grease LT2",
+    "name": "Interflon Single Point Lubricator 60 ml + Food grease LT2",
+    "thread": "G 1/4\" M",
+    "mat": "Polycarbonaat / Kunststof",
+    "desc": "Automatische smeerunit 60ml gevuld met Interflon Food grease LT2 (art. 1078)"
+  },
+  {
+    "code": "1075",
+    "volume": "60ml",
+    "vol_ml": 60,
+    "grease": "Food lube G150",
+    "name": "Interflon Single Point Lubricator 60 ml + Food lube G150",
+    "thread": "G 1/4\" M",
+    "mat": "Polycarbonaat / Kunststof",
+    "desc": "Automatische smeerunit 60ml gevuld met Interflon Food lube G150 (art. 1075)"
+  },
+  {
+    "code": "1061",
     "volume": "125ml",
     "vol_ml": 125,
+    "grease": "Grease MP2/3",
+    "name": "Interflon Single Point Lubricator 125 ml + Grease MP2/3",
     "thread": "G 1/4\" M",
     "mat": "Polycarbonaat / Kunststof",
-    "desc": "Elektromechanische automatische smeerunit 125 ml, instelbaar 1-12 maanden, aansluiting G 1/4\" M"
+    "desc": "Automatische smeerunit 125ml gevuld met Interflon Grease MP2/3 (art. 1061)"
   },
   {
-    "code": "ISPL-250",
-    "name": "Interflon Single Point Lubricator 250 ml",
-    "volume": "250ml",
-    "vol_ml": 250,
+    "code": "1086",
+    "volume": "125ml",
+    "vol_ml": 125,
+    "grease": "Grease LS1/2",
+    "name": "Interflon Single Point Lubricator 125 ml + Grease LS1/2",
     "thread": "G 1/4\" M",
     "mat": "Polycarbonaat / Kunststof",
-    "desc": "Elektromechanische automatische smeerunit 250 ml, instelbaar 1-12 maanden, aansluiting G 1/4\" M"
+    "desc": "Automatische smeerunit 125ml gevuld met Interflon Grease LS1/2 (art. 1086)"
+  },
+  {
+    "code": "1081",
+    "volume": "125ml",
+    "vol_ml": 125,
+    "grease": "Grease HD2",
+    "name": "Interflon Single Point Lubricator 125 ml + Grease HD2",
+    "thread": "G 1/4\" M",
+    "mat": "Polycarbonaat / Kunststof",
+    "desc": "Automatische smeerunit 125ml gevuld met Interflon Grease HD2 (art. 1081)"
+  },
+  {
+    "code": "1067",
+    "volume": "125ml",
+    "vol_ml": 125,
+    "grease": "Food grease 1",
+    "name": "Interflon Single Point Lubricator 125 ml + Food grease 1",
+    "thread": "G 1/4\" M",
+    "mat": "Polycarbonaat / Kunststof",
+    "desc": "Automatische smeerunit 125ml gevuld met Interflon Food grease 1 (art. 1067)"
+  },
+  {
+    "code": "1065",
+    "volume": "125ml",
+    "vol_ml": 125,
+    "grease": "Food grease EP",
+    "name": "Interflon Single Point Lubricator 125 ml + Food grease EP",
+    "thread": "G 1/4\" M",
+    "mat": "Polycarbonaat / Kunststof",
+    "desc": "Automatische smeerunit 125ml gevuld met Interflon Food grease EP (art. 1065)"
+  },
+  {
+    "code": "1083",
+    "volume": "125ml",
+    "vol_ml": 125,
+    "grease": "Food grease LT2",
+    "name": "Interflon Single Point Lubricator 125 ml + Food grease LT2",
+    "thread": "G 1/4\" M",
+    "mat": "Polycarbonaat / Kunststof",
+    "desc": "Automatische smeerunit 125ml gevuld met Interflon Food grease LT2 (art. 1083)"
+  },
+  {
+    "code": "1068",
+    "volume": "125ml",
+    "vol_ml": 125,
+    "grease": "Lube PN32",
+    "name": "Interflon Single Point Lubricator 125 ml + Lube PN32",
+    "thread": "G 1/4\" M",
+    "mat": "Polycarbonaat / Kunststof",
+    "desc": "Automatische smeerunit 125ml gevuld met Interflon Lube PN32 (art. 1068)"
+  },
+  {
+    "code": "1064",
+    "volume": "125ml",
+    "vol_ml": 125,
+    "grease": "Lube PN68",
+    "name": "Interflon Single Point Lubricator 125 ml + Lube PN68",
+    "thread": "G 1/4\" M",
+    "mat": "Polycarbonaat / Kunststof",
+    "desc": "Automatische smeerunit 125ml gevuld met Interflon Lube PN68 (art. 1064)"
+  },
+  {
+    "code": "1069",
+    "volume": "125ml",
+    "vol_ml": 125,
+    "grease": "Food lube G150",
+    "name": "Interflon Single Point Lubricator 125 ml + Food lube G150",
+    "thread": "G 1/4\" M",
+    "mat": "Polycarbonaat / Kunststof",
+    "desc": "Automatische smeerunit 125ml gevuld met Interflon Food lube G150 (art. 1069)"
+  },
+  {
+    "code": "1041",
+    "volume": "250ml",
+    "vol_ml": 250,
+    "grease": "Grease LS1/2",
+    "name": "Interflon Single Point Lubricator 250 ml + Grease LS1/2",
+    "thread": "G 1/4\" M",
+    "mat": "Polycarbonaat / Kunststof",
+    "desc": "Automatische smeerunit 250ml gevuld met Interflon Grease LS1/2 (art. 1041)"
+  },
+  {
+    "code": "1087",
+    "volume": "250ml",
+    "vol_ml": 250,
+    "grease": "Grease MP2/3",
+    "name": "Interflon Single Point Lubricator 250 ml + Grease MP2/3",
+    "thread": "G 1/4\" M",
+    "mat": "Polycarbonaat / Kunststof",
+    "desc": "Automatische smeerunit 250ml gevuld met Interflon Grease MP2/3 (art. 1087)"
+  },
+  {
+    "code": "1070",
+    "volume": "250ml",
+    "vol_ml": 250,
+    "grease": "Food grease LT2",
+    "name": "Interflon Single Point Lubricator 250 ml + Food grease LT2",
+    "thread": "G 1/4\" M",
+    "mat": "Polycarbonaat / Kunststof",
+    "desc": "Automatische smeerunit 250ml gevuld met Interflon Food grease LT2 (art. 1070)"
+  },
+  {
+    "code": "1060",
+    "volume": "250ml",
+    "vol_ml": 250,
+    "grease": "Lube PN68",
+    "name": "Interflon Single Point Lubricator 250 ml + Lube PN68",
+    "thread": "G 1/4\" M",
+    "mat": "Polycarbonaat / Kunststof",
+    "desc": "Automatische smeerunit 250ml gevuld met Interflon Lube PN68 (art. 1060)"
+  },
+  {
+    "code": "1095",
+    "volume": "250ml",
+    "vol_ml": 250,
+    "grease": "Food lube G150",
+    "name": "Interflon Single Point Lubricator 250 ml + Food lube G150",
+    "thread": "G 1/4\" M",
+    "mat": "Polycarbonaat / Kunststof",
+    "desc": "Automatische smeerunit 250ml gevuld met Interflon Food lube G150 (art. 1095)"
   },
   {
     "code": "1702",
-    "name": "Pulsarlube 2000RC-1 Installatiekit voor montage op afstand",
     "volume": "Kit",
     "vol_ml": 0,
+    "grease": "-",
     "thread": "G 1/4\" F naar G 1/8\" M",
+    "name": "Pulsarlube 2000RC-1 Installatiekit voor montage op afstand",
     "mat": "Verzinkt staal / RVS / Polyamide",
-    "desc": "Complete installatiekit Pulsarlube 2000RC-1 inclusief beugel, max. 20 cm slang 8 mm en rechte insteekkoppeling 8 mm - G 1/8\" M (art. 1702)"
+    "desc": "Complete installatiekit Pulsarlube 2000RC-1 inclusief beugel, max. 20 cm slang 8 mm en rechte insteekkoppeling (art. 1702)"
   }
 ];

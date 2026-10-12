@@ -690,6 +690,15 @@
       vertical-align: middle;
     }
 
+    table.admin-table input {
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-family: inherit;
+    }
+
     /* Modals */
     .modal-backdrop {
       display: none;
@@ -722,7 +731,8 @@
     }
 
     .modal-card-large {
-      max-width: 960px;
+      max-width: 1250px;
+      width: 95vw;
     }
 
     .modal-title {
@@ -1392,12 +1402,22 @@
         <button onclick="closeDatabaseManagerModal()" style="background: none; border: none; font-size: 22px; cursor: pointer; color: #94A3B8;">✕</button>
       </div>
 
+      <!-- Tab Switcher: Koppelingen vs ISPL -->
+      <div style="display: flex; gap: 8px; margin-bottom: 14px; border-bottom: 1px solid var(--border); padding-bottom: 10px;">
+        <button id="db-tab-btn-couplings" class="btn-pill-primary" style="padding: 7px 18px; font-size: 12px;" onclick="switchDbTab('couplings')">
+          📦 Koppelingen &amp; Installatiekit (<span id="db-count-couplings">63</span>)
+        </button>
+        <button id="db-tab-btn-ispl" class="btn-pill-outline" style="padding: 7px 18px; font-size: 12px;" onclick="switchDbTab('ispl')">
+          🧴 ISPL Smeerunits (<span id="db-count-ispl">30</span>)
+        </button>
+      </div>
+
       <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: center; margin-bottom: 16px;">
         <div style="display: flex; gap: 8px; flex: 1; min-width: 240px;">
-          <input type="text" id="db-search-input" placeholder="🔍 Zoek artikelcode, maat of omschrijving..." oninput="filterDatabaseTable()" style="padding: 8px 14px; font-size: 12.5px;">
+          <input type="text" id="db-search-input" placeholder="🔍 Zoek artikelcode, maat, type vet of omschrijving..." oninput="filterDatabaseTable()" style="padding: 8px 14px; font-size: 12.5px;">
         </div>
         <div style="display: flex; gap: 8px;">
-          <button class="btn-pill-outline" style="padding: 8px 14px; font-size: 12px;" onclick="addNewArticleModal()">
+          <button class="btn-pill-outline" style="padding: 8px 14px; font-size: 12px;" onclick="openAddArticleModal()">
             + Nieuw Artikel
           </button>
           <button class="btn-pill-primary" style="padding: 8px 16px; font-size: 12px; background: #10B981; border: none;" onclick="exportDatabaseExcelXLSX()">
@@ -1410,17 +1430,10 @@
         </div>
       </div>
 
-      <div style="max-height: 460px; overflow-y: auto; border: 1px solid var(--border); border-radius: 12px;">
+      <div style="max-height: 480px; overflow-y: auto; border: 1px solid var(--border); border-radius: 12px;">
         <table class="admin-table">
-          <thead>
-            <tr>
-              <th style="width: 140px;">Artikelcode (Odoo)</th>
-              <th>Naam / Omschrijving</th>
-              <th>Materiaal</th>
-              <th>Aansluiting 1</th>
-              <th>Aansluiting 2</th>
-              <th style="width: 60px; text-align: center;">Actie</th>
-            </tr>
+          <thead id="db-table-head">
+            <!-- Dynamically populated based on active tab -->
           </thead>
           <tbody id="db-table-body">
             <!-- Dynamically populated -->
@@ -1435,10 +1448,93 @@
     </div>
   </div>
 
+  <!-- ==================================================================== -->
+  <!-- MODAL: NIEUW ARTIKEL TOEVOEGEN (MET DUBBEL CHECK & ISPL ONDERSTEUNING) -->
+  <!-- ==================================================================== -->
+  <div id="add-article-modal" class="modal-backdrop">
+    <div class="modal-card" style="max-width: 580px;">
+      <div class="modal-title">
+        <span>➕ Nieuw Artikel Toevoegen</span>
+        <button onclick="closeAddArticleModal()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: #94A3B8;">✕</button>
+      </div>
+
+      <div class="input-group">
+        <label class="input-label">Type Artikel</label>
+        <select id="new-art-type" onchange="onNewArtTypeChange()">
+          <option value="coupling">Koppeling / Verloopstuk / Steekfitting</option>
+          <option value="ispl">Interflon Single Point Lubricator (ISPL)</option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <label class="input-label">Artikelcode (default_code in Odoo) *</label>
+        <input type="text" id="new-art-code" placeholder="bv. 1099.1062 of 1085..." style="font-family: monospace; font-weight: bold;" oninput="document.getElementById('new-art-code-error').style.display='none'">
+        <div id="new-art-code-error" style="color: #DC2626; font-size: 11px; font-weight: bold; margin-top: 4px; display: none;"></div>
+      </div>
+
+      <div class="input-group">
+        <label class="input-label">Omschrijving / Artikelnaam *</label>
+        <input type="text" id="new-art-name" placeholder="Volledige omschrijving..." style="width: 100%;">
+      </div>
+
+      <!-- Koppeling specifieke velden -->
+      <div id="new-art-coupling-fields">
+        <div class="input-group">
+          <label class="input-label">Materiaal</label>
+          <select id="new-art-mat">
+            <option value="Messing vernikkeld">Messing vernikkeld</option>
+            <option value="RVS">RVS</option>
+            <option value="Kunststof">Kunststof</option>
+          </select>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <div class="input-group">
+            <label class="input-label">Aansluiting 1 (bv. M8x1.25 M)</label>
+            <input type="text" id="new-art-a1" placeholder="M8x1.25 M">
+          </div>
+          <div class="input-group">
+            <label class="input-label">Aansluiting 2 (bv. G 1/8&quot; F)</label>
+            <input type="text" id="new-art-a2" placeholder="G 1/8&quot; F">
+          </div>
+        </div>
+      </div>
+
+      <!-- ISPL specifieke velden -->
+      <div id="new-art-ispl-fields" style="display: none;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <div class="input-group">
+            <label class="input-label">Volume patroon</label>
+            <select id="new-art-volume">
+              <option value="15ml">15 ml</option>
+              <option value="30ml">30 ml</option>
+              <option value="60ml">60 ml</option>
+              <option value="125ml" selected>125 ml</option>
+              <option value="250ml">250 ml</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label class="input-label">Type Vet (bv. Food grease HD2)</label>
+            <input type="text" id="new-art-grease" placeholder="bv. Food grease HD2, Microlube...">
+          </div>
+        </div>
+        <div class="input-group" style="margin-top: 10px;">
+          <label class="input-label">Schroefdraad</label>
+          <input type="text" id="new-art-thread" value="G 1/4&quot; M">
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 10px; margin-top: 20px;">
+        <button class="btn-pill-primary" style="flex: 1;" onclick="saveNewArticle()">Opslaan in Database</button>
+        <button class="btn-pill-outline" style="width: auto;" onclick="closeAddArticleModal()">Annuleren</button>
+      </div>
+    </div>
+  </div>
+
   <script src="couplings-data.js"></script>
   <script>
     const STORAGE_KEY = 'IF_HARDWARE_SELECTOR_DATA_V7';
     const DB_STORAGE_KEY = 'IF_CUSTOM_COUPLINGS_DB_V2';
+    const ISPL_STORAGE_KEY = 'IF_CUSTOM_ISPL_DB_V2';
     let currentPhotoBase64 = null;
     let savedPoints = [];
     let activePointId = null;
@@ -1471,6 +1567,28 @@
         COUPLINGS_DATA = data;
       } catch (e) {
         console.error("DB storage write error:", e);
+      }
+    }
+
+    function getActiveISPLDatabase() {
+      try {
+        const stored = localStorage.getItem(ISPL_STORAGE_KEY);
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        }
+      } catch (e) {
+        console.error("ISPL DB storage read error:", e);
+      }
+      return (typeof ISPL_CATALOG !== 'undefined') ? ISPL_CATALOG : [];
+    }
+
+    function saveActiveISPLDatabase(data) {
+      try {
+        localStorage.setItem(ISPL_STORAGE_KEY, JSON.stringify(data));
+        ISPL_CATALOG = data;
+      } catch (e) {
+        console.error("ISPL DB storage write error:", e);
       }
     }
 
@@ -1626,12 +1744,12 @@
       const vol = document.getElementById('sel-lubricator-vol').value;
       const select = document.getElementById('sel-grease-type');
       
-      const available = (typeof ISPL_CATALOG !== 'undefined') ? 
-        ISPL_CATALOG.filter(item => item.volume === vol) : [];
+      const isplDb = getActiveISPLDatabase();
+      const available = isplDb.filter(item => item.volume === vol);
 
       select.innerHTML = available.map(item => `
         <option value="${item.grease}" ${item.grease === selectedGrease ? 'selected' : ''}>
-          ${item.grease} (Art. ${item.code})
+          ${item.grease} (Art. ${item.code || item.default_code})
         </option>
       `).join('');
 
@@ -1712,15 +1830,14 @@
       const comps = [];
       const mat = cfg.material;
 
-      // 1. ISPL Unit gekoppeld aan exact artikelnummer uit ISPL_CATALOG
+      // 1. ISPL Unit gekoppeld aan exact artikelnummer uit ISPL database
       let isplCode = 'ISPL';
       let isplName = `Interflon Single Point Lubricator ${cfg.lubricatorVol} + ${cfg.greaseType}`;
-      if (typeof ISPL_CATALOG !== 'undefined') {
-        const matchISPL = ISPL_CATALOG.find(item => item.volume === cfg.lubricatorVol && item.grease === cfg.greaseType);
-        if (matchISPL) {
-          isplCode = matchISPL.code;
-          isplName = matchISPL.name;
-        }
+      const isplDb = getActiveISPLDatabase();
+      const matchISPL = isplDb.find(item => item.volume === cfg.lubricatorVol && item.grease === cfg.greaseType);
+      if (matchISPL) {
+        isplCode = matchISPL.code || matchISPL.default_code;
+        isplName = matchISPL.name;
       }
 
       comps.push({
@@ -2204,9 +2321,11 @@
             <text x="118" y="56" font-size="11.5" font-weight="900" fill="#FFFFFF">ISPL ${cfg.lubricatorVol}</text>
             <text x="118" y="66" font-size="9.5" font-weight="bold" fill="#FACC15">${cfg.greaseType}</text>
 
-            <line x1="88" y1="122" x2="110" y2="122" stroke="#0F172A" stroke-width="1.5"/>
-            <circle cx="88" cy="122" r="2.5" fill="#E30613"/>
-            <text x="114" y="126" font-size="11" font-weight="900" fill="#E30613">G 1/4" M</text>
+            <!-- ISPL Schroefdraadaansluiting Annotatie (mooi vrijstaand boven beugel) -->
+            <line x1="88" y1="104" x2="110" y2="90" stroke="#E30613" stroke-width="1.5"/>
+            <circle cx="88" cy="104" r="3" fill="#E30613"/>
+            <rect x="110" y="78" width="138" height="22" rx="6" fill="#FFF5F5" stroke="#E30613" stroke-width="1.2"/>
+            <text x="179" y="93" font-size="11" font-weight="900" fill="#E30613" text-anchor="middle">ISPL Draad: G 1/4" M</text>
           </g>
 
           <!-- Pulsarlube 2000RC-1 Authentieke Plaatstalen Montagebeugel -->
@@ -3143,6 +3262,8 @@
       }
     }
 
+    let currentDbTab = 'couplings';
+
     function openDatabaseManagerModal() {
       renderDatabaseTable();
       document.getElementById('db-manager-modal').classList.add('active');
@@ -3153,42 +3274,163 @@
       onConfigChange();
     }
 
+    function switchDbTab(tab) {
+      currentDbTab = tab;
+      const btnCoup = document.getElementById('db-tab-btn-couplings');
+      const btnIspl = document.getElementById('db-tab-btn-ispl');
+      if (tab === 'ispl') {
+        btnIspl.className = 'btn-pill-primary';
+        btnCoup.className = 'btn-pill-outline';
+      } else {
+        btnCoup.className = 'btn-pill-primary';
+        btnIspl.className = 'btn-pill-outline';
+      }
+      renderDatabaseTable(document.getElementById('db-search-input').value);
+    }
+
+    function isArticleCodeDuplicate(code, excludeItemIndex = -1, type = 'coupling') {
+      const trimmed = String(code).trim().toLowerCase();
+      if (!trimmed) return false;
+      const coupDb = getActiveDatabase();
+      const isplDb = getActiveISPLDatabase();
+
+      for (let i = 0; i < coupDb.length; i++) {
+        if (type === 'coupling' && i === excludeItemIndex) continue;
+        if (coupDb[i].default_code && coupDb[i].default_code.trim().toLowerCase() === trimmed) {
+          return true;
+        }
+      }
+
+      for (let i = 0; i < isplDb.length; i++) {
+        if (type === 'ispl' && i === excludeItemIndex) continue;
+        const c = isplDb[i].code || isplDb[i].default_code;
+        if (c && String(c).trim().toLowerCase() === trimmed) {
+          return true;
+        }
+      }
+
+      return false;
+    }
+
     function renderDatabaseTable(filterQuery = '') {
+      const thead = document.getElementById('db-table-head');
       const tbody = document.getElementById('db-table-body');
-      const db = getActiveDatabase();
-      const query = filterQuery.toLowerCase();
+      const coupDb = getActiveDatabase();
+      const isplDb = getActiveISPLDatabase();
+      const query = filterQuery.toLowerCase().trim();
 
-      const filtered = db.filter(item => {
-        if (!query) return true;
-        return (item.default_code && item.default_code.toLowerCase().includes(query)) ||
-               (item.name && item.name.toLowerCase().includes(query)) ||
-               (item.a1 && item.a1.toLowerCase().includes(query)) ||
-               (item.a2 && item.a2.toLowerCase().includes(query)) ||
-               (item.mat && item.mat.toLowerCase().includes(query));
-      });
+      // Update counters
+      const countCoupEl = document.getElementById('db-count-couplings');
+      const countIsplEl = document.getElementById('db-count-ispl');
+      if (countCoupEl) countCoupEl.innerText = coupDb.length;
+      if (countIsplEl) countIsplEl.innerText = isplDb.length;
 
-      document.getElementById('db-item-count').innerText = `${filtered.length} van ${db.length} artikelen in database`;
+      if (currentDbTab === 'couplings') {
+        thead.innerHTML = `
+          <tr>
+            <th style="width: 140px;">Artikelcode (Odoo)</th>
+            <th style="min-width: 380px;">Naam / Omschrijving</th>
+            <th style="width: 140px;">Materiaal</th>
+            <th style="width: 140px;">Aansluiting 1</th>
+            <th style="width: 140px;">Aansluiting 2</th>
+            <th style="width: 60px; text-align: center;">Actie</th>
+          </tr>
+        `;
 
-      tbody.innerHTML = filtered.map(item => `
-        <tr>
-          <td>
-            <input type="text" value="${item.default_code || ''}" 
-                   style="font-family: monospace; font-size: 11.5px; font-weight: bold; padding: 6px;"
-                   onchange="updateDbField(${db.indexOf(item)}, 'default_code', this.value)">
-          </td>
-          <td>
-            <input type="text" value="${item.name || ''}" 
-                   style="font-size: 11.5px; padding: 6px;"
-                   onchange="updateDbField(${db.indexOf(item)}, 'name', this.value)">
-          </td>
-          <td style="font-size: 11px;">${item.mat || ''}</td>
-          <td style="font-size: 10px; color: var(--text-muted);">${item.a1 || ''}</td>
-          <td style="font-size: 10px; color: var(--text-muted);">${item.a2 || ''}</td>
-          <td style="text-align: center;">
-            <button onclick="deleteDbItem(${db.indexOf(item)})" style="background: none; border: none; color: #DC2626; cursor: pointer; font-size: 15px;">🗑️</button>
-          </td>
-        </tr>
-      `).join('');
+        const filtered = coupDb.filter(item => {
+          if (!query) return true;
+          return (item.default_code && item.default_code.toLowerCase().includes(query)) ||
+                 (item.name && item.name.toLowerCase().includes(query)) ||
+                 (item.a1 && item.a1.toLowerCase().includes(query)) ||
+                 (item.a2 && item.a2.toLowerCase().includes(query)) ||
+                 (item.mat && item.mat.toLowerCase().includes(query));
+        });
+
+        document.getElementById('db-item-count').innerText = `${filtered.length} van ${coupDb.length} koppelingen getoond`;
+
+        tbody.innerHTML = filtered.map(item => {
+          const idx = coupDb.indexOf(item);
+          return `
+            <tr>
+              <td>
+                <input type="text" value="${item.default_code || ''}" 
+                       style="font-family: monospace; font-size: 11.5px; font-weight: bold;"
+                       onchange="updateDbField(${idx}, 'default_code', this.value)">
+              </td>
+              <td>
+                <input type="text" value="${item.name || ''}" 
+                       style="font-size: 11.5px;"
+                       onchange="updateDbField(${idx}, 'name', this.value)">
+              </td>
+              <td style="font-size: 11.5px;">${item.mat || ''}</td>
+              <td style="font-size: 11px; color: var(--text-muted);">${item.a1 || ''}</td>
+              <td style="font-size: 11px; color: var(--text-muted);">${item.a2 || ''}</td>
+              <td style="text-align: center;">
+                <button onclick="deleteDbItem(${idx})" style="background: none; border: none; color: #DC2626; cursor: pointer; font-size: 16px;" title="Verwijderen">🗑️</button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      } else {
+        thead.innerHTML = `
+          <tr>
+            <th style="width: 140px;">Artikelcode (Odoo)</th>
+            <th style="width: 100px;">Volume</th>
+            <th style="width: 180px;">Type Vet</th>
+            <th style="min-width: 380px;">Naam / Omschrijving</th>
+            <th style="width: 120px;">Draad</th>
+            <th style="width: 60px; text-align: center;">Actie</th>
+          </tr>
+        `;
+
+        const filtered = isplDb.filter(item => {
+          if (!query) return true;
+          const c = item.code || item.default_code || '';
+          return c.toLowerCase().includes(query) ||
+                 (item.name && item.name.toLowerCase().includes(query)) ||
+                 (item.grease && item.grease.toLowerCase().includes(query)) ||
+                 (item.volume && item.volume.toLowerCase().includes(query));
+        });
+
+        document.getElementById('db-item-count').innerText = `${filtered.length} van ${isplDb.length} ISPL units getoond`;
+
+        tbody.innerHTML = filtered.map(item => {
+          const idx = isplDb.indexOf(item);
+          return `
+            <tr>
+              <td>
+                <input type="text" value="${item.code || item.default_code || ''}" 
+                       style="font-family: monospace; font-size: 11.5px; font-weight: bold;"
+                       onchange="updateIsplField(${idx}, 'code', this.value)">
+              </td>
+              <td>
+                <select style="font-size: 11.5px; padding: 6px; border: 1px solid var(--border); border-radius: 6px; width: 100%;"
+                        onchange="updateIsplField(${idx}, 'volume', this.value)">
+                  <option value="15ml" ${item.volume==='15ml'?'selected':''}>15 ml</option>
+                  <option value="30ml" ${item.volume==='30ml'?'selected':''}>30 ml</option>
+                  <option value="60ml" ${item.volume==='60ml'?'selected':''}>60 ml</option>
+                  <option value="125ml" ${item.volume==='125ml'?'selected':''}>125 ml</option>
+                  <option value="250ml" ${item.volume==='250ml'?'selected':''}>250 ml</option>
+                </select>
+              </td>
+              <td>
+                <input type="text" value="${item.grease || ''}" 
+                       style="font-size: 11.5px;"
+                       onchange="updateIsplField(${idx}, 'grease', this.value)">
+              </td>
+              <td>
+                <input type="text" value="${item.name || ''}" 
+                       style="font-size: 11.5px;"
+                       onchange="updateIsplField(${idx}, 'name', this.value)">
+              </td>
+              <td style="font-size: 11px; color: var(--text-muted);">${item.thread || 'G 1/4" M'}</td>
+              <td style="text-align: center;">
+                <button onclick="deleteIsplItem(${idx})" style="background: none; border: none; color: #DC2626; cursor: pointer; font-size: 16px;" title="Verwijderen">🗑️</button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
     }
 
     function filterDatabaseTable() {
@@ -3198,10 +3440,45 @@
 
     function updateDbField(index, field, value) {
       const db = getActiveDatabase();
-      if (db[index]) {
+      if (!db[index]) return;
+
+      if (field === 'default_code') {
+        const val = value.trim();
+        if (isArticleCodeDuplicate(val, index, 'coupling')) {
+          alert(`Fout: Artikelnummer "${val}" bestaat al in de database!\nDubbele artikelnummers zijn niet toegestaan.`);
+          renderDatabaseTable(document.getElementById('db-search-input').value);
+          return;
+        }
+        db[index].default_code = val;
+      } else {
         db[index][field] = value;
-        saveActiveDatabase(db);
       }
+
+      saveActiveDatabase(db);
+    }
+
+    function updateIsplField(index, field, value) {
+      const isplDb = getActiveISPLDatabase();
+      if (!isplDb[index]) return;
+
+      if (field === 'code') {
+        const val = value.trim();
+        if (isArticleCodeDuplicate(val, index, 'ispl')) {
+          alert(`Fout: Artikelnummer "${val}" bestaat al in de database!\nDubbele artikelnummers zijn niet toegestaan.`);
+          renderDatabaseTable(document.getElementById('db-search-input').value);
+          return;
+        }
+        isplDb[index].code = val;
+        isplDb[index].default_code = val;
+      } else if (field === 'volume') {
+        isplDb[index].volume = value;
+        isplDb[index].vol_ml = parseInt(value) || 0;
+      } else {
+        isplDb[index][field] = value;
+      }
+
+      saveActiveISPLDatabase(isplDb);
+      populateGreaseTypes();
     }
 
     function deleteDbItem(index) {
@@ -3213,33 +3490,121 @@
       }
     }
 
-    function addNewArticleModal() {
-      const code = prompt('Artikelcode (default_code in Odoo):', 'MV-VERL-');
-      if (!code) return;
-      const name = prompt('Omschrijving artikel:', 'Nieuw verloopstuk');
-      if (!name) return;
-      const mat = prompt('Materiaal (Messing vernikkeld of RVS):', 'Messing vernikkeld');
-      const a1 = prompt('Aansluiting 1 (bv. M8x1 M):', 'M8x1 M');
-      const a2 = prompt('Aansluiting 2 (bv. G 1/4" F):', 'G 1/4" F');
+    function deleteIsplItem(index) {
+      if (confirm('Deze ISPL smeerunit definitief verwijderen uit de database?')) {
+        const isplDb = getActiveISPLDatabase();
+        isplDb.splice(index, 1);
+        saveActiveISPLDatabase(isplDb);
+        populateGreaseTypes();
+        renderDatabaseTable(document.getElementById('db-search-input').value);
+      }
+    }
 
-      const db = getActiveDatabase();
-      db.unshift({
-        cat: 'Handmatig toegevoegd',
-        default_code: code,
-        name: name,
-        a1: a1 || '',
-        a2: a2 || '',
-        mat: mat || 'Messing vernikkeld',
-        desc: `${name} (${mat})`
-      });
-      saveActiveDatabase(db);
+    function openAddArticleModal() {
+      document.getElementById('new-art-code').value = '';
+      document.getElementById('new-art-name').value = '';
+      document.getElementById('new-art-a1').value = '';
+      document.getElementById('new-art-a2').value = '';
+      document.getElementById('new-art-grease').value = '';
+      document.getElementById('new-art-code-error').style.display = 'none';
+
+      document.getElementById('new-art-type').value = (currentDbTab === 'ispl') ? 'ispl' : 'coupling';
+      onNewArtTypeChange();
+
+      document.getElementById('add-article-modal').classList.add('active');
+      setTimeout(() => document.getElementById('new-art-code').focus(), 100);
+    }
+
+    function closeAddArticleModal() {
+      document.getElementById('add-article-modal').classList.remove('active');
+    }
+
+    function onNewArtTypeChange() {
+      const type = document.getElementById('new-art-type').value;
+      const coupFields = document.getElementById('new-art-coupling-fields');
+      const isplFields = document.getElementById('new-art-ispl-fields');
+      if (type === 'ispl') {
+        coupFields.style.display = 'none';
+        isplFields.style.display = 'block';
+      } else {
+        coupFields.style.display = 'block';
+        isplFields.style.display = 'none';
+      }
+    }
+
+    function saveNewArticle() {
+      const type = document.getElementById('new-art-type').value;
+      const code = document.getElementById('new-art-code').value.trim();
+      const name = document.getElementById('new-art-name').value.trim();
+      const errBox = document.getElementById('new-art-code-error');
+
+      if (!code) {
+        errBox.innerText = 'Vul een artikelcode in.';
+        errBox.style.display = 'block';
+        return;
+      }
+
+      if (isArticleCodeDuplicate(code, -1, type)) {
+        errBox.innerText = `Artikelcode "${code}" bestaat al in de database! Dubbele artikelnummers zijn niet toegestaan.`;
+        errBox.style.display = 'block';
+        return;
+      }
+
+      if (!name) {
+        alert('Vul een omschrijving / artikelnaam in.');
+        return;
+      }
+
+      if (type === 'coupling') {
+        const mat = document.getElementById('new-art-mat').value;
+        const a1 = document.getElementById('new-art-a1').value.trim();
+        const a2 = document.getElementById('new-art-a2').value.trim();
+        const db = getActiveDatabase();
+
+        db.unshift({
+          cat: 'Handmatig toegevoegd',
+          default_code: code,
+          name: name,
+          a1: a1 || '',
+          a2: a2 || '',
+          mat: mat || 'Messing vernikkeld',
+          desc: `${name} (${mat})`
+        });
+        saveActiveDatabase(db);
+        currentDbTab = 'couplings';
+      } else {
+        const vol = document.getElementById('new-art-volume').value;
+        const grease = document.getElementById('new-art-grease').value.trim() || 'Custom vet';
+        const thread = document.getElementById('new-art-thread').value.trim() || 'G 1/4" M';
+        const isplDb = getActiveISPLDatabase();
+
+        isplDb.unshift({
+          code: code,
+          default_code: code,
+          volume: vol,
+          vol_ml: parseInt(vol) || 0,
+          grease: grease,
+          name: name,
+          thread: thread,
+          mat: 'Polycarbonaat / Kunststof',
+          desc: `Automatische smeerunit ${vol} gevuld met Interflon ${grease} (art. ${code})`
+        });
+        saveActiveISPLDatabase(isplDb);
+        populateGreaseTypes();
+        currentDbTab = 'ispl';
+      }
+
+      closeAddArticleModal();
       renderDatabaseTable();
-      alert('Artikel toegevoegd aan de live database!');
+      alert(`Artikel "${code}" succesvol toegevoegd aan de database!`);
     }
 
     function exportDatabaseExcelXLSX() {
-      const db = getActiveDatabase();
-      const rows = db.map(item => ({
+      const coupDb = getActiveDatabase();
+      const isplDb = getActiveISPLDatabase();
+
+      // Sheet 1: Koppelingen & Kits
+      const coupRows = coupDb.map(item => ({
         "default_code": item.default_code || "",
         "name": item.name || "",
         "aansluiting 1": item.a1 || "",
@@ -3248,22 +3613,43 @@
         "categorie": item.cat || "",
         "description": item.desc || ""
       }));
-
-      const ws = XLSX.utils.json_to_sheet(rows);
-      ws['!cols'] = [
-        { wch: 24 },
-        { wch: 42 },
-        { wch: 28 },
-        { wch: 28 },
+      const ws1 = XLSX.utils.json_to_sheet(coupRows);
+      ws1['!cols'] = [
+        { wch: 18 },
+        { wch: 45 },
+        { wch: 25 },
+        { wch: 25 },
         { wch: 20 },
         { wch: 25 },
-        { wch: 45 }
+        { wch: 50 }
+      ];
+
+      // Sheet 2: ISPL Smeerunits
+      const isplRows = isplDb.map(item => ({
+        "default_code": item.code || item.default_code || "",
+        "name": item.name || "",
+        "volume": item.volume || "",
+        "grease": item.grease || "",
+        "draad": item.thread || 'G 1/4" M',
+        "materiaal": item.mat || 'Polycarbonaat / Kunststof',
+        "description": item.desc || ""
+      }));
+      const ws2 = XLSX.utils.json_to_sheet(isplRows);
+      ws2['!cols'] = [
+        { wch: 18 },
+        { wch: 45 },
+        { wch: 12 },
+        { wch: 22 },
+        { wch: 16 },
+        { wch: 28 },
+        { wch: 50 }
       ];
 
       const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "Koppelingen_Database");
+      XLSX.utils.book_append_sheet(wb, ws1, "Koppelingen & Kits");
+      XLSX.utils.book_append_sheet(wb, ws2, "ISPL Smeerunits");
 
-      const filename = `Koppelingen_Database_${new Date().toISOString().slice(0,10)}.xlsx`;
+      const filename = `Odoo_Hardware_Database_${new Date().toISOString().slice(0,10)}.xlsx`;
       XLSX.writeFile(wb, filename);
     }
 
@@ -3276,51 +3662,91 @@
         try {
           const data = new Uint8Array(evt.target.result);
           const workbook = XLSX.read(data, { type: 'array' });
-          const firstSheet = workbook.SheetNames[0];
-          const sheet = workbook.Sheets[firstSheet];
-          const jsonRows = XLSX.utils.sheet_to_json(sheet);
+          let updatedCoup = 0;
+          let updatedIspl = 0;
+          const coupDb = getActiveDatabase();
+          const isplDb = getActiveISPLDatabase();
 
-          if (!jsonRows || jsonRows.length === 0) {
-            alert('Geen geldige data gevonden in het Excel-bestand.');
-            return;
-          }
+          workbook.SheetNames.forEach(sheetName => {
+            const sheet = workbook.Sheets[sheetName];
+            const rows = XLSX.utils.sheet_to_json(sheet);
+            if (!rows || rows.length === 0) return;
 
-          const db = getActiveDatabase();
-          let updatedCount = 0;
+            const isIsplSheet = sheetName.toLowerCase().includes('ispl') || rows.some(r => r['grease'] || r['volume']);
 
-          jsonRows.forEach(row => {
-            const code = row['default_code'] || row['Artikelcode'] || '';
-            const name = row['name'] || row['Naam'] || '';
+            if (isIsplSheet) {
+              rows.forEach(r => {
+                const code = String(r['default_code'] || r['code'] || r['Artikelcode'] || '').trim();
+                const name = String(r['name'] || r['Naam'] || '').trim();
+                const volume = String(r['volume'] || r['Volume'] || '125ml').trim();
+                const grease = String(r['grease'] || r['vet'] || r['Type Vet'] || '').trim();
 
-            if (code || name) {
-              const existing = db.find(item => 
-                (name && item.name === name) || 
-                (code && item.default_code === code)
-              );
+                if (code || name) {
+                  const existing = isplDb.find(item => 
+                    (code && (item.code === code || item.default_code === code)) ||
+                    (volume && grease && item.volume === volume && item.grease === grease)
+                  );
 
-              if (existing) {
-                if (code) existing.default_code = String(code).trim();
-                if (name) existing.name = String(name).trim();
-                if (row['materiaal']) existing.mat = String(row['materiaal']).trim();
-                updatedCount++;
-              } else if (name) {
-                db.push({
-                  cat: row['categorie'] || 'Geïmporteerd',
-                  default_code: String(code).trim(),
-                  name: String(name).trim(),
-                  a1: row['aansluiting 1'] || '',
-                  a2: row['aansluiting 2'] || '',
-                  mat: row['materiaal'] || 'Messing vernikkeld',
-                  desc: row['description'] || ''
-                });
-                updatedCount++;
-              }
+                  if (existing) {
+                    if (code) { existing.code = code; existing.default_code = code; }
+                    if (name) existing.name = name;
+                    if (volume) { existing.volume = volume; existing.vol_ml = parseInt(volume) || 0; }
+                    if (grease) existing.grease = grease;
+                    updatedIspl++;
+                  } else {
+                    isplDb.push({
+                      code: code,
+                      default_code: code,
+                      volume: volume,
+                      vol_ml: parseInt(volume) || 0,
+                      grease: grease || 'Custom vet',
+                      name: name || `Interflon Single Point Lubricator ${volume} + ${grease}`,
+                      thread: r['draad'] || 'G 1/4" M',
+                      mat: r['materiaal'] || 'Polycarbonaat / Kunststof',
+                      desc: r['description'] || `Automatische smeerunit ${volume} (${grease})`
+                    });
+                    updatedIspl++;
+                  }
+                }
+              });
+            } else {
+              rows.forEach(r => {
+                const code = String(r['default_code'] || r['Artikelcode'] || '').trim();
+                const name = String(r['name'] || r['Naam'] || '').trim();
+
+                if (code || name) {
+                  const existing = coupDb.find(item => 
+                    (code && item.default_code === code) ||
+                    (name && item.name === name)
+                  );
+
+                  if (existing) {
+                    if (code) existing.default_code = code;
+                    if (name) existing.name = name;
+                    if (r['materiaal']) existing.mat = String(r['materiaal']).trim();
+                    updatedCoup++;
+                  } else if (name) {
+                    coupDb.push({
+                      cat: r['categorie'] || 'Geïmporteerd',
+                      default_code: code,
+                      name: name,
+                      a1: r['aansluiting 1'] || '',
+                      a2: r['aansluiting 2'] || '',
+                      mat: r['materiaal'] || 'Messing vernikkeld',
+                      desc: r['description'] || ''
+                    });
+                    updatedCoup++;
+                  }
+                }
+              });
             }
           });
 
-          saveActiveDatabase(db);
+          saveActiveDatabase(coupDb);
+          saveActiveISPLDatabase(isplDb);
+          populateGreaseTypes();
           renderDatabaseTable();
-          alert(`Succesvol ${updatedCount} artikelen bijgewerkt vanuit ${file.name}!`);
+          alert(`Succesvol ${updatedCoup} koppelingen en ${updatedIspl} ISPL smeerunits bijgewerkt vanuit ${file.name}!`);
         } catch (err) {
           alert('Fout bij inlezen van Excel-bestand: ' + err.message);
         }

@@ -1,4 +1,5 @@
-// Interflon Hardware Selector - Dataset van gestroomlijnde koppelingen (Messing vernikkeld & RVS)
+// Database met alle koppelingen, verlengstukken en reducties voor de Interflon Hardware Selector
+// Geprepareerd voor directe import/export naar Odoo met veld 'default_code'
 let COUPLINGS_DATA = [
   {
     "cat": "Montagekits",
@@ -102,6 +103,15 @@ let COUPLINGS_DATA = [
   {
     "cat": "Verloopstukken naar G 1/8\"",
     "default_code": "1099.1010",
+    "name": "Verloopstuk M8x1.25 M x G 1/8\" F (Messing vernikkeld)",
+    "a1": "M8x1.25 M (buitendraad recht)",
+    "a2": "G 1/8\" F (binnendraad)",
+    "mat": "Messing vernikkeld",
+    "desc": "Draadadapter buitendraad M8x1.25 naar binnendraad G 1/8\" BSPP (Messing vernikkeld)"
+  },
+  {
+    "cat": "Verloopstukken naar G 1/8\"",
+    "default_code": "1099.1011",
     "name": "Verloopstuk M10x1 M x G 1/8\" F (Messing vernikkeld)",
     "a1": "M10x1 M (buitendraad recht)",
     "a2": "G 1/8\" F (binnendraad)",
@@ -110,7 +120,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verloopstukken naar G 1/8\"",
-    "default_code": "1099.1011",
+    "default_code": "1099.1012",
     "name": "Verloopstuk G 1/4 M x G 1/8\" F (Messing vernikkeld)",
     "a1": "G 1/4\" M (buitendraad)",
     "a2": "G 1/8\" F (binnendraad)",
@@ -119,7 +129,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verloopstukken naar G 1/8\"",
-    "default_code": "1099.1012",
+    "default_code": "1099.1013",
     "name": "Verloopstuk 1/8 NPT M x G 1/8\" F (Messing vernikkeld)",
     "a1": "1/8\" NPT M (buitendraad conisch)",
     "a2": "G 1/8\" F (binnendraad)",
@@ -128,7 +138,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verloopstukken",
-    "default_code": "1099.1013",
+    "default_code": "1099.1014",
     "name": "Verloopstuk G 1/8\" M x G 1/4\" F (Messing vernikkeld)",
     "a1": "G 1/8\" M (buitendraad)",
     "a2": "G 1/4\" F (binnendraad)",
@@ -137,7 +147,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Kniestukken G 1/4\"",
-    "default_code": "1099.1014",
+    "default_code": "1099.1015",
     "name": "Kniestuk 90° G 1/4\" M x G 1/4\" F (Messing vernikkeld)",
     "a1": "G 1/4\" M (buitendraad)",
     "a2": "G 1/4\" F (binnendraad 90°)",
@@ -146,7 +156,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Kniestukken G 1/4\"",
-    "default_code": "1099.1015",
+    "default_code": "1099.1016",
     "name": "Kniestuk 45° G 1/4\" M x G 1/4\" F (Messing vernikkeld)",
     "a1": "G 1/4\" M (buitendraad)",
     "a2": "G 1/4\" F (binnendraad 45°)",
@@ -155,7 +165,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Kniestukken G 1/8\"",
-    "default_code": "1099.1016",
+    "default_code": "1099.1017",
     "name": "Kniestuk 90° G 1/8\" M x G 1/8\" F (Messing vernikkeld)",
     "a1": "G 1/8\" M (buitendraad)",
     "a2": "G 1/8\" F (binnendraad 90°)",
@@ -164,7 +174,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Kniestukken G 1/8\"",
-    "default_code": "1099.1017",
+    "default_code": "1099.1018",
     "name": "Kniestuk 45° G 1/8\" M x G 1/8\" F (Messing vernikkeld)",
     "a1": "G 1/8\" M (buitendraad)",
     "a2": "G 1/8\" F (binnendraad 45°)",
@@ -173,7 +183,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verlengstukken G 1/4\"",
-    "default_code": "1099.1018",
+    "default_code": "1099.1019",
     "name": "Verlengstuk G 1/4\" M x G 1/4\" F - L=15mm (Messing vernikkeld)",
     "a1": "G 1/4\" M (buitendraad)",
     "a2": "G 1/4\" F (binnendraad) - L=15mm",
@@ -182,7 +192,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verlengstukken G 1/8\"",
-    "default_code": "1099.1019",
+    "default_code": "1099.1020",
     "name": "Verlengstuk G 1/8\" M x G 1/8\" F - L=15mm (Messing vernikkeld)",
     "a1": "G 1/8\" M (buitendraad)",
     "a2": "G 1/8\" F (binnendraad) - L=15mm",
@@ -191,7 +201,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verlengstukken G 1/4\"",
-    "default_code": "1099.1020",
+    "default_code": "1099.1021",
     "name": "Verlengstuk G 1/4\" M x G 1/4\" F - L=25mm (Messing vernikkeld)",
     "a1": "G 1/4\" M (buitendraad)",
     "a2": "G 1/4\" F (binnendraad) - L=25mm",
@@ -200,7 +210,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verlengstukken G 1/8\"",
-    "default_code": "1099.1021",
+    "default_code": "1099.1022",
     "name": "Verlengstuk G 1/8\" M x G 1/8\" F - L=25mm (Messing vernikkeld)",
     "a1": "G 1/8\" M (buitendraad)",
     "a2": "G 1/8\" F (binnendraad) - L=25mm",
@@ -209,7 +219,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verlengstukken G 1/4\"",
-    "default_code": "1099.1022",
+    "default_code": "1099.1023",
     "name": "Verlengstuk G 1/4\" M x G 1/4\" F - L=35mm (Messing vernikkeld)",
     "a1": "G 1/4\" M (buitendraad)",
     "a2": "G 1/4\" F (binnendraad) - L=35mm",
@@ -218,7 +228,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verlengstukken G 1/8\"",
-    "default_code": "1099.1023",
+    "default_code": "1099.1024",
     "name": "Verlengstuk G 1/8\" M x G 1/8\" F - L=35mm (Messing vernikkeld)",
     "a1": "G 1/8\" M (buitendraad)",
     "a2": "G 1/8\" F (binnendraad) - L=35mm",
@@ -227,7 +237,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verlengstukken G 1/4\"",
-    "default_code": "1099.1024",
+    "default_code": "1099.1025",
     "name": "Verlengstuk G 1/4\" M x G 1/4\" F - L=50mm (Messing vernikkeld)",
     "a1": "G 1/4\" M (buitendraad)",
     "a2": "G 1/4\" F (binnendraad) - L=50mm",
@@ -236,7 +246,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verlengstukken G 1/8\"",
-    "default_code": "1099.1025",
+    "default_code": "1099.1026",
     "name": "Verlengstuk G 1/8\" M x G 1/8\" F - L=50mm (Messing vernikkeld)",
     "a1": "G 1/8\" M (buitendraad)",
     "a2": "G 1/8\" F (binnendraad) - L=50mm",
@@ -245,7 +255,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Insteekkoppelingen 8 mm",
-    "default_code": "1099.1026",
+    "default_code": "1099.1027",
     "name": "Rechte insteekkoppeling 8 mm - G 1/8\" M (Messing vernikkeld)",
     "a1": "Push-in 8 mm",
     "a2": "G 1/8\" BSPP M (buitendraad recht)",
@@ -254,7 +264,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Insteekkoppelingen 8 mm",
-    "default_code": "1099.1027",
+    "default_code": "1099.1028",
     "name": "Knie-insteekkoppeling 90° 8 mm - G 1/8\" M (Messing vernikkeld)",
     "a1": "Push-in 8 mm",
     "a2": "G 1/8\" BSPP M (90° knie recht)",
@@ -263,7 +273,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Insteekkoppelingen 8 mm",
-    "default_code": "1099.1028",
+    "default_code": "1099.1029",
     "name": "Rechte insteekkoppeling 8 mm - G 1/4\" M (Messing vernikkeld)",
     "a1": "Push-in 8 mm",
     "a2": "G 1/4\" BSPP M (buitendraad recht)",
@@ -272,7 +282,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Insteekkoppelingen 8 mm",
-    "default_code": "1099.1029",
+    "default_code": "1099.1030",
     "name": "Knie-insteekkoppeling 90° 8 mm - G 1/4\" M (Messing vernikkeld)",
     "a1": "Push-in 8 mm",
     "a2": "G 1/4\" BSPP M (90° knie recht)",
@@ -281,7 +291,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verloopstukken naar G 1/4\"",
-    "default_code": "1099.1030",
+    "default_code": "1099.1031",
     "name": "Verloopstuk M6x1 M x G 1/4\" F (RVS)",
     "a1": "M6x1 M (buitendraad recht)",
     "a2": "G 1/4\" F (binnendraad)",
@@ -290,7 +300,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verloopstukken naar G 1/4\"",
-    "default_code": "1099.1031",
+    "default_code": "1099.1032",
     "name": "Verloopstuk M8x1 M x G 1/4\" F (RVS)",
     "a1": "M8x1 M (buitendraad recht)",
     "a2": "G 1/4\" F (binnendraad)",
@@ -299,7 +309,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verloopstukken naar G 1/4\"",
-    "default_code": "1099.1032",
+    "default_code": "1099.1033",
     "name": "Verloopstuk M8x1.25 M x G 1/4\" F (RVS)",
     "a1": "M8x1.25 M (buitendraad recht)",
     "a2": "G 1/4\" F (binnendraad)",
@@ -308,7 +318,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verloopstukken naar G 1/4\"",
-    "default_code": "1099.1033",
+    "default_code": "1099.1034",
     "name": "Verloopstuk M10x1 M x G 1/4\" F (RVS)",
     "a1": "M10x1 M (buitendraad recht)",
     "a2": "G 1/4\" F (binnendraad)",
@@ -317,7 +327,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verloopstukken naar G 1/4\"",
-    "default_code": "1099.1034",
+    "default_code": "1099.1035",
     "name": "Verloopstuk M10x1.5 M x G 1/4\" F (RVS)",
     "a1": "M10x1.5 M (buitendraad recht)",
     "a2": "G 1/4\" F (binnendraad)",
@@ -326,7 +336,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verloopstukken naar G 1/4\"",
-    "default_code": "1099.1035",
+    "default_code": "1099.1036",
     "name": "Verloopstuk G 1/8 M x G 1/4\" F (RVS)",
     "a1": "G 1/8\" M (buitendraad)",
     "a2": "G 1/4\" F (binnendraad)",
@@ -335,7 +345,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verloopstukken naar G 1/4\"",
-    "default_code": "1099.1036",
+    "default_code": "1099.1037",
     "name": "Verloopstuk 1/8 NPT M x G 1/4\" F (RVS)",
     "a1": "1/8\" NPT M (buitendraad conisch)",
     "a2": "G 1/4\" F (binnendraad)",
@@ -344,7 +354,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verloopstukken naar G 1/4\"",
-    "default_code": "1099.1037",
+    "default_code": "1099.1038",
     "name": "Verloopstuk 1/4 NPT M x G 1/4\" F (RVS)",
     "a1": "1/4\" NPT M (buitendraad conisch)",
     "a2": "G 1/4\" F (binnendraad)",
@@ -353,7 +363,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verloopstukken naar G 1/8\"",
-    "default_code": "1099.1038",
+    "default_code": "1099.1039",
     "name": "Verloopstuk M6x1 M x G 1/8\" F (RVS)",
     "a1": "M6x1 M (buitendraad recht)",
     "a2": "G 1/8\" F (binnendraad)",
@@ -362,7 +372,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verloopstukken naar G 1/8\"",
-    "default_code": "1099.1039",
+    "default_code": "1099.1040",
     "name": "Verloopstuk M8x1 M x G 1/8\" F (RVS)",
     "a1": "M8x1 M (buitendraad recht)",
     "a2": "G 1/8\" F (binnendraad)",
@@ -371,7 +381,16 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verloopstukken naar G 1/8\"",
-    "default_code": "1099.1040",
+    "default_code": "1099.1041",
+    "name": "Verloopstuk M8x1.25 M x G 1/8\" F (RVS)",
+    "a1": "M8x1.25 M (buitendraad recht)",
+    "a2": "G 1/8\" F (binnendraad)",
+    "mat": "RVS",
+    "desc": "Draadadapter buitendraad M8x1.25 naar binnendraad G 1/8\" BSPP (RVS)"
+  },
+  {
+    "cat": "Verloopstukken naar G 1/8\"",
+    "default_code": "1099.1042",
     "name": "Verloopstuk M10x1 M x G 1/8\" F (RVS)",
     "a1": "M10x1 M (buitendraad recht)",
     "a2": "G 1/8\" F (binnendraad)",
@@ -380,7 +399,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verloopstukken naar G 1/8\"",
-    "default_code": "1099.1041",
+    "default_code": "1099.1043",
     "name": "Verloopstuk G 1/4 M x G 1/8\" F (RVS)",
     "a1": "G 1/4\" M (buitendraad)",
     "a2": "G 1/8\" F (binnendraad)",
@@ -389,7 +408,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verloopstukken naar G 1/8\"",
-    "default_code": "1099.1042",
+    "default_code": "1099.1044",
     "name": "Verloopstuk 1/8 NPT M x G 1/8\" F (RVS)",
     "a1": "1/8\" NPT M (buitendraad conisch)",
     "a2": "G 1/8\" F (binnendraad)",
@@ -398,7 +417,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verloopstukken",
-    "default_code": "1099.1043",
+    "default_code": "1099.1045",
     "name": "Verloopstuk G 1/8\" M x G 1/4\" F (RVS)",
     "a1": "G 1/8\" M (buitendraad)",
     "a2": "G 1/4\" F (binnendraad)",
@@ -407,7 +426,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Kniestukken G 1/4\"",
-    "default_code": "1099.1044",
+    "default_code": "1099.1046",
     "name": "Kniestuk 90° G 1/4\" M x G 1/4\" F (RVS)",
     "a1": "G 1/4\" M (buitendraad)",
     "a2": "G 1/4\" F (binnendraad 90°)",
@@ -416,7 +435,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Kniestukken G 1/4\"",
-    "default_code": "1099.1045",
+    "default_code": "1099.1047",
     "name": "Kniestuk 45° G 1/4\" M x G 1/4\" F (RVS)",
     "a1": "G 1/4\" M (buitendraad)",
     "a2": "G 1/4\" F (binnendraad 45°)",
@@ -425,7 +444,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Kniestukken G 1/8\"",
-    "default_code": "1099.1046",
+    "default_code": "1099.1048",
     "name": "Kniestuk 90° G 1/8\" M x G 1/8\" F (RVS)",
     "a1": "G 1/8\" M (buitendraad)",
     "a2": "G 1/8\" F (binnendraad 90°)",
@@ -434,7 +453,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Kniestukken G 1/8\"",
-    "default_code": "1099.1047",
+    "default_code": "1099.1049",
     "name": "Kniestuk 45° G 1/8\" M x G 1/8\" F (RVS)",
     "a1": "G 1/8\" M (buitendraad)",
     "a2": "G 1/8\" F (binnendraad 45°)",
@@ -443,7 +462,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verlengstukken G 1/4\"",
-    "default_code": "1099.1048",
+    "default_code": "1099.1050",
     "name": "Verlengstuk G 1/4\" M x G 1/4\" F - L=15mm (RVS)",
     "a1": "G 1/4\" M (buitendraad)",
     "a2": "G 1/4\" F (binnendraad) - L=15mm",
@@ -452,7 +471,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verlengstukken G 1/8\"",
-    "default_code": "1099.1049",
+    "default_code": "1099.1051",
     "name": "Verlengstuk G 1/8\" M x G 1/8\" F - L=15mm (RVS)",
     "a1": "G 1/8\" M (buitendraad)",
     "a2": "G 1/8\" F (binnendraad) - L=15mm",
@@ -461,7 +480,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verlengstukken G 1/4\"",
-    "default_code": "1099.1050",
+    "default_code": "1099.1052",
     "name": "Verlengstuk G 1/4\" M x G 1/4\" F - L=25mm (RVS)",
     "a1": "G 1/4\" M (buitendraad)",
     "a2": "G 1/4\" F (binnendraad) - L=25mm",
@@ -470,7 +489,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verlengstukken G 1/8\"",
-    "default_code": "1099.1051",
+    "default_code": "1099.1053",
     "name": "Verlengstuk G 1/8\" M x G 1/8\" F - L=25mm (RVS)",
     "a1": "G 1/8\" M (buitendraad)",
     "a2": "G 1/8\" F (binnendraad) - L=25mm",
@@ -479,7 +498,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verlengstukken G 1/4\"",
-    "default_code": "1099.1052",
+    "default_code": "1099.1054",
     "name": "Verlengstuk G 1/4\" M x G 1/4\" F - L=35mm (RVS)",
     "a1": "G 1/4\" M (buitendraad)",
     "a2": "G 1/4\" F (binnendraad) - L=35mm",
@@ -488,7 +507,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verlengstukken G 1/8\"",
-    "default_code": "1099.1053",
+    "default_code": "1099.1055",
     "name": "Verlengstuk G 1/8\" M x G 1/8\" F - L=35mm (RVS)",
     "a1": "G 1/8\" M (buitendraad)",
     "a2": "G 1/8\" F (binnendraad) - L=35mm",
@@ -497,7 +516,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verlengstukken G 1/4\"",
-    "default_code": "1099.1054",
+    "default_code": "1099.1056",
     "name": "Verlengstuk G 1/4\" M x G 1/4\" F - L=50mm (RVS)",
     "a1": "G 1/4\" M (buitendraad)",
     "a2": "G 1/4\" F (binnendraad) - L=50mm",
@@ -506,7 +525,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verlengstukken G 1/8\"",
-    "default_code": "1099.1055",
+    "default_code": "1099.1057",
     "name": "Verlengstuk G 1/8\" M x G 1/8\" F - L=50mm (RVS)",
     "a1": "G 1/8\" M (buitendraad)",
     "a2": "G 1/8\" F (binnendraad) - L=50mm",
@@ -515,7 +534,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Insteekkoppelingen 8 mm",
-    "default_code": "1099.1056",
+    "default_code": "1099.1058",
     "name": "Rechte insteekkoppeling 8 mm - G 1/8\" M (RVS)",
     "a1": "Push-in 8 mm",
     "a2": "G 1/8\" BSPP M (buitendraad recht)",
@@ -524,7 +543,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Insteekkoppelingen 8 mm",
-    "default_code": "1099.1057",
+    "default_code": "1099.1059",
     "name": "Knie-insteekkoppeling 90° 8 mm - G 1/8\" M (RVS)",
     "a1": "Push-in 8 mm",
     "a2": "G 1/8\" BSPP M (90° knie recht)",
@@ -533,7 +552,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Insteekkoppelingen 8 mm",
-    "default_code": "1099.1058",
+    "default_code": "1099.1060",
     "name": "Rechte insteekkoppeling 8 mm - G 1/4\" M (RVS)",
     "a1": "Push-in 8 mm",
     "a2": "G 1/4\" BSPP M (buitendraad recht)",
@@ -542,7 +561,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Insteekkoppelingen 8 mm",
-    "default_code": "1099.1059",
+    "default_code": "1099.1061",
     "name": "Knie-insteekkoppeling 90° 8 mm - G 1/4\" M (RVS)",
     "a1": "Push-in 8 mm",
     "a2": "G 1/4\" BSPP M (90° knie recht)",

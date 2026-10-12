@@ -285,6 +285,52 @@
       flex-wrap: wrap;
     }
 
+    .header-point-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .capsule-badge-dropdown {
+      background: #FFF5F5;
+      border: 1.5px solid #FECACA;
+      border-radius: var(--radius-pill);
+      padding: 6px 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s;
+    }
+
+    .capsule-badge-dropdown:hover {
+      border-color: var(--primary);
+      box-shadow: 0 2px 10px rgba(227, 6, 19, 0.15);
+    }
+
+    .header-point-select {
+      border: none;
+      background: transparent;
+      padding: 0;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--primary);
+      outline: none;
+      cursor: pointer;
+      max-width: 340px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    .header-point-select option {
+      color: var(--dark);
+      background: white;
+      font-weight: 600;
+      padding: 6px 10px;
+    }
+
     .capsule-badge {
       background: white;
       border: 1px solid var(--border);
@@ -311,6 +357,46 @@
       border-radius: 50%;
       background: var(--primary);
       box-shadow: 0 0 0 3px rgba(227, 6, 19, 0.2);
+    }
+
+    /* Locatie & Foto Breedte Layout */
+    .loc-card-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    @media (min-width: 800px) {
+      .loc-card-grid {
+        grid-template-columns: 1.2fr 0.8fr;
+        align-items: stretch;
+      }
+    }
+
+    .loc-photo-col {
+      display: flex;
+      gap: 14px;
+      background: #F8FAFC;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      align-items: center;
+    }
+
+    .loc-photo-col .photo-preview {
+      width: 85px;
+      height: 85px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      object-fit: cover;
+      background: #E2E8F0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 11px;
+      overflow: hidden;
+      flex-shrink: 0;
     }
 
     .tab-content {
@@ -815,16 +901,14 @@
         <p id="page-main-sub">Koppelingsberekening & 3D Exploded View samenstelling van lager naar ISPL.</p>
       </div>
 
-      <div class="header-badges">
-        <div class="capsule-badge red-accent">
+      <div class="header-point-wrap">
+        <div class="capsule-badge-dropdown">
           <div class="status-dot"></div>
-          <span id="badge-client-label">Klant: Brouwerij De Halve Maan</span>
-        </div>
-        <div class="capsule-badge">
-          <span id="badge-mat-label">Messing vernikkeld</span>
-        </div>
-        <div class="capsule-badge">
-          <span id="badge-ispl-label">ISPL 125 ml + Grease MP2/3 (6 mnd)</span>
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <select id="header-point-select" class="header-point-select" onchange="switchActivePointFromHeader(this.value)">
+            <!-- Dynamically populated with active/saved points -->
+          </select>
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="pointer-events: none; margin-left: 2px;"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
       </div>
     </div>
@@ -833,7 +917,7 @@
     <!-- TAB 0: ALGEMENE GEGEVENS (KLANT, PROJECT & DOSSIER DETAILS)          -->
     <!-- ==================================================================== -->
     <div id="tab-general" class="tab-content">
-      <div class="card" style="max-width: 800px;">
+      <div class="card">
         <div class="card-title">
           <div class="card-title-left">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
@@ -875,55 +959,62 @@
     </div>
 
     <!-- ==================================================================== -->
-    <!-- TAB 1: CONFIGURATOR (2-KOLOMS LAY-OUT)                               -->
+    <!-- TAB 1: CONFIGURATOR (VOLLE BREEDTE LOCATIE + 2-KOLOMS SAMENSTELLING) -->
     <!-- ==================================================================== -->
     <div id="tab-config" class="tab-content active">
 
+      <!-- 1. BOVEN VOLLE BREEDTE: Machine, Smeerpunt Locatie & Proportionele Foto Preview -->
+      <div class="card" style="margin-bottom: 18px;">
+        <div class="card-title">
+          <div class="card-title-left">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span>Machine & Smeerpunt Locatie</span>
+          </div>
+          <span id="cfg-client-display" style="font-size: 11px; color: var(--primary); font-weight: bold;">Brouwerij De Halve Maan</span>
+        </div>
+        
+        <div class="loc-card-grid">
+          <!-- Linker kolom: Invoervelden -->
+          <div class="loc-inputs-col">
+            <div class="input-group">
+              <label class="input-label">Machine / Installatie</label>
+              <input type="text" id="cfg-machine" value="Flessenspoelmachine Lijn 1" oninput="autoSaveActivePoint()">
+            </div>
+            <div class="input-group" style="margin-bottom: 0;">
+              <label class="input-label">Smeerpunt Omschrijving (Tag / Positie)</label>
+              <input type="text" id="cfg-point" value="Aandrijfas Lager Positie 1" oninput="autoSaveActivePoint()">
+            </div>
+          </div>
+
+          <!-- Rechter kolom: Foto Preview proportioneel aan invoervelden -->
+          <div class="loc-photo-col">
+            <div class="photo-preview" id="photo-box">
+              <span id="photo-placeholder">Geen foto</span>
+            </div>
+            <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 6px;">
+              <input type="file" id="camera-input" accept="image/*" capture="environment" style="display: none;" onchange="handlePhotoUpload(event)">
+              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <button class="btn-photo" onclick="document.getElementById('camera-input').click()">
+                  <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                  Foto toevoegen
+                </button>
+                <button class="btn-photo" id="btn-del-photo" style="display: none; color: #DC2626;" onclick="deletePhoto()">
+                  Verwijder
+                </button>
+              </div>
+              <div style="font-size: 11px; color: var(--text-muted);">Wordt automatisch opgeslagen en mee opgenomen in rapport</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. BENEDEN: 2-Koloms Grid (Links 3D Tekening, Rechts Parameters & Stuklijst) -->
       <div class="config-grid">
 
         <!-- ===== LINKER KOLOM ===== -->
         <div class="config-left-col">
 
-          <!-- 1. BOVEN LINKS: Locatie & Foto -->
-          <div class="card">
-            <div class="card-title">
-              <div class="card-title-left">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                <span>Machine & Smeerpunt Locatie</span>
-              </div>
-              <span id="cfg-client-display" style="font-size: 11px; color: var(--primary); font-weight: bold;">Brouwerij De Halve Maan</span>
-            </div>
-            
-            <div class="input-group">
-              <label class="input-label">Machine / Installatie</label>
-              <input type="text" id="cfg-machine" value="Flessenspoelmachine Lijn 1" oninput="saveCurrentState()">
-            </div>
-
-            <div class="input-group" style="margin-bottom: 0;">
-              <label class="input-label">Smeerpunt Omschrijving (Tag / Positie)</label>
-              <input type="text" id="cfg-point" value="Aandrijfas Lager Positie 1" oninput="saveCurrentState()">
-            </div>
-
-            <!-- Foto upload/camera -->
-            <div class="photo-area">
-              <div class="photo-preview" id="photo-box">
-                <span id="photo-placeholder">Geen foto</span>
-              </div>
-              <div style="flex: 1;">
-                <input type="file" id="camera-input" accept="image/*" capture="environment" style="display: none;" onchange="handlePhotoUpload(event)">
-                <button class="btn-photo" onclick="document.getElementById('camera-input').click()">
-                  <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-                  Foto van smeerpunt toevoegen
-                </button>
-                <button class="btn-photo" id="btn-del-photo" style="display: none; color: #DC2626; margin-left: 6px;" onclick="deletePhoto()">
-                  Verwijder
-                </button>
-                <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Wordt mee opgenomen in het technisch rapport</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 2. ONDER LINKS: 3D Exploded View Tekening -->
+          <!-- 2. 3D Exploded View Tekening -->
           <div class="card">
             <div class="card-title">
               <div class="card-title-left">
@@ -936,19 +1027,11 @@
             <div class="drawing-container">
               <span class="drawing-badge" id="assembly-badge">Exploded View</span>
               
-              <!-- Authentieke ISPL Unit & Batterijdop Indicator Kaart -->
-              <div id="ispl-real-preview" style="position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.96); backdrop-filter: blur(6px); border: 1.5px solid var(--border); border-radius: 12px; padding: 8px 10px; box-shadow: 0 4px 14px rgba(0,0,0,0.08); text-align: center; z-index: 5; display: flex; gap: 8px; align-items: center;">
-                <div style="text-align: center; min-width: 65px;">
-                  <div style="font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 3px;">ISPL Unit</div>
-                  <img id="preview-ispl-img" src="ispl-125.png" alt="ISPL unit" style="max-height: 70px; max-width: 55px; object-fit: contain; display: block; margin: 0 auto;"/>
-                  <div id="preview-ispl-vol" style="font-size: 10px; font-weight: 900; color: var(--dark); margin-top: 3px;">125ml</div>
-                </div>
-                <div style="width: 1px; height: 75px; background: var(--border);"></div>
-                <div style="text-align: center; min-width: 75px;">
-                  <div style="font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 3px;">Draaischijf</div>
-                  <img id="battery-dial-img" src="battery-dial-6.png" alt="Draaischijf stand" style="width: 75px; height: auto; display: block; margin: 0 auto; border-radius: 5px; box-shadow: 0 1px 4px rgba(0,0,0,0.1);"/>
-                  <div id="battery-dial-caption" style="font-size: 10px; font-weight: 900; color: var(--primary); margin-top: 3px;">Stand: 6 mnd</div>
-                </div>
+              <!-- Authentieke Batterijdop Indicator Kaart (Zonder ISPL miniatuur) -->
+              <div id="ispl-real-preview" style="position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.96); backdrop-filter: blur(6px); border: 1.5px solid var(--border); border-radius: 12px; padding: 8px 10px; box-shadow: 0 4px 14px rgba(0,0,0,0.08); text-align: center; z-index: 5;">
+                <div style="font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 4px;">Draaischijf Stand</div>
+                <img id="battery-dial-img" src="battery-dial-6.png" alt="Draaischijf stand" style="width: 78px; height: auto; display: block; margin: 0 auto; border-radius: 5px; box-shadow: 0 1px 4px rgba(0,0,0,0.1);"/>
+                <div id="battery-dial-caption" style="font-size: 10px; font-weight: 900; color: var(--primary); margin-top: 3px;">Stand: 6 mnd</div>
               </div>
 
               <!-- 3D Exploded View SVG -->
@@ -1123,10 +1206,10 @@
               <!-- Dynamically populated -->
             </div>
 
-            <button class="btn-pill-primary" style="margin-top: 14px; padding: 14px 20px; font-size: 14px;" onclick="saveCurrentPoint()">
-              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-              Smeerpunt Opslaan & Toevoegen aan Project
-            </button>
+            <div style="margin-top: 12px; font-size: 11.5px; color: #166534; display: flex; align-items: center; gap: 8px; background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 8px; padding: 8px 12px; font-weight: 700;">
+              <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Smeerpunt wordt continu automatisch opgeslagen</span>
+            </div>
           </div>
 
         </div>
@@ -1443,8 +1526,9 @@
       document.getElementById('gen-notes').value = generalInfo.notes || '';
       updateGeneralInfoLabels();
 
-      const activeP = savedPoints.find(p => p.id === activePointId) || savedPoints[0];
+      const activeP = savedPoints.find(p => p.id == activePointId) || savedPoints[0];
       loadPointIntoForm(activeP);
+      updateHeaderPointDropdown();
       renderSavedPointsList();
       renderBOM();
       document.getElementById('print-date').innerText = 'Datum: ' + new Date().toLocaleDateString('nl-BE');
@@ -1461,10 +1545,14 @@
     }
 
     function updateGeneralInfoLabels() {
-      document.getElementById('badge-client-label').innerText = `Klant: ${generalInfo.client}`;
-      document.getElementById('cfg-client-display').innerText = generalInfo.client;
-      document.getElementById('print-header-client').innerText = generalInfo.client;
-      document.getElementById('print-header-project').innerText = generalInfo.project;
+      const bClient = document.getElementById('badge-client-label');
+      if (bClient) bClient.innerText = `Klant: ${generalInfo.client}`;
+      const cfgDisp = document.getElementById('cfg-client-display');
+      if (cfgDisp) cfgDisp.innerText = generalInfo.client;
+      const prClient = document.getElementById('print-header-client');
+      if (prClient) prClient.innerText = generalInfo.client;
+      const prProj = document.getElementById('print-header-project');
+      if (prProj) prProj.innerText = generalInfo.project;
     }
 
     function switchTab(tabId) {
@@ -1565,12 +1653,20 @@
       const greaseType = document.getElementById('sel-grease-type').value;
       const months = parseInt(document.getElementById('sel-months').value) || 6;
 
-      // Update header badges
-      document.getElementById('badge-mat-label').innerText = material;
-      document.getElementById('badge-ispl-label').innerText = `ISPL ${lubricatorVol} + ${greaseType} (${months} mnd)`;
-      document.getElementById('drawing-mode-label').innerText = (mountType === 'remote') ? 
-        'Afstandsmontage (Pulsarlube kit art. 1702)' : 'Directe montage';
-      document.getElementById('assembly-badge').innerText = `${material} | Lager ${bearingThread} ➔ ISPL ${lubricatorVol}`;
+      // Update labels
+      const bMat = document.getElementById('badge-mat-label');
+      if (bMat) bMat.innerText = material;
+      const bIspl = document.getElementById('badge-ispl-label');
+      if (bIspl) bIspl.innerText = `ISPL ${lubricatorVol} + ${greaseType} (${months} mnd)`;
+      const drawLabel = document.getElementById('drawing-mode-label');
+      if (drawLabel) {
+        drawLabel.innerText = (mountType === 'remote') ? 
+          'Afstandsmontage (Pulsarlube kit art. 1702)' : 'Directe montage';
+      }
+      const assBadge = document.getElementById('assembly-badge');
+      if (assBadge) {
+        assBadge.innerText = `${material} | Lager ${bearingThread} ➔ ISPL ${lubricatorVol}`;
+      }
 
       updateDispenseCalculator(lubricatorVol, months);
 
@@ -1582,6 +1678,7 @@
       render3DExplodedSVG({
         material, mountType, bearingThread, angle, extension, remoteFitting, lubricatorVol, greaseType, months
       });
+      autoSaveActivePoint();
     }
 
     function updateDispenseCalculator(lubricatorVol, months) {
@@ -1824,33 +1921,17 @@
     // ========================================================================
     // 3D EXPLODED VIEW VECTOR ASSEMBLY SVG RENDERING MET REALISTISCHE ONDERDELEN
     // ========================================================================
-    function render3DExplodedSVG(cfg) {
-      const svg = document.getElementById('assembly-svg');
-      let content = '';
-
+    function generateAssemblySvgMarkup(cfg, isPrint = false) {
       const volKey = (cfg.lubricatorVol || '125ml').replace('ml', '');
       const isplImgSrc = `ispl-${volKey}.png`;
-
-      // Update previews in het zwevende indicator-paneel
-      const previewIsplImg = document.getElementById('preview-ispl-img');
-      const previewIsplVol = document.getElementById('preview-ispl-vol');
-      if (previewIsplImg) previewIsplImg.src = isplImgSrc;
-      if (previewIsplVol) previewIsplVol.textContent = cfg.lubricatorVol;
-
-      const dialImg = document.getElementById('battery-dial-img');
-      const dialCap = document.getElementById('battery-dial-caption');
-      if (dialImg) dialImg.src = `battery-dial-${cfg.months}.png`;
-      if (dialCap) dialCap.textContent = `Stand: ${cfg.months} mnd`;
-
       const isRVS = (cfg.material === 'RVS');
 
-      // Metallic shaders voor RVS of Messing Vernikkeld
       const metalStroke = isRVS ? '#334155' : '#78350F';
       const metalText = isRVS ? '#0F172A' : '#78350F';
 
       const defs = `
         <defs>
-          <!-- RVS Shaders (Hoogwaardig mat en gepolijst roestvast staal) -->
+          <!-- RVS Shaders -->
           <linearGradient id="rvsCyl" x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" stop-color="#334155"/>
             <stop offset="12%" stop-color="#64748B"/>
@@ -1874,7 +1955,7 @@
             <stop offset="100%" stop-color="#334155"/>
           </linearGradient>
 
-          <!-- Messing Vernikkeld Shaders (Glanzend warm nikkel) -->
+          <!-- Messing Vernikkeld Shaders -->
           <linearGradient id="brassCyl" x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" stop-color="#78350F"/>
             <stop offset="12%" stop-color="#B45309"/>
@@ -1906,26 +1987,6 @@
             <stop offset="75%" stop-color="#64748B"/>
             <stop offset="100%" stop-color="#0F172A"/>
           </linearGradient>
-
-          <!-- Gietijzeren Staand Lagerhuis Shaders -->
-          <linearGradient id="castIronGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stop-color="#475569"/>
-            <stop offset="35%" stop-color="#334155"/>
-            <stop offset="75%" stop-color="#1E293B"/>
-            <stop offset="100%" stop-color="#0F172A"/>
-          </linearGradient>
-          <radialGradient id="castHub" cx="50%" cy="35%" r="65%">
-            <stop offset="0%" stop-color="#64748B"/>
-            <stop offset="50%" stop-color="#334155"/>
-            <stop offset="100%" stop-color="#0F172A"/>
-          </radialGradient>
-          <linearGradient id="chromeShaft" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stop-color="#475569"/>
-            <stop offset="25%" stop-color="#F1F5F9"/>
-            <stop offset="50%" stop-color="#FFFFFF"/>
-            <stop offset="75%" stop-color="#CBD5E1"/>
-            <stop offset="100%" stop-color="#334155"/>
-          </linearGradient>
         </defs>
       `;
 
@@ -1934,8 +1995,10 @@
       const facetC = isRVS ? 'url(#rvsFacetC)' : 'url(#brassFacetC)';
       const facetR = isRVS ? 'url(#rvsFacetR)' : 'url(#brassFacetR)';
 
+      let inner = '';
+      let totalH = 500;
+
       if (cfg.mountType === 'direct') {
-        // Zuiver rechtopstaande uitlijning per ISPL volume
         const isplLayouts = {
           '250': { x: 25, y: 10, w: 50, h: 165, bottom: 175 },
           '125': { x: 18, y: 20, w: 64, h: 135, bottom: 155 },
@@ -1945,25 +2008,22 @@
         };
         const layout = isplLayouts[volKey] || isplLayouts['125'];
 
-        // Dynamische afstanden voor de exploded view
         const extH = (cfg.extension === '15') ? 22 : (cfg.extension === '25') ? 30 : (cfg.extension === '35') ? 38 : (cfg.extension === '50') ? 48 : 0;
         const extY = layout.bottom + 26;
         const elbowY = extY + (cfg.extension !== '0' ? (extH + 26) : 0);
         const reducerY = elbowY + (cfg.angle !== 'straight' ? 44 : 0);
-        const bearingY = reducerY + 48;
+        const bearingY = reducerY + 46;
 
-        const totalH = Math.max(500, bearingY + 115);
-        svg.setAttribute('viewBox', `0 0 460 ${totalH}`);
+        totalH = Math.max(500, bearingY + 130);
 
-        content = `
+        inner = `
           ${defs}
 
           <!-- Centrale Geëxplodeerde Assemblagelijn -->
-          <line x1="210" y1="20" x2="210" y2="${bearingY + 28}" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.6"/>
+          <line x1="210" y1="20" x2="210" y2="${bearingY + 12}" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.6"/>
 
           <!-- 1. REALISTISCHE ISPL LUBRICATOR (FOTO PER GESELECTEERD VOLUME) -->
           <g transform="translate(160, 0)">
-            <!-- Echte ISPL Productfoto zuiver verticaal uitgelijnd -->
             <image href="${isplImgSrc}" x="${layout.x}" y="${layout.y}" width="${layout.w}" height="${layout.h}" preserveAspectRatio="xMidYMid meet"/>
 
             <!-- Badge Boven Draaischijf -->
@@ -2008,34 +2068,37 @@
           </g>
           ` : ''}
 
-          <!-- 3. KNIESTUK (3D Gegoten/Gefreesd Kniestuk) -->
+          <!-- 3. KNIESTUK (Duidelijk Herkenbaar 3D Haaks of 45° Kniestuk) -->
           ${cfg.angle !== 'straight' ? `
           <g transform="translate(160, ${elbowY})">
-            <!-- Vrouwelijke Kraag -->
-            <rect x="34" y="0" width="32" height="7" rx="2" fill="${cylGrad}" stroke="${metalStroke}" stroke-width="0.8"/>
-            <ellipse cx="50" cy="2" rx="9" ry="2.5" fill="#0F172A"/>
+            <!-- Vrouwelijke Ingangskraag G 1/4" F -->
+            <rect x="36" y="0" width="28" height="7" rx="2" fill="${cylGrad}" stroke="${metalStroke}" stroke-width="0.8"/>
+            <ellipse cx="50" cy="2" rx="8" ry="2" fill="#0F172A"/>
 
-            <!-- Knie Lichaam (Fillet afronding en 3D shading) -->
+            <!-- Massief gegoten/gefreesd L-vormig knielichaam -->
             ${cfg.angle === '90' ? `
-              <path d="M 34 7 C 34 26, 36 28, 48 28 L 52 28 C 64 28, 66 26, 66 7 Z" fill="${cylGrad}" stroke="${metalStroke}" stroke-width="0.8"/>
-              <ellipse cx="50" cy="18" rx="8" ry="4" fill="${facetC}" opacity="0.6"/>
+              <path d="M 36 7 L 36 26 C 36 30, 39 33, 44 33 L 56 33 C 61 33, 64 30, 64 26 L 64 7 Z" fill="${cylGrad}" stroke="${metalStroke}" stroke-width="0.8"/>
+              <polygon points="41,8 59,8 62,23 54,30 46,30 38,23" fill="${facetC}" opacity="0.65"/>
+              <rect x="41" y="33" width="18" height="11" fill="url(#threadGrad)" stroke="${metalStroke}" stroke-width="0.8"/>
+              <line x1="41" y1="36" x2="59" y2="36" stroke="#FFFFFF" stroke-width="1.2" opacity="0.8"/>
+              <line x1="41" y1="39" x2="59" y2="39" stroke="#FFFFFF" stroke-width="1.2" opacity="0.8"/>
+              <line x1="41" y1="42" x2="59" y2="42" stroke="#FFFFFF" stroke-width="1.2" opacity="0.8"/>
             ` : `
-              <path d="M 34 7 L 40 24 L 60 24 L 66 7 Z" fill="${cylGrad}" stroke="${metalStroke}" stroke-width="0.8"/>
+              <path d="M 36 7 L 40 25 L 60 25 L 64 7 Z" fill="${cylGrad}" stroke="${metalStroke}" stroke-width="0.8"/>
+              <polygon points="42,8 58,8 57,23 43,23" fill="${facetC}" opacity="0.65"/>
+              <rect x="41" y="25" width="18" height="11" fill="url(#threadGrad)" stroke="${metalStroke}" stroke-width="0.8"/>
+              <line x1="41" y1="28" x2="59" y2="28" stroke="#FFFFFF" stroke-width="1.2" opacity="0.8"/>
+              <line x1="41" y1="31" x2="59" y2="31" stroke="#FFFFFF" stroke-width="1.2" opacity="0.8"/>
+              <line x1="41" y1="34" x2="59" y2="34" stroke="#FFFFFF" stroke-width="1.2" opacity="0.8"/>
             `}
 
-            <!-- Mannelijke Schroefdraad G 1/4" M aan onderzijde -->
-            <rect x="40" y="28" width="20" height="11" fill="url(#threadGrad)" stroke="${metalStroke}" stroke-width="0.8"/>
-            <line x1="40" y1="31" x2="60" y2="31" stroke="#FFFFFF" stroke-width="1.2" opacity="0.8"/>
-            <line x1="40" y1="34" x2="60" y2="34" stroke="#FFFFFF" stroke-width="1.2" opacity="0.8"/>
-            <line x1="40" y1="37" x2="60" y2="37" stroke="#FFFFFF" stroke-width="1.2" opacity="0.8"/>
-
             <!-- Annotaties -->
-            <line x1="20" y1="5" x2="34" y2="5" stroke="#0F172A" stroke-width="1"/>
-            <rect x="-140" y="-5" width="155" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1"/>
-            <text x="-135" y="9" font-size="10" font-weight="bold" fill="${metalText}">Binnendraad: G 1/4" F</text>
+            <line x1="20" y1="4" x2="36" y2="4" stroke="#0F172A" stroke-width="1"/>
+            <rect x="-140" y="-6" width="155" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1"/>
+            <text x="-135" y="8" font-size="10" font-weight="bold" fill="${metalText}">Binnendraad: G 1/4" F</text>
 
-            <line x1="66" y1="18" x2="110" y2="18" stroke="#0F172A" stroke-width="1"/>
-            <rect x="110" y="8" width="165" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1"/>
+            <line x1="64" y1="18" x2="110" y2="18" stroke="#0F172A" stroke-width="1"/>
+            <rect x="110" y="8" width="175" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1"/>
             <text x="115" y="22" font-size="10" font-weight="900" fill="#D97706">${cfg.angle}° Kniestuk G 1/4"</text>
           </g>
           ` : ''}
@@ -2077,48 +2140,18 @@
           </g>
 
           <!-- 5. REALISTISCH GIETIJZEREN STAAND LAGERHUIS (Pillow Block Bearing) -->
-          <g transform="translate(115, ${bearingY})">
-            <!-- Bevestigingsvoet (Gietijzeren flens met montagegaten) -->
-            <path d="M 0 78 L 190 78 L 186 64 L 140 60 L 50 60 L 4 64 Z" fill="url(#castIronGrad)" stroke="#0F172A" stroke-width="1.2"/>
-            <rect x="10" y="66" width="170" height="12" rx="3" fill="#1E293B" stroke="#0F172A" opacity="0.4"/>
+          <g>
+            <image href="bearing-pillow-block.png" x="130" y="${bearingY}" width="160" height="134" preserveAspectRatio="xMidYMid meet"/>
 
-            <!-- Linker en rechter bevestigingssleuf met stalen boutkoppen -->
-            <ellipse cx="22" cy="71" rx="8" ry="3.5" fill="#0F172A"/>
-            <rect x="18" y="67" width="8" height="6" fill="${cylGrad}" stroke="#0F172A" stroke-width="0.5"/>
-            <ellipse cx="168" cy="71" rx="8" ry="3.5" fill="#0F172A"/>
-            <rect x="164" y="67" width="8" height="6" fill="${cylGrad}" stroke="#0F172A" stroke-width="0.5"/>
-
-            <!-- Centraal Sferisch Gietijzeren Lagerhuis -->
-            <path d="M 46 60 C 42 22, 70 8, 95 8 C 120 8, 148 22, 144 60 Z" fill="url(#castHub)" stroke="#0F172A" stroke-width="1.5"/>
-
-            <!-- Bovenste Bewerkte Smeerpoort Nok (Lagerpoort) -->
-            <rect x="80" y="0" width="30" height="9" rx="2" fill="${cylGrad}" stroke="#0F172A" stroke-width="1"/>
-            <ellipse cx="95" cy="2" rx="7" ry="2" fill="#0F172A"/>
-
-            <!-- Precisie Stalen Buitenring -->
-            <ellipse cx="95" cy="40" rx="34" ry="28" fill="${cylGrad}" stroke="#0F172A" stroke-width="1.2"/>
-
-            <!-- Nitril Rubber Contactafdichting (Zwart met lippen) -->
-            <ellipse cx="95" cy="40" rx="27" ry="22" fill="#18181B" stroke="#27272A" stroke-width="1.5"/>
-
-            <!-- Binnenring & Stelschroeven -->
-            <ellipse cx="95" cy="40" rx="20" ry="16" fill="${cylGrad}" stroke="#0F172A" stroke-width="1"/>
-            <circle cx="86" cy="33" r="1.8" fill="#0F172A"/>
-            <circle cx="104" cy="33" r="1.8" fill="#0F172A"/>
-
-            <!-- Draaiende Massieve Chroomstalen Aandrijfas -->
-            <path d="M -15 32 L 205 32 L 205 48 L -15 48 Z" fill="url(#chromeShaft)" opacity="0.9" stroke="#334155" stroke-width="0.8"/>
-            <ellipse cx="205" cy="40" rx="3" ry="8" fill="#94A3B8"/>
-
-            <!-- Annotatie Lagerpoort -->
-            <line x1="110" y1="4" x2="155" y2="4" stroke="#0F172A" stroke-width="1"/>
-            <rect x="155" y="-6" width="165" height="20" rx="4" fill="#FFFFFF" stroke="#E30613" stroke-width="1.5"/>
-            <text x="160" y="8" font-size="10" font-weight="900" fill="#E30613">Lagerpoort: ${cfg.bearingThread}</text>
+            <!-- Annotatie Lagerpoort aan bovenzijde smeernippel/inlaat -->
+            <line x1="210" y1="${bearingY + 12}" x2="275" y2="${bearingY + 12}" stroke="#0F172A" stroke-width="1"/>
+            <rect x="275" y="${bearingY + 2}" width="165" height="20" rx="4" fill="#FFFFFF" stroke="#E30613" stroke-width="1.5"/>
+            <text x="280" y="${bearingY + 16}" font-size="10" font-weight="900" fill="#E30613">Lagerpoort: ${cfg.bearingThread}</text>
           </g>
         `;
       } else {
         // ====================================================================
-        // REMOTE MOUNT (Pulsarlube 2000RC-1) MET REALISTISCHE KOPPELINGEN
+        // REMOTE MOUNT (Pulsarlube 2000RC-1) MET REALISTISCHE PUSH-IN KOPPELING
         // ====================================================================
         const remLayouts = {
           '250': { x: 5,  y: 0,  w: 44, h: 130 },
@@ -2129,14 +2162,19 @@
         };
         const remL = remLayouts[volKey] || remLayouts['125'];
 
-        svg.setAttribute('viewBox', '0 0 460 510');
+        const isElbowPush = (cfg.remoteFitting === 'elbow-90');
+        const pushBottomY = isElbowPush ? 328 : 322;
+        const hasAdapter = (cfg.bearingThread !== 'G 1/8');
+        const adapterY = hasAdapter ? (pushBottomY + 12) : 0;
+        const bearingY = hasAdapter ? (adapterY + 44) : (pushBottomY + 32);
 
-        content = `
+        totalH = Math.max(510, bearingY + 130);
+
+        inner = `
           ${defs}
 
           <!-- ISPL op Beugel (Links, Uitgelijnd) -->
           <g transform="translate(35, 10)">
-            <!-- Echte ISPL Productfoto -->
             <image href="${isplImgSrc}" x="${remL.x}" y="${remL.y}" width="${remL.w}" height="${remL.h}" preserveAspectRatio="xMidYMid meet"/>
 
             <!-- Badge Boven Draaischijf -->
@@ -2165,80 +2203,137 @@
             <text x="130" y="12" font-size="10" font-weight="900" fill="#1E40AF">Beugel G 1/4" F (Kit 1702)</text>
           </g>
 
-          <!-- Hogedrukleiding 8 mm (Max. 20 cm) met realistische glans & pershulzen -->
+          <!-- Hogedrukleiding 8 mm (Max. 20 cm) met realistische glans -->
           <g>
-            <!-- Pershuls aan beugelzijde -->
             <rect x="42" y="172" width="10" height="8" rx="1.5" fill="${cylGrad}" stroke="#334155" stroke-width="0.5"/>
 
-            <!-- Flexibele Leiding (Dubbele stroke voor 3D cilindrische glans) -->
-            <path d="M 47 180 C 55 270, 140 240, 230 295" fill="none" stroke="#0F172A" stroke-width="8" stroke-linecap="round"/>
-            <path d="M 47 180 C 55 270, 140 240, 230 295" fill="none" stroke="#2563EB" stroke-width="5" stroke-linecap="round"/>
-            <path d="M 47 180 C 55 270, 140 240, 230 295" fill="none" stroke="#93C5FD" stroke-width="1.8" stroke-dasharray="8 6" stroke-linecap="round"/>
-
-            <!-- Pershuls aan lagerzijde -->
-            <rect x="226" y="291" width="8" height="10" rx="1.5" fill="${cylGrad}" stroke="#334155" stroke-width="0.5"/>
+            ${isElbowPush ? `
+              <!-- Leiding loopt horizontaal binnen in 90° push-in kraag aan linkerzijde -->
+              <path d="M 47 180 C 55 270, 120 300, 207 300" fill="none" stroke="#0F172A" stroke-width="8" stroke-linecap="round"/>
+              <path d="M 47 180 C 55 270, 120 300, 207 300" fill="none" stroke="#2563EB" stroke-width="5" stroke-linecap="round"/>
+              <path d="M 47 180 C 55 270, 120 300, 207 300" fill="none" stroke="#93C5FD" stroke-width="1.8" stroke-dasharray="8 6" stroke-linecap="round"/>
+            ` : `
+              <!-- Leiding loopt van boven verticaal binnen in rechte push-in -->
+              <path d="M 47 180 C 55 270, 140 230, 235 288" fill="none" stroke="#0F172A" stroke-width="8" stroke-linecap="round"/>
+              <path d="M 47 180 C 55 270, 140 230, 235 288" fill="none" stroke="#2563EB" stroke-width="5" stroke-linecap="round"/>
+              <path d="M 47 180 C 55 270, 140 230, 235 288" fill="none" stroke="#93C5FD" stroke-width="1.8" stroke-dasharray="8 6" stroke-linecap="round"/>
+            `}
 
             <!-- Badge Leidinglengte -->
-            <rect x="95" y="215" width="165" height="22" rx="6" fill="#FEF3C7" stroke="#F59E0B" stroke-width="1.5"/>
-            <text x="177" y="230" font-size="10" font-weight="900" fill="#92400E" text-anchor="middle">LEIDING 8 MM (MAX. 20 CM)</text>
+            <rect x="95" y="210" width="165" height="22" rx="6" fill="#FEF3C7" stroke="#F59E0B" stroke-width="1.5"/>
+            <text x="177" y="225" font-size="10" font-weight="900" fill="#92400E" text-anchor="middle">LEIDING 8 MM (MAX. 20 CM)</text>
           </g>
 
-          <!-- 3D Push-in Koppeling aan Lagerzijde -->
-          <g transform="translate(225, 298)">
-            <!-- Kunststof Ontgrendelring 8 mm -->
-            <rect x="4" y="0" width="14" height="4" rx="1.5" fill="#2563EB" stroke="#1D4ED8" stroke-width="0.5"/>
-            <!-- Zeskant Messing/RVS body -->
-            <rect x="1" y="4" width="20" height="12" rx="1.5" fill="${cylGrad}" stroke="${metalStroke}" stroke-width="0.8"/>
-            <!-- Mannelijke schroefdraad G 1/8" M -->
-            <rect x="3" y="16" width="16" height="10" fill="url(#threadGrad)" stroke="${metalStroke}" stroke-width="0.8"/>
-            <line x1="3" y1="19" x2="19" y2="19" stroke="#FFFFFF" stroke-width="1" opacity="0.8"/>
-            <line x1="3" y1="22" x2="19" y2="22" stroke="#FFFFFF" stroke-width="1" opacity="0.8"/>
+          <!-- 3D PUSH-IN KOPPELING AAN LAGERZIJDE (ONMISKENBAAR PUSH-IN MET BLAUWE KRAAG) -->
+          ${isElbowPush ? `
+            <!-- 90° KNIE-INSTEEKKOPPELING MET HORIZONTALE INLAAT EN BLAUWE RING -->
+            <g>
+              <!-- Blauwe Kunststof Ontgrendelring 8 mm (Horizontaal) -->
+              <rect x="207" y="293" width="5" height="14" rx="1.5" fill="#2563EB" stroke="#1D4ED8" stroke-width="0.8"/>
+              <ellipse cx="207" cy="300" rx="1.5" ry="5" fill="#60A5FA"/>
 
-            <line x1="21" y1="10" x2="60" y2="10" stroke="#0F172A" stroke-width="1"/>
-            <rect x="60" y="0" width="175" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1"/>
-            <text x="65" y="14" font-size="10" font-weight="bold" fill="${metalText}">
-              ${cfg.remoteFitting === 'elbow-90' ? '90° Knie' : 'Recht'} Push-in ➔ G 1/8" M
-            </text>
-          </g>
+              <!-- Horizontale Messing Insteekbus -->
+              <rect x="212" y="294" width="12" height="12" fill="${cylGrad}" stroke="${metalStroke}" stroke-width="0.8"/>
 
-          <!-- Eventueel Verloopstuk van Lagermaat naar G 1/8" F -->
-          ${cfg.bearingThread !== 'G 1/8' ? `
-          <g transform="translate(225, 332)">
-            <rect x="0" y="0" width="22" height="14" rx="2" fill="${facetC}" stroke="${metalStroke}" stroke-width="0.8"/>
-            <rect x="3" y="14" width="16" height="10" fill="url(#threadGrad)" stroke="${metalStroke}" stroke-width="0.8"/>
-            <line x1="22" y1="8" x2="60" y2="8" stroke="#0F172A" stroke-width="1"/>
-            <rect x="60" y="-2" width="175" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1"/>
-            <text x="65" y="12" font-size="10" font-weight="bold" fill="#0F172A">Verloop: ${cfg.bearingThread} M ➔ G 1/8" F</text>
+              <!-- 90° Haaks Lichaam (Draaibaar) naar as x=235 -->
+              <path d="M 224 293 C 236 293, 244 295, 244 305 L 244 311 L 226 311 L 226 305 C 226 298, 224 293, 224 293 Z" fill="${cylGrad}" stroke="${metalStroke}" stroke-width="0.8"/>
+              
+              <!-- Zeskant Basis (SW 14) -->
+              <rect x="226" y="311" width="18" height="7" rx="1.5" fill="${facetC}" stroke="${metalStroke}" stroke-width="0.8"/>
+              <!-- Zwarte NBR O-ring -->
+              <rect x="227" y="318" width="16" height="2" fill="#0F172A"/>
+
+              <!-- Mannelijke Schroefdraad G 1/8" M naar onder -->
+              <rect x="228" y="320" width="14" height="8" fill="url(#threadGrad)" stroke="${metalStroke}" stroke-width="0.8"/>
+              <line x1="228" y1="322.5" x2="242" y2="322.5" stroke="#FFFFFF" stroke-width="1" opacity="0.8"/>
+              <line x1="228" y1="325.5" x2="242" y2="325.5" stroke="#FFFFFF" stroke-width="1" opacity="0.8"/>
+
+              <!-- Annotatie -->
+              <line x1="244" y1="305" x2="280" y2="305" stroke="#0F172A" stroke-width="1"/>
+              <rect x="280" y="295" width="170" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1"/>
+              <text x="285" y="309" font-size="9.5" font-weight="900" fill="${metalText}">90° Knie-insteek 8mm - G 1/8" M</text>
+            </g>
+          ` : `
+            <!-- RECHTE INSTEEKKOPPELING (INBEGREPEN IN PULSARLUBE KIT 1702) -->
+            <g>
+              <!-- Blauwe Kunststof Ontgrendelring 8 mm bovenaan -->
+              <rect x="226" y="288" width="18" height="5" rx="2" fill="#2563EB" stroke="#1D4ED8" stroke-width="0.8"/>
+              <ellipse cx="235" cy="288" rx="6" ry="1.8" fill="#60A5FA"/>
+
+              <!-- Massief Zeskant Messing/RVS Lichaam met 3D Facetten -->
+              <rect x="224" y="293" width="22" height="14" rx="1.5" fill="${cylGrad}" stroke="${metalStroke}" stroke-width="0.8"/>
+              <path d="M 224 293 L 229 294 L 229 306 L 224 305 Z" fill="${facetL}"/>
+              <path d="M 229 294 L 241 294 L 241 306 L 229 306 Z" fill="${facetC}"/>
+              <path d="M 241 294 L 246 293 L 246 305 L 241 306 Z" fill="${facetR}"/>
+
+              <!-- Zwarte NBR O-ring -->
+              <rect x="227" y="307" width="16" height="2" fill="#0F172A"/>
+
+              <!-- Mannelijke Schroefdraad G 1/8" M -->
+              <rect x="228" y="309" width="14" height="9" fill="url(#threadGrad)" stroke="${metalStroke}" stroke-width="0.8"/>
+              <line x1="228" y1="312" x2="242" y2="312" stroke="#FFFFFF" stroke-width="1" opacity="0.8"/>
+              <line x1="228" y1="315" x2="242" y2="315" stroke="#FFFFFF" stroke-width="1" opacity="0.8"/>
+
+              <!-- Annotatie -->
+              <line x1="246" y1="300" x2="280" y2="300" stroke="#0F172A" stroke-width="1"/>
+              <rect x="280" y="290" width="170" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1"/>
+              <text x="285" y="304" font-size="9.5" font-weight="900" fill="${metalText}">Rechte Insteek 8mm - G 1/8" M</text>
+            </g>
+          `}
+
+          <!-- EVENTUEEL VERLOOPSTUK VAN LAGERMAAT NAAR G 1/8" F -->
+          ${hasAdapter ? `
+          <g transform="translate(210, ${adapterY})">
+            <!-- Vrouwelijke Ingangskraag G 1/8" F -->
+            <rect x="15" y="0" width="20" height="4" rx="1.5" fill="${cylGrad}" stroke="${metalStroke}" stroke-width="0.5"/>
+            <ellipse cx="25" cy="1.5" rx="5" ry="1.5" fill="#0F172A"/>
+
+            <!-- Massieve Zeskantkop -->
+            <rect x="14" y="4" width="22" height="13" rx="1.5" fill="${facetC}" stroke="${metalStroke}" stroke-width="0.8"/>
+            
+            <!-- Mannelijke Schroefdraad passend op gekozen lager -->
+            <rect x="16" y="17" width="18" height="10" fill="url(#threadGrad)" stroke="${metalStroke}" stroke-width="0.8"/>
+            <line x1="16" y1="20" x2="34" y2="20" stroke="#FFFFFF" stroke-width="1.2" opacity="0.8"/>
+            <line x1="16" y1="23" x2="34" y2="23" stroke="#FFFFFF" stroke-width="1.2" opacity="0.8"/>
+
+            <!-- Annotatie -->
+            <line x1="36" y1="10" x2="70" y2="10" stroke="#0F172A" stroke-width="1"/>
+            <rect x="70" y="0" width="175" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1"/>
+            <text x="75" y="14" font-size="9.5" font-weight="bold" fill="#0F172A">Verloop: ${cfg.bearingThread} M ➔ G 1/8" F</text>
           </g>
           ` : ''}
 
-          <!-- Staand Lagerhuis aan Lagerzijde -->
-          <g transform="translate(145, ${cfg.bearingThread !== 'G 1/8' ? 362 : 332})">
-            <!-- Flensvoet -->
-            <path d="M 0 68 L 170 68 L 166 56 L 125 52 L 45 52 L 4 56 Z" fill="url(#castIronGrad)" stroke="#0F172A" stroke-width="1"/>
-            <rect x="10" y="58" width="150" height="10" fill="#1E293B" opacity="0.4"/>
-            <!-- Bouten -->
-            <rect x="16" y="58" width="6" height="5" fill="${cylGrad}" stroke="#0F172A" stroke-width="0.5"/>
-            <rect x="148" y="58" width="6" height="5" fill="${cylGrad}" stroke="#0F172A" stroke-width="0.5"/>
+          <!-- REALISTISCH GIETIJZEREN STAAND LAGERHUIS (Pillow Block Bearing) AAN LAGERZIJDE -->
+          <g>
+            <image href="bearing-pillow-block.png" x="155" y="${bearingY}" width="160" height="134" preserveAspectRatio="xMidYMid meet"/>
 
-            <!-- Lagerkoepel & Poort -->
-            <path d="M 40 52 C 38 18, 62 6, 85 6 C 108 6, 132 18, 130 52 Z" fill="url(#castHub)" stroke="#0F172A" stroke-width="1.2"/>
-            <rect x="73" y="0" width="24" height="7" rx="1.5" fill="${cylGrad}" stroke="#0F172A" stroke-width="0.8"/>
-
-            <!-- Lagerelement & As -->
-            <ellipse cx="85" cy="35" rx="28" ry="22" fill="${cylGrad}" stroke="#0F172A" stroke-width="1"/>
-            <ellipse cx="85" cy="35" rx="22" ry="17" fill="#18181B"/>
-            <ellipse cx="85" cy="35" rx="16" ry="12" fill="${cylGrad}"/>
-            <path d="M -15 28 L 185 28 L 185 42 L -15 42 Z" fill="url(#chromeShaft)" stroke="#334155" stroke-width="0.8"/>
-
-            <line x1="97" y1="3" x2="135" y2="3" stroke="#0F172A" stroke-width="1"/>
-            <rect x="135" y="-7" width="150" height="20" rx="4" fill="#FFFFFF" stroke="#E30613" stroke-width="1.5"/>
-            <text x="140" y="7" font-size="9.5" font-weight="900" fill="#E30613">Lagerpoort (${cfg.bearingThread})</text>
+            <!-- Annotatie Lagerpoort aan bovenzijde smeernippel/inlaat -->
+            <line x1="235" y1="${bearingY + 12}" x2="280" y2="${bearingY + 12}" stroke="#0F172A" stroke-width="1"/>
+            <rect x="280" y="${bearingY + 2}" width="165" height="20" rx="4" fill="#FFFFFF" stroke="#E30613" stroke-width="1.5"/>
+            <text x="285" y="${bearingY + 16}" font-size="10" font-weight="900" fill="#E30613">Lagerpoort: ${cfg.bearingThread}</text>
           </g>
         `;
       }
 
-      svg.innerHTML = content;
+      if (isPrint) {
+        return `<svg viewBox="0 0 460 ${totalH}" style="width: 100%; max-height: 380px; display: block; margin: 0 auto;" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
+      }
+
+      return { inner, totalH };
+    }
+
+    function render3DExplodedSVG(cfg) {
+      const svg = document.getElementById('assembly-svg');
+      if (!svg) return;
+
+      const dialImg = document.getElementById('battery-dial-img');
+      const dialCap = document.getElementById('battery-dial-caption');
+      if (dialImg) dialImg.src = `battery-dial-${cfg.months}.png`;
+      if (dialCap) dialCap.textContent = `Stand: ${cfg.months} mnd`;
+
+      const { inner, totalH } = generateAssemblySvgMarkup(cfg, false);
+      svg.setAttribute('viewBox', `0 0 460 ${totalH}`);
+      svg.innerHTML = inner;
     }
 
     function handlePhotoUpload(e) {
@@ -2250,7 +2345,7 @@
         currentPhotoBase64 = evt.target.result;
         document.getElementById('photo-box').innerHTML = `<img src="${currentPhotoBase64}" alt="Smeerpunt Foto">`;
         document.getElementById('btn-del-photo').style.display = 'inline-block';
-        saveCurrentState();
+        autoSaveActivePoint();
       };
       reader.readAsDataURL(file);
     }
@@ -2259,12 +2354,17 @@
       currentPhotoBase64 = null;
       document.getElementById('photo-box').innerHTML = '<span id="photo-placeholder">Geen foto</span>';
       document.getElementById('btn-del-photo').style.display = 'none';
-      saveCurrentState();
+      autoSaveActivePoint();
     }
 
-    function saveCurrentPoint() {
-      const machine = document.getElementById('cfg-machine').value.trim();
-      const point = document.getElementById('cfg-point').value.trim();
+    // AUTOMATISCHE OPSLAAN BIJ ELKE INVOER / WIJZIGING
+    function autoSaveActivePoint() {
+      const machineInput = document.getElementById('cfg-machine');
+      const pointInput = document.getElementById('cfg-point');
+      if (!machineInput || !pointInput) return;
+
+      const machine = machineInput.value.trim() || 'Machine 1';
+      const point = pointInput.value.trim() || 'Smeerpunt 1';
       const material = document.getElementById('sel-material').value;
       const mountType = document.getElementById('sel-mount-type').value;
 
@@ -2290,7 +2390,11 @@
         material, mountType, bearingThread, angle, extension, remoteFitting, lubricatorVol, greaseType, months
       });
 
-      const existingIndex = savedPoints.findIndex(p => p.id === activePointId);
+      if (!activePointId) {
+        activePointId = Date.now();
+      }
+
+      const existingIndex = savedPoints.findIndex(p => p.id == activePointId);
       const pointObj = {
         id: activePointId,
         machine,
@@ -2317,19 +2421,24 @@
       }
 
       saveCurrentState();
-      alert('Smeerpunt succesvol opgeslagen in project!');
+      updateHeaderPointDropdown();
       renderSavedPointsList();
       renderBOM();
-      switchTab('projects');
     }
 
     function addNewPoint() {
       activePointId = Date.now();
       currentPhotoBase64 = null;
+      const lastPoint = savedPoints.length > 0 ? savedPoints[savedPoints.length - 1] : null;
+      const defaultMachine = (lastPoint && lastPoint.machine) ? lastPoint.machine : "Flessenspoelmachine Lijn 1";
+      const defaultPoint = `Smeerpunt Positie ${savedPoints.length + 1}`;
+
+      document.getElementById('cfg-machine').value = defaultMachine;
+      document.getElementById('cfg-point').value = defaultPoint;
       document.getElementById('photo-box').innerHTML = '<span id="photo-placeholder">Geen foto</span>';
       document.getElementById('btn-del-photo').style.display = 'none';
-      document.getElementById('cfg-point').value = `Smeerpunt Positie ${savedPoints.length + 1}`;
-      onConfigChange();
+
+      autoSaveActivePoint();
       switchTab('config');
     }
 
@@ -2379,7 +2488,36 @@
         document.getElementById('photo-box').innerHTML = '<span id="photo-placeholder">Geen foto</span>';
         document.getElementById('btn-del-photo').style.display = 'none';
       }
+
       onConfigChange();
+      updateHeaderPointDropdown();
+    }
+
+    function updateHeaderPointDropdown() {
+      const select = document.getElementById('header-point-select');
+      if (!select) return;
+
+      if (savedPoints.length === 0) {
+        select.innerHTML = '<option value="">Geen smeerpunten</option>';
+        return;
+      }
+
+      select.innerHTML = savedPoints.map(p => `
+        <option value="${p.id}" ${p.id == activePointId ? 'selected' : ''}>
+          ${p.machine || 'Machine'} ➔ ${p.point || 'Smeerpunt'}
+        </option>
+      `).join('');
+
+      select.value = activePointId;
+    }
+
+    function switchActivePointFromHeader(id) {
+      const numId = Number(id);
+      const p = savedPoints.find(item => item.id == numId || item.id == id);
+      if (p) {
+        loadPointIntoForm(p);
+        switchTab('config');
+      }
     }
 
     function renderSavedPointsList() {
@@ -2412,10 +2550,28 @@
 
     function deletePoint(id) {
       if (confirm('Dit smeerpunt verwijderen?')) {
-        savedPoints = savedPoints.filter(p => p.id !== id);
+        savedPoints = savedPoints.filter(p => p.id != id);
+        if (activePointId == id) {
+          if (savedPoints.length > 0) {
+            activePointId = savedPoints[0].id;
+            loadPointIntoForm(savedPoints[0]);
+          } else {
+            addNewPoint();
+            return;
+          }
+        }
         saveCurrentState();
+        updateHeaderPointDropdown();
         renderSavedPointsList();
         renderBOM();
+      }
+    }
+
+    function selectAndEditPoint(id) {
+      const p = savedPoints.find(item => item.id == id);
+      if (p) {
+        loadPointIntoForm(p);
+        switchTab('config');
       }
     }
 
@@ -2602,40 +2758,29 @@
                 </div>
               </div>
 
-              <!-- 2-koloms detailweergave: Specificaties & Foto/Tekening -->
-              <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 14px; margin-bottom: 14px;">
+              <!-- 2-koloms detailweergave: Specificaties & 3D Exploded View Tekening -->
+              <div style="display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 16px; margin-bottom: 14px; align-items: start;">
                 <div>
-                  <table style="width: 100%; border-collapse: collapse; font-size: 11.5px;">
-                    <tr><td style="padding: 4px 0; color: #64748B; width: 150px;">Aansluiting 1 (Lager):</td><td style="padding: 4px 0; font-weight: bold;">${p.bearingThread}</td></tr>
+                  <table style="width: 100%; border-collapse: collapse; font-size: 11.5px; margin-bottom: 10px;">
+                    <tr><td style="padding: 4px 0; color: #64748B; width: 140px;">Aansluiting 1 (Lager):</td><td style="padding: 4px 0; font-weight: bold;">${p.bearingThread}</td></tr>
                     <tr><td style="padding: 4px 0; color: #64748B;">ISPL Smeerunit:</td><td style="padding: 4px 0; font-weight: bold; color: #E30613;">${p.lubricatorVol} + ${p.greaseType}</td></tr>
                     <tr><td style="padding: 4px 0; color: #64748B;">Looptijd instelling:</td><td style="padding: 4px 0; font-weight: bold;">${p.months} maanden</td></tr>
                     <tr><td style="padding: 4px 0; color: #64748B;">Kniestuk / Hoek:</td><td style="padding: 4px 0; font-weight: bold;">${p.angle === 'straight' ? 'Recht (geen)' : p.angle + '° knie'}</td></tr>
                     <tr><td style="padding: 4px 0; color: #64748B;">Verlengstuk:</td><td style="padding: 4px 0; font-weight: bold;">${p.extension === '0' ? 'Geen verlenging' : p.extension + ' mm'}</td></tr>
                     <tr><td style="padding: 4px 0; color: #64748B;">Montagewijze:</td><td style="padding: 4px 0; font-weight: bold;">${p.mountType === 'remote' ? 'Afstand (Pulsarlube 2000RC-1 kit art. 1702)' : 'Direct op lager'}</td></tr>
                   </table>
-                </div>
 
-                <div style="display: flex; gap: 10px; justify-content: flex-end; align-items: center;">
-                  <!-- ISPL Unit Foto -->
-                  <div style="border: 1px solid #E2E8F0; border-radius: 8px; padding: 6px; text-align: center; width: 85px; background: #FFFFFF;">
-                    <div style="font-size: 8px; font-weight: 800; color: #64748B; margin-bottom: 2px;">ISPL UNIT</div>
-                    <img src="ispl-${(p.lubricatorVol || '125ml').replace('ml', '')}.png" alt="ISPL ${p.lubricatorVol}" style="max-height: 80px; max-width: 65px; object-fit: contain; display: block; margin: 0 auto;">
-                    <div style="font-size: 9px; font-weight: 900; color: #0F172A; margin-top: 2px;">${p.lubricatorVol}</div>
-                  </div>
-
-                  <!-- Batterijdop -->
-                  <div style="border: 1px solid #E2E8F0; border-radius: 8px; padding: 6px; text-align: center; width: 95px; background: #F8FAFC;">
-                    <div style="font-size: 8px; font-weight: 800; color: #64748B; margin-bottom: 2px;">BATTERIJDOP</div>
-                    <img src="battery-dial-${p.months}.png" alt="Draaischijf ${p.months}mnd" style="width: 75px; height: auto; border-radius: 4px; display: block; margin: 0 auto; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-                    <div style="font-size: 9.5px; font-weight: 900; color: #E30613; margin-top: 2px;">${p.months} mnd</div>
-                  </div>
-
-                  <!-- Foto smeerpunt (indien aanwezig) -->
                   ${p.photo ? `
-                    <div style="border: 1px solid #CBD5E1; border-radius: 8px; overflow: hidden; width: 120px; height: 100px;">
+                    <div style="border: 1px solid #CBD5E1; border-radius: 8px; overflow: hidden; width: 130px; height: 100px; margin-top: 6px;">
                       <img src="${p.photo}" style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
                   ` : ''}
+                </div>
+
+                <!-- Volledige 3D Exploded View SVG Samenstelling -->
+                <div style="border: 1px solid #E2E8F0; border-radius: 10px; padding: 10px; background: #FFFFFF; text-align: center;">
+                  <div style="font-size: 10px; font-weight: 800; color: #E30613; margin-bottom: 6px; text-transform: uppercase;">3D Exploded View Samenstelling</div>
+                  ${generateAssemblySvgMarkup(p, true)}
                 </div>
               </div>
 

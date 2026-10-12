@@ -384,8 +384,8 @@
     }
 
     .loc-photo-col .photo-preview {
-      width: 85px;
-      height: 85px;
+      width: 130px;
+      height: 115px;
       border-radius: 10px;
       border: 1px solid var(--border);
       object-fit: cover;
@@ -463,17 +463,23 @@
       display: grid;
       grid-template-columns: 1fr;
       gap: 20px;
+      margin-bottom: 20px;
     }
 
     @media (min-width: 980px) {
       .config-grid {
-        grid-template-columns: 1.08fr 0.92fr;
-        align-items: start;
+        grid-template-columns: 1.05fr 0.95fr;
+        align-items: stretch;
       }
-      .config-left-col, .config-right-col {
+      .card-sim-3d, .card-assembly-params {
+        height: 100%;
         display: flex;
         flex-direction: column;
-        gap: 18px;
+        margin-bottom: 0 !important;
+      }
+      .card-sim-3d .drawing-container {
+        flex: 1;
+        height: 100%;
       }
     }
 
@@ -549,7 +555,8 @@
     svg.assembly-svg {
       width: 100%;
       max-width: 520px;
-      height: 480px;
+      height: 100%;
+      min-height: 480px;
       display: block;
     }
 
@@ -1030,200 +1037,190 @@
         </div>
       </div>
 
-      <!-- 2. BENEDEN: 2-Koloms Grid (Links 3D Tekening, Rechts Parameters & Stuklijst) -->
+      <!-- 2. MIDDEN: 2-Koloms Grid (Links 3D Tekening, Rechts Parameters) met gelijke hoogte -->
       <div class="config-grid">
 
-        <!-- ===== LINKER KOLOM ===== -->
-        <div class="config-left-col">
-
-          <!-- 2. 3D Exploded View Tekening -->
-          <div class="card">
-            <div class="card-title">
-              <div class="card-title-left">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
-                <span>3D Exploded View Samenstelling</span>
-              </div>
-              <span id="drawing-mode-label" style="font-size: 11px; background: #FFF5F5; color: var(--primary); padding: 3px 10px; border-radius: var(--radius-pill); font-weight: 800; border: 1px solid #FECACA;">Directe montage</span>
+        <!-- ===== LINKER KOLOM: 3D Exploded View Tekening ===== -->
+        <div class="card card-sim-3d">
+          <div class="card-title">
+            <div class="card-title-left">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+              <span>3D Exploded View Samenstelling</span>
             </div>
+            <span id="drawing-mode-label" style="font-size: 11px; background: #FFF5F5; color: var(--primary); padding: 3px 10px; border-radius: var(--radius-pill); font-weight: 800; border: 1px solid #FECACA;">Directe montage</span>
+          </div>
 
-            <div class="drawing-container">
-              <span class="drawing-badge" id="assembly-badge">Exploded View</span>
+          <div class="drawing-container">
+            <span class="drawing-badge" id="assembly-badge">Exploded View</span>
 
-              <!-- 3D Exploded View SVG -->
-              <svg id="assembly-svg" class="assembly-svg" viewBox="0 0 520 500" xmlns="http://www.w3.org/2000/svg">
-                <!-- Dynamically rendered -->
-              </svg>
+            <!-- 3D Exploded View SVG -->
+            <svg id="assembly-svg" class="assembly-svg" viewBox="0 0 520 500" xmlns="http://www.w3.org/2000/svg">
+              <!-- Dynamically rendered -->
+            </svg>
+          </div>
+        </div>
+
+        <!-- ===== RECHTER KOLOM: Assembly Parameters Card ===== -->
+        <div class="card card-assembly-params">
+          <div class="card-title">
+            <div class="card-title-left">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+              <span>Assembly Parameters</span>
+            </div>
+            <span style="font-size: 11px; color: var(--text-muted); font-weight: normal;">Lager ➔ ISPL</span>
+          </div>
+
+          <!-- EERSTE SELECTIE: Materiaal -->
+          <div class="input-group" style="background: #F8FAFC; padding: 12px; border-radius: 12px; border: 1px solid var(--border);">
+            <label class="input-label" style="color: var(--primary);">Materiaal van de koppelingen (Stap 1)</label>
+            <select id="sel-material" onchange="onConfigChange()">
+              <option value="Messing vernikkeld" selected>Messing vernikkeld</option>
+              <option value="RVS">RVS (Roestvrij staal)</option>
+            </select>
+          </div>
+
+          <!-- Montagewijze -->
+          <div class="input-group">
+            <label class="input-label">Montagewijze</label>
+            <select id="sel-mount-type" onchange="onMountTypeChange()">
+              <option value="direct" selected>Directe montage (ISPL rechtstreeks op lager)</option>
+              <option value="remote">Montage op afstand via Pulsarlube 2000RC-1 kit (art. 1702)</option>
+            </select>
+          </div>
+
+          <!-- Pulsarlube Info Box -->
+          <div id="pulsarlube-info" class="pulsarlube-box" style="display: none;">
+            <strong>ℹ️ Inbegrepen in Pulsarlube 2000RC-1 kit (Art. 1702):</strong><br>
+            • Montagebeugel voor ISPL (G 1/4" F aansluiting)<br>
+            • 8 mm leiding (maximaal 20 cm toegelaten afstand)<br>
+            • Rechte insteekkoppeling 8 mm - G 1/8" M BSPP
+          </div>
+
+          <!-- ISPL Type / Volume (15ml, 30ml, 60ml, 125ml, 250ml) -->
+          <div class="input-group">
+            <label class="input-label">Interflon Single Point Lubricator (ISPL) Volume</label>
+            <select id="sel-lubricator-vol" onchange="onISPLVolumeChange()">
+              <option value="15ml">15 ml</option>
+              <option value="30ml">30 ml</option>
+              <option value="60ml">60 ml</option>
+              <option value="125ml" selected>125 ml</option>
+              <option value="250ml">250 ml</option>
+            </select>
+          </div>
+
+          <!-- VETTYPE PARAMETER (Dynamisch gebaseerd op tabel) -->
+          <div class="input-group">
+            <label class="input-label" style="color: var(--primary);">Type Smeermiddel / Vet in ISPL</label>
+            <select id="sel-grease-type" onchange="onConfigChange()">
+              <!-- Populated dynamically based on chosen volume -->
+            </select>
+          </div>
+
+          <!-- Looptijd / Maand-instelling -->
+          <div class="input-group">
+            <label class="input-label">Looptijd / Maand-instelling (1 - 12 maanden)</label>
+            <select id="sel-months" onchange="onConfigChange()">
+              <option value="1">1 maand</option>
+              <option value="2">2 maanden</option>
+              <option value="3">3 maanden</option>
+              <option value="4">4 maanden</option>
+              <option value="5">5 maanden</option>
+              <option value="6" selected>6 maanden</option>
+              <option value="7">7 maanden</option>
+              <option value="8">8 maanden</option>
+              <option value="9">9 maanden</option>
+              <option value="10">10 maanden</option>
+              <option value="11">11 maanden</option>
+              <option value="12">12 maanden</option>
+            </select>
+            <div id="calc-dispense-info" class="calc-info-box">
+              <!-- Calculated dose rate -->
             </div>
           </div>
 
-        </div>
-
-        <!-- ===== RECHTER KOLOM: Invulparameters & Stuklijst ===== -->
-        <div class="config-right-col">
-
-          <!-- 3. Assembly Parameters Card -->
-          <div class="card">
-            <div class="card-title">
-              <div class="card-title-left">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-                <span>Assembly Parameters</span>
-              </div>
-              <span style="font-size: 11px; color: var(--text-muted); font-weight: normal;">Lager ➔ ISPL</span>
-            </div>
-
-            <!-- EERSTE SELECTIE: Materiaal -->
-            <div class="input-group" style="background: #F8FAFC; padding: 12px; border-radius: 12px; border: 1px solid var(--border);">
-              <label class="input-label" style="color: var(--primary);">Materiaal van de koppelingen (Stap 1)</label>
-              <select id="sel-material" onchange="onConfigChange()">
-                <option value="Messing vernikkeld" selected>Messing vernikkeld</option>
-                <option value="RVS">RVS (Roestvrij staal)</option>
-              </select>
-            </div>
-
-            <!-- Montagewijze -->
-            <div class="input-group">
-              <label class="input-label">Montagewijze</label>
-              <select id="sel-mount-type" onchange="onMountTypeChange()">
-                <option value="direct" selected>Directe montage (ISPL rechtstreeks op lager)</option>
-                <option value="remote">Montage op afstand via Pulsarlube 2000RC-1 kit (art. 1702)</option>
-              </select>
-            </div>
-
-            <!-- Pulsarlube Info Box -->
-            <div id="pulsarlube-info" class="pulsarlube-box" style="display: none;">
-              <strong>ℹ️ Inbegrepen in Pulsarlube 2000RC-1 kit (Art. 1702):</strong><br>
-              • Montagebeugel voor ISPL (G 1/4" F aansluiting)<br>
-              • 8 mm leiding (maximaal 20 cm toegelaten afstand)<br>
-              • Rechte insteekkoppeling 8 mm - G 1/8" M BSPP
-            </div>
-
-            <!-- ISPL Type / Volume (15ml, 30ml, 60ml, 125ml, 250ml) -->
-            <div class="input-group">
-              <label class="input-label">Interflon Single Point Lubricator (ISPL) Volume</label>
-              <select id="sel-lubricator-vol" onchange="onISPLVolumeChange()">
-                <option value="15ml">15 ml</option>
-                <option value="30ml">30 ml</option>
-                <option value="60ml">60 ml</option>
-                <option value="125ml" selected>125 ml</option>
-                <option value="250ml">250 ml</option>
-              </select>
-            </div>
-
-            <!-- VETTYPE PARAMETER (Dynamisch gebaseerd op tabel) -->
-            <div class="input-group">
-              <label class="input-label" style="color: var(--primary);">Type Smeermiddel / Vet in ISPL</label>
-              <select id="sel-grease-type" onchange="onConfigChange()">
-                <!-- Populated dynamically based on chosen volume -->
-              </select>
-            </div>
-
-            <!-- Looptijd / Maand-instelling -->
-            <div class="input-group">
-              <label class="input-label">Looptijd / Maand-instelling (1 - 12 maanden)</label>
-              <select id="sel-months" onchange="onConfigChange()">
-                <option value="1">1 maand</option>
-                <option value="2">2 maanden</option>
-                <option value="3">3 maanden</option>
-                <option value="4">4 maanden</option>
-                <option value="5">5 maanden</option>
-                <option value="6" selected>6 maanden</option>
-                <option value="7">7 maanden</option>
-                <option value="8">8 maanden</option>
-                <option value="9">9 maanden</option>
-                <option value="10">10 maanden</option>
-                <option value="11">11 maanden</option>
-                <option value="12">12 maanden</option>
-              </select>
-              <div id="calc-dispense-info" class="calc-info-box">
-                <!-- Calculated dose rate -->
+          <!-- Aansluiting 1: Lagerzijde -->
+          <div class="input-group">
+            <label class="input-label">Aansluiting 1: Lager Schroefdraad</label>
+            <select id="sel-bearing-thread" onchange="onBearingThreadChange()">
+              <option value="M6x1">M6x1</option>
+              <option value="M8x1" selected>M8x1</option>
+              <option value="M8x1.25">M8x1.25</option>
+              <option value="M10x1">M10x1</option>
+              <option value="M10x1.5">M10x1.5</option>
+              <option value="G 1/8">G 1/8" BSPP</option>
+              <option value="G 1/4">G 1/4" BSPP</option>
+              <option value="1/8 NPT">1/8" NPT</option>
+              <option value="1/4 NPT">1/4" NPT</option>
+              <option value="custom">+ Andere maat invoeren...</option>
+            </select>
+            <div id="custom-thread-box" class="custom-input-box" style="display: none;">
+              <label class="input-label" style="color: #92400E;">Afwijkende maat Aansluiting 1:</label>
+              <input type="text" id="custom-bearing-thread" placeholder="bv. M12x1.5, 3/8 NPT..." oninput="onConfigChange()">
+              <div style="font-size: 11px; color: #92400E; margin-top: 4px;">
+                ⚠️ Artikelnummer wordt automatisch <strong>"aan te maken"</strong> voor de binnendienst.
               </div>
             </div>
+          </div>
 
-            <!-- Aansluiting 1: Lagerzijde -->
+          <!-- BIJ DIRECTE MONTAGE: Kniestuk & Verlengstuk opties -->
+          <div id="direct-assembly-options">
             <div class="input-group">
-              <label class="input-label">Aansluiting 1: Lager Schroefdraad</label>
-              <select id="sel-bearing-thread" onchange="onBearingThreadChange()">
-                <option value="M6x1">M6x1</option>
-                <option value="M8x1" selected>M8x1</option>
-                <option value="M8x1.25">M8x1.25</option>
-                <option value="M10x1">M10x1</option>
-                <option value="M10x1.5">M10x1.5</option>
-                <option value="G 1/8">G 1/8" BSPP</option>
-                <option value="G 1/4">G 1/4" BSPP</option>
-                <option value="1/8 NPT">1/8" NPT</option>
-                <option value="1/4 NPT">1/4" NPT</option>
-                <option value="custom">+ Andere maat invoeren...</option>
+              <label class="input-label">Kniestuk nodig? (G 1/4" M x G 1/4" F)</label>
+              <select id="sel-angle" onchange="onConfigChange()">
+                <option value="straight" selected>Recht (geen kniestuk)</option>
+                <option value="90">90° Kniestuk (G 1/4" M x G 1/4" F)</option>
+                <option value="45">45° Kniestuk (G 1/4" M x G 1/4" F)</option>
               </select>
-              <div id="custom-thread-box" class="custom-input-box" style="display: none;">
-                <label class="input-label" style="color: #92400E;">Afwijkende maat Aansluiting 1:</label>
-                <input type="text" id="custom-bearing-thread" placeholder="bv. M12x1.5, 3/8 NPT..." oninput="onConfigChange()">
+            </div>
+
+            <div class="input-group" style="margin-bottom: 0;">
+              <label class="input-label">Verlengstuk nodig? (G 1/4" M x G 1/4" F)</label>
+              <select id="sel-extension" onchange="onExtensionChange()">
+                <option value="0" selected>Geen verlenging</option>
+                <option value="15">Verlengstuk 15 mm</option>
+                <option value="25">Verlengstuk 25 mm</option>
+                <option value="35">Verlengstuk 35 mm</option>
+                <option value="50">Verlengstuk 50 mm</option>
+                <option value="custom">+ Afwijkende lengte...</option>
+              </select>
+              <div id="custom-ext-box" class="custom-input-box" style="display: none;">
+                <label class="input-label" style="color: #92400E;">Afwijkende verlenging:</label>
+                <input type="text" id="custom-ext-val" placeholder="bv. 75 mm, 100 mm..." oninput="onConfigChange()">
                 <div style="font-size: 11px; color: #92400E; margin-top: 4px;">
-                  ⚠️ Artikelnummer wordt automatisch <strong>"aan te maken"</strong> voor de binnendienst.
+                  ⚠️ Wordt gemarkeerd als <strong>"aan te maken"</strong>.
                 </div>
               </div>
             </div>
-
-            <!-- BIJ DIRECTE MONTAGE: Kniestuk & Verlengstuk opties -->
-            <div id="direct-assembly-options">
-              <div class="input-group">
-                <label class="input-label">Kniestuk nodig? (G 1/4" M x G 1/4" F)</label>
-                <select id="sel-angle" onchange="onConfigChange()">
-                  <option value="straight" selected>Recht (geen kniestuk)</option>
-                  <option value="90">90° Kniestuk (G 1/4" M x G 1/4" F)</option>
-                  <option value="45">45° Kniestuk (G 1/4" M x G 1/4" F)</option>
-                </select>
-              </div>
-
-              <div class="input-group" style="margin-bottom: 0;">
-                <label class="input-label">Verlengstuk nodig? (G 1/4" M x G 1/4" F)</label>
-                <select id="sel-extension" onchange="onExtensionChange()">
-                  <option value="0" selected>Geen verlenging</option>
-                  <option value="15">Verlengstuk 15 mm</option>
-                  <option value="25">Verlengstuk 25 mm</option>
-                  <option value="35">Verlengstuk 35 mm</option>
-                  <option value="50">Verlengstuk 50 mm</option>
-                  <option value="custom">+ Afwijkende lengte...</option>
-                </select>
-                <div id="custom-ext-box" class="custom-input-box" style="display: none;">
-                  <label class="input-label" style="color: #92400E;">Afwijkende verlenging:</label>
-                  <input type="text" id="custom-ext-val" placeholder="bv. 75 mm, 100 mm..." oninput="onConfigChange()">
-                  <div style="font-size: 11px; color: #92400E; margin-top: 4px;">
-                    ⚠️ Wordt gemarkeerd als <strong>"aan te maken"</strong>.
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- BIJ AFSTANDSMONTAGE (PULSARLUBE 1702): Vraag naar insteekkoppeling -->
-            <div id="remote-assembly-options" style="display: none;">
-              <div class="input-group" style="margin-bottom: 0;">
-                <label class="input-label" style="color: #1E40AF;">Welke insteekkoppeling (voor 8 mm leiding) in het verloop monteren?</label>
-                <select id="sel-remote-fitting" onchange="onConfigChange()">
-                  <option value="straight-kit" selected>Rechte insteekkoppeling 8 mm - G 1/8" M (Inbegrepen in Pulsarlube kit 1702)</option>
-                  <option value="elbow-90">Knie-insteekkoppeling 90° 8 mm - G 1/8" M (Extra toe te voegen)</option>
-                </select>
-              </div>
-            </div>
-
           </div>
 
-          <!-- 4. Geselecteerde Onderdelenlijst & Opslaan -->
-          <div class="card">
-            <div class="card-title">
-              <div class="card-title-left">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-                <span>Geselecteerde Koppelingen & Stuklijst</span>
-              </div>
-              <span style="font-size: 11px; color: var(--text-muted); font-weight: normal;">Lager ➔ ISPL</span>
-            </div>
-
-            <div id="components-list">
-              <!-- Dynamically populated -->
+          <!-- BIJ AFSTANDSMONTAGE (PULSARLUBE 1702): Vraag naar insteekkoppeling -->
+          <div id="remote-assembly-options" style="display: none;">
+            <div class="input-group" style="margin-bottom: 0;">
+              <label class="input-label" style="color: #1E40AF;">Welke insteekkoppeling (voor 8 mm leiding) in het verloop monteren?</label>
+              <select id="sel-remote-fitting" onchange="onConfigChange()">
+                <option value="straight-kit" selected>Rechte insteekkoppeling 8 mm - G 1/8" M (Inbegrepen in Pulsarlube kit 1702)</option>
+                <option value="elbow-90">Knie-insteekkoppeling 90° 8 mm - G 1/8" M (Extra toe te voegen)</option>
+              </select>
             </div>
           </div>
 
         </div>
 
+      </div>
+
+      <!-- 3. BENEDEN VOLLE BREEDTE: Geselecteerde Koppelingen & Stuklijst -->
+      <div class="card" style="margin-top: 18px;">
+        <div class="card-title">
+          <div class="card-title-left">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            <span>Geselecteerde Koppelingen & Stuklijst</span>
+          </div>
+          <span style="font-size: 11px; color: var(--text-muted); font-weight: normal;">Lager ➔ ISPL</span>
+        </div>
+
+        <div id="components-list">
+          <!-- Dynamically populated -->
+        </div>
       </div>
 
     </div>
@@ -1440,8 +1437,8 @@
 
   <script src="couplings-data.js"></script>
   <script>
-    const STORAGE_KEY = 'IF_HARDWARE_SELECTOR_DATA_V6';
-    const DB_STORAGE_KEY = 'IF_CUSTOM_COUPLINGS_DB_V6';
+    const STORAGE_KEY = 'IF_HARDWARE_SELECTOR_DATA_V7';
+    const DB_STORAGE_KEY = 'IF_CUSTOM_COUPLINGS_DB_V2';
     let currentPhotoBase64 = null;
     let savedPoints = [];
     let activePointId = null;
@@ -1479,7 +1476,7 @@
 
     function loadSavedState() {
       try {
-        const stored = localStorage.getItem(STORAGE_KEY);
+        const stored = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('IF_HARDWARE_SELECTOR_DATA_V6');
         if (stored) {
           const parsed = JSON.parse(stored);
           savedPoints = parsed.points || [];
@@ -2029,16 +2026,18 @@
         inner = `
           ${defs}
 
+          <!-- Looptijd Indicatie Rechtsboven -->
+          <g>
+            <rect x="345" y="12" width="160" height="26" rx="8" fill="#FFF5F5" stroke="#E30613" stroke-width="1.8"/>
+            <text x="425" y="29" font-size="11.5" font-weight="900" fill="#E30613" text-anchor="middle" letter-spacing="0.4">INSTELLING: ${cfg.months} ${cfg.months === 1 ? 'MAAND' : 'MAANDEN'}</text>
+          </g>
+
           <!-- Centrale Geëxplodeerde Assemblagelijn -->
           <line x1="240" y1="20" x2="240" y2="${bearingY + 12}" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.6"/>
 
           <!-- 1. REALISTISCHE ISPL LUBRICATOR (FOTO PER GESELECTEERD VOLUME) -->
           <g transform="translate(190, 0)">
             <image href="${isplImgSrc}" x="${layout.x}" y="${layout.y}" width="${layout.w}" height="${layout.h}" preserveAspectRatio="xMidYMid meet"/>
-
-            <!-- Badge Boven ISPL -->
-            <rect x="18" y="2" width="64" height="20" rx="4" fill="#E30613"/>
-            <text x="50" y="16" font-size="11" font-weight="900" fill="#FFFFFF" text-anchor="middle">${cfg.months} MAAND</text>
 
             <!-- Aansluiting Annotatie Rechts -->
             <line x1="70" y1="${layout.bottom - 4}" x2="110" y2="${layout.bottom - 4}" stroke="#0F172A" stroke-width="1.5"/>
@@ -2191,13 +2190,15 @@
         inner = `
           ${defs}
 
+          <!-- Looptijd Indicatie Rechtsboven -->
+          <g>
+            <rect x="345" y="12" width="160" height="26" rx="8" fill="#FFF5F5" stroke="#E30613" stroke-width="1.8"/>
+            <text x="425" y="29" font-size="11.5" font-weight="900" fill="#E30613" text-anchor="middle" letter-spacing="0.4">INSTELLING: ${cfg.months} ${cfg.months === 1 ? 'MAAND' : 'MAANDEN'}</text>
+          </g>
+
           <!-- ISPL op Beugel (Links uitgelijnd boven doorvoerblok) -->
           <g>
             <image href="${isplImgSrc}" x="${remL.x}" y="${remL.y}" width="${remL.w}" height="${remL.h}" preserveAspectRatio="xMidYMid meet"/>
-
-            <!-- Badge Boven ISPL -->
-            <rect x="47" y="0" width="56" height="18" rx="4" fill="#E30613"/>
-            <text x="75" y="13" font-size="10.5" font-weight="900" fill="#FFFFFF" text-anchor="middle">${cfg.months} MAAND</text>
 
             <rect x="110" y="42" width="138" height="28" rx="6" fill="#0F172A"/>
             <text x="118" y="56" font-size="11.5" font-weight="900" fill="#FFFFFF">ISPL ${cfg.lubricatorVol}</text>
@@ -2578,7 +2579,7 @@
       container.innerHTML = savedPoints.map((p, idx) => `
         <div class="saved-point-row" draggable="true" data-index="${idx}" data-id="${p.id}" style="border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; background: white; box-shadow: var(--shadow-sm); cursor: grab; transition: transform 0.15s, border-color 0.15s;">
           <div style="display: flex; gap: 14px; align-items: center;">
-            <div style="width: 50px; height: 50px; border-radius: 8px; background: #E2E8F0; overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #64748B; flex-shrink: 0;">
+            <div style="width: 80px; height: 70px; border-radius: 10px; background: #E2E8F0; overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #64748B; flex-shrink: 0;">
               ${p.photo ? `<img src="${p.photo}" style="width: 100%; height: 100%; object-fit: cover;">` : 'Geen foto'}
             </div>
             <div>
@@ -2899,7 +2900,7 @@
                   </table>
 
                   ${p.photo ? `
-                    <div style="border: 1px solid #CBD5E1; border-radius: 8px; overflow: hidden; width: 130px; height: 100px; margin-top: 6px;">
+                    <div style="border: 1px solid #CBD5E1; border-radius: 8px; overflow: hidden; width: 180px; height: 135px; margin-top: 8px;">
                       <img src="${p.photo}" style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
                   ` : ''}

@@ -254,8 +254,44 @@ let COUPLINGS_DATA = [
     "desc": "Verlengstuk buitendraad G 1/8\" naar binnendraad G 1/8\", effectieve lengte 50 mm (Messing vernikkeld)"
   },
   {
-    "cat": "Insteekkoppelingen 8 mm",
+    "cat": "Insteekkoppelingen 6 mm",
     "default_code": "1099.1027",
+    "name": "Rechte insteekkoppeling 6 mm - G 1/8\" M (Messing vernikkeld)",
+    "a1": "Push-in 6 mm",
+    "a2": "G 1/8\" BSPP M (buitendraad recht)",
+    "mat": "Messing vernikkeld",
+    "desc": "Rechte steekkoppeling voor 6 mm leiding x G 1/8\" buitendraad (Messing vernikkeld)"
+  },
+  {
+    "cat": "Insteekkoppelingen 6 mm",
+    "default_code": "1099.1028",
+    "name": "Knie-insteekkoppeling 90° 6 mm - G 1/8\" M (Messing vernikkeld)",
+    "a1": "Push-in 6 mm",
+    "a2": "G 1/8\" BSPP M (90° knie recht)",
+    "mat": "Messing vernikkeld",
+    "desc": "90° haakse knie-steekkoppeling voor 6 mm leiding x G 1/8\" buitendraad (Messing vernikkeld)"
+  },
+  {
+    "cat": "Insteekkoppelingen 6 mm",
+    "default_code": "1099.1029",
+    "name": "Rechte insteekkoppeling 6 mm - G 1/4\" M (Messing vernikkeld)",
+    "a1": "Push-in 6 mm",
+    "a2": "G 1/4\" BSPP M (buitendraad recht)",
+    "mat": "Messing vernikkeld",
+    "desc": "Rechte steekkoppeling voor 6 mm leiding x G 1/4\" buitendraad (Messing vernikkeld)"
+  },
+  {
+    "cat": "Insteekkoppelingen 6 mm",
+    "default_code": "1099.1030",
+    "name": "Knie-insteekkoppeling 90° 6 mm - G 1/4\" M (Messing vernikkeld)",
+    "a1": "Push-in 6 mm",
+    "a2": "G 1/4\" BSPP M (90° knie recht)",
+    "mat": "Messing vernikkeld",
+    "desc": "90° haakse knie-steekkoppeling voor 6 mm leiding x G 1/4\" buitendraad (Messing vernikkeld)"
+  },
+  {
+    "cat": "Insteekkoppelingen 8 mm",
+    "default_code": "1099.1031",
     "name": "Rechte insteekkoppeling 8 mm - G 1/8\" M (Messing vernikkeld)",
     "a1": "Push-in 8 mm",
     "a2": "G 1/8\" BSPP M (buitendraad recht)",
@@ -264,7 +300,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Insteekkoppelingen 8 mm",
-    "default_code": "1099.1028",
+    "default_code": "1099.1032",
     "name": "Knie-insteekkoppeling 90° 8 mm - G 1/8\" M (Messing vernikkeld)",
     "a1": "Push-in 8 mm",
     "a2": "G 1/8\" BSPP M (90° knie recht)",
@@ -273,7 +309,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Insteekkoppelingen 8 mm",
-    "default_code": "1099.1029",
+    "default_code": "1099.1033",
     "name": "Rechte insteekkoppeling 8 mm - G 1/4\" M (Messing vernikkeld)",
     "a1": "Push-in 8 mm",
     "a2": "G 1/4\" BSPP M (buitendraad recht)",
@@ -282,7 +318,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Insteekkoppelingen 8 mm",
-    "default_code": "1099.1030",
+    "default_code": "1099.1034",
     "name": "Knie-insteekkoppeling 90° 8 mm - G 1/4\" M (Messing vernikkeld)",
     "a1": "Push-in 8 mm",
     "a2": "G 1/4\" BSPP M (90° knie recht)",
@@ -291,7 +327,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verloopstukken naar G 1/4\"",
-    "default_code": "1099.1031",
+    "default_code": "1099.1035",
     "name": "Verloopstuk M6x1 M x G 1/4\" F (RVS)",
     "a1": "M6x1 M (buitendraad recht)",
     "a2": "G 1/4\" F (binnendraad)",
@@ -300,7 +336,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verloopstukken naar G 1/4\"",
-    "default_code": "1099.1032",
+    "default_code": "1099.1036",
     "name": "Verloopstuk M8x1 M x G 1/4\" F (RVS)",
     "a1": "M8x1 M (buitendraad recht)",
     "a2": "G 1/4\" F (binnendraad)",
@@ -309,7 +345,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verloopstukken naar G 1/4\"",
-    "default_code": "1099.1033",
+    "default_code": "1099.1037",
     "name": "Verloopstuk M8x1.25 M x G 1/4\" F (RVS)",
     "a1": "M8x1.25 M (buitendraad recht)",
     "a2": "G 1/4\" F (binnendraad)",
@@ -318,7 +354,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verloopstukken naar G 1/4\"",
-    "default_code": "1099.1034",
+    "default_code": "1099.1038",
     "name": "Verloopstuk M10x1 M x G 1/4\" F (RVS)",
     "a1": "M10x1 M (buitendraad recht)",
     "a2": "G 1/4\" F (binnendraad)",
@@ -327,7 +363,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verloopstukken naar G 1/4\"",
-    "default_code": "1099.1035",
+    "default_code": "1099.1039",
     "name": "Verloopstuk M10x1.5 M x G 1/4\" F (RVS)",
     "a1": "M10x1.5 M (buitendraad recht)",
     "a2": "G 1/4\" F (binnendraad)",
@@ -336,7 +372,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verloopstukken naar G 1/4\"",
-    "default_code": "1099.1036",
+    "default_code": "1099.1040",
     "name": "Verloopstuk G 1/8 M x G 1/4\" F (RVS)",
     "a1": "G 1/8\" M (buitendraad)",
     "a2": "G 1/4\" F (binnendraad)",
@@ -345,7 +381,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verloopstukken naar G 1/4\"",
-    "default_code": "1099.1037",
+    "default_code": "1099.1041",
     "name": "Verloopstuk 1/8 NPT M x G 1/4\" F (RVS)",
     "a1": "1/8\" NPT M (buitendraad conisch)",
     "a2": "G 1/4\" F (binnendraad)",
@@ -354,7 +390,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verloopstukken naar G 1/4\"",
-    "default_code": "1099.1038",
+    "default_code": "1099.1042",
     "name": "Verloopstuk 1/4 NPT M x G 1/4\" F (RVS)",
     "a1": "1/4\" NPT M (buitendraad conisch)",
     "a2": "G 1/4\" F (binnendraad)",
@@ -363,7 +399,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verloopstukken naar G 1/8\"",
-    "default_code": "1099.1039",
+    "default_code": "1099.1043",
     "name": "Verloopstuk M6x1 M x G 1/8\" F (RVS)",
     "a1": "M6x1 M (buitendraad recht)",
     "a2": "G 1/8\" F (binnendraad)",
@@ -372,7 +408,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verloopstukken naar G 1/8\"",
-    "default_code": "1099.1040",
+    "default_code": "1099.1044",
     "name": "Verloopstuk M8x1 M x G 1/8\" F (RVS)",
     "a1": "M8x1 M (buitendraad recht)",
     "a2": "G 1/8\" F (binnendraad)",
@@ -381,7 +417,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verloopstukken naar G 1/8\"",
-    "default_code": "1099.1041",
+    "default_code": "1099.1045",
     "name": "Verloopstuk M8x1.25 M x G 1/8\" F (RVS)",
     "a1": "M8x1.25 M (buitendraad recht)",
     "a2": "G 1/8\" F (binnendraad)",
@@ -390,7 +426,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verloopstukken naar G 1/8\"",
-    "default_code": "1099.1042",
+    "default_code": "1099.1046",
     "name": "Verloopstuk M10x1 M x G 1/8\" F (RVS)",
     "a1": "M10x1 M (buitendraad recht)",
     "a2": "G 1/8\" F (binnendraad)",
@@ -399,7 +435,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verloopstukken naar G 1/8\"",
-    "default_code": "1099.1043",
+    "default_code": "1099.1047",
     "name": "Verloopstuk G 1/4 M x G 1/8\" F (RVS)",
     "a1": "G 1/4\" M (buitendraad)",
     "a2": "G 1/8\" F (binnendraad)",
@@ -408,7 +444,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verloopstukken naar G 1/8\"",
-    "default_code": "1099.1044",
+    "default_code": "1099.1048",
     "name": "Verloopstuk 1/8 NPT M x G 1/8\" F (RVS)",
     "a1": "1/8\" NPT M (buitendraad conisch)",
     "a2": "G 1/8\" F (binnendraad)",
@@ -417,7 +453,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verloopstukken",
-    "default_code": "1099.1045",
+    "default_code": "1099.1049",
     "name": "Verloopstuk G 1/8\" M x G 1/4\" F (RVS)",
     "a1": "G 1/8\" M (buitendraad)",
     "a2": "G 1/4\" F (binnendraad)",
@@ -426,7 +462,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Kniestukken G 1/4\"",
-    "default_code": "1099.1046",
+    "default_code": "1099.1050",
     "name": "Kniestuk 90° G 1/4\" M x G 1/4\" F (RVS)",
     "a1": "G 1/4\" M (buitendraad)",
     "a2": "G 1/4\" F (binnendraad 90°)",
@@ -435,7 +471,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Kniestukken G 1/4\"",
-    "default_code": "1099.1047",
+    "default_code": "1099.1051",
     "name": "Kniestuk 45° G 1/4\" M x G 1/4\" F (RVS)",
     "a1": "G 1/4\" M (buitendraad)",
     "a2": "G 1/4\" F (binnendraad 45°)",
@@ -444,7 +480,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Kniestukken G 1/8\"",
-    "default_code": "1099.1048",
+    "default_code": "1099.1052",
     "name": "Kniestuk 90° G 1/8\" M x G 1/8\" F (RVS)",
     "a1": "G 1/8\" M (buitendraad)",
     "a2": "G 1/8\" F (binnendraad 90°)",
@@ -453,7 +489,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Kniestukken G 1/8\"",
-    "default_code": "1099.1049",
+    "default_code": "1099.1053",
     "name": "Kniestuk 45° G 1/8\" M x G 1/8\" F (RVS)",
     "a1": "G 1/8\" M (buitendraad)",
     "a2": "G 1/8\" F (binnendraad 45°)",
@@ -462,7 +498,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verlengstukken G 1/4\"",
-    "default_code": "1099.1050",
+    "default_code": "1099.1054",
     "name": "Verlengstuk G 1/4\" M x G 1/4\" F - L=15mm (RVS)",
     "a1": "G 1/4\" M (buitendraad)",
     "a2": "G 1/4\" F (binnendraad) - L=15mm",
@@ -471,7 +507,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verlengstukken G 1/8\"",
-    "default_code": "1099.1051",
+    "default_code": "1099.1055",
     "name": "Verlengstuk G 1/8\" M x G 1/8\" F - L=15mm (RVS)",
     "a1": "G 1/8\" M (buitendraad)",
     "a2": "G 1/8\" F (binnendraad) - L=15mm",
@@ -480,7 +516,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verlengstukken G 1/4\"",
-    "default_code": "1099.1052",
+    "default_code": "1099.1056",
     "name": "Verlengstuk G 1/4\" M x G 1/4\" F - L=25mm (RVS)",
     "a1": "G 1/4\" M (buitendraad)",
     "a2": "G 1/4\" F (binnendraad) - L=25mm",
@@ -489,7 +525,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verlengstukken G 1/8\"",
-    "default_code": "1099.1053",
+    "default_code": "1099.1057",
     "name": "Verlengstuk G 1/8\" M x G 1/8\" F - L=25mm (RVS)",
     "a1": "G 1/8\" M (buitendraad)",
     "a2": "G 1/8\" F (binnendraad) - L=25mm",
@@ -498,7 +534,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verlengstukken G 1/4\"",
-    "default_code": "1099.1054",
+    "default_code": "1099.1058",
     "name": "Verlengstuk G 1/4\" M x G 1/4\" F - L=35mm (RVS)",
     "a1": "G 1/4\" M (buitendraad)",
     "a2": "G 1/4\" F (binnendraad) - L=35mm",
@@ -507,7 +543,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verlengstukken G 1/8\"",
-    "default_code": "1099.1055",
+    "default_code": "1099.1059",
     "name": "Verlengstuk G 1/8\" M x G 1/8\" F - L=35mm (RVS)",
     "a1": "G 1/8\" M (buitendraad)",
     "a2": "G 1/8\" F (binnendraad) - L=35mm",
@@ -516,7 +552,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verlengstukken G 1/4\"",
-    "default_code": "1099.1056",
+    "default_code": "1099.1060",
     "name": "Verlengstuk G 1/4\" M x G 1/4\" F - L=50mm (RVS)",
     "a1": "G 1/4\" M (buitendraad)",
     "a2": "G 1/4\" F (binnendraad) - L=50mm",
@@ -525,7 +561,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Verlengstukken G 1/8\"",
-    "default_code": "1099.1057",
+    "default_code": "1099.1061",
     "name": "Verlengstuk G 1/8\" M x G 1/8\" F - L=50mm (RVS)",
     "a1": "G 1/8\" M (buitendraad)",
     "a2": "G 1/8\" F (binnendraad) - L=50mm",
@@ -533,8 +569,44 @@ let COUPLINGS_DATA = [
     "desc": "Verlengstuk buitendraad G 1/8\" naar binnendraad G 1/8\", effectieve lengte 50 mm (RVS)"
   },
   {
+    "cat": "Insteekkoppelingen 6 mm",
+    "default_code": "1099.1062",
+    "name": "Rechte insteekkoppeling 6 mm - G 1/8\" M (RVS)",
+    "a1": "Push-in 6 mm",
+    "a2": "G 1/8\" BSPP M (buitendraad recht)",
+    "mat": "RVS",
+    "desc": "Rechte steekkoppeling voor 6 mm leiding x G 1/8\" buitendraad (RVS)"
+  },
+  {
+    "cat": "Insteekkoppelingen 6 mm",
+    "default_code": "1099.1063",
+    "name": "Knie-insteekkoppeling 90° 6 mm - G 1/8\" M (RVS)",
+    "a1": "Push-in 6 mm",
+    "a2": "G 1/8\" BSPP M (90° knie recht)",
+    "mat": "RVS",
+    "desc": "90° haakse knie-steekkoppeling voor 6 mm leiding x G 1/8\" buitendraad (RVS)"
+  },
+  {
+    "cat": "Insteekkoppelingen 6 mm",
+    "default_code": "1099.1064",
+    "name": "Rechte insteekkoppeling 6 mm - G 1/4\" M (RVS)",
+    "a1": "Push-in 6 mm",
+    "a2": "G 1/4\" BSPP M (buitendraad recht)",
+    "mat": "RVS",
+    "desc": "Rechte steekkoppeling voor 6 mm leiding x G 1/4\" buitendraad (RVS)"
+  },
+  {
+    "cat": "Insteekkoppelingen 6 mm",
+    "default_code": "1099.1065",
+    "name": "Knie-insteekkoppeling 90° 6 mm - G 1/4\" M (RVS)",
+    "a1": "Push-in 6 mm",
+    "a2": "G 1/4\" BSPP M (90° knie recht)",
+    "mat": "RVS",
+    "desc": "90° haakse knie-steekkoppeling voor 6 mm leiding x G 1/4\" buitendraad (RVS)"
+  },
+  {
     "cat": "Insteekkoppelingen 8 mm",
-    "default_code": "1099.1058",
+    "default_code": "1099.1066",
     "name": "Rechte insteekkoppeling 8 mm - G 1/8\" M (RVS)",
     "a1": "Push-in 8 mm",
     "a2": "G 1/8\" BSPP M (buitendraad recht)",
@@ -543,7 +615,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Insteekkoppelingen 8 mm",
-    "default_code": "1099.1059",
+    "default_code": "1099.1067",
     "name": "Knie-insteekkoppeling 90° 8 mm - G 1/8\" M (RVS)",
     "a1": "Push-in 8 mm",
     "a2": "G 1/8\" BSPP M (90° knie recht)",
@@ -552,7 +624,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Insteekkoppelingen 8 mm",
-    "default_code": "1099.1060",
+    "default_code": "1099.1068",
     "name": "Rechte insteekkoppeling 8 mm - G 1/4\" M (RVS)",
     "a1": "Push-in 8 mm",
     "a2": "G 1/4\" BSPP M (buitendraad recht)",
@@ -561,7 +633,7 @@ let COUPLINGS_DATA = [
   },
   {
     "cat": "Insteekkoppelingen 8 mm",
-    "default_code": "1099.1061",
+    "default_code": "1099.1069",
     "name": "Knie-insteekkoppeling 90° 8 mm - G 1/4\" M (RVS)",
     "a1": "Push-in 8 mm",
     "a2": "G 1/4\" BSPP M (90° knie recht)",

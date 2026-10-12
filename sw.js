@@ -1,4 +1,4 @@
-const CACHE_NAME = 'if-hardware-selector-v13';
+const CACHE_NAME = 'if-hardware-selector-v14';
 const ASSETS = [
   './',
   './index.html',

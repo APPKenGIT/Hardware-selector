@@ -1532,9 +1532,9 @@
 
   <script src="couplings-data.js"></script>
   <script>
-    const STORAGE_KEY = 'IF_HARDWARE_SELECTOR_DATA_V7';
-    const DB_STORAGE_KEY = 'IF_CUSTOM_COUPLINGS_DB_V2';
-    const ISPL_STORAGE_KEY = 'IF_CUSTOM_ISPL_DB_V2';
+    const STORAGE_KEY = 'IF_HARDWARE_SELECTOR_DATA_V8';
+    const DB_STORAGE_KEY = 'IF_CUSTOM_COUPLINGS_DB_V4';
+    const ISPL_STORAGE_KEY = 'IF_CUSTOM_ISPL_DB_V4';
     let currentPhotoBase64 = null;
     let savedPoints = [];
     let activePointId = null;
@@ -1553,12 +1553,17 @@
         const stored = localStorage.getItem(DB_STORAGE_KEY);
         if (stored) {
           const parsed = JSON.parse(stored);
-          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+          const hasM8_125 = Array.isArray(parsed) && parsed.some(item => item.name && item.name.includes('M8x1.25 M x G 1/8'));
+          if (hasM8_125 && parsed.length >= (typeof COUPLINGS_DATA !== 'undefined' ? COUPLINGS_DATA.length : 0)) {
+            return parsed;
+          }
         }
       } catch (e) {
         console.error("DB storage read error:", e);
       }
-      return (typeof COUPLINGS_DATA !== 'undefined') ? COUPLINGS_DATA : [];
+      const fresh = (typeof COUPLINGS_DATA !== 'undefined') ? COUPLINGS_DATA : [];
+      saveActiveDatabase(fresh);
+      return fresh;
     }
 
     function saveActiveDatabase(data) {
@@ -1575,12 +1580,16 @@
         const stored = localStorage.getItem(ISPL_STORAGE_KEY);
         if (stored) {
           const parsed = JSON.parse(stored);
-          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+          if (Array.isArray(parsed) && parsed.length >= (typeof ISPL_CATALOG !== 'undefined' ? ISPL_CATALOG.length : 0)) {
+            return parsed;
+          }
         }
       } catch (e) {
         console.error("ISPL DB storage read error:", e);
       }
-      return (typeof ISPL_CATALOG !== 'undefined') ? ISPL_CATALOG : [];
+      const fresh = (typeof ISPL_CATALOG !== 'undefined') ? ISPL_CATALOG : [];
+      saveActiveISPLDatabase(fresh);
+      return fresh;
     }
 
     function saveActiveISPLDatabase(data) {
@@ -1594,7 +1603,9 @@
 
     function loadSavedState() {
       try {
-        const stored = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('IF_HARDWARE_SELECTOR_DATA_V6');
+        const stored = localStorage.getItem(STORAGE_KEY) || 
+                       localStorage.getItem('IF_HARDWARE_SELECTOR_DATA_V7') || 
+                       localStorage.getItem('IF_HARDWARE_SELECTOR_DATA_V6');
         if (stored) {
           const parsed = JSON.parse(stored);
           savedPoints = parsed.points || [];
@@ -1865,7 +1876,7 @@
         if (cfg.bearingThread !== 'G 1/8') {
           const matchAdapt = findInCatalog(item => 
             item.name.includes("Verloopstuk") && 
-            item.name.includes(cfg.bearingThread) && 
+            (item.name.includes(cfg.bearingThread + " M") || item.name.includes(cfg.bearingThread + " ")) && 
             item.name.includes('G 1/8" F') &&
             item.mat === mat
           );
@@ -1926,7 +1937,7 @@
         if (cfg.bearingThread !== 'G 1/4') {
           const matchAdapt = findInCatalog(item => 
             item.name.includes("Verloopstuk") && 
-            item.name.includes(cfg.bearingThread) && 
+            (item.name.includes(cfg.bearingThread + " M") || item.name.includes(cfg.bearingThread + " ")) && 
             item.name.includes('G 1/4" F') &&
             item.mat === mat
           );

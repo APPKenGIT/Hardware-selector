@@ -1821,6 +1821,9 @@
     // ========================================================================
     // 3D EXPLODED VIEW VECTOR ASSEMBLY SVG RENDERING MET VERBETERDE DRAAISCHIJF
     // ========================================================================
+    // ========================================================================
+    // 3D EXPLODED VIEW VECTOR ASSEMBLY SVG RENDERING MET REALISTISCHE ONDERDELEN
+    // ========================================================================
     function render3DExplodedSVG(cfg) {
       const svg = document.getElementById('assembly-svg');
       let content = '';
@@ -1840,83 +1843,193 @@
       if (dialCap) dialCap.textContent = `Stand: ${cfg.months} mnd`;
 
       const isRVS = (cfg.material === 'RVS');
-      const metalGrad = isRVS ? 'url(#rvsGrad)' : 'url(#brassGrad)';
-      const metalStroke = isRVS ? '#475569' : '#78350F';
-      const metalText = isRVS ? '#1E293B' : '#92400E';
+
+      // Metallic shaders voor RVS of Messing Vernikkeld
+      const metalStroke = isRVS ? '#334155' : '#78350F';
+      const metalText = isRVS ? '#0F172A' : '#78350F';
+
+      const defs = `
+        <defs>
+          <!-- RVS Shaders (Hoogwaardig mat en gepolijst roestvast staal) -->
+          <linearGradient id="rvsCyl" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#334155"/>
+            <stop offset="12%" stop-color="#64748B"/>
+            <stop offset="28%" stop-color="#CBD5E1"/>
+            <stop offset="45%" stop-color="#FFFFFF"/>
+            <stop offset="65%" stop-color="#E2E8F0"/>
+            <stop offset="85%" stop-color="#64748B"/>
+            <stop offset="100%" stop-color="#1E293B"/>
+          </linearGradient>
+          <linearGradient id="rvsFacetL" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#475569"/>
+            <stop offset="100%" stop-color="#94A3B8"/>
+          </linearGradient>
+          <linearGradient id="rvsFacetC" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#F8FAFC"/>
+            <stop offset="50%" stop-color="#FFFFFF"/>
+            <stop offset="100%" stop-color="#E2E8F0"/>
+          </linearGradient>
+          <linearGradient id="rvsFacetR" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#64748B"/>
+            <stop offset="100%" stop-color="#334155"/>
+          </linearGradient>
+
+          <!-- Messing Vernikkeld Shaders (Glanzend warm nikkel) -->
+          <linearGradient id="brassCyl" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#78350F"/>
+            <stop offset="12%" stop-color="#B45309"/>
+            <stop offset="30%" stop-color="#FDE68A"/>
+            <stop offset="48%" stop-color="#FFFBEB"/>
+            <stop offset="68%" stop-color="#FCD34D"/>
+            <stop offset="88%" stop-color="#B45309"/>
+            <stop offset="100%" stop-color="#451A03"/>
+          </linearGradient>
+          <linearGradient id="brassFacetL" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#92400E"/>
+            <stop offset="100%" stop-color="#FBBF24"/>
+          </linearGradient>
+          <linearGradient id="brassFacetC" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#FEF9C3"/>
+            <stop offset="50%" stop-color="#FFFBEB"/>
+            <stop offset="100%" stop-color="#FDE68A"/>
+          </linearGradient>
+          <linearGradient id="brassFacetR" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#D97706"/>
+            <stop offset="100%" stop-color="#78350F"/>
+          </linearGradient>
+
+          <!-- Realistische Schroefdraad Glans -->
+          <linearGradient id="threadGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#1E293B"/>
+            <stop offset="25%" stop-color="#94A3B8"/>
+            <stop offset="48%" stop-color="#FFFFFF"/>
+            <stop offset="75%" stop-color="#64748B"/>
+            <stop offset="100%" stop-color="#0F172A"/>
+          </linearGradient>
+
+          <!-- Gietijzeren Staand Lagerhuis Shaders -->
+          <linearGradient id="castIronGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#475569"/>
+            <stop offset="35%" stop-color="#334155"/>
+            <stop offset="75%" stop-color="#1E293B"/>
+            <stop offset="100%" stop-color="#0F172A"/>
+          </linearGradient>
+          <radialGradient id="castHub" cx="50%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#64748B"/>
+            <stop offset="50%" stop-color="#334155"/>
+            <stop offset="100%" stop-color="#0F172A"/>
+          </radialGradient>
+          <linearGradient id="chromeShaft" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#475569"/>
+            <stop offset="25%" stop-color="#F1F5F9"/>
+            <stop offset="50%" stop-color="#FFFFFF"/>
+            <stop offset="75%" stop-color="#CBD5E1"/>
+            <stop offset="100%" stop-color="#334155"/>
+          </linearGradient>
+        </defs>
+      `;
+
+      const cylGrad = isRVS ? 'url(#rvsCyl)' : 'url(#brassCyl)';
+      const facetL = isRVS ? 'url(#rvsFacetL)' : 'url(#brassFacetL)';
+      const facetC = isRVS ? 'url(#rvsFacetC)' : 'url(#brassFacetC)';
+      const facetR = isRVS ? 'url(#rvsFacetR)' : 'url(#brassFacetR)';
 
       if (cfg.mountType === 'direct') {
+        // Zuiver rechtopstaande uitlijning per ISPL volume
         const isplLayouts = {
-          '250': { x: 22, y: 0,  w: 56, h: 155, bottom: 155 },
-          '125': { x: 18, y: 15, w: 64, h: 135, bottom: 150 },
-          '60':  { x: 20, y: 35, w: 60, h: 100, bottom: 135 },
-          '30':  { x: 20, y: 50, w: 60, h: 80,  bottom: 130 },
-          '15':  { x: 28, y: 15, w: 44, h: 135, bottom: 150 }
+          '250': { x: 25, y: 10, w: 50, h: 165, bottom: 175 },
+          '125': { x: 18, y: 20, w: 64, h: 135, bottom: 155 },
+          '60':  { x: 19, y: 35, w: 62, h: 96,  bottom: 131 },
+          '30':  { x: 19, y: 48, w: 62, h: 76,  bottom: 124 },
+          '15':  { x: 31, y: 20, w: 38, h: 138, bottom: 158 }
         };
         const layout = isplLayouts[volKey] || isplLayouts['125'];
 
-        content = `
-          <defs>
-            <linearGradient id="rvsGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#475569"/>
-              <stop offset="25%" stop-color="#CBD5E1"/>
-              <stop offset="65%" stop-color="#94A3B8"/>
-              <stop offset="100%" stop-color="#334155"/>
-            </linearGradient>
-            <linearGradient id="brassGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#92400E"/>
-              <stop offset="25%" stop-color="#FCD34D"/>
-              <stop offset="65%" stop-color="#D97706"/>
-              <stop offset="100%" stop-color="#78350F"/>
-            </linearGradient>
-            <linearGradient id="bearing3D" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#374151"/>
-              <stop offset="50%" stop-color="#6B7280"/>
-              <stop offset="100%" stop-color="#1F2937"/>
-            </linearGradient>
-          </defs>
+        // Dynamische afstanden voor de exploded view
+        const extH = (cfg.extension === '15') ? 22 : (cfg.extension === '25') ? 30 : (cfg.extension === '35') ? 38 : (cfg.extension === '50') ? 48 : 0;
+        const extY = layout.bottom + 26;
+        const elbowY = extY + (cfg.extension !== '0' ? (extH + 26) : 0);
+        const reducerY = elbowY + (cfg.angle !== 'straight' ? 44 : 0);
+        const bearingY = reducerY + 48;
 
-          <!-- Central Exploded Assembly Centerline -->
-          <line x1="210" y1="20" x2="210" y2="450" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.6"/>
+        const totalH = Math.max(500, bearingY + 115);
+        svg.setAttribute('viewBox', `0 0 460 ${totalH}`);
+
+        content = `
+          ${defs}
+
+          <!-- Centrale Geëxplodeerde Assemblagelijn -->
+          <line x1="210" y1="20" x2="210" y2="${bearingY + 28}" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.6"/>
 
           <!-- 1. REALISTISCHE ISPL LUBRICATOR (FOTO PER GESELECTEERD VOLUME) -->
-          <g transform="translate(160, 10)">
-            <!-- Echte ISPL Productfoto -->
+          <g transform="translate(160, 0)">
+            <!-- Echte ISPL Productfoto zuiver verticaal uitgelijnd -->
             <image href="${isplImgSrc}" x="${layout.x}" y="${layout.y}" width="${layout.w}" height="${layout.h}" preserveAspectRatio="xMidYMid meet"/>
 
             <!-- Badge Boven Draaischijf -->
-            <rect x="25" y="-12" width="50" height="18" rx="4" fill="#E30613"/>
-            <text x="50" y="0" font-size="9" font-weight="900" fill="#FFFFFF" text-anchor="middle">${cfg.months} MAAND</text>
+            <rect x="25" y="-14" width="50" height="18" rx="4" fill="#E30613"/>
+            <text x="50" y="-2" font-size="9" font-weight="900" fill="#FFFFFF" text-anchor="middle">${cfg.months} MAAND</text>
 
-            <!-- Exploded Thread Annotation -->
+            <!-- Aansluiting Annotatie -->
             <line x1="62" y1="${layout.bottom - 4}" x2="110" y2="${layout.bottom - 4}" stroke="#0F172A" stroke-width="1"/>
             <rect x="110" y="${layout.bottom - 14}" width="165" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1"/>
             <text x="115" y="${layout.bottom}" font-size="10" font-weight="900" fill="#E30613">ISPL Aansluiting: G 1/4" M</text>
           </g>
 
-          <!-- 2. VERLENGSTUK (Exploded gap) -->
+          <!-- 2. VERLENGSTUK (3D Hex Nut met realistische schroefdraad) -->
           ${cfg.extension !== '0' ? `
-          <g transform="translate(160, 175)">
-            <rect x="36" y="0" width="28" height="28" fill="${metalGrad}" stroke="${metalStroke}" stroke-width="1.5"/>
-            <ellipse cx="50" cy="0" rx="14" ry="4" fill="#E5E7EB"/>
-            <rect x="40" y="28" width="20" height="12" fill="${metalGrad}" stroke="${metalStroke}"/>
+          <g transform="translate(160, ${extY})">
+            <!-- Vrouwelijke Inschroefkraag G 1/4" F -->
+            <rect x="34" y="0" width="32" height="6" rx="2" fill="${cylGrad}" stroke="${metalStroke}" stroke-width="0.8"/>
+            <ellipse cx="50" cy="2" rx="9" ry="2.5" fill="#0F172A"/>
 
-            <line x1="20" y1="5" x2="36" y2="5" stroke="#0F172A" stroke-width="1"/>
+            <!-- Zeskant Behuizing (3 zichtbare facetten met 3D afschuining) -->
+            <path d="M 34 6 L 43 7 L 43 ${6 + extH - 2} L 34 ${6 + extH} Z" fill="${facetL}" stroke="${metalStroke}" stroke-width="0.5"/>
+            <path d="M 43 7 L 57 7 L 57 ${6 + extH - 2} L 43 ${6 + extH - 2} Z" fill="${facetC}" stroke="${metalStroke}" stroke-width="0.5"/>
+            <path d="M 57 7 L 66 6 L 66 ${6 + extH} L 57 ${6 + extH - 2} Z" fill="${facetR}" stroke="${metalStroke}" stroke-width="0.5"/>
+
+            <!-- Kraagje naar schroefdraad -->
+            <rect x="38" y="${6 + extH}" width="24" height="2.5" fill="${cylGrad}" stroke="${metalStroke}" stroke-width="0.5"/>
+
+            <!-- Mannelijke Schroefdraad G 1/4" M met spoed en tanden -->
+            <path d="M 40 ${8.5 + extH} L 60 ${8.5 + extH} L 59 ${20 + extH} L 41 ${20 + extH} Z" fill="url(#threadGrad)" stroke="${metalStroke}" stroke-width="0.8"/>
+            <line x1="40" y1="${11 + extH}" x2="60" y2="${11 + extH}" stroke="#FFFFFF" stroke-width="1.2" opacity="0.8"/>
+            <line x1="40" y1="${14 + extH}" x2="60" y2="${14 + extH}" stroke="#FFFFFF" stroke-width="1.2" opacity="0.8"/>
+            <line x1="40" y1="${17 + extH}" x2="60" y2="${17 + extH}" stroke="#FFFFFF" stroke-width="1.2" opacity="0.8"/>
+
+            <!-- Annotaties -->
+            <line x1="20" y1="5" x2="34" y2="5" stroke="#0F172A" stroke-width="1"/>
             <rect x="-140" y="-5" width="155" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1"/>
             <text x="-135" y="9" font-size="10" font-weight="bold" fill="${metalText}">Binnendraad: G 1/4" F</text>
 
-            <line x1="64" y1="20" x2="110" y2="20" stroke="#0F172A" stroke-width="1"/>
-            <rect x="110" y="10" width="175" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1"/>
-            <text x="115" y="24" font-size="10" font-weight="bold" fill="#0284C7">Verlengstuk G 1/4" (L=${cfg.extension}mm)</text>
+            <line x1="66" y1="${12 + extH / 2}" x2="110" y2="${12 + extH / 2}" stroke="#0F172A" stroke-width="1"/>
+            <rect x="110" y="${2 + extH / 2}" width="175" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1"/>
+            <text x="115" y="${16 + extH / 2}" font-size="10" font-weight="bold" fill="#0284C7">Verlengstuk G 1/4" (L=${cfg.extension}mm)</text>
           </g>
           ` : ''}
 
-          <!-- 3. KNIESTUK (Exploded gap) -->
+          <!-- 3. KNIESTUK (3D Gegoten/Gefreesd Kniestuk) -->
           ${cfg.angle !== 'straight' ? `
-          <g transform="translate(160, ${cfg.extension !== '0' ? 230 : 185})">
-            <path d="M 34 0 L 66 0 L 66 28 L 34 28 Z" fill="${metalGrad}" stroke="${metalStroke}" stroke-width="1.5"/>
-            <circle cx="50" cy="14" r="6" fill="${metalStroke}"/>
-            <rect x="40" y="28" width="20" height="12" fill="${metalGrad}" stroke="${metalStroke}"/>
+          <g transform="translate(160, ${elbowY})">
+            <!-- Vrouwelijke Kraag -->
+            <rect x="34" y="0" width="32" height="7" rx="2" fill="${cylGrad}" stroke="${metalStroke}" stroke-width="0.8"/>
+            <ellipse cx="50" cy="2" rx="9" ry="2.5" fill="#0F172A"/>
 
+            <!-- Knie Lichaam (Fillet afronding en 3D shading) -->
+            ${cfg.angle === '90' ? `
+              <path d="M 34 7 C 34 26, 36 28, 48 28 L 52 28 C 64 28, 66 26, 66 7 Z" fill="${cylGrad}" stroke="${metalStroke}" stroke-width="0.8"/>
+              <ellipse cx="50" cy="18" rx="8" ry="4" fill="${facetC}" opacity="0.6"/>
+            ` : `
+              <path d="M 34 7 L 40 24 L 60 24 L 66 7 Z" fill="${cylGrad}" stroke="${metalStroke}" stroke-width="0.8"/>
+            `}
+
+            <!-- Mannelijke Schroefdraad G 1/4" M aan onderzijde -->
+            <rect x="40" y="28" width="20" height="11" fill="url(#threadGrad)" stroke="${metalStroke}" stroke-width="0.8"/>
+            <line x1="40" y1="31" x2="60" y2="31" stroke="#FFFFFF" stroke-width="1.2" opacity="0.8"/>
+            <line x1="40" y1="34" x2="60" y2="34" stroke="#FFFFFF" stroke-width="1.2" opacity="0.8"/>
+            <line x1="40" y1="37" x2="60" y2="37" stroke="#FFFFFF" stroke-width="1.2" opacity="0.8"/>
+
+            <!-- Annotaties -->
             <line x1="20" y1="5" x2="34" y2="5" stroke="#0F172A" stroke-width="1"/>
             <rect x="-140" y="-5" width="155" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1"/>
             <text x="-135" y="9" font-size="10" font-weight="bold" fill="${metalText}">Binnendraad: G 1/4" F</text>
@@ -1927,71 +2040,101 @@
           </g>
           ` : ''}
 
-          <!-- 4. VERLOOPSTUK NAAR LAGER (Exploded gap) -->
-          <g transform="translate(160, ${cfg.angle !== 'straight' ? (cfg.extension !== '0' ? 290 : 245) : (cfg.extension !== '0' ? 235 : 185)})">
-            <path d="M 30 0 L 70 0 L 78 12 L 70 24 L 30 24 L 22 12 Z" fill="${metalGrad}" stroke="${metalStroke}" stroke-width="1.5"/>
-            <rect x="40" y="24" width="20" height="14" fill="${metalGrad}" stroke="${metalStroke}"/>
-            <line x1="40" y1="28" x2="60" y2="28" stroke="${metalStroke}"/>
-            <line x1="40" y1="32" x2="60" y2="32" stroke="${metalStroke}"/>
+          <!-- 4. VERLOOPSTUK NAAR LAGER (Massief 3D Zeskant Verloopbus) -->
+          <g transform="translate(160, ${reducerY})">
+            <!-- Vrouwelijke Ingangskraag -->
+            <rect x="33" y="0" width="34" height="4" rx="1.5" fill="${cylGrad}" stroke="${metalStroke}" stroke-width="0.5"/>
+            <ellipse cx="50" cy="1.5" rx="8" ry="2" fill="#0F172A"/>
 
-            <line x1="20" y1="4" x2="30" y2="4" stroke="#0F172A" stroke-width="1"/>
+            <!-- Massieve Zeskantkop (SW19/SW22) met 3D afschuiningen -->
+            <path d="M 31 4 L 41 5.5 L 41 18 L 31 16.5 Z" fill="${facetL}" stroke="${metalStroke}" stroke-width="0.6"/>
+            <path d="M 41 5.5 L 59 5.5 L 59 18 L 41 18 Z" fill="${facetC}" stroke="${metalStroke}" stroke-width="0.6"/>
+            <path d="M 59 5.5 L 69 4 L 69 16.5 L 59 18 Z" fill="${facetR}" stroke="${metalStroke}" stroke-width="0.6"/>
+
+            <!-- Schouderkraag met afdichtingsvlak -->
+            <rect x="36" y="18" width="28" height="2.5" fill="${cylGrad}" stroke="${metalStroke}" stroke-width="0.5"/>
+
+            <!-- Mannelijke Schroefdraad aangepast aan gekozen lagermaat -->
+            ${(() => {
+              const thW = cfg.bearingThread.includes('1/2') ? 26 : cfg.bearingThread.includes('3/8') ? 23 : cfg.bearingThread.includes('1/8') ? 16 : cfg.bearingThread.includes('M6') ? 12 : cfg.bearingThread.includes('M8') ? 14 : 19;
+              const thX = 50 - thW / 2;
+              return `
+                <path d="M ${thX} 20.5 L ${thX + thW} 20.5 L ${thX + thW - 1} 33 L ${thX + 1} 33 Z" fill="url(#threadGrad)" stroke="${metalStroke}" stroke-width="0.8"/>
+                <line x1="${thX}" y1="23.5" x2="${thX + thW}" y2="23.5" stroke="#FFFFFF" stroke-width="1.2" opacity="0.8"/>
+                <line x1="${thX}" y1="26.5" x2="${thX + thW}" y2="26.5" stroke="#FFFFFF" stroke-width="1.2" opacity="0.8"/>
+                <line x1="${thX}" y1="29.5" x2="${thX + thW}" y2="29.5" stroke="#FFFFFF" stroke-width="1.2" opacity="0.8"/>
+              `;
+            })()}
+
+            <!-- Annotaties -->
+            <line x1="20" y1="4" x2="31" y2="4" stroke="#0F172A" stroke-width="1"/>
             <rect x="-140" y="-6" width="155" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1"/>
             <text x="-135" y="8" font-size="10" font-weight="bold" fill="${metalText}">Binnendraad: G 1/4" F</text>
 
-            <line x1="70" y1="18" x2="110" y2="18" stroke="#0F172A" stroke-width="1"/>
-            <rect x="110" y="8" width="175" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1"/>
-            <text x="115" y="22" font-size="10" font-weight="900" fill="#0F172A">Buitendraad: ${cfg.bearingThread} M</text>
+            <line x1="69" y1="12" x2="110" y2="12" stroke="#0F172A" stroke-width="1"/>
+            <rect x="110" y="2" width="175" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1"/>
+            <text x="115" y="16" font-size="10" font-weight="900" fill="#0F172A">Buitendraad: ${cfg.bearingThread} M</text>
           </g>
 
-          <!-- 5. 3D ISOMETRIC BEARING (Exploded bottom) -->
-          <g transform="translate(70, 350)">
-            <path d="M 40 100 L 240 100 L 255 85 L 55 85 Z" fill="#1F2937"/>
-            <path d="M 60 85 C 55 50, 90 20, 150 20 C 210 20, 245 50, 240 85 Z" fill="url(#bearing3D)" stroke="#0F172A" stroke-width="2"/>
-            
-            <ellipse cx="150" cy="62" rx="34" ry="34" fill="#0F172A" stroke="#94A3B8" stroke-width="2"/>
-            <ellipse cx="150" cy="62" rx="20" ry="20" fill="#CBD5E1"/>
+          <!-- 5. REALISTISCH GIETIJZEREN STAAND LAGERHUIS (Pillow Block Bearing) -->
+          <g transform="translate(115, ${bearingY})">
+            <!-- Bevestigingsvoet (Gietijzeren flens met montagegaten) -->
+            <path d="M 0 78 L 190 78 L 186 64 L 140 60 L 50 60 L 4 64 Z" fill="url(#castIronGrad)" stroke="#0F172A" stroke-width="1.2"/>
+            <rect x="10" y="66" width="170" height="12" rx="3" fill="#1E293B" stroke="#0F172A" opacity="0.4"/>
 
-            <ellipse cx="150" cy="18" rx="14" ry="5" fill="#E2E8F0" stroke="#0F172A" stroke-width="2"/>
-            <line x1="164" y1="18" x2="200" y2="18" stroke="#0F172A" stroke-width="1"/>
-            <rect x="200" y="8" width="165" height="20" rx="4" fill="#FFFFFF" stroke="#E30613"/>
-            <text x="205" y="22" font-size="10" font-weight="900" fill="#E30613">Lagerpoort: ${cfg.bearingThread}</text>
+            <!-- Linker en rechter bevestigingssleuf met stalen boutkoppen -->
+            <ellipse cx="22" cy="71" rx="8" ry="3.5" fill="#0F172A"/>
+            <rect x="18" y="67" width="8" height="6" fill="${cylGrad}" stroke="#0F172A" stroke-width="0.5"/>
+            <ellipse cx="168" cy="71" rx="8" ry="3.5" fill="#0F172A"/>
+            <rect x="164" y="67" width="8" height="6" fill="${cylGrad}" stroke="#0F172A" stroke-width="0.5"/>
+
+            <!-- Centraal Sferisch Gietijzeren Lagerhuis -->
+            <path d="M 46 60 C 42 22, 70 8, 95 8 C 120 8, 148 22, 144 60 Z" fill="url(#castHub)" stroke="#0F172A" stroke-width="1.5"/>
+
+            <!-- Bovenste Bewerkte Smeerpoort Nok (Lagerpoort) -->
+            <rect x="80" y="0" width="30" height="9" rx="2" fill="${cylGrad}" stroke="#0F172A" stroke-width="1"/>
+            <ellipse cx="95" cy="2" rx="7" ry="2" fill="#0F172A"/>
+
+            <!-- Precisie Stalen Buitenring -->
+            <ellipse cx="95" cy="40" rx="34" ry="28" fill="${cylGrad}" stroke="#0F172A" stroke-width="1.2"/>
+
+            <!-- Nitril Rubber Contactafdichting (Zwart met lippen) -->
+            <ellipse cx="95" cy="40" rx="27" ry="22" fill="#18181B" stroke="#27272A" stroke-width="1.5"/>
+
+            <!-- Binnenring & Stelschroeven -->
+            <ellipse cx="95" cy="40" rx="20" ry="16" fill="${cylGrad}" stroke="#0F172A" stroke-width="1"/>
+            <circle cx="86" cy="33" r="1.8" fill="#0F172A"/>
+            <circle cx="104" cy="33" r="1.8" fill="#0F172A"/>
+
+            <!-- Draaiende Massieve Chroomstalen Aandrijfas -->
+            <path d="M -15 32 L 205 32 L 205 48 L -15 48 Z" fill="url(#chromeShaft)" opacity="0.9" stroke="#334155" stroke-width="0.8"/>
+            <ellipse cx="205" cy="40" rx="3" ry="8" fill="#94A3B8"/>
+
+            <!-- Annotatie Lagerpoort -->
+            <line x1="110" y1="4" x2="155" y2="4" stroke="#0F172A" stroke-width="1"/>
+            <rect x="155" y="-6" width="165" height="20" rx="4" fill="#FFFFFF" stroke="#E30613" stroke-width="1.5"/>
+            <text x="160" y="8" font-size="10" font-weight="900" fill="#E30613">Lagerpoort: ${cfg.bearingThread}</text>
           </g>
         `;
       } else {
-        // REMOTE MOUNT EXPLODED VIEW (Pulsarlube 2000RC-1)
+        // ====================================================================
+        // REMOTE MOUNT (Pulsarlube 2000RC-1) MET REALISTISCHE KOPPELINGEN
+        // ====================================================================
         const remLayouts = {
-          '250': { x: 5,  y: 0,  w: 50, h: 120 },
-          '125': { x: 4,  y: 12, w: 52, h: 108 },
-          '60':  { x: 5,  y: 35, w: 50, h: 85 },
-          '30':  { x: 5,  y: 48, w: 50, h: 72 },
-          '15':  { x: 14, y: 12, w: 34, h: 108 }
+          '250': { x: 5,  y: 0,  w: 44, h: 130 },
+          '125': { x: 4,  y: 12, w: 48, h: 104 },
+          '60':  { x: 5,  y: 32, w: 48, h: 76 },
+          '30':  { x: 5,  y: 44, w: 48, h: 62 },
+          '15':  { x: 14, y: 12, w: 30, h: 104 }
         };
         const remL = remLayouts[volKey] || remLayouts['125'];
 
-        svg.setAttribute('viewBox', '0 0 460 490');
+        svg.setAttribute('viewBox', '0 0 460 510');
 
         content = `
-          <defs>
-            <linearGradient id="rvsGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#475569"/>
-              <stop offset="25%" stop-color="#CBD5E1"/>
-              <stop offset="65%" stop-color="#94A3B8"/>
-              <stop offset="100%" stop-color="#334155"/>
-            </linearGradient>
-            <linearGradient id="brassGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#92400E"/>
-              <stop offset="25%" stop-color="#FCD34D"/>
-              <stop offset="65%" stop-color="#D97706"/>
-              <stop offset="100%" stop-color="#78350F"/>
-            </linearGradient>
-            <linearGradient id="bearing3D" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#374151"/>
-              <stop offset="50%" stop-color="#6B7280"/>
-              <stop offset="100%" stop-color="#1F2937"/>
-            </linearGradient>
-          </defs>
+          ${defs}
 
-          <!-- ISPL on Bracket (Left, Exploded Gap) -->
+          <!-- ISPL op Beugel (Links, Uitgelijnd) -->
           <g transform="translate(35, 10)">
             <!-- Echte ISPL Productfoto -->
             <image href="${isplImgSrc}" x="${remL.x}" y="${remL.y}" width="${remL.w}" height="${remL.h}" preserveAspectRatio="xMidYMid meet"/>
@@ -2000,7 +2143,7 @@
             <rect x="5" y="-14" width="50" height="16" rx="4" fill="#E30613"/>
             <text x="30" y="-3" font-size="8.5" font-weight="900" fill="#FFFFFF" text-anchor="middle">${cfg.months} MND</text>
 
-            <rect x="68" y="40" width="115" height="24" rx="4" fill="#0F172A"/>
+            <rect x="68" y="40" width="125" height="24" rx="4" fill="#0F172A"/>
             <text x="73" y="52" font-size="8.5" font-weight="900" fill="#FFFFFF">ISPL ${cfg.lubricatorVol}</text>
             <text x="73" y="60" font-size="7" font-weight="bold" fill="#FACC15">${cfg.greaseType}</text>
 
@@ -2008,56 +2151,89 @@
             <text x="72" y="124" font-size="9" font-weight="900" fill="#E30613">G 1/4" M</text>
           </g>
 
-          <!-- Pulsarlube 2000RC-1 Mounting Bracket -->
-          <g transform="translate(25, 130)">
-            <rect x="0" y="0" width="90" height="14" fill="#334155" rx="3"/>
-            <line x1="8" y1="0" x2="8" y2="40" stroke="#0F172A" stroke-width="4"/>
-            <rect x="34" y="14" width="16" height="14" fill="${metalGrad}" stroke="${metalStroke}"/>
-            
-            <line x1="90" y1="7" x2="120" y2="7" stroke="#0F172A" stroke-width="1"/>
-            <rect x="120" y="-3" width="180" height="20" rx="4" fill="#EFF6FF" stroke="#3B82F6"/>
-            <text x="125" y="11" font-size="10" font-weight="900" fill="#1E40AF">Beugel G 1/4" F (Kit 1702)</text>
+          <!-- Pulsarlube 2000RC-1 Stalen Montagebeugel -->
+          <g transform="translate(25, 140)">
+            <path d="M 0 0 L 95 0 L 95 16 L 0 16 Z" fill="#334155" stroke="#1E293B" stroke-width="1"/>
+            <rect x="6" y="2" width="6" height="12" rx="2" fill="#0F172A"/>
+            <rect x="83" y="2" width="6" height="12" rx="2" fill="#0F172A"/>
+            <!-- Doorvoerblok G 1/4" F -->
+            <rect x="36" y="16" width="22" height="16" rx="2" fill="${cylGrad}" stroke="${metalStroke}" stroke-width="0.8"/>
+            <ellipse cx="47" cy="32" rx="6" ry="2" fill="#0F172A"/>
+
+            <line x1="95" y1="8" x2="125" y2="8" stroke="#0F172A" stroke-width="1"/>
+            <rect x="125" y="-2" width="185" height="20" rx="4" fill="#EFF6FF" stroke="#3B82F6"/>
+            <text x="130" y="12" font-size="10" font-weight="900" fill="#1E40AF">Beugel G 1/4" F (Kit 1702)</text>
           </g>
 
-          <!-- High-Pressure Hose 8 mm (MAX 20 CM) -->
-          <path d="M 68 160 C 75 255, 150 225, 230 285" fill="none" stroke="#0F172A" stroke-width="8" stroke-linecap="round"/>
-          <path d="M 68 160 C 75 255, 150 225, 230 285" fill="none" stroke="#2563EB" stroke-width="4" stroke-dasharray="6 3" stroke-linecap="round"/>
+          <!-- Hogedrukleiding 8 mm (Max. 20 cm) met realistische glans & pershulzen -->
+          <g>
+            <!-- Pershuls aan beugelzijde -->
+            <rect x="42" y="172" width="10" height="8" rx="1.5" fill="${cylGrad}" stroke="#334155" stroke-width="0.5"/>
 
-          <g transform="translate(110, 210)">
-            <rect x="0" y="0" width="155" height="22" rx="6" fill="#FEF3C7" stroke="#F59E0B" stroke-width="1.5"/>
-            <text x="77" y="15" font-size="10" font-weight="900" fill="#92400E" text-anchor="middle">LEIDING 8 MM (MAX. 20 CM)</text>
+            <!-- Flexibele Leiding (Dubbele stroke voor 3D cilindrische glans) -->
+            <path d="M 47 180 C 55 270, 140 240, 230 295" fill="none" stroke="#0F172A" stroke-width="8" stroke-linecap="round"/>
+            <path d="M 47 180 C 55 270, 140 240, 230 295" fill="none" stroke="#2563EB" stroke-width="5" stroke-linecap="round"/>
+            <path d="M 47 180 C 55 270, 140 240, 230 295" fill="none" stroke="#93C5FD" stroke-width="1.8" stroke-dasharray="8 6" stroke-linecap="round"/>
+
+            <!-- Pershuls aan lagerzijde -->
+            <rect x="226" y="291" width="8" height="10" rx="1.5" fill="${cylGrad}" stroke="#334155" stroke-width="0.5"/>
+
+            <!-- Badge Leidinglengte -->
+            <rect x="95" y="215" width="165" height="22" rx="6" fill="#FEF3C7" stroke="#F59E0B" stroke-width="1.5"/>
+            <text x="177" y="230" font-size="10" font-weight="900" fill="#92400E" text-anchor="middle">LEIDING 8 MM (MAX. 20 CM)</text>
           </g>
 
-          <!-- Push-in fitting at Bearing side -->
-          <g transform="translate(220, 280)">
-            <rect x="0" y="0" width="22" height="20" rx="3" fill="${metalGrad}" stroke="${metalStroke}" stroke-width="1.5"/>
-            <line x1="22" y1="10" x2="60" y2="10" stroke="#0F172A" stroke-width="1"/>
+          <!-- 3D Push-in Koppeling aan Lagerzijde -->
+          <g transform="translate(225, 298)">
+            <!-- Kunststof Ontgrendelring 8 mm -->
+            <rect x="4" y="0" width="14" height="4" rx="1.5" fill="#2563EB" stroke="#1D4ED8" stroke-width="0.5"/>
+            <!-- Zeskant Messing/RVS body -->
+            <rect x="1" y="4" width="20" height="12" rx="1.5" fill="${cylGrad}" stroke="${metalStroke}" stroke-width="0.8"/>
+            <!-- Mannelijke schroefdraad G 1/8" M -->
+            <rect x="3" y="16" width="16" height="10" fill="url(#threadGrad)" stroke="${metalStroke}" stroke-width="0.8"/>
+            <line x1="3" y1="19" x2="19" y2="19" stroke="#FFFFFF" stroke-width="1" opacity="0.8"/>
+            <line x1="3" y1="22" x2="19" y2="22" stroke="#FFFFFF" stroke-width="1" opacity="0.8"/>
+
+            <line x1="21" y1="10" x2="60" y2="10" stroke="#0F172A" stroke-width="1"/>
             <rect x="60" y="0" width="175" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1"/>
             <text x="65" y="14" font-size="10" font-weight="bold" fill="${metalText}">
               ${cfg.remoteFitting === 'elbow-90' ? '90° Knie' : 'Recht'} Push-in ➔ G 1/8" M
             </text>
           </g>
 
-          <!-- Adapter to Bearing (Exploded below fitting if bearing != G 1/8) -->
+          <!-- Eventueel Verloopstuk van Lagermaat naar G 1/8" F -->
           ${cfg.bearingThread !== 'G 1/8' ? `
-          <g transform="translate(220, 315)">
-            <path d="M 0 0 L 22 0 L 26 8 L 22 16 L 0 16 L -4 8 Z" fill="${metalGrad}" stroke="${metalStroke}"/>
-            <rect x="3" y="16" width="16" height="10" fill="${metalGrad}" stroke="${metalStroke}"/>
-            <line x1="26" y1="8" x2="60" y2="8" stroke="#0F172A" stroke-width="1"/>
+          <g transform="translate(225, 332)">
+            <rect x="0" y="0" width="22" height="14" rx="2" fill="${facetC}" stroke="${metalStroke}" stroke-width="0.8"/>
+            <rect x="3" y="14" width="16" height="10" fill="url(#threadGrad)" stroke="${metalStroke}" stroke-width="0.8"/>
+            <line x1="22" y1="8" x2="60" y2="8" stroke="#0F172A" stroke-width="1"/>
             <rect x="60" y="-2" width="175" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1"/>
             <text x="65" y="12" font-size="10" font-weight="bold" fill="#0F172A">Verloop: ${cfg.bearingThread} M ➔ G 1/8" F</text>
           </g>
           ` : ''}
 
-          <!-- Bearing at bottom right -->
-          <g transform="translate(150, 345)">
-            <path d="M 30 95 L 180 95 L 195 80 L 45 80 Z" fill="#1F2937"/>
-            <path d="M 45 80 C 40 55, 65 25, 115 25 C 165 25, 190 55, 185 80 Z" fill="url(#bearing3D)" stroke="#0F172A" stroke-width="2"/>
-            <ellipse cx="115" cy="56" rx="26" ry="26" fill="#0F172A"/>
-            <ellipse cx="115" cy="56" rx="14" ry="14" fill="#CBD5E1"/>
+          <!-- Staand Lagerhuis aan Lagerzijde -->
+          <g transform="translate(145, ${cfg.bearingThread !== 'G 1/8' ? 362 : 332})">
+            <!-- Flensvoet -->
+            <path d="M 0 68 L 170 68 L 166 56 L 125 52 L 45 52 L 4 56 Z" fill="url(#castIronGrad)" stroke="#0F172A" stroke-width="1"/>
+            <rect x="10" y="58" width="150" height="10" fill="#1E293B" opacity="0.4"/>
+            <!-- Bouten -->
+            <rect x="16" y="58" width="6" height="5" fill="${cylGrad}" stroke="#0F172A" stroke-width="0.5"/>
+            <rect x="148" y="58" width="6" height="5" fill="${cylGrad}" stroke="#0F172A" stroke-width="0.5"/>
 
-            <ellipse cx="115" cy="22" rx="12" ry="4" fill="#E2E8F0" stroke="#0F172A" stroke-width="1.5"/>
-            <text x="115" y="12" font-size="10" font-weight="900" fill="#E30613" text-anchor="middle">Lagerpoort (${cfg.bearingThread})</text>
+            <!-- Lagerkoepel & Poort -->
+            <path d="M 40 52 C 38 18, 62 6, 85 6 C 108 6, 132 18, 130 52 Z" fill="url(#castHub)" stroke="#0F172A" stroke-width="1.2"/>
+            <rect x="73" y="0" width="24" height="7" rx="1.5" fill="${cylGrad}" stroke="#0F172A" stroke-width="0.8"/>
+
+            <!-- Lagerelement & As -->
+            <ellipse cx="85" cy="35" rx="28" ry="22" fill="${cylGrad}" stroke="#0F172A" stroke-width="1"/>
+            <ellipse cx="85" cy="35" rx="22" ry="17" fill="#18181B"/>
+            <ellipse cx="85" cy="35" rx="16" ry="12" fill="${cylGrad}"/>
+            <path d="M -15 28 L 185 28 L 185 42 L -15 42 Z" fill="url(#chromeShaft)" stroke="#334155" stroke-width="0.8"/>
+
+            <line x1="97" y1="3" x2="135" y2="3" stroke="#0F172A" stroke-width="1"/>
+            <rect x="135" y="-7" width="150" height="20" rx="4" fill="#FFFFFF" stroke="#E30613" stroke-width="1.5"/>
+            <text x="140" y="7" font-size="9.5" font-weight="900" fill="#E30613">Lagerpoort (${cfg.bearingThread})</text>
           </g>
         `;
       }

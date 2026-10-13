@@ -1,10 +1,14 @@
-const CACHE_NAME = 'if-hardware-selector-v14';
+const CACHE_NAME = 'if-hardware-selector-v15';
 const ASSETS = [
   './',
   './index.html',
   './couplings-data.js',
   './xlsx.full.min.js',
   './manifest.json',
+  './favicon.ico',
+  './favicon-32.png',
+  './favicon-16.png',
+  './apple-touch-icon.png',
   './icon-192.png',
   './icon-512.png',
   './bearing-pillow-block.png',
@@ -25,7 +29,8 @@ const ASSETS = [
   './ispl-30.png',
   './ispl-60.png',
   './ispl-125.png',
-  './ispl-250.png'
+  './ispl-250.png',
+  './Brochure_Interflon_Single_Point_Lubricators-NL.pdf'
 ];
 
 self.addEventListener('install', (e) => {

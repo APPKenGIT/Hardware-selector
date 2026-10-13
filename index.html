@@ -8,7 +8,11 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
   <script src="xlsx.full.min.js"></script>
   <style>
     :root {
@@ -699,6 +703,142 @@
       font-family: inherit;
     }
 
+    /* ======================================================================== */
+    /* THREAD MEASUREMENT GUIDE & BROCHURE STYLES                               */
+    /* ======================================================================== */
+    .thread-wizard-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    @media (min-width: 920px) {
+      .thread-wizard-grid {
+        grid-template-columns: 1.15fr 0.85fr;
+        align-items: stretch;
+      }
+    }
+    .thread-step-card {
+      background: #F8FAFC;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+    .thread-step-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+    .thread-quick-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .chip-btn {
+      padding: 7px 12px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border);
+      background: white;
+      color: var(--dark);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .chip-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: #FFF5F5;
+    }
+    .chip-btn.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+      box-shadow: 0 2px 8px rgba(227, 6, 19, 0.2);
+    }
+    .thread-result-panel {
+      background: #FFFFFF;
+      border: 2px solid #E2E8F0;
+      border-radius: 16px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+      box-shadow: var(--shadow-sm);
+    }
+    .thread-result-panel.match-found {
+      border-color: var(--primary);
+      box-shadow: 0 8px 24px rgba(227, 6, 19, 0.08);
+    }
+    .thread-match-title {
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--primary);
+      margin-top: 4px;
+    }
+    .thread-meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 10px;
+      margin: 14px 0;
+    }
+    .thread-meta-item {
+      background: #F8FAFC;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 12px;
+    }
+    .thread-meta-label {
+      font-size: 10.5px;
+      color: var(--text-muted);
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .thread-meta-val {
+      font-size: 13.5px;
+      color: var(--dark);
+      font-weight: 800;
+      margin-top: 2px;
+    }
+    .tips-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+    .tip-card {
+      background: #F8FAFC;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      border-left: 4px solid var(--primary);
+    }
+    .brochure-card {
+      background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+      color: white;
+      border-radius: 16px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+    @media (min-width: 800px) {
+      .brochure-card {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
     /* Modals */
     .modal-backdrop {
       display: none;
@@ -872,7 +1012,13 @@
         Stuklijst & Offerte
       </button>
 
-      <!-- 5. Database / Odoo Beheer -->
+      <!-- 5. Draadhulp & Brochure -->
+      <button class="nav-pill" onclick="switchTab('thread-guide')">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><line x1="9" y1="7" x2="15" y2="7"/><line x1="9" y1="11" x2="13" y2="11"/></svg>
+        Draadhulp &amp; Brochure
+      </button>
+
+      <!-- 6. Database / Odoo Beheer -->
       <button class="nav-pill" onclick="openDatabaseAuthModal()">
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
         Database / Odoo
@@ -1306,6 +1452,337 @@
       </div>
     </div>
 
+    <!-- ==================================================================== -->
+    <!-- TAB 4: DRAADHULP MEETWIJZER & ISPL BROCHURE                           -->
+    <!-- ==================================================================== -->
+    <div id="tab-thread-guide" class="tab-content">
+
+      <!-- 1. Interflon ISPL Officiële Productbrochure Kaart -->
+      <div class="brochure-card">
+        <div>
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+            <span style="background: #E30613; color: white; font-size: 10.5px; font-weight: 900; padding: 3px 8px; border-radius: 6px; letter-spacing: 0.5px;">DOCUMENTATIE</span>
+            <span style="font-size: 12px; color: #94A3B8; font-weight: 600;">Interflon Nederland / België</span>
+          </div>
+          <h2 style="font-size: 18px; font-weight: 900; margin-bottom: 6px; color: #FFFFFF;">
+            Interflon Single Point Lubricators Brochure
+          </h2>
+          <p style="font-size: 12.5px; color: #CBD5E1; max-width: 650px; line-height: 1.45;">
+            Officiële productgids met specificaties van alle ISPL volumes (15 - 250 ml), ATEX Zone 0/20 richtlijnen, insteltabellen per lagerdiameter en montagevoorbeelden voor veeleisende industriële omgevingen.
+          </p>
+        </div>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">
+          <button class="btn-pill-primary" style="background: #E30613; padding: 10px 18px; font-size: 12.5px;" onclick="toggleBrochureViewer()">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            <span id="brochure-btn-label">📖 Brochure Bekijken</span>
+          </button>
+          <a href="Brochure_Interflon_Single_Point_Lubricators-NL.pdf" download="Brochure_Interflon_Single_Point_Lubricators-NL.pdf" class="btn-pill-primary" style="background: #10B981; border: none; padding: 10px 18px; font-size: 12.5px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+            Download PDF (7.2 MB)
+          </a>
+          <a href="Brochure_Interflon_Single_Point_Lubricators-NL.pdf" target="_blank" class="btn-pill-dark" style="background: #334155; padding: 10px 16px; font-size: 12.5px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Nieuw tabblad
+          </a>
+        </div>
+      </div>
+
+      <!-- Ingesloten PDF Viewer (Wordt geactiveerd bij klik op 'Brochure Bekijken') -->
+      <div id="brochure-embed-box" style="display: none; margin-bottom: 20px; background: white; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); box-shadow: var(--shadow-md);">
+        <div style="padding: 10px 16px; background: #0F172A; color: white; display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 12px; font-weight: 700;">Brochure_Interflon_Single_Point_Lubricators-NL.pdf</span>
+          <button onclick="toggleBrochureViewer()" style="background: none; border: none; color: #94A3B8; font-size: 18px; cursor: pointer;">✕ Sluiten</button>
+        </div>
+        <iframe id="brochure-iframe" src="" style="width: 100%; height: 750px; border: none; display: block;"></iframe>
+      </div>
+
+      <!-- 2. Interactieve Schroefdraad Meetassistent (Wizard) -->
+      <div class="card">
+        <div class="card-title">
+          <div class="card-title-left">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+            <span>Stap-voor-Stap Schroefdraad Meetassistent voor Lagerhuizen</span>
+          </div>
+          <span style="font-size: 11px; background: #FFF5F5; color: var(--primary); padding: 3px 10px; border-radius: var(--radius-pill); font-weight: 800; border: 1px solid #FECACA;">Caliper Wizard</span>
+        </div>
+
+        <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 18px;">
+          Meet met een schuifmaat de oude vetnippel of het gat in het lagerhuis. De wizard berekent direct de juiste maat en past deze met één klik toe in de configurator.
+        </div>
+
+        <div class="thread-wizard-grid">
+          
+          <!-- Linkerkolom: Invoer en Stappen -->
+          <div>
+
+            <!-- STAP 1: Wat meet je? -->
+            <div class="thread-step-card">
+              <div class="thread-step-badge">
+                <span>Stap 1</span> • Meetlocatie
+              </div>
+              <label class="input-label">Wat meet u op met de schuifmaat?</label>
+              
+              <div style="display: flex; flex-direction: column; gap: 8px;">
+                <label class="radio-option" style="margin-bottom: 0; background: white;">
+                  <input type="radio" name="tg-measure-target" value="male" checked onchange="onThreadMeasurementChange()">
+                  <div>
+                    <strong style="color: var(--dark); font-size: 13px;">Buitendraad (Oude vetnippel / mannelijke fitting)</strong>
+                    <div style="font-size: 11.5px; color: var(--text-muted); margin-top: 2px;">
+                      Uitgedraaide vetnippel meten over de buitendiameter (toppen van de draad). <em>Meest nauwkeurige methode!</em>
+                    </div>
+                  </div>
+                </label>
+
+                <label class="radio-option" style="margin-bottom: 0; background: white;">
+                  <input type="radio" name="tg-measure-target" value="female" onchange="onThreadMeasurementChange()">
+                  <div>
+                    <strong style="color: var(--dark); font-size: 13px;">Binnendraad (Smeerpoort in het lagerhuis zelf)</strong>
+                    <div style="font-size: 11.5px; color: var(--text-muted); margin-top: 2px;">
+                      Binnendiameter van de opening meten met de binnenbekken van de schuifmaat (kerndiameter).
+                    </div>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- STAP 2: Schuifmaat Meting -->
+            <div class="thread-step-card">
+              <div class="thread-step-badge">
+                <span>Stap 2</span> • Diameter meten
+              </div>
+              
+              <div class="input-group">
+                <label class="input-label" id="tg-diam-label">Gemeten diameter (in mm):</label>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                  <input type="number" id="tg-measured-diam" step="0.05" min="4" max="25" value="8.0" style="font-size: 16px; font-weight: 800; color: var(--primary);" oninput="onThreadMeasurementChange()">
+                  <span style="font-size: 14px; font-weight: 800; color: var(--text-muted);">mm</span>
+                </div>
+              </div>
+
+              <!-- Snelle Keuzeknoppen -->
+              <div style="margin-top: 8px;">
+                <span style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Snelle selectie courante maten:</span>
+                <div class="thread-quick-chips">
+                  <button type="button" class="chip-btn" onclick="setThreadQuickMeasurement(6.0, 'straight', '1.0')">~ 6.0 mm (M6)</button>
+                  <button type="button" class="chip-btn active" id="chip-m8" onclick="setThreadQuickMeasurement(8.0, 'straight', '1.0')">~ 8.0 mm (M8)</button>
+                  <button type="button" class="chip-btn" onclick="setThreadQuickMeasurement(9.7, 'straight', 'bsp')">~ 9.7 mm (G 1/8")</button>
+                  <button type="button" class="chip-btn" onclick="setThreadQuickMeasurement(9.9, 'conical', 'npt')">~ 9.9 mm (1/8" NPT)</button>
+                  <button type="button" class="chip-btn" onclick="setThreadQuickMeasurement(10.0, 'straight', '1.0')">~ 10.0 mm (M10)</button>
+                  <button type="button" class="chip-btn" onclick="setThreadQuickMeasurement(13.1, 'straight', 'bsp')">~ 13.1 mm (G 1/4")</button>
+                  <button type="button" class="chip-btn" onclick="setThreadQuickMeasurement(13.5, 'conical', 'npt')">~ 13.5 mm (1/4" NPT)</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- STAP 3: Vorm & Spoed Verificatie -->
+            <div class="thread-step-card" style="margin-bottom: 0;">
+              <div class="thread-step-badge">
+                <span>Stap 3</span> • Vorm &amp; Spoed controleren
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <div>
+                  <label class="input-label">Draadvorm:</label>
+                  <select id="tg-shape" onchange="onThreadMeasurementChange()">
+                    <option value="straight" selected>Recht / Cilindrisch (Parallel)</option>
+                    <option value="conical">Conisch / Taps toelopend (1:16)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="input-label">Spoed (Afstand tussen toppen):</label>
+                  <select id="tg-pitch" onchange="onThreadMeasurementChange()">
+                    <option value="1.0" selected>1.0 mm (Metrisch fijn - Meest voorkomend)</option>
+                    <option value="1.25">1.25 mm (Standaard M8 grof)</option>
+                    <option value="1.5">1.5 mm (Standaard M10 grof)</option>
+                    <option value="bsp">Gasdraad / Whitworth (28 of 19 TPI)</option>
+                    <option value="npt">Amerikaanse NPT (27 of 18 TPI taps)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Rechterkolom: Live Gedetecteerd Resultaat & Directe Actie -->
+          <div>
+            <div id="thread-guide-result" class="thread-result-panel match-found">
+              <!-- Dynamisch gegenereerd door JS -->
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 3. Determinatietabel voor Lagerhuizen (Naslagwerk) -->
+      <div class="card">
+        <div class="card-title">
+          <div class="card-title-left">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            <span>Determinatietabel voor Lagerhuisschroefdraden</span>
+          </div>
+          <span style="font-size: 11px; color: var(--text-muted); font-weight: normal;">Volledig overzicht</span>
+        </div>
+
+        <div style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 14px;">
+          Vergelijk uw meetwaarden direct met onderstaande normmaten. Klik op <strong>"Instellen"</strong> om de schroefdraad meteen toe te passen in de configurator.
+        </div>
+
+        <div style="overflow-x: auto;">
+          <table class="bom-table">
+            <thead>
+              <tr>
+                <th>Schroefdraad</th>
+                <th>Buitendraad OD (Nippel)</th>
+                <th>Kerngat ID (Lagerpoort)</th>
+                <th>Spoed / Gangen</th>
+                <th>Vorm &amp; Afdichting</th>
+                <th>Toepassing &amp; Lagermerken</th>
+                <th style="text-align: center;">Actie</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong style="color: var(--primary); font-size: 13.5px;">M6x1</strong></td>
+                <td>5.85 – 5.98 mm</td>
+                <td>4.90 – 5.10 mm</td>
+                <td>1.00 mm</td>
+                <td>Cilindrisch (ring/kraag)</td>
+                <td>Kleine lagers, compacte looprollen, lineaire geleidingen</td>
+                <td style="text-align: center;">
+                  <button class="chip-btn" style="padding: 4px 10px; font-size: 11px;" onclick="applyThreadToConfig('M6x1')">Instellen ➔</button>
+                </td>
+              </tr>
+              <tr style="background: #FFF5F5;">
+                <td><strong style="color: var(--primary); font-size: 13.5px;">M8x1</strong> <span style="font-size: 10px; background: var(--primary); color: white; padding: 2px 6px; border-radius: 4px; font-weight: bold;">STANDAARD</span></td>
+                <td>7.82 – 7.97 mm</td>
+                <td>6.90 – 7.10 mm</td>
+                <td>1.00 mm (fijn)</td>
+                <td>Cilindrisch (ring/kraag)</td>
+                <td><strong>SKF, INA, FAG, NSK, NTN, RHP</strong> staande &amp; flenslagers (FY, SY, UCP, UCF)</td>
+                <td style="text-align: center;">
+                  <button class="btn-pill-primary" style="padding: 4px 12px; font-size: 11px;" onclick="applyThreadToConfig('M8x1')">Instellen ➔</button>
+                </td>
+              </tr>
+              <tr>
+                <td><strong style="color: var(--dark); font-size: 13.5px;">M8x1.25</strong></td>
+                <td>7.78 – 7.96 mm</td>
+                <td>6.65 – 6.90 mm</td>
+                <td>1.25 mm (standaard)</td>
+                <td>Cilindrisch (ring/kraag)</td>
+                <td>Metrisch standaard schroefdraad (grovere spoed, machines, motorsteunen)</td>
+                <td style="text-align: center;">
+                  <button class="chip-btn" style="padding: 4px 10px; font-size: 11px;" onclick="applyThreadToConfig('M8x1.25')">Instellen ➔</button>
+                </td>
+              </tr>
+              <tr>
+                <td><strong style="color: var(--dark); font-size: 13.5px;">M10x1</strong></td>
+                <td>9.82 – 9.97 mm</td>
+                <td>8.90 – 9.10 mm</td>
+                <td>1.00 mm (fijn)</td>
+                <td>Cilindrisch (ring/kraag)</td>
+                <td>Zwaardere SKF, FAG lagerhuizen (grotere asdiameters &gt; 50 mm, SNL series)</td>
+                <td style="text-align: center;">
+                  <button class="chip-btn" style="padding: 4px 10px; font-size: 11px;" onclick="applyThreadToConfig('M10x1')">Instellen ➔</button>
+                </td>
+              </tr>
+              <tr>
+                <td><strong style="color: var(--dark); font-size: 13.5px;">M10x1.5</strong></td>
+                <td>9.75 – 9.96 mm</td>
+                <td>8.35 – 8.60 mm</td>
+                <td>1.50 mm (standaard)</td>
+                <td>Cilindrisch (ring/kraag)</td>
+                <td>Metrisch standaard grof M10, machineframes en zware constructies</td>
+                <td style="text-align: center;">
+                  <button class="chip-btn" style="padding: 4px 10px; font-size: 11px;" onclick="applyThreadToConfig('M10x1.5')">Instellen ➔</button>
+                </td>
+              </tr>
+              <tr style="background: #F8FAFC;">
+                <td><strong style="color: #0369A1; font-size: 13.5px;">G 1/8" BSPP</strong></td>
+                <td>9.51 – 9.73 mm</td>
+                <td>8.60 – 8.85 mm</td>
+                <td>28 TPI (0.907 mm)</td>
+                <td>Cilindrisch (ring/kraag)</td>
+                <td>Europese pneumatiek, Cooper splitlagers, SKF gedeelde lagerhuizen</td>
+                <td style="text-align: center;">
+                  <button class="chip-btn" style="padding: 4px 10px; font-size: 11px;" onclick="applyThreadToConfig('G 1/8')">Instellen ➔</button>
+                </td>
+              </tr>
+              <tr style="background: #FEF3C7;">
+                <td><strong style="color: #92400E; font-size: 13.5px;">1/8" NPT</strong></td>
+                <td>9.50 – 10.10 mm</td>
+                <td>8.40 – 8.70 mm</td>
+                <td>27 TPI (0.941 mm)</td>
+                <td>Conisch / Taps (1:16)</td>
+                <td><strong>Dodge, Timken, Sealmaster, Rexnord</strong> (Noord-Amerikaanse machines &amp; lagers)</td>
+                <td style="text-align: center;">
+                  <button class="chip-btn" style="padding: 4px 10px; font-size: 11px;" onclick="applyThreadToConfig('1/8 NPT')">Instellen ➔</button>
+                </td>
+              </tr>
+              <tr style="background: #F8FAFC;">
+                <td><strong style="color: #0369A1; font-size: 13.5px;">G 1/4" BSPP</strong></td>
+                <td>12.91 – 13.16 mm</td>
+                <td>11.45 – 11.85 mm</td>
+                <td>19 TPI (1.337 mm)</td>
+                <td>Cilindrisch (ring/kraag)</td>
+                <td>Standaard aansluiting van de Pulsarlube beugel &amp; grote industriële pompen/ventilatoren</td>
+                <td style="text-align: center;">
+                  <button class="chip-btn" style="padding: 4px 10px; font-size: 11px;" onclick="applyThreadToConfig('G 1/4')">Instellen ➔</button>
+                </td>
+              </tr>
+              <tr style="background: #FEF3C7;">
+                <td><strong style="color: #92400E; font-size: 13.5px;">1/4" NPT</strong></td>
+                <td>13.00 – 13.70 mm</td>
+                <td>11.10 – 11.50 mm</td>
+                <td>18 TPI (1.411 mm)</td>
+                <td>Conisch / Taps (1:16)</td>
+                <td>Grote Amerikaanse lagerblokken (Dodge E-series, Timken SAF series)</td>
+                <td style="text-align: center;">
+                  <button class="chip-btn" style="padding: 4px 10px; font-size: 11px;" onclick="applyThreadToConfig('1/4 NPT')">Instellen ➔</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 4. Praktische Meettips van Interflon Technici -->
+      <div class="card">
+        <div class="card-title">
+          <div class="card-title-left">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            <span>Praktische Meettips van Interflon Technici in het Veld</span>
+          </div>
+          <span style="font-size: 11px; color: var(--text-muted); font-weight: normal;">Handige richtlijnen</span>
+        </div>
+
+        <div class="tips-grid">
+          <div class="tip-card">
+            <strong style="color: var(--dark); font-size: 13px;">1. Binnendraad meten zonder demontage</strong>
+            <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px; line-height: 1.45;">
+              Wanneer u in het gat van het lagerhuis meet met de bekken van de schuifmaat, meet u de <em>kerndiameter</em>. Tel bij metrisch ruwweg 1 mm op om de nominale maat te vinden (bijv. gat meet ~7.0 mm &rarr; M8x1; gat meet ~9.0 mm &rarr; M10x1).
+            </p>
+          </div>
+
+          <div class="tip-card">
+            <strong style="color: var(--dark); font-size: 13px;">2. Cilindrisch (M / G) vs Conisch (NPT)</strong>
+            <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px; line-height: 1.45;">
+              Rechte schroefdraden (M8, G 1/8") hebben overal dezelfde diameter en vereisen een koperen of vernikkelde afdichtingsring. Conische schroefdraden (1/8" NPT) lopen taps toe (1:16) en worden afgedicht op de draadflanken met PTFE-tape of schroefdraadborging.
+            </p>
+          </div>
+
+          <div class="tip-card">
+            <strong style="color: var(--dark); font-size: 13px;">3. Spoed controleren zonder spoedmeter</strong>
+            <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px; line-height: 1.45;">
+              Leg de schuifmaat of een stalen liniaal langs de schroefdraad en tel 10 toppen. Meten 10 toppen exact 10,0 mm? Dan is de spoed 1,0 mm (fijne metrische draad). Meten 10 toppen 12,5 mm? Dan is het M8x1.25.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
     <!-- CONTAINER VOOR HET VOLLEDIGE PRINT / PDF RAPPORT -->
     <div id="print-report-container">
       <!-- Dynamically filled during PDF print -->
@@ -1699,13 +2176,9 @@
 
     function switchTab(tabId) {
       const pills = document.querySelectorAll('.nav-pill');
-      pills.forEach((p, idx) => {
-        p.classList.toggle('active', 
-          (tabId === 'general' && idx === 0) ||
-          (tabId === 'config' && idx === 1) || 
-          (tabId === 'projects' && idx === 2) || 
-          (tabId === 'bom' && idx === 3)
-        );
+      pills.forEach((p) => {
+        const fn = p.getAttribute('onclick') || '';
+        p.classList.toggle('active', fn.includes(`switchTab('${tabId}')`));
       });
 
       document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
@@ -1728,6 +2201,412 @@
         titleEl.innerText = 'Stuklijst & Offerte';
         subEl.innerText = 'Geaggregeerde totaallijst van alle benodigde koppelingen voor Odoo offerte.';
         renderBOM();
+      } else if (tabId === 'thread-guide') {
+        titleEl.innerText = 'Draadhulp & Brochure';
+        subEl.innerText = 'Stap-voor-stap meetassistent voor lagerhuisschroefdraden & officiële ISPL documentatie.';
+        initThreadGuide();
+      }
+    }
+
+    /* ======================================================================== */
+    /* THREAD MEASUREMENT GUIDE & BROCHURE FUNCTIONS                             */
+    /* ======================================================================== */
+    let brochureViewerOpen = false;
+
+    function toggleBrochureViewer() {
+      const box = document.getElementById('brochure-embed-box');
+      const iframe = document.getElementById('brochure-iframe');
+      const label = document.getElementById('brochure-btn-label');
+      if (!box || !iframe) return;
+
+      brochureViewerOpen = !brochureViewerOpen;
+      if (brochureViewerOpen) {
+        if (!iframe.src || iframe.src === '' || iframe.src === window.location.href) {
+          iframe.src = 'Brochure_Interflon_Single_Point_Lubricators-NL.pdf';
+        }
+        box.style.display = 'block';
+        if (label) label.innerText = '✕ Brochure Sluiten';
+        box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        box.style.display = 'none';
+        if (label) label.innerText = '📖 Brochure Bekijken';
+      }
+    }
+
+    function initThreadGuide() {
+      onThreadMeasurementChange();
+    }
+
+    function setThreadQuickMeasurement(diam, shape, pitch) {
+      const diamInput = document.getElementById('tg-measured-diam');
+      const shapeSelect = document.getElementById('tg-shape');
+      const pitchSelect = document.getElementById('tg-pitch');
+      
+      if (diamInput) diamInput.value = diam;
+      if (shapeSelect && shape) shapeSelect.value = shape;
+      if (pitchSelect && pitch) pitchSelect.value = pitch;
+
+      // Update active state of chip buttons
+      document.querySelectorAll('.thread-quick-chips .chip-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.innerText.includes(String(diam)));
+      });
+
+      onThreadMeasurementChange();
+    }
+
+    function onThreadMeasurementChange() {
+      const targetRadios = document.getElementsByName('tg-measure-target');
+      let target = 'male';
+      for (const r of targetRadios) {
+        if (r.checked) { target = r.value; break; }
+      }
+
+      const diamEl = document.getElementById('tg-measured-diam');
+      const shapeEl = document.getElementById('tg-shape');
+      const pitchEl = document.getElementById('tg-pitch');
+      const labelEl = document.getElementById('tg-diam-label');
+
+      if (labelEl) {
+        labelEl.innerText = (target === 'male') 
+          ? 'Gemeten buitendiameter vetnippel (in mm):' 
+          : 'Gemeten kerndiameter van opening in lagerhuis (in mm):';
+      }
+
+      const diam = parseFloat(diamEl ? diamEl.value : 8.0) || 8.0;
+      const shape = shapeEl ? shapeEl.value : 'straight';
+      const pitch = pitchEl ? pitchEl.value : '1.0';
+
+      const match = determineThreadMatch(target, diam, shape, pitch);
+      renderThreadGuideResult(match, diam, target);
+    }
+
+    function determineThreadMatch(target, diam, shape, pitch) {
+      if (target === 'male') {
+        // M6
+        if (diam >= 5.4 && diam <= 6.5) {
+          return {
+            code: 'M6x1',
+            title: 'M6x1 (Metrisch Fijn)',
+            od: '5.85 – 5.98 mm',
+            id: '4.90 – 5.10 mm',
+            pitchStr: '1.00 mm',
+            shapeStr: 'Cilindrisch (ring/kraag)',
+            compat: 'Kleine lagerblokken, compacte looprollen en lineaire geleidingen.',
+            confidence: (diam >= 5.8 && diam <= 6.1) ? '100% Exacte match' : 'Zeer waarschijnlijk'
+          };
+        }
+        // M8
+        if (diam >= 7.3 && diam <= 8.5) {
+          if (pitch === '1.25') {
+            return {
+              code: 'M8x1.25',
+              title: 'M8x1.25 (Metrisch Standaard Grof)',
+              od: '7.78 – 7.96 mm',
+              id: '6.65 – 6.90 mm',
+              pitchStr: '1.25 mm',
+              shapeStr: 'Cilindrisch (ring/kraag)',
+              compat: 'Metrisch standaard schroefdraad (grovere spoed, machines en motorbevestigingen).',
+              confidence: 'Exacte match'
+            };
+          }
+          return {
+            code: 'M8x1',
+            title: 'M8x1 (Metrisch Fijn) • MEEST VOORKOMEND',
+            od: '7.82 – 7.97 mm',
+            id: '6.90 – 7.10 mm',
+            pitchStr: '1.00 mm (fijn)',
+            shapeStr: 'Cilindrisch (ring/kraag)',
+            compat: 'De absolute standaard bij SKF, INA, FAG, NSK, NTN en RHP lagerblokken (o.a. FY, SY, UCP, UCF series).',
+            confidence: (diam >= 7.7 && diam <= 8.1) ? '100% Exacte match' : 'Zeer waarschijnlijk'
+          };
+        }
+        // M10 / G 1/8 / 1/8 NPT
+        if (diam >= 9.2 && diam <= 10.6) {
+          if (shape === 'conical' || pitch === 'npt') {
+            return {
+              code: '1/8 NPT',
+              title: '1/8" NPT (Amerikaanse Conische Draad)',
+              od: '9.50 – 10.10 mm (taps)',
+              id: '8.40 – 8.70 mm',
+              pitchStr: '27 TPI (0.941 mm)',
+              shapeStr: 'Conisch / Taps toelopend (1:16)',
+              compat: 'Amerikaanse lagerblokken en machines zoals Dodge, Timken, Sealmaster en Rexnord.',
+              confidence: 'Conische match'
+            };
+          }
+          if (pitch === 'bsp' || (diam >= 9.45 && diam <= 9.75 && pitch !== '1.0' && pitch !== '1.5')) {
+            return {
+              code: 'G 1/8',
+              title: 'G 1/8" BSPP (Gasdraad Cilindrisch)',
+              od: '9.51 – 9.73 mm',
+              id: '8.60 – 8.85 mm',
+              pitchStr: '28 TPI (0.907 mm)',
+              shapeStr: 'Cilindrisch (ring/kraag)',
+              compat: 'Europese pneumatiek, Cooper splitlagers en SKF gedeelde behuizingen.',
+              confidence: 'Exacte match'
+            };
+          }
+          if (pitch === '1.5') {
+            return {
+              code: 'M10x1.5',
+              title: 'M10x1.5 (Metrisch Standaard Grof)',
+              od: '9.75 – 9.96 mm',
+              id: '8.35 – 8.60 mm',
+              pitchStr: '1.50 mm',
+              shapeStr: 'Cilindrisch (ring/kraag)',
+              compat: 'Metrisch standaard M10 constructies en zware machineframes.',
+              confidence: 'Exacte match'
+            };
+          }
+          return {
+            code: 'M10x1',
+            title: 'M10x1 (Metrisch Fijn)',
+            od: '9.82 – 9.97 mm',
+            id: '8.90 – 9.10 mm',
+            pitchStr: '1.00 mm (fijn)',
+            shapeStr: 'Cilindrisch (ring/kraag)',
+            compat: 'Zwaardere SKF, FAG en NTN lagerblokken (asdiameters > 50 mm, SNL series).',
+            confidence: (diam >= 9.7 && diam <= 10.1) ? '100% Exacte match' : 'Zeer waarschijnlijk'
+          };
+        }
+        // G 1/4 / 1/4 NPT
+        if (diam >= 12.4 && diam <= 14.2) {
+          if (shape === 'conical' || pitch === 'npt') {
+            return {
+              code: '1/4 NPT',
+              title: '1/4" NPT (Amerikaanse Conische Draad)',
+              od: '13.00 – 13.70 mm (taps)',
+              id: '11.10 – 11.50 mm',
+              pitchStr: '18 TPI (1.411 mm)',
+              shapeStr: 'Conisch / Taps toelopend (1:16)',
+              compat: 'Zware Amerikaanse lagers (o.a. Dodge E-series, Timken SAF series).',
+              confidence: 'Conische match'
+            };
+          }
+          return {
+            code: 'G 1/4',
+            title: 'G 1/4" BSPP (Gasdraad Cilindrisch)',
+            od: '12.91 – 13.16 mm',
+            id: '11.45 – 11.85 mm',
+            pitchStr: '19 TPI (1.337 mm)',
+            shapeStr: 'Cilindrisch (ring/kraag)',
+            compat: 'Aansluiting van Pulsarlube montagebeugel, zware ventilatoren en industriële pompen.',
+            confidence: (diam >= 12.8 && diam <= 13.3) ? '100% Exacte match' : 'Zeer waarschijnlijk'
+          };
+        }
+      } else {
+        // FEMALE (binnendiameter poort in lagerhuis)
+        // M6 (kerngat ~ 5.0 mm)
+        if (diam >= 4.5 && diam <= 5.5) {
+          return {
+            code: 'M6x1',
+            title: 'M6x1 (Metrisch Fijn)',
+            od: '5.85 – 5.98 mm',
+            id: '4.90 – 5.10 mm',
+            pitchStr: '1.00 mm',
+            shapeStr: 'Cilindrisch (ring/kraag)',
+            compat: 'Kleine lagerblokken, compacte looprollen en lineaire geleidingen.',
+            confidence: 'Kerngat match'
+          };
+        }
+        // M8 (kerngat ~ 6.8 - 7.1 mm)
+        if (diam >= 6.4 && diam <= 7.5) {
+          if (pitch === '1.25' || (diam < 6.85 && pitch !== '1.0')) {
+            return {
+              code: 'M8x1.25',
+              title: 'M8x1.25 (Metrisch Standaard Grof)',
+              od: '7.78 – 7.96 mm',
+              id: '6.65 – 6.90 mm',
+              pitchStr: '1.25 mm',
+              shapeStr: 'Cilindrisch (ring/kraag)',
+              compat: 'Metrisch standaard schroefdraad (grovere spoed).',
+              confidence: 'Kerngat match'
+            };
+          }
+          return {
+            code: 'M8x1',
+            title: 'M8x1 (Metrisch Fijn) • MEEST VOORKOMEND',
+            od: '7.82 – 7.97 mm',
+            id: '6.90 – 7.10 mm',
+            pitchStr: '1.00 mm (fijn)',
+            shapeStr: 'Cilindrisch (ring/kraag)',
+            compat: 'De standaard bij SKF, INA, FAG, NSK, NTN lagerhuizen (FY, SY, UCP, UCF).',
+            confidence: 'Kerngat match'
+          };
+        }
+        // M10 / G 1/8 / 1/8 NPT (kerngat ~ 8.3 - 9.2 mm)
+        if (diam >= 8.0 && diam <= 9.4) {
+          if (shape === 'conical' || pitch === 'npt') {
+            return {
+              code: '1/8 NPT',
+              title: '1/8" NPT (Amerikaanse Conische Draad)',
+              od: '9.50 – 10.10 mm',
+              id: '8.40 – 8.70 mm',
+              pitchStr: '27 TPI (0.941 mm)',
+              shapeStr: 'Conisch / Taps (1:16)',
+              compat: 'Dodge, Timken, Sealmaster, Rexnord lagers.',
+              confidence: 'Kerngat conisch'
+            };
+          }
+          if (pitch === 'bsp' || (diam >= 8.6 && diam <= 8.85 && pitch !== '1.0' && pitch !== '1.5')) {
+            return {
+              code: 'G 1/8',
+              title: 'G 1/8" BSPP (Gasdraad Cilindrisch)',
+              od: '9.51 – 9.73 mm',
+              id: '8.60 – 8.85 mm',
+              pitchStr: '28 TPI (0.907 mm)',
+              shapeStr: 'Cilindrisch (ring/kraag)',
+              compat: 'Europese splitlagers en SKF gedeelde huizen.',
+              confidence: 'Kerngat match'
+            };
+          }
+          if (pitch === '1.5' || diam <= 8.6) {
+            return {
+              code: 'M10x1.5',
+              title: 'M10x1.5 (Metrisch Standaard Grof)',
+              od: '9.75 – 9.96 mm',
+              id: '8.35 – 8.60 mm',
+              pitchStr: '1.50 mm',
+              shapeStr: 'Cilindrisch (ring/kraag)',
+              compat: 'Metrisch standaard M10 constructies.',
+              confidence: 'Kerngat match'
+            };
+          }
+          return {
+            code: 'M10x1',
+            title: 'M10x1 (Metrisch Fijn)',
+            od: '9.82 – 9.97 mm',
+            id: '8.90 – 9.10 mm',
+            pitchStr: '1.00 mm (fijn)',
+            shapeStr: 'Cilindrisch (ring/kraag)',
+            compat: 'Zwaardere SKF, FAG lagerblokken (> 50 mm asdiameter).',
+            confidence: 'Kerngat match'
+          };
+        }
+        // G 1/4 / 1/4 NPT (kerngat ~ 11.2 - 12.0 mm)
+        if (diam >= 10.8 && diam <= 12.4) {
+          if (shape === 'conical' || pitch === 'npt') {
+            return {
+              code: '1/4 NPT',
+              title: '1/4" NPT (Amerikaanse Conische Draad)',
+              od: '13.00 – 13.70 mm',
+              id: '11.10 – 11.50 mm',
+              pitchStr: '18 TPI (1.411 mm)',
+              shapeStr: 'Conisch / Taps (1:16)',
+              compat: 'Zware Amerikaanse lagerblokken (Dodge, Timken).',
+              confidence: 'Kerngat conisch'
+            };
+          }
+          return {
+            code: 'G 1/4',
+            title: 'G 1/4" BSPP (Gasdraad Cilindrisch)',
+            od: '12.91 – 13.16 mm',
+            id: '11.45 – 11.85 mm',
+            pitchStr: '19 TPI (1.337 mm)',
+            shapeStr: 'Cilindrisch (ring/kraag)',
+            compat: 'Aansluiting Pulsarlube beugel en grote industriële pompen.',
+            confidence: 'Kerngat match'
+          };
+        }
+      }
+
+      // Geen directe standaard match -> Afwijkend
+      return {
+        code: 'custom',
+        title: `Afwijkende maat (~${diam.toFixed(2)} mm)`,
+        od: `Gemeten: ${diam.toFixed(2)} mm`,
+        id: (target === 'male') ? `Kerngat geschat: ~${(diam - 1.0).toFixed(1)} mm` : `Nominaal geschat: ~${(diam + 1.0).toFixed(1)} mm`,
+        pitchStr: `${pitch} mm / TPI`,
+        shapeStr: (shape === 'conical') ? 'Conisch' : 'Cilindrisch',
+        compat: 'Mogelijk een afwijkende maat (bv. M12, 3/8" BSP/NPT, M14). Kan via afwijkende maat worden gekozen in de configurator.',
+        confidence: 'Afwijkende / speciale maat'
+      };
+    }
+
+    function renderThreadGuideResult(match, diam, target) {
+      const container = document.getElementById('thread-guide-result');
+      if (!container) return;
+
+      const isCustom = (match.code === 'custom');
+
+      container.innerHTML = `
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <span style="font-size: 11px; font-weight: 800; color: ${isCustom ? '#D97706' : '#166534'}; background: ${isCustom ? '#FEF3C7' : '#DCFCE7'}; padding: 3px 10px; border-radius: var(--radius-pill); text-transform: uppercase;">
+              ${match.confidence}
+            </span>
+            <span style="font-size: 11px; color: var(--text-muted); font-weight: bold;">
+              ${target === 'male' ? 'Buitendraad nippel' : 'Kerngat poort'}: ${diam.toFixed(2)} mm
+            </span>
+          </div>
+
+          <div class="thread-match-title" style="color: ${isCustom ? '#D97706' : 'var(--primary)'};">
+            ${match.title}
+          </div>
+
+          <div style="font-size: 12.5px; color: #475569; margin-top: 6px; line-height: 1.4;">
+            ${match.compat}
+          </div>
+
+          <div class="thread-meta-grid">
+            <div class="thread-meta-item">
+              <div class="thread-meta-label">Buitendraad (OD)</div>
+              <div class="thread-meta-val">${match.od}</div>
+            </div>
+            <div class="thread-meta-item">
+              <div class="thread-meta-label">Kerndiameter (ID)</div>
+              <div class="thread-meta-val">${match.id}</div>
+            </div>
+            <div class="thread-meta-item">
+              <div class="thread-meta-label">Spoed / TPI</div>
+              <div class="thread-meta-val">${match.pitchStr}</div>
+            </div>
+            <div class="thread-meta-item">
+              <div class="thread-meta-label">Draadvorm</div>
+              <div class="thread-meta-val">${match.shapeStr}</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 18px;">
+          ${!isCustom ? `
+            <button class="btn-pill-primary" style="width: 100%; padding: 13px 18px; font-size: 13.5px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 14px rgba(227, 6, 19, 0.25);" onclick="applyThreadToConfig('${match.code}')">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              Stel ${match.code} direct in op de Configurator
+            </button>
+          ` : `
+            <button class="btn-pill-primary" style="width: 100%; padding: 13px 18px; font-size: 13.5px; font-weight: 800; background: #D97706; display: flex; align-items: center; justify-content: center; gap: 8px;" onclick="applyThreadToConfig('custom')">
+              Als afwijkende maat instellen in Configurator ➔
+            </button>
+          `}
+          <div style="text-align: center; font-size: 11px; color: var(--text-muted); margin-top: 6px;">
+            Past automatisch Aansluiting 1 en alle koppelingsberekeningen aan
+          </div>
+        </div>
+      `;
+    }
+
+    function applyThreadToConfig(threadCode) {
+      const select = document.getElementById('sel-bearing-thread');
+      if (select) {
+        if (threadCode === 'custom') {
+          select.value = 'custom';
+          const customInput = document.getElementById('custom-bearing-thread');
+          const diam = document.getElementById('tg-measured-diam') ? document.getElementById('tg-measured-diam').value : '';
+          if (customInput && diam) customInput.value = `Afwijkend ~${diam}mm`;
+        } else {
+          select.value = threadCode;
+        }
+        onBearingThreadChange();
+      }
+
+      // Schakel direct over naar Configurator tab
+      switchTab('config');
+
+      // Scroll zachtjes naar de assembly parameters
+      const paramsCard = document.querySelector('.card-assembly-params');
+      if (paramsCard) {
+        paramsCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }
     }
 

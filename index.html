@@ -1319,16 +1319,22 @@
             • Rechte insteekkoppeling 8 mm - G 1/8" M BSPP
           </div>
 
-          <!-- ISPL Type / Volume (15ml, 30ml, 60ml, 125ml, 250ml) -->
+          <!-- ISPL Type / Volume (15ml, 30ml, 60ml, 125ml, 250ml) + Impulse Connect Checkbox -->
           <div class="input-group">
-            <label class="input-label">Interflon Single Point Lubricator (ISPL) Volume</label>
-            <select id="sel-lubricator-vol" onchange="onISPLVolumeChange()">
-              <option value="15ml">15 ml</option>
-              <option value="30ml">30 ml</option>
-              <option value="60ml">60 ml</option>
-              <option value="125ml" selected>125 ml</option>
-              <option value="250ml">250 ml</option>
-            </select>
+            <label class="input-label">Interflon Single Point Lubricator (ISPL) Volume &amp; Impulse Connect</label>
+            <div style="display: flex; gap: 10px; align-items: stretch; flex-wrap: wrap;">
+              <select id="sel-lubricator-vol" onchange="onISPLVolumeChange()" style="flex: 1; min-width: 110px;">
+                <option value="15ml">15 ml</option>
+                <option value="30ml">30 ml</option>
+                <option value="60ml">60 ml</option>
+                <option value="125ml" selected>125 ml</option>
+                <option value="250ml">250 ml</option>
+              </select>
+              <label for="chk-impulse-connect" style="display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: #FFF5F5; border: 1.5px solid #FECACA; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 800; color: #0F172A; user-select: none; white-space: nowrap; transition: all 0.15s;" title="Schroef een Interflon Impulse Connect drukversterker (10 bar, Bluetooth, art. 7213) direct onder de ISPL">
+                <input type="checkbox" id="chk-impulse-connect" onchange="onConfigChange()" style="width: 16px; height: 16px; accent-color: var(--primary); cursor: pointer; margin: 0;">
+                <span>Impulse Connect <span style="color: var(--primary); font-weight: 900;">(art. 7213)</span></span>
+              </label>
+            </div>
           </div>
 
           <!-- VETTYPE PARAMETER (Dynamisch gebaseerd op tabel) -->
@@ -1416,17 +1422,13 @@
             </div>
           </div>
 
-          <!-- BIJ AFSTANDSMONTAGE (PULSARLUBE 1702): Vraag naar insteekkoppeling -->
+          <!-- BIJ AFSTANDSMONTAGE (PULSARLUBE 1702): Vraag naar insteekkoppeling (steeds 8 mm leiding) -->
           <div id="remote-assembly-options" style="display: none;">
             <div class="input-group" style="margin-bottom: 0;">
               <label class="input-label" style="color: #1E40AF;">Welke insteekkoppeling (aan lagerzijde) monteren?</label>
               <select id="sel-remote-fitting" onchange="onConfigChange()">
                 <option value="straight-kit" selected>Rechte insteekkoppeling 8 mm - G 1/8" M (Inbegrepen in Pulsarlube kit 1702)</option>
                 <option value="elbow-90">Knie-insteekkoppeling 90° 8 mm - G 1/8" M (Extra toe te voegen)</option>
-                <option value="straight-6">Rechte insteekkoppeling 6 mm - G 1/8" M (Voor 6 mm leiding)</option>
-                <option value="elbow-90-6">Knie-insteekkoppeling 90° 6 mm - G 1/8" M (Voor 6 mm leiding)</option>
-                <option value="straight-6-g14">Rechte insteekkoppeling 6 mm - G 1/4" M (Voor 6 mm leiding)</option>
-                <option value="elbow-90-6-g14">Knie-insteekkoppeling 90° 6 mm - G 1/4" M (Voor 6 mm leiding)</option>
                 <option value="straight-8-g14">Rechte insteekkoppeling 8 mm - G 1/4" M (Voor 8 mm leiding)</option>
                 <option value="elbow-90-8-g14">Knie-insteekkoppeling 90° 8 mm - G 1/4" M (Voor 8 mm leiding)</option>
               </select>
@@ -1548,7 +1550,7 @@
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
             In nieuw tabblad openen
           </a>
-          <button class="btn-pill-outline" style="border-color: #64748B; color: white; padding: 11px 18px; font-size: 13px;" onclick="switchTab('config')">
+          <button class="btn-pill-primary" style="background: #E30613; color: #FFFFFF; border: none; padding: 11px 18px; font-size: 13px; box-shadow: 0 4px 12px rgba(227, 6, 19, 0.3);" onclick="switchTab('config')">
             Naar Configurator ➔
           </button>
         </div>
@@ -2361,7 +2363,7 @@
   <script>
     const STORAGE_KEY = 'IF_HARDWARE_SELECTOR_DATA_V9';
     const DB_STORAGE_KEY = 'IF_CUSTOM_COUPLINGS_DB_V5';
-    const ISPL_STORAGE_KEY = 'IF_CUSTOM_ISPL_DB_V5';
+    const ISPL_STORAGE_KEY = 'IF_CUSTOM_ISPL_DB_V6';
     let currentPhotoBase64 = null;
     let savedPoints = [];
     let activePointId = null;
@@ -2407,7 +2409,8 @@
         const stored = localStorage.getItem(ISPL_STORAGE_KEY);
         if (stored) {
           const parsed = JSON.parse(stored);
-          if (Array.isArray(parsed) && parsed.length >= (typeof ISPL_CATALOG !== 'undefined' ? ISPL_CATALOG.length : 0)) {
+          const hasImpulse = Array.isArray(parsed) && parsed.some(item => (item.code || item.default_code) === '7213');
+          if (hasImpulse && parsed.length >= (typeof ISPL_CATALOG !== 'undefined' ? ISPL_CATALOG.length : 0)) {
             return parsed;
           }
         }
@@ -2457,6 +2460,7 @@
           customExtension: "",
           remoteFitting: "straight-kit",
           lubricatorVol: "125ml",
+          impulseConnect: false,
           greaseType: "Grease MP2/3",
           months: 6,
           photo: null,
@@ -3028,6 +3032,8 @@
 
       const remoteFitting = document.getElementById('sel-remote-fitting').value;
       const lubricatorVol = document.getElementById('sel-lubricator-vol').value;
+      const impulseConnectEl = document.getElementById('chk-impulse-connect');
+      const impulseConnect = impulseConnectEl ? impulseConnectEl.checked : false;
       const greaseType = document.getElementById('sel-grease-type').value;
       const months = parseInt(document.getElementById('sel-months').value) || 6;
 
@@ -3035,26 +3041,27 @@
       const bMat = document.getElementById('badge-mat-label');
       if (bMat) bMat.innerText = material;
       const bIspl = document.getElementById('badge-ispl-label');
-      if (bIspl) bIspl.innerText = `ISPL ${lubricatorVol} + ${greaseType} (${months} mnd)`;
+      if (bIspl) bIspl.innerText = `ISPL ${lubricatorVol}${impulseConnect ? ' + Impulse Connect' : ''} + ${greaseType} (${months} mnd)`;
       const drawLabel = document.getElementById('drawing-mode-label');
       if (drawLabel) {
         drawLabel.innerText = (mountType === 'remote') ? 
-          'Afstandsmontage (Pulsarlube kit art. 1702)' : 'Directe montage';
+          `Afstandsmontage (Pulsarlube kit art. 1702)${impulseConnect ? ' + Impulse Connect' : ''}` : 
+          `Directe montage${impulseConnect ? ' + Impulse Connect' : ''}`;
       }
       const assBadge = document.getElementById('assembly-badge');
       if (assBadge) {
-        assBadge.innerText = `${material} | Lager ${bearingThread} ➔ ISPL ${lubricatorVol}`;
+        assBadge.innerText = `${material} | Lager ${bearingThread} ➔ ${impulseConnect ? 'Impulse Connect ➔ ' : ''}ISPL ${lubricatorVol}`;
       }
 
       updateDispenseCalculator(lubricatorVol, months);
 
       const components = resolveComponents({
-        material, mountType, bearingThread, angle, extension, remoteFitting, lubricatorVol, greaseType, months
+        material, mountType, bearingThread, angle, extension, remoteFitting, lubricatorVol, impulseConnect, greaseType, months
       });
 
       renderComponentsList(components);
       render3DExplodedSVG({
-        material, mountType, bearingThread, angle, extension, remoteFitting, lubricatorVol, greaseType, months
+        material, mountType, bearingThread, angle, extension, remoteFitting, lubricatorVol, impulseConnect, greaseType, months
       });
       autoSaveActivePoint();
     }
@@ -3103,6 +3110,20 @@
         qty: 1
       });
 
+      // 1b. Optionele Interflon Impulse Connect (Art. 7213) direct onder de ISPL
+      if (cfg.impulseConnect) {
+        const matchImpulse = isplDb.find(item => String(item.code || item.default_code) === '7213');
+        comps.push({
+          code: matchImpulse ? (matchImpulse.code || matchImpulse.default_code) : '7213',
+          name: matchImpulse ? matchImpulse.name : 'Interflon Impulse Connect (Drukversterker 10 bar + Bluetooth)',
+          a1: 'G 1/4" F (binnendraad voor ISPL)',
+          a2: 'G 1/4" M (buitendraad + terugslagklep)',
+          mat: matchImpulse ? (matchImpulse.mat || 'Kunststof / RVS (IP68)') : 'Kunststof / RVS (IP68)',
+          desc: matchImpulse ? matchImpulse.desc : 'Elektromechanische drukversterker tot 10 bar met Bluetooth® connectiviteit en geïntegreerde terugslagklep, montage direct onder ISPL (art. 7213)',
+          qty: 1
+        });
+      }
+
       if (cfg.mountType === 'remote') {
         // REMOTE: Pulsarlube 2000RC-1 Kit (Art. 1702)
         comps.push({
@@ -3149,10 +3170,6 @@
         if (cfg.remoteFitting && cfg.remoteFitting !== 'straight-kit') {
           let searchName = '';
           if (cfg.remoteFitting === 'elbow-90') searchName = 'Knie-insteekkoppeling 90° 8 mm - G 1/8"';
-          else if (cfg.remoteFitting === 'straight-6') searchName = 'Rechte insteekkoppeling 6 mm - G 1/8"';
-          else if (cfg.remoteFitting === 'elbow-90-6') searchName = 'Knie-insteekkoppeling 90° 6 mm - G 1/8"';
-          else if (cfg.remoteFitting === 'straight-6-g14') searchName = 'Rechte insteekkoppeling 6 mm - G 1/4"';
-          else if (cfg.remoteFitting === 'elbow-90-6-g14') searchName = 'Knie-insteekkoppeling 90° 6 mm - G 1/4"';
           else if (cfg.remoteFitting === 'straight-8-g14') searchName = 'Rechte insteekkoppeling 8 mm - G 1/4"';
           else if (cfg.remoteFitting === 'elbow-90-8-g14') searchName = 'Knie-insteekkoppeling 90° 8 mm - G 1/4"';
 
@@ -3175,7 +3192,7 @@
               comps.push({
                 code: 'aan te maken',
                 name: `${searchName} M (${mat})`,
-                a1: searchName.includes('6 mm') ? 'Push-in 6 mm' : 'Push-in 8 mm',
+                a1: 'Push-in 8 mm',
                 a2: searchName.includes('G 1/4') ? 'G 1/4" M' : 'G 1/8" M',
                 mat: mat,
                 desc: `Insteekkoppeling ${searchName} (${mat})`,
@@ -3185,7 +3202,7 @@
           }
         }
       } else {
-        // DIRECT: Lager ➔ Verloopstuk ➔ Kniestuk ➔ Verlengstuk ➔ ISPL
+        // DIRECT: Lager ➔ Verloopstuk ➔ Kniestuk ➔ Verlengstuk ➔ (Impulse Connect) ➔ ISPL
         if (cfg.bearingThread !== 'G 1/4') {
           const matchAdapt = findInCatalog(item => 
             item.name.includes("Verloopstuk") && 
@@ -3303,15 +3320,13 @@
     }
 
     // ========================================================================
-    // 3D EXPLODED VIEW VECTOR ASSEMBLY SVG RENDERING MET VERBETERDE DRAAISCHIJF
-    // ========================================================================
-    // ========================================================================
     // 3D EXPLODED VIEW VECTOR ASSEMBLY SVG RENDERING MET REALISTISCHE ONDERDELEN
     // ========================================================================
     function generateAssemblySvgMarkup(cfg, isPrint = false) {
       const volKey = (cfg.lubricatorVol || '125ml').replace('ml', '');
       const isplImgSrc = `ispl-${volKey}.png`;
       const isRVS = (cfg.material === 'RVS');
+      const hasImpulse = !!cfg.impulseConnect;
 
       const metalStroke = isRVS ? '#334155' : '#78350F';
       const metalText = isRVS ? '#0F172A' : '#78350F';
@@ -3395,8 +3410,10 @@
         };
         const layout = isplLayouts[volKey] || isplLayouts['125'];
 
+        const impH = hasImpulse ? 90 : 0;
+        const impY = layout.bottom + 14;
         const extH = (cfg.extension === '15') ? 22 : (cfg.extension === '25') ? 30 : (cfg.extension === '35') ? 38 : (cfg.extension === '50') ? 48 : 0;
-        const extY = layout.bottom + 26;
+        const extY = layout.bottom + 26 + (hasImpulse ? (impH + 20) : 0);
         const elbowY = extY + (cfg.extension !== '0' ? (extH + 26) : 0);
         const reducerY = elbowY + (cfg.angle !== 'straight' ? 44 : 0);
         const bearingY = reducerY + 46;
@@ -3425,6 +3442,26 @@
             <rect x="110" y="${layout.bottom - 16}" width="205" height="24" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
             <text x="120" y="${layout.bottom}" font-size="12" font-weight="900" fill="#E30613">ISPL Draad: G 1/4" M</text>
           </g>
+
+          <!-- 1b. INTERFLON IMPULSE CONNECT (DRUKVERSTERKER 10 BAR + BLUETOOTH, ART. 7213) -->
+          ${hasImpulse ? `
+          <g transform="translate(190, ${impY})">
+            <image href="impulse-connect.png" x="18" y="0" width="64" height="${impH}" preserveAspectRatio="xMidYMid meet"/>
+
+            <!-- Annotatie Links: Binnendraad G 1/4" F -->
+            <line x1="35" y1="6" x2="5" y2="6" stroke="#0F172A" stroke-width="1.5"/>
+            <circle cx="35" cy="6" r="3" fill="#E30613"/>
+            <rect x="-175" y="-6" width="175" height="24" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
+            <text x="-165" y="10" font-size="12" font-weight="800" fill="${metalText}">Binnendraad: G 1/4" F</text>
+
+            <!-- Annotatie Rechts: Impulse Connect (art. 7213) -->
+            <line x1="76" y1="44" x2="110" y2="44" stroke="#E30613" stroke-width="1.5"/>
+            <circle cx="76" cy="44" r="3" fill="#E30613"/>
+            <rect x="110" y="27" width="205" height="34" rx="6" fill="#FFF5F5" stroke="#E30613" stroke-width="1.4"/>
+            <text x="120" y="42" font-size="11.5" font-weight="900" fill="#E30613">Impulse Connect (art. 7213)</text>
+            <text x="120" y="55" font-size="10" font-weight="800" fill="#0F172A">10 bar Booster • Uit: G 1/4" M</text>
+          </g>
+          ` : ''}
 
           <!-- 2. VERLENGSTUK (3D Hex Nut met realistische schroefdraad) -->
           ${cfg.extension !== '0' ? `
@@ -3551,7 +3588,7 @@
         // REMOTE MOUNT (Pulsarlube 2000RC-1) MET REALISTISCHE PUSH-IN KOPPELING
         // ====================================================================
         const remLayouts = {
-          '250': { x: 50,  y: 0,  w: 50, h: 140 },
+          '250': { x: 50,  y: 0,  w: 50, h: hasImpulse ? 122 : 140 },
           '125': { x: 48,  y: 14, w: 54, h: 110 },
           '60':  { x: 50,  y: 34, w: 50, h: 80 },
           '30':  { x: 50,  y: 46, w: 50, h: 66 },
@@ -3559,15 +3596,15 @@
         };
         const remL = remLayouts[volKey] || remLayouts['125'];
 
+        const remShift = hasImpulse ? 94 : 0;
         const isElbowPush = (cfg.remoteFitting && cfg.remoteFitting.includes('elbow'));
-        const is6mm = (cfg.remoteFitting && cfg.remoteFitting.includes('-6'));
-        const fittingDiam = is6mm ? '6mm' : '8mm';
+        const fittingDiam = '8mm';
         const pushBottomY = isElbowPush ? 328 : 322;
         const hasAdapter = (cfg.bearingThread !== 'G 1/8');
         const adapterY = hasAdapter ? (pushBottomY + 12) : 0;
         const bearingY = hasAdapter ? (adapterY + 44) : (pushBottomY + 32);
 
-        totalH = Math.max(510, bearingY + 130);
+        totalH = Math.max(510, bearingY + remShift + 130);
 
         inner = `
           ${defs}
@@ -3593,166 +3630,180 @@
             <text x="179" y="93" font-size="11" font-weight="900" fill="#E30613" text-anchor="middle">ISPL Draad: G 1/4" M</text>
           </g>
 
-          <!-- Pulsarlube 2000RC-1 Authentieke Plaatstalen Montagebeugel -->
-          <g>
-            <!-- Verticale Montageflens tegen de wand/profiel (met boutgaten) -->
-            <rect x="16" y="78" width="12" height="72" rx="2" fill="#334155" stroke="#1E293B" stroke-width="1"/>
-            <!-- Bovenste boutgat met sluitring en boutkop -->
-            <rect x="19" y="86" width="6" height="14" rx="3" fill="#0F172A"/>
-            <circle cx="22" cy="93" r="4.5" fill="#94A3B8" stroke="#1E293B"/>
-            <circle cx="22" cy="93" r="2.5" fill="#475569"/>
-            <!-- Onderste boutgat met sluitring en boutkop -->
-            <rect x="19" y="128" width="6" height="14" rx="3" fill="#0F172A"/>
-            <circle cx="22" cy="135" r="4.5" fill="#94A3B8" stroke="#1E293B"/>
-            <circle cx="22" cy="135" r="2.5" fill="#475569"/>
-
-            <!-- Horizontaal Steunplateau (heavy sheet metal) -->
-            <rect x="28" y="122" width="94" height="12" fill="#475569" stroke="#1E293B" stroke-width="1"/>
-            <!-- Omgezette rand (stiffener lip) aan de voorzijde -->
-            <path d="M 122 122 L 126 122 L 126 142 L 122 142 Z" fill="#1E293B" stroke="#0F172A" stroke-width="0.8"/>
-            <!-- Driehoekige versterkingsrib (gusset) -->
-            <polygon points="28,122 28,96 52,122" fill="#1E293B" opacity="0.85"/>
-
-            <!-- Doorvoernippel G 1/4" F naar 8mm push-in (exact op as x=75) -->
-            <!-- Bovenste zeskantmoer op plateau -->
-            <rect x="63" y="116" width="24" height="6" rx="1.5" fill="${facetC}" stroke="${metalStroke}" stroke-width="0.8"/>
-            <ellipse cx="75" cy="116" rx="6" ry="2" fill="#0F172A"/>
-            <!-- Doorvoerlichaam door plateau -->
-            <rect x="66" y="122" width="18" height="12" fill="${cylGrad}" stroke="${metalStroke}" stroke-width="0.8"/>
-            <!-- Borgmoer onder plateau -->
-            <rect x="63" y="134" width="24" height="6" rx="1.5" fill="${facetC}" stroke="${metalStroke}" stroke-width="0.8"/>
-            <!-- Insteekkoppeling huls onder beugel -->
-            <rect x="68" y="140" width="14" height="8" fill="${cylGrad}" stroke="${metalStroke}" stroke-width="0.8"/>
-            <!-- Blauwe 8mm ontgrendelring naar onder gericht (lip op y=150) -->
-            <rect x="69" y="146" width="12" height="4" rx="1" fill="#2563EB" stroke="#1D4ED8" stroke-width="0.8"/>
-            <ellipse cx="75" cy="150" rx="5" ry="1.5" fill="#60A5FA"/>
-
-            <!-- Annotatie Montagebeugel -->
-            <line x1="126" y1="128" x2="160" y2="128" stroke="#0F172A" stroke-width="1.5"/>
-            <circle cx="126" cy="128" r="3" fill="#3B82F6"/>
-            <rect x="160" y="116" width="210" height="24" rx="6" fill="#EFF6FF" stroke="#3B82F6" stroke-width="1.2"/>
-            <text x="170" y="132" font-size="12" font-weight="900" fill="#1E40AF">Beugel G 1/4" F (Kit 1702)</text>
-          </g>
-
-          <!-- Hogedrukleiding 8 mm (Exacte aansluiting van beugel naar lager) -->
-          <g>
-            <!-- Metalen klemhuls (pershuls) onder push-in op y=150 -->
-            <rect x="71" y="150" width="8" height="6" rx="1" fill="#94A3B8" stroke="#334155" stroke-width="0.5"/>
-
-            ${isElbowPush ? `
-              <!-- Leiding vertrekt verticaal op (75, 150) en komt perfect horizontaal toe op (280, 298) in de 90° push-in -->
-              <path d="M 75 150 C 75 280, 180 298, 280 298" fill="none" stroke="#0F172A" stroke-width="10" stroke-linecap="round"/>
-              <path d="M 75 150 C 75 280, 180 298, 280 298" fill="none" stroke="#2563EB" stroke-width="7" stroke-linecap="round"/>
-              <path d="M 75 150 C 75 280, 180 298, 280 298" fill="none" stroke="#93C5FD" stroke-width="2" stroke-dasharray="10 8" stroke-linecap="round"/>
-            ` : `
-              <!-- Leiding vertrekt verticaal op (75, 150) en komt perfect verticaal van boven toe op (320, 285) in de rechte push-in -->
-              <path d="M 75 150 C 75 285, 320 195, 320 285" fill="none" stroke="#0F172A" stroke-width="10" stroke-linecap="round"/>
-              <path d="M 75 150 C 75 285, 320 195, 320 285" fill="none" stroke="#2563EB" stroke-width="7" stroke-linecap="round"/>
-              <path d="M 75 150 C 75 285, 320 195, 320 285" fill="none" stroke="#93C5FD" stroke-width="2" stroke-dasharray="10 8" stroke-linecap="round"/>
-            `}
-
-            <!-- Badge Leidinglengte -->
-            <rect x="110" y="215" width="200" height="24" rx="6" fill="#FEF3C7" stroke="#F59E0B" stroke-width="1.5"/>
-            <text x="210" y="231" font-size="11" font-weight="900" fill="#92400E" text-anchor="middle">LEIDING ${is6mm ? '6 MM' : '8 MM'} (MAX. 20 CM)</text>
-          </g>
-
-          <!-- 3D PUSH-IN KOPPELING AAN LAGERZIJDE -->
-          ${isElbowPush ? `
-            <!-- 90° KNIE-INSTEEKKOPPELING (Horizontale inlaat op x=280, y=298) -->
+          ${hasImpulse ? `
+            <!-- Interflon Impulse Connect (Art. 7213) tussen ISPL en Montagebeugel -->
             <g>
-              <!-- Blauwe Kunststof Ontgrendelring (Verticaal) -->
-              <rect x="278" y="292" width="4" height="12" rx="1" fill="#2563EB" stroke="#1D4ED8" stroke-width="0.8"/>
-              <ellipse cx="278" cy="298" rx="1.5" ry="4.5" fill="#60A5FA"/>
-
-              <!-- Horizontale Messing Insteekbus -->
-              <rect x="282" y="293" width="16" height="10" fill="${cylGrad}" stroke="${metalStroke}" stroke-width="0.8"/>
-
-              <!-- 90° Haaks Lichaam (Draaibaar) naar as x=320 -->
-              <path d="M 298 293 C 322 293, 328 298, 328 312 L 312 312 C 312 301, 308 293, 298 293 Z" fill="${cylGrad}" stroke="${metalStroke}" stroke-width="0.8"/>
-              
-              <!-- Zeskant Basis (SW 14) -->
-              <rect x="311" y="312" width="18" height="7" rx="1.5" fill="${facetC}" stroke="${metalStroke}" stroke-width="0.8"/>
-              <!-- NBR O-ring -->
-              <rect x="312" y="318" width="16" height="2" fill="#0F172A"/>
-
-              <!-- Mannelijke Schroefdraad G 1/8" M naar onder -->
-              <rect x="313" y="319" width="14" height="9" fill="url(#threadGrad)" stroke="${metalStroke}" stroke-width="0.8"/>
-              <line x1="313" y1="322" x2="327" y2="322" stroke="#FFFFFF" stroke-width="1" opacity="0.8"/>
-              <line x1="313" y1="325" x2="327" y2="325" stroke="#FFFFFF" stroke-width="1" opacity="0.8"/>
-
-              <!-- Annotatie (12px bold) -->
-              <line x1="329" y1="305" x2="355" y2="305" stroke="#0F172A" stroke-width="1.5"/>
-              <circle cx="329" cy="305" r="3" fill="#2563EB"/>
-              <rect x="355" y="293" width="155" height="24" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
-              <text x="365" y="309" font-size="11.5" font-weight="900" fill="${metalText}">90° Knie ${fittingDiam} - G 1/8" M</text>
+              <image href="impulse-connect.png" x="46" y="118" width="58" height="82" preserveAspectRatio="xMidYMid meet"/>
+              <line x1="98" y1="158" x2="118" y2="158" stroke="#E30613" stroke-width="1.5"/>
+              <circle cx="98" cy="158" r="3" fill="#E30613"/>
+              <rect x="118" y="141" width="198" height="34" rx="6" fill="#FFF5F5" stroke="#E30613" stroke-width="1.4"/>
+              <text x="126" y="156" font-size="11.5" font-weight="900" fill="#E30613">Impulse Connect (art. 7213)</text>
+              <text x="126" y="169" font-size="10" font-weight="800" fill="#0F172A">G 1/4" F ➔ G 1/4" M (10 bar)</text>
             </g>
-          ` : `
-            <!-- RECHTE INSTEEKKOPPELING (Op as x=320, inlaat op y=285) -->
-            <g>
-              <!-- Blauwe Kunststof Ontgrendelring bovenaan -->
-              <rect x="312" y="285" width="16" height="4" rx="1" fill="#2563EB" stroke="#1D4ED8" stroke-width="0.8"/>
-              <ellipse cx="320" cy="285" rx="5" ry="1.5" fill="#60A5FA"/>
-
-              <!-- Massief Zeskant Messing/RVS Lichaam met 3D Facetten -->
-              <rect x="310" y="289" width="20" height="14" rx="1.5" fill="${cylGrad}" stroke="${metalStroke}" stroke-width="0.8"/>
-              <path d="M 310 289 L 315 290 L 315 302 L 310 301 Z" fill="${facetL}"/>
-              <path d="M 315 290 L 325 290 L 325 302 L 315 302 Z" fill="${facetC}"/>
-              <path d="M 325 290 L 330 289 L 330 301 L 325 302 Z" fill="${facetR}"/>
-
-              <!-- NBR O-ring -->
-              <rect x="312" y="302" width="16" height="2" fill="#0F172A"/>
-
-              <!-- Mannelijke Schroefdraad G 1/8" M -->
-              <rect x="313" y="303" width="14" height="9" fill="url(#threadGrad)" stroke="${metalStroke}" stroke-width="0.8"/>
-              <line x1="313" y1="306" x2="327" y2="306" stroke="#FFFFFF" stroke-width="1" opacity="0.8"/>
-              <line x1="313" y1="309" x2="327" y2="309" stroke="#FFFFFF" stroke-width="1" opacity="0.8"/>
-
-              <!-- Annotatie (12px bold) -->
-              <line x1="330" y1="296" x2="355" y2="296" stroke="#0F172A" stroke-width="1.5"/>
-              <circle cx="330" cy="296" r="3" fill="#2563EB"/>
-              <rect x="355" y="284" width="155" height="24" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
-              <text x="365" y="300" font-size="11.5" font-weight="900" fill="${metalText}">Rechte Insteek ${fittingDiam}</text>
-            </g>
-          `}
-
-          <!-- EVENTUEEL VERLOOPSTUK VAN LAGERMAAT NAAR G 1/8" F -->
-          ${hasAdapter ? `
-          <g transform="translate(295, ${adapterY})">
-            <!-- Vrouwelijke Ingangskraag G 1/8" F -->
-            <rect x="15" y="0" width="20" height="4" rx="1.5" fill="${cylGrad}" stroke="${metalStroke}" stroke-width="0.5"/>
-            <ellipse cx="25" cy="1.5" rx="5" ry="1.5" fill="#0F172A"/>
-
-            <!-- Massieve Zeskantkop -->
-            <rect x="14" y="4" width="22" height="13" rx="1.5" fill="${facetC}" stroke="${metalStroke}" stroke-width="0.8"/>
-            
-            <!-- Mannelijke Schroefdraad passend op gekozen lager -->
-            <rect x="16" y="17" width="18" height="10" fill="url(#threadGrad)" stroke="${metalStroke}" stroke-width="0.8"/>
-            <line x1="16" y1="20" x2="34" y2="20" stroke="#FFFFFF" stroke-width="1.2" opacity="0.8"/>
-            <line x1="16" y1="23" x2="34" y2="23" stroke="#FFFFFF" stroke-width="1.2" opacity="0.8"/>
-
-            <!-- Annotatie (12px bold) -->
-            <line x1="36" y1="10" x2="60" y2="10" stroke="#0F172A" stroke-width="1.5"/>
-            <circle cx="36" cy="10" r="3" fill="#0F172A"/>
-            <rect x="60" y="-2" width="155" height="24" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
-            <text x="70" y="14" font-size="11.5" font-weight="800" fill="#0F172A">Verloop ${cfg.bearingThread} M</text>
-          </g>
           ` : ''}
 
-          <!-- REALISTISCH GIETIJZEREN STAAND LAGERHUIS (Pillow Block Bearing) AAN LAGERZIJDE -->
-          <g>
-            <image href="bearing-pillow-block.png" x="240" y="${bearingY}" width="160" height="134" preserveAspectRatio="xMidYMid meet"/>
+          <g transform="translate(0, ${remShift})">
+            <!-- Pulsarlube 2000RC-1 Authentieke Plaatstalen Montagebeugel -->
+            <g>
+              <!-- Verticale Montageflens tegen de wand/profiel (met boutgaten) -->
+              <rect x="16" y="78" width="12" height="72" rx="2" fill="#334155" stroke="#1E293B" stroke-width="1"/>
+              <!-- Bovenste boutgat met sluitring en boutkop -->
+              <rect x="19" y="86" width="6" height="14" rx="3" fill="#0F172A"/>
+              <circle cx="22" cy="93" r="4.5" fill="#94A3B8" stroke="#1E293B"/>
+              <circle cx="22" cy="93" r="2.5" fill="#475569"/>
+              <!-- Onderste boutgat met sluitring en boutkop -->
+              <rect x="19" y="128" width="6" height="14" rx="3" fill="#0F172A"/>
+              <circle cx="22" cy="135" r="4.5" fill="#94A3B8" stroke="#1E293B"/>
+              <circle cx="22" cy="135" r="2.5" fill="#475569"/>
 
-            <!-- Annotatie Lagerpoort aan bovenzijde smeernippel/inlaat -->
-            <line x1="320" y1="${bearingY + 12}" x2="355" y2="${bearingY + 12}" stroke="#0F172A" stroke-width="1.5"/>
-            <circle cx="320" cy="${bearingY + 12}" r="3" fill="#E30613"/>
-            <rect x="355" y="${bearingY}" width="155" height="24" rx="6" fill="#FFFFFF" stroke="#E30613" stroke-width="1.5"/>
-            <text x="365" y="${bearingY + 16}" font-size="11.5" font-weight="900" fill="#E30613">Lager: ${cfg.bearingThread}</text>
+              <!-- Horizontaal Steunplateau (heavy sheet metal) -->
+              <rect x="28" y="122" width="94" height="12" fill="#475569" stroke="#1E293B" stroke-width="1"/>
+              <!-- Omgezette rand (stiffener lip) aan de voorzijde -->
+              <path d="M 122 122 L 126 122 L 126 142 L 122 142 Z" fill="#1E293B" stroke="#0F172A" stroke-width="0.8"/>
+              <!-- Driehoekige versterkingsrib (gusset) -->
+              <polygon points="28,122 28,96 52,122" fill="#1E293B" opacity="0.85"/>
+
+              <!-- Doorvoernippel G 1/4" F naar 8mm push-in (exact op as x=75) -->
+              <!-- Bovenste zeskantmoer op plateau -->
+              <rect x="63" y="116" width="24" height="6" rx="1.5" fill="${facetC}" stroke="${metalStroke}" stroke-width="0.8"/>
+              <ellipse cx="75" cy="116" rx="6" ry="2" fill="#0F172A"/>
+              <!-- Doorvoerlichaam door plateau -->
+              <rect x="66" y="122" width="18" height="12" fill="${cylGrad}" stroke="${metalStroke}" stroke-width="0.8"/>
+              <!-- Borgmoer onder plateau -->
+              <rect x="63" y="134" width="24" height="6" rx="1.5" fill="${facetC}" stroke="${metalStroke}" stroke-width="0.8"/>
+              <!-- Insteekkoppeling huls onder beugel -->
+              <rect x="68" y="140" width="14" height="8" fill="${cylGrad}" stroke="${metalStroke}" stroke-width="0.8"/>
+              <!-- Blauwe 8mm ontgrendelring naar onder gericht (lip op y=150) -->
+              <rect x="69" y="146" width="12" height="4" rx="1" fill="#2563EB" stroke="#1D4ED8" stroke-width="0.8"/>
+              <ellipse cx="75" cy="150" rx="5" ry="1.5" fill="#60A5FA"/>
+
+              <!-- Annotatie Montagebeugel -->
+              <line x1="126" y1="128" x2="160" y2="128" stroke="#0F172A" stroke-width="1.5"/>
+              <circle cx="126" cy="128" r="3" fill="#3B82F6"/>
+              <rect x="160" y="116" width="210" height="24" rx="6" fill="#EFF6FF" stroke="#3B82F6" stroke-width="1.2"/>
+              <text x="170" y="132" font-size="12" font-weight="900" fill="#1E40AF">Beugel G 1/4" F (Kit 1702)</text>
+            </g>
+
+            <!-- Hogedrukleiding 8 mm (Exacte aansluiting van beugel naar lager) -->
+            <g>
+              <!-- Metalen klemhuls (pershuls) onder push-in op y=150 -->
+              <rect x="71" y="150" width="8" height="6" rx="1" fill="#94A3B8" stroke="#334155" stroke-width="0.5"/>
+
+              ${isElbowPush ? `
+                <!-- Leiding vertrekt verticaal op (75, 150) en komt perfect horizontaal toe op (280, 298) in de 90° push-in -->
+                <path d="M 75 150 C 75 280, 180 298, 280 298" fill="none" stroke="#0F172A" stroke-width="10" stroke-linecap="round"/>
+                <path d="M 75 150 C 75 280, 180 298, 280 298" fill="none" stroke="#2563EB" stroke-width="7" stroke-linecap="round"/>
+                <path d="M 75 150 C 75 280, 180 298, 280 298" fill="none" stroke="#93C5FD" stroke-width="2" stroke-dasharray="10 8" stroke-linecap="round"/>
+              ` : `
+                <!-- Leiding vertrekt verticaal op (75, 150) en komt perfect verticaal van boven toe op (320, 285) in de rechte push-in -->
+                <path d="M 75 150 C 75 285, 320 195, 320 285" fill="none" stroke="#0F172A" stroke-width="10" stroke-linecap="round"/>
+                <path d="M 75 150 C 75 285, 320 195, 320 285" fill="none" stroke="#2563EB" stroke-width="7" stroke-linecap="round"/>
+                <path d="M 75 150 C 75 285, 320 195, 320 285" fill="none" stroke="#93C5FD" stroke-width="2" stroke-dasharray="10 8" stroke-linecap="round"/>
+              `}
+
+              <!-- Badge Leidinglengte -->
+              <rect x="110" y="215" width="200" height="24" rx="6" fill="#FEF3C7" stroke="#F59E0B" stroke-width="1.5"/>
+              <text x="210" y="231" font-size="11" font-weight="900" fill="#92400E" text-anchor="middle">LEIDING 8 MM (MAX. 20 CM)</text>
+            </g>
+
+            <!-- 3D PUSH-IN KOPPELING AAN LAGERZIJDE -->
+            ${isElbowPush ? `
+              <!-- 90° KNIE-INSTEEKKOPPELING (Horizontale inlaat op x=280, y=298) -->
+              <g>
+                <!-- Blauwe Kunststof Ontgrendelring (Verticaal) -->
+                <rect x="278" y="292" width="4" height="12" rx="1" fill="#2563EB" stroke="#1D4ED8" stroke-width="0.8"/>
+                <ellipse cx="278" cy="298" rx="1.5" ry="4.5" fill="#60A5FA"/>
+
+                <!-- Horizontale Messing Insteekbus -->
+                <rect x="282" y="293" width="16" height="10" fill="${cylGrad}" stroke="${metalStroke}" stroke-width="0.8"/>
+
+                <!-- 90° Haaks Lichaam (Draaibaar) naar as x=320 -->
+                <path d="M 298 293 C 322 293, 328 298, 328 312 L 312 312 C 312 301, 308 293, 298 293 Z" fill="${cylGrad}" stroke="${metalStroke}" stroke-width="0.8"/>
+                
+                <!-- Zeskant Basis (SW 14) -->
+                <rect x="311" y="312" width="18" height="7" rx="1.5" fill="${facetC}" stroke="${metalStroke}" stroke-width="0.8"/>
+                <!-- NBR O-ring -->
+                <rect x="312" y="318" width="16" height="2" fill="#0F172A"/>
+
+                <!-- Mannelijke Schroefdraad G 1/8" M naar onder -->
+                <rect x="313" y="319" width="14" height="9" fill="url(#threadGrad)" stroke="${metalStroke}" stroke-width="0.8"/>
+                <line x1="313" y1="322" x2="327" y2="322" stroke="#FFFFFF" stroke-width="1" opacity="0.8"/>
+                <line x1="313" y1="325" x2="327" y2="325" stroke="#FFFFFF" stroke-width="1" opacity="0.8"/>
+
+                <!-- Annotatie (12px bold) -->
+                <line x1="329" y1="305" x2="355" y2="305" stroke="#0F172A" stroke-width="1.5"/>
+                <circle cx="329" cy="305" r="3" fill="#2563EB"/>
+                <rect x="355" y="293" width="155" height="24" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
+                <text x="365" y="309" font-size="11.5" font-weight="900" fill="${metalText}">90° Knie ${fittingDiam} - G 1/8" M</text>
+              </g>
+            ` : `
+              <!-- RECHTE INSTEEKKOPPELING (Op as x=320, inlaat op y=285) -->
+              <g>
+                <!-- Blauwe Kunststof Ontgrendelring bovenaan -->
+                <rect x="312" y="285" width="16" height="4" rx="1" fill="#2563EB" stroke="#1D4ED8" stroke-width="0.8"/>
+                <ellipse cx="320" cy="285" rx="5" ry="1.5" fill="#60A5FA"/>
+
+                <!-- Massief Zeskant Messing/RVS Lichaam met 3D Facetten -->
+                <rect x="310" y="289" width="20" height="14" rx="1.5" fill="${cylGrad}" stroke="${metalStroke}" stroke-width="0.8"/>
+                <path d="M 310 289 L 315 290 L 315 302 L 310 301 Z" fill="${facetL}"/>
+                <path d="M 315 290 L 325 290 L 325 302 L 315 302 Z" fill="${facetC}"/>
+                <path d="M 325 290 L 330 289 L 330 301 L 325 302 Z" fill="${facetR}"/>
+
+                <!-- NBR O-ring -->
+                <rect x="312" y="302" width="16" height="2" fill="#0F172A"/>
+
+                <!-- Mannelijke Schroefdraad G 1/8" M -->
+                <rect x="313" y="303" width="14" height="9" fill="url(#threadGrad)" stroke="${metalStroke}" stroke-width="0.8"/>
+                <line x1="313" y1="306" x2="327" y2="306" stroke="#FFFFFF" stroke-width="1" opacity="0.8"/>
+                <line x1="313" y1="309" x2="327" y2="309" stroke="#FFFFFF" stroke-width="1" opacity="0.8"/>
+
+                <!-- Annotatie (12px bold) -->
+                <line x1="330" y1="296" x2="355" y2="296" stroke="#0F172A" stroke-width="1.5"/>
+                <circle cx="330" cy="296" r="3" fill="#2563EB"/>
+                <rect x="355" y="284" width="155" height="24" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
+                <text x="365" y="300" font-size="11.5" font-weight="900" fill="${metalText}">Rechte Insteek ${fittingDiam}</text>
+              </g>
+            `}
+
+            <!-- EVENTUEEL VERLOOPSTUK VAN LAGERMAAT NAAR G 1/8" F -->
+            ${hasAdapter ? `
+            <g transform="translate(295, ${adapterY})">
+              <!-- Vrouwelijke Ingangskraag G 1/8" F -->
+              <rect x="15" y="0" width="20" height="4" rx="1.5" fill="${cylGrad}" stroke="${metalStroke}" stroke-width="0.5"/>
+              <ellipse cx="25" cy="1.5" rx="5" ry="1.5" fill="#0F172A"/>
+
+              <!-- Massieve Zeskantkop -->
+              <rect x="14" y="4" width="22" height="13" rx="1.5" fill="${facetC}" stroke="${metalStroke}" stroke-width="0.8"/>
+              
+              <!-- Mannelijke Schroefdraad passend op gekozen lager -->
+              <rect x="16" y="17" width="18" height="10" fill="url(#threadGrad)" stroke="${metalStroke}" stroke-width="0.8"/>
+              <line x1="16" y1="20" x2="34" y2="20" stroke="#FFFFFF" stroke-width="1.2" opacity="0.8"/>
+              <line x1="16" y1="23" x2="34" y2="23" stroke="#FFFFFF" stroke-width="1.2" opacity="0.8"/>
+
+              <!-- Annotatie (12px bold) -->
+              <line x1="36" y1="10" x2="60" y2="10" stroke="#0F172A" stroke-width="1.5"/>
+              <circle cx="36" cy="10" r="3" fill="#0F172A"/>
+              <rect x="60" y="-2" width="155" height="24" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
+              <text x="70" y="14" font-size="11.5" font-weight="800" fill="#0F172A">Verloop ${cfg.bearingThread} M</text>
+            </g>
+            ` : ''}
+
+            <!-- REALISTISCH GIETIJZEREN STAAND LAGERHUIS (Pillow Block Bearing) AAN LAGERZIJDE -->
+            <g>
+              <image href="bearing-pillow-block.png" x="240" y="${bearingY}" width="160" height="134" preserveAspectRatio="xMidYMid meet"/>
+
+              <!-- Annotatie Lagerpoort aan bovenzijde smeernippel/inlaat -->
+              <line x1="320" y1="${bearingY + 12}" x2="355" y2="${bearingY + 12}" stroke="#0F172A" stroke-width="1.5"/>
+              <circle cx="320" cy="${bearingY + 12}" r="3" fill="#E30613"/>
+              <rect x="355" y="${bearingY}" width="155" height="24" rx="6" fill="#FFFFFF" stroke="#E30613" stroke-width="1.5"/>
+              <text x="365" y="${bearingY + 16}" font-size="11.5" font-weight="900" fill="#E30613">Lager: ${cfg.bearingThread}</text>
+            </g>
           </g>
         `;
       }
 
       if (isPrint) {
-        return `<svg viewBox="0 0 520 ${totalH}" style="width: 100%; max-height: 400px; display: block; margin: 0 auto;" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
+        return `<svg viewBox="0 0 520 ${totalH}" style="width: 100%; max-height: 440px; display: block; margin: 0 auto;" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
       }
 
       return { inner, totalH };
@@ -3814,11 +3865,13 @@
 
       const remoteFitting = document.getElementById('sel-remote-fitting').value;
       const lubricatorVol = document.getElementById('sel-lubricator-vol').value;
+      const impulseConnectEl = document.getElementById('chk-impulse-connect');
+      const impulseConnect = impulseConnectEl ? impulseConnectEl.checked : false;
       const greaseType = document.getElementById('sel-grease-type').value;
       const months = parseInt(document.getElementById('sel-months').value) || 6;
 
       const components = resolveComponents({
-        material, mountType, bearingThread, angle, extension, remoteFitting, lubricatorVol, greaseType, months
+        material, mountType, bearingThread, angle, extension, remoteFitting, lubricatorVol, impulseConnect, greaseType, months
       });
 
       if (!activePointId) {
@@ -3839,6 +3892,7 @@
         customExtension,
         remoteFitting,
         lubricatorVol,
+        impulseConnect,
         greaseType,
         months,
         photo: currentPhotoBase64,
@@ -3905,8 +3959,11 @@
         document.getElementById('custom-ext-box').style.display = 'none';
       }
 
-      document.getElementById('sel-remote-fitting').value = p.remoteFitting || 'straight-kit';
+      const validRemoteFittings = ['straight-kit', 'elbow-90', 'straight-8-g14', 'elbow-90-8-g14'];
+      document.getElementById('sel-remote-fitting').value = validRemoteFittings.includes(p.remoteFitting) ? p.remoteFitting : 'straight-kit';
       document.getElementById('sel-lubricator-vol').value = p.lubricatorVol || '125ml';
+      const impulseConnectEl = document.getElementById('chk-impulse-connect');
+      if (impulseConnectEl) impulseConnectEl.checked = !!p.impulseConnect;
       populateGreaseTypes(p.greaseType);
 
       document.getElementById('sel-months').value = p.months || 6;
@@ -3969,7 +4026,7 @@
             <div>
               <div style="font-weight: 800; font-size: 14px; color: var(--dark);">${p.machine || 'Machine'} ➔ ${p.point || 'Smeerpunt'}</div>
               <div style="font-size: 12px; color: var(--text-muted); margin-top: 3px;">
-                ${p.mountType === 'remote' ? 'Afstandsmontage (Pulsarlube 1702)' : 'Directe montage'} • Materiaal: <strong>${p.material}</strong> • Lager: <strong>${p.bearingThread}</strong> • ISPL: <strong>${p.lubricatorVol} + ${p.greaseType} (${p.months} mnd)</strong>
+                ${p.mountType === 'remote' ? 'Afstandsmontage (Pulsarlube 1702)' : 'Directe montage'} • Materiaal: <strong>${p.material}</strong> • Lager: <strong>${p.bearingThread}</strong> • ISPL: <strong>${p.lubricatorVol}${p.impulseConnect ? ' + Impulse Connect (7213)' : ''} + ${p.greaseType} (${p.months} mnd)</strong>
               </div>
             </div>
           </div>
@@ -4082,6 +4139,7 @@
           customExtension: '',
           remoteFitting: 'straight-kit',
           lubricatorVol: '125ml',
+          impulseConnect: false,
           greaseType: 'Grease MP2/3',
           months: 6,
           photo: null,
@@ -4277,6 +4335,7 @@
                   <table style="width: 100%; border-collapse: collapse; font-size: 11.5px; margin-bottom: 10px;">
                     <tr><td style="padding: 4px 0; color: #64748B; width: 140px;">Aansluiting 1 (Lager):</td><td style="padding: 4px 0; font-weight: bold;">${p.bearingThread}</td></tr>
                     <tr><td style="padding: 4px 0; color: #64748B;">ISPL Smeerunit:</td><td style="padding: 4px 0; font-weight: bold; color: #E30613;">${p.lubricatorVol} + ${p.greaseType}</td></tr>
+                    <tr><td style="padding: 4px 0; color: #64748B;">Impulse Connect:</td><td style="padding: 4px 0; font-weight: bold;">${p.impulseConnect ? 'Ja (Drukversterker 10 bar + Bluetooth, art. 7213)' : 'Nee'}</td></tr>
                     <tr><td style="padding: 4px 0; color: #64748B;">Looptijd instelling:</td><td style="padding: 4px 0; font-weight: bold;">${p.months} maanden</td></tr>
                     <tr><td style="padding: 4px 0; color: #64748B;">Kniestuk / Hoek:</td><td style="padding: 4px 0; font-weight: bold;">${p.angle === 'straight' ? 'Recht (geen)' : p.angle + '° knie'}</td></tr>
                     <tr><td style="padding: 4px 0; color: #64748B;">Verlengstuk:</td><td style="padding: 4px 0; font-weight: bold;">${p.extension === '0' ? 'Geen verlenging' : p.extension + ' mm'}</td></tr>
@@ -4384,7 +4443,7 @@
             <div style="border: 1px solid #E2E8F0; border-radius: 8px; padding: 12px; margin-bottom: 12px; background: white; page-break-inside: avoid;">
               <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #F1F5F9; padding-bottom: 6px; margin-bottom: 8px;">
                 <div style="font-weight: 900; font-size: 13.5px; color: #0F172A;">${idx + 1}. Machine: ${p.machine || 'Machine'} ➔ Smeerpunt: ${p.point || 'Smeerpunt'}</div>
-                <div style="font-size: 11.5px; color: #64748B;">Lager: ${p.bearingThread} | ${p.material} | ${p.lubricatorVol} + ${p.greaseType} (${p.months} mnd)</div>
+                <div style="font-size: 11.5px; color: #64748B;">Lager: ${p.bearingThread} | ${p.material} | ${p.lubricatorVol}${p.impulseConnect ? ' + Impulse Connect' : ''} + ${p.greaseType} (${p.months} mnd)</div>
               </div>
               <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
                 <thead>
@@ -4676,6 +4735,8 @@
                   <option value="60ml" ${item.volume==='60ml'?'selected':''}>60 ml</option>
                   <option value="125ml" ${item.volume==='125ml'?'selected':''}>125 ml</option>
                   <option value="250ml" ${item.volume==='250ml'?'selected':''}>250 ml</option>
+                  <option value="Booster" ${item.volume==='Booster'?'selected':''}>Booster</option>
+                  <option value="Kit" ${item.volume==='Kit'?'selected':''}>Kit</option>
                 </select>
               </td>
               <td>

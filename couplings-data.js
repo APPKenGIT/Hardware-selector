@@ -943,5 +943,15 @@ let ISPL_CATALOG = [
     "name": "Pulsarlube 2000RC-1 Installatiekit voor montage op afstand",
     "mat": "Verzinkt staal / RVS / Polyamide",
     "desc": "Complete installatiekit Pulsarlube 2000RC-1 inclusief beugel, max. 20 cm slang 8 mm en rechte insteekkoppeling (art. 1702)"
+  },
+  {
+    "code": "7213",
+    "volume": "Booster",
+    "vol_ml": 0,
+    "grease": "-",
+    "thread": "G 1/4\" F naar G 1/4\" M",
+    "name": "Interflon Impulse Connect (Drukversterker 10 bar + Bluetooth)",
+    "mat": "Kunststof / RVS (IP68)",
+    "desc": "Elektromechanische drukversterker tot 10 bar met Bluetooth® connectiviteit en geïntegreerde terugslagklep, montage direct onder ISPL (art. 7213)"
   }
 ];

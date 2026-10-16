@@ -1,4 +1,4 @@
-const CACHE_NAME = 'if-hardware-selector-v16';
+const CACHE_NAME = 'if-hardware-selector-v17';
 const ASSETS = [
   './',
   './index.html',
@@ -12,6 +12,7 @@ const ASSETS = [
   './icon-192.png',
   './icon-512.png',
   './bearing-pillow-block.png',
+  './impulse-connect.png',
   './battery-dial.png',
   './battery-dial-1.png',
   './battery-dial-2.png',

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'if-hardware-selector-v20';
+const CACHE_NAME = 'if-hardware-selector-v22';
 const ASSETS = [
   './',
   './index.html',
@@ -53,6 +53,20 @@ self.addEventListener('activate', (e) => {
 });
 
 self.addEventListener('fetch', (e) => {
+  // Network-first voor index.html en navigatie zodat updates onmiddellijk doorkomen
+  if (e.request.mode === 'navigate' || e.request.url.endsWith('index.html') || e.request.url.endsWith('/')) {
+    e.respondWith(
+      fetch(e.request)
+        .then((response) => {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(e.request, clone));
+          return response;
+        })
+        .catch(() => caches.match(e.request))
+    );
+    return;
+  }
+
   e.respondWith(
     caches.match(e.request).then((res) => res || fetch(e.request))
   );

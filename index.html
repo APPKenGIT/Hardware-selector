@@ -2880,22 +2880,36 @@
     }
 
     function init() {
-      loadSavedState();
+      try {
+        loadSavedState();
 
-      // Populate General Info Tab
-      document.getElementById('gen-client').value = generalInfo.client || '';
-      document.getElementById('gen-project').value = generalInfo.project || '';
-      document.getElementById('gen-contact').value = generalInfo.contact || '';
-      document.getElementById('gen-advisor').value = generalInfo.advisor || '';
-      document.getElementById('gen-notes').value = generalInfo.notes || '';
-      updateGeneralInfoLabels();
+        // Populate General Info Tab
+        const gClient = document.getElementById('gen-client');
+        if (gClient) gClient.value = generalInfo.client || '';
+        const gProject = document.getElementById('gen-project');
+        if (gProject) gProject.value = generalInfo.project || '';
+        const gContact = document.getElementById('gen-contact');
+        if (gContact) gContact.value = generalInfo.contact || '';
+        const gAdvisor = document.getElementById('gen-advisor');
+        if (gAdvisor) gAdvisor.value = generalInfo.advisor || '';
+        const gNotes = document.getElementById('gen-notes');
+        if (gNotes) gNotes.value = generalInfo.notes || '';
+        updateGeneralInfoLabels();
 
-      const activeP = savedPoints.find(p => p.id == activePointId) || savedPoints[0];
-      loadPointIntoForm(activeP);
-      updateHeaderPointDropdown();
-      renderSavedPointsList();
-      renderBOM();
-      document.getElementById('print-date').innerText = 'Datum: ' + new Date().toLocaleDateString('nl-BE');
+        const activeP = savedPoints.find(p => p.id == activePointId) || savedPoints[0];
+        if (activeP) {
+          loadPointIntoForm(activeP);
+        }
+        updateHeaderPointDropdown();
+        renderSavedPointsList();
+        renderBOM();
+        const printDateEl = document.getElementById('print-date');
+        if (printDateEl) {
+          printDateEl.innerText = 'Datum: ' + new Date().toLocaleDateString('nl-BE');
+        }
+      } catch (err) {
+        console.error('Fout bij initialisatie Hardware Selector:', err);
+      }
     }
 
     function updateGeneralInfo() {
@@ -3754,7 +3768,6 @@
         if (pulsarDirectThread === 'custom') pulsarDirectThread = customDirectThread || 'Afwijkend';
 
         const pulsarBrushMount = document.getElementById('sel-pulsar-brush-mount') ? document.getElementById('sel-pulsar-brush-mount').value : 'direct';
-        const pulsarBrushMount = document.getElementById('sel-pulsar-brush-mount') ? document.getElementById('sel-pulsar-brush-mount').value : 'direct';
         const pulsarBrushType = document.getElementById('sel-pulsar-brush-type').value;
         let brushLen = parseFloat(document.getElementById('inp-pulsar-brush-len').value) || 1.0;
         if (brushLen > 4.0) brushLen = 4.0;
@@ -3778,7 +3791,6 @@
           months,
           pulsarMountType: pulsarMount,
           pulsarDirectThread,
-          pulsarBrushMount,
           pulsarBrushMount,
           pulsarBrushType,
           pulsarBrushTubeLen: brushLen,
@@ -5351,9 +5363,17 @@
       const svg = document.getElementById('assembly-svg');
       if (!svg) return;
 
-      const { inner, totalH } = generateAssemblySvgMarkup(cfg, false);
-      svg.setAttribute('viewBox', `0 0 520 ${totalH}`);
-      svg.innerHTML = inner;
+      try {
+        const result = generateAssemblySvgMarkup(cfg, false);
+        if (typeof result === 'string') {
+          svg.innerHTML = result.replace(/^<svg[^>]*>/i, '').replace(/<\/svg>$/i, '');
+        } else if (result && result.inner) {
+          svg.setAttribute('viewBox', `0 0 520 ${result.totalH || 500}`);
+          svg.innerHTML = result.inner;
+        }
+      } catch (err) {
+        console.error('Fout bij renderen 3D Exploded View:', err);
+      }
     }
 
     function handlePhotoUpload(e) {
@@ -5409,7 +5429,6 @@
         const customDirectThread = document.getElementById('custom-pulsar-direct-thread').value.trim();
         if (pulsarDirectThread === 'custom') pulsarDirectThread = customDirectThread || 'Afwijkend';
 
-        const pulsarBrushMount = document.getElementById('sel-pulsar-brush-mount') ? document.getElementById('sel-pulsar-brush-mount').value : 'direct';
         const pulsarBrushMount = document.getElementById('sel-pulsar-brush-mount') ? document.getElementById('sel-pulsar-brush-mount').value : 'direct';
         const pulsarBrushType = document.getElementById('sel-pulsar-brush-type').value;
         let brushLen = parseFloat(document.getElementById('inp-pulsar-brush-len').value) || 1.0;
@@ -6774,7 +6793,11 @@
 
     // Service Worker registration for offline PWA
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js').catch(err => console.log('SW error:', err));
+      navigator.serviceWorker.register('sw.js')
+        .then(reg => {
+          reg.update();
+        })
+        .catch(err => console.log('SW error:', err));
     }
 
     window.addEventListener('DOMContentLoaded', init);

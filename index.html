@@ -662,6 +662,126 @@
       gap: 8px;
     }
 
+    /* System Choice Selector */
+    .system-choice-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .system-choice-card {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 2px solid #E2E8F0;
+      background: #FFFFFF;
+      cursor: pointer;
+      text-align: left;
+      position: relative;
+      transition: all 0.2s ease;
+    }
+    .system-choice-card:hover {
+      border-color: #CBD5E1;
+      box-shadow: var(--shadow-sm);
+    }
+    .system-choice-card.active {
+      border-color: #E30613;
+      background: #FFF5F5;
+      box-shadow: 0 0 0 1px #E30613, var(--shadow-sm);
+    }
+    .system-choice-card#btn-sys-pulsarlube.active {
+      border-color: #2563EB;
+      background: #EFF6FF;
+      box-shadow: 0 0 0 1px #2563EB, var(--shadow-sm);
+    }
+    .sys-thumb-box {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      background: #F8FAFC;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      overflow: hidden;
+      border: 1px solid #E2E8F0;
+    }
+    .sys-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .sys-title {
+      font-weight: 800;
+      font-size: 12.5px;
+      color: #0F172A;
+      line-height: 1.25;
+    }
+    .sys-sub {
+      font-size: 10.5px;
+      color: #64748B;
+      margin-top: 2px;
+    }
+    .sys-check {
+      display: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #E30613;
+      color: white;
+      font-size: 11px;
+      font-weight: 900;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .system-choice-card.active .sys-check {
+      display: flex;
+    }
+    .system-choice-card#btn-sys-pulsarlube.active .sys-check {
+      background: #2563EB;
+    }
+
+    /* Pulsarlube Port Cards */
+    .pulsar-port-card {
+      background: #F8FAFC;
+      border: 1.5px solid #E2E8F0;
+      border-radius: 12px;
+      padding: 10px 12px;
+      transition: all 0.15s ease;
+    }
+    .pulsar-port-card:hover {
+      border-color: #BFDBFE;
+      background: #F0F7FF;
+    }
+    .pulsar-port-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .pulsar-port-badge {
+      background: #2563EB;
+      color: white;
+      font-size: 10px;
+      font-weight: 900;
+      padding: 2px 7px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .pulsar-port-grid {
+      display: grid;
+      grid-template-columns: 0.95fr 1fr 1.35fr;
+      gap: 8px;
+      align-items: end;
+    }
+    .pulsar-port-grid input, .pulsar-port-grid select {
+      padding: 7px 10px;
+      font-size: 12px;
+      border-radius: 8px;
+    }
+
     .pulsarlube-box {
       background: #EFF6FF;
       border: 1px solid #BFDBFE;
@@ -1232,9 +1352,19 @@
               <label class="input-label">Machine / Installatie</label>
               <input type="text" id="cfg-machine" value="" placeholder="bv. Flessenspoelmachine Lijn 1" oninput="autoSaveActivePoint()">
             </div>
-            <div class="input-group" style="margin-bottom: 0;">
+            <div class="input-group">
               <label class="input-label">Smeerpunt Omschrijving (Tag / Positie)</label>
               <input type="text" id="cfg-point" value="" placeholder="bv. Aandrijfas Lager Positie 1" oninput="autoSaveActivePoint()">
+            </div>
+            <div class="input-group" style="margin-bottom: 0;">
+              <label class="input-label" style="font-weight: 800; color: #1E293B; display: flex; align-items: center; justify-content: space-between;">
+                <span>Aantal identieke opstellingen (vermenigvuldiger)</span>
+                <span id="cfg-qty-badge" style="font-size: 11px; background: #EFF6FF; color: #2563EB; padding: 1px 7px; border-radius: 6px; border: 1px solid #BFDBFE;">1x actief</span>
+              </label>
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <input type="number" id="cfg-quantity" min="1" max="100" value="1" style="width: 80px; font-weight: 800; font-size: 14px; text-align: center;" oninput="onQuantityChange()">
+                <span style="font-size: 11.5px; color: var(--text-muted); line-height: 1.3;">Telt alle benodigde onderdelen automatisch x-maal op in de stuklijst en Odoo offerte.</span>
+              </div>
             </div>
           </div>
 
@@ -1293,146 +1423,331 @@
             <span style="font-size: 11px; color: var(--text-muted); font-weight: normal;">Lager ➔ ISPL</span>
           </div>
 
-          <!-- EERSTE SELECTIE: Materiaal -->
-          <div class="input-group" style="background: #F8FAFC; padding: 12px; border-radius: 12px; border: 1px solid var(--border);">
-            <label class="input-label" style="color: var(--primary);">Materiaal van de koppelingen (Stap 1)</label>
+          <!-- KEUZE SMEERSYSTEEM: ISPL vs PULSARLUBE MET MINIATUREN -->
+          <div class="input-group" style="margin-bottom: 14px;">
+            <label class="input-label" style="font-weight: 800; color: var(--dark); margin-bottom: 8px;">Kies Type Automatisch Smeersysteem:</label>
+            <div class="system-choice-grid">
+              <button type="button" class="system-choice-card active" id="btn-sys-ispl" onclick="switchSystemMode('ispl')">
+                <div class="sys-thumb-box">
+                  <img src="ispl-125.png" alt="ISPL" style="height: 44px; object-fit: contain;">
+                </div>
+                <div class="sys-info">
+                  <div class="sys-title">Interflon Single Point (ISPL)</div>
+                  <div class="sys-sub">15 - 250 ml • Elektro-chemisch</div>
+                </div>
+                <div class="sys-check">✓</div>
+              </button>
+              <button type="button" class="system-choice-card" id="btn-sys-pulsarlube" onclick="switchSystemMode('pulsarlube')">
+                <div class="sys-thumb-box" style="background: #EFF6FF;">
+                  <svg width="34" height="42" viewBox="0 0 34 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="5" y="2" width="24" height="6" rx="3" fill="#1D4ED8"/>
+                    <rect x="4" y="8" width="26" height="26" rx="4" fill="#334155"/>
+                    <rect x="7" y="12" width="20" height="9" rx="2" fill="#0284C7"/>
+                    <rect x="9" y="14" width="16" height="5" rx="1" fill="#E0F2FE"/>
+                    <rect x="9" y="24" width="16" height="7" rx="1" fill="#64748B" opacity="0.6"/>
+                    <rect x="13" y="34" width="8" height="6" fill="#D97706"/>
+                    <line x1="13" y1="36" x2="21" y2="36" stroke="#92400E" stroke-width="1"/>
+                    <line x1="13" y1="38" x2="21" y2="38" stroke="#92400E" stroke-width="1"/>
+                  </svg>
+                </div>
+                <div class="sys-info">
+                  <div class="sys-title">Pulsarlube Smeersysteem</div>
+                  <div class="sys-sub">M2 / BT / MSP / PLC / OL • 1-8 poorten</div>
+                </div>
+                <div class="sys-check">✓</div>
+              </button>
+            </div>
+          </div>
+
+          <!-- GEMEENSCHAPPELIJKE SELECTIE: Materiaal van de koppelingen -->
+          <div class="input-group" style="background: #F8FAFC; padding: 12px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 12px;">
+            <label class="input-label" style="color: var(--primary);">Materiaal van de koppelingen</label>
             <select id="sel-material" onchange="onConfigChange()">
               <option value="Messing vernikkeld" selected>Messing vernikkeld</option>
               <option value="RVS">RVS (Roestvrij staal)</option>
             </select>
           </div>
 
-          <!-- Montagewijze -->
-          <div class="input-group">
-            <label class="input-label">Montagewijze</label>
-            <select id="sel-mount-type" onchange="onMountTypeChange()">
-              <option value="direct" selected>Directe montage (ISPL rechtstreeks op lager)</option>
-              <option value="remote">Montage op afstand via Pulsarlube 2000RC-1 kit (art. 1702)</option>
-            </select>
-          </div>
-
-          <!-- Pulsarlube Info Box -->
-          <div id="pulsarlube-info" class="pulsarlube-box" style="display: none;">
-            <strong>ℹ️ Inbegrepen in Pulsarlube 2000RC-1 kit (Art. 1702):</strong><br>
-            • Montagebeugel voor ISPL (G 1/4" F aansluiting)<br>
-            • 8 mm leiding (maximaal 20 cm toegelaten afstand)<br>
-            • Rechte insteekkoppeling 8 mm - G 1/8" M BSPP
-          </div>
-
-          <!-- ISPL Type / Volume (15ml, 30ml, 60ml, 125ml, 250ml) + Impulse Connect Checkbox -->
-          <div class="input-group">
-            <label class="input-label">Interflon Single Point Lubricator (ISPL) Volume &amp; Impulse Connect</label>
-            <div style="display: flex; gap: 10px; align-items: stretch; flex-wrap: wrap;">
-              <select id="sel-lubricator-vol" onchange="onISPLVolumeChange()" style="flex: 1; min-width: 110px;">
-                <option value="15ml">15 ml</option>
-                <option value="30ml">30 ml</option>
-                <option value="60ml">60 ml</option>
-                <option value="125ml" selected>125 ml</option>
-                <option value="250ml">250 ml</option>
+          <!-- ============================================================= -->
+          <!-- ===== ISPL SPECIFIEKE PARAMETERS ===== -->
+          <!-- ============================================================= -->
+          <div id="ispl-params-section">
+            <!-- Montagewijze -->
+            <div class="input-group">
+              <label class="input-label">Montagewijze</label>
+              <select id="sel-mount-type" onchange="onMountTypeChange()">
+                <option value="direct" selected>Directe montage (ISPL rechtstreeks op lager)</option>
+                <option value="remote">Montage op afstand via Pulsarlube 2000RC-1 kit (art. 1702)</option>
               </select>
-              <label for="chk-impulse-connect" style="display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: #FFF5F5; border: 1.5px solid #FECACA; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 800; color: #0F172A; user-select: none; white-space: nowrap; transition: all 0.15s;" title="Schroef een Interflon Impulse Connect drukversterker (10 bar, Bluetooth, art. 7213) direct onder de ISPL">
-                <input type="checkbox" id="chk-impulse-connect" onchange="onConfigChange()" style="width: 16px; height: 16px; accent-color: var(--primary); cursor: pointer; margin: 0;">
-                <span>Impulse Connect <span style="color: var(--primary); font-weight: 900;">(art. 7213)</span></span>
-              </label>
             </div>
-          </div>
 
-          <!-- VETTYPE PARAMETER (Dynamisch gebaseerd op tabel) -->
-          <div class="input-group">
-            <label class="input-label" style="color: var(--primary);">Type Smeermiddel / Vet in ISPL</label>
-            <select id="sel-grease-type" onchange="onConfigChange()">
-              <!-- Populated dynamically based on chosen volume -->
-            </select>
-          </div>
-
-          <!-- Looptijd / Maand-instelling -->
-          <div class="input-group">
-            <label class="input-label">Looptijd / Maand-instelling (1 - 12 maanden)</label>
-            <select id="sel-months" onchange="onConfigChange()">
-              <option value="1">1 maand</option>
-              <option value="2">2 maanden</option>
-              <option value="3">3 maanden</option>
-              <option value="4">4 maanden</option>
-              <option value="5">5 maanden</option>
-              <option value="6" selected>6 maanden</option>
-              <option value="7">7 maanden</option>
-              <option value="8">8 maanden</option>
-              <option value="9">9 maanden</option>
-              <option value="10">10 maanden</option>
-              <option value="11">11 maanden</option>
-              <option value="12">12 maanden</option>
-            </select>
-            <div id="calc-dispense-info" class="calc-info-box">
-              <!-- Calculated dose rate -->
+            <!-- Pulsarlube Info Box voor ISPL kit 1702 -->
+            <div id="pulsarlube-info" class="pulsarlube-box" style="display: none;">
+              <strong>ℹ️ Inbegrepen in Pulsarlube 2000RC-1 kit (Art. 1702):</strong><br>
+              • Montagebeugel voor ISPL (G 1/4" F aansluiting)<br>
+              • 8 mm leiding (maximaal 20 cm toegelaten afstand)<br>
+              • Rechte insteekkoppeling 8 mm - G 1/8" M BSPP
             </div>
-          </div>
 
-          <!-- Aansluiting 1: Lagerzijde -->
-          <div class="input-group">
-            <label class="input-label">Aansluiting 1: Lager Schroefdraad</label>
-            <select id="sel-bearing-thread" onchange="onBearingThreadChange()">
-              <option value="M6x1">M6x1</option>
-              <option value="M8x1" selected>M8x1</option>
-              <option value="M8x1.25">M8x1.25</option>
-              <option value="M10x1">M10x1</option>
-              <option value="M10x1.5">M10x1.5</option>
-              <option value="G 1/8">G 1/8" BSPP</option>
-              <option value="G 1/4">G 1/4" BSPP</option>
-              <option value="1/8 NPT">1/8" NPT</option>
-              <option value="1/4 NPT">1/4" NPT</option>
-              <option value="custom">+ Andere maat invoeren...</option>
-            </select>
-            <div id="custom-thread-box" class="custom-input-box" style="display: none;">
-              <label class="input-label" style="color: #92400E;">Afwijkende maat Aansluiting 1:</label>
-              <input type="text" id="custom-bearing-thread" placeholder="bv. M12x1.5, 3/8 NPT..." oninput="onConfigChange()">
-              <div style="font-size: 11px; color: #92400E; margin-top: 4px;">
-                ⚠️ Artikelnummer wordt automatisch <strong>"aan te maken"</strong> voor de binnendienst.
+            <!-- ISPL Type / Volume (15ml, 30ml, 60ml, 125ml, 250ml) + Impulse Connect Checkbox -->
+            <div class="input-group">
+              <label class="input-label">Interflon Single Point Lubricator (ISPL) Volume &amp; Impulse Connect</label>
+              <div style="display: flex; gap: 10px; align-items: stretch; flex-wrap: wrap;">
+                <select id="sel-lubricator-vol" onchange="onISPLVolumeChange()" style="flex: 1; min-width: 110px;">
+                  <option value="15ml">15 ml</option>
+                  <option value="30ml">30 ml</option>
+                  <option value="60ml">60 ml</option>
+                  <option value="125ml" selected>125 ml</option>
+                  <option value="250ml">250 ml</option>
+                </select>
+                <label for="chk-impulse-connect" style="display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: #FFF5F5; border: 1.5px solid #FECACA; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 800; color: #0F172A; user-select: none; white-space: nowrap; transition: all 0.15s;" title="Schroef een Interflon Impulse Connect drukversterker (10 bar, Bluetooth, art. 7213) direct onder de ISPL">
+                  <input type="checkbox" id="chk-impulse-connect" onchange="onConfigChange()" style="width: 16px; height: 16px; accent-color: var(--primary); cursor: pointer; margin: 0;">
+                  <span>Impulse Connect <span style="color: var(--primary); font-weight: 900;">(art. 7213)</span></span>
+                </label>
               </div>
             </div>
-          </div>
 
-          <!-- BIJ DIRECTE MONTAGE: Kniestuk & Verlengstuk opties -->
-          <div id="direct-assembly-options">
+            <!-- VETTYPE PARAMETER -->
             <div class="input-group">
-              <label class="input-label">Kniestuk nodig? (G 1/4" M x G 1/4" F)</label>
-              <select id="sel-angle" onchange="onConfigChange()">
-                <option value="straight" selected>Recht (geen kniestuk)</option>
-                <option value="90">90° Kniestuk (G 1/4" M x G 1/4" F)</option>
-                <option value="45">45° Kniestuk (G 1/4" M x G 1/4" F)</option>
+              <label class="input-label" style="color: var(--primary);">Type Smeermiddel / Vet in ISPL</label>
+              <select id="sel-grease-type" onchange="onConfigChange()">
+                <!-- Populated dynamically based on chosen volume -->
               </select>
             </div>
 
-            <div class="input-group" style="margin-bottom: 0;">
-              <label class="input-label">Verlengstuk nodig? (G 1/4" M x G 1/4" F)</label>
-              <select id="sel-extension" onchange="onExtensionChange()">
-                <option value="0" selected>Geen verlenging</option>
-                <option value="15">Verlengstuk 15 mm</option>
-                <option value="25">Verlengstuk 25 mm</option>
-                <option value="35">Verlengstuk 35 mm</option>
-                <option value="50">Verlengstuk 50 mm</option>
-                <option value="custom">+ Afwijkende lengte...</option>
+            <!-- Looptijd / Maand-instelling -->
+            <div class="input-group">
+              <label class="input-label">Looptijd / Maand-instelling (1 - 12 maanden)</label>
+              <select id="sel-months" onchange="onConfigChange()">
+                <option value="1">1 maand</option>
+                <option value="2">2 maanden</option>
+                <option value="3">3 maanden</option>
+                <option value="4">4 maanden</option>
+                <option value="5">5 maanden</option>
+                <option value="6" selected>6 maanden</option>
+                <option value="7">7 maanden</option>
+                <option value="8">8 maanden</option>
+                <option value="9">9 maanden</option>
+                <option value="10">10 maanden</option>
+                <option value="11">11 maanden</option>
+                <option value="12">12 maanden</option>
               </select>
-              <div id="custom-ext-box" class="custom-input-box" style="display: none;">
-                <label class="input-label" style="color: #92400E;">Afwijkende verlenging:</label>
-                <input type="text" id="custom-ext-val" placeholder="bv. 75 mm, 100 mm..." oninput="onConfigChange()">
+              <div id="calc-dispense-info" class="calc-info-box">
+                <!-- Calculated dose rate -->
+              </div>
+            </div>
+
+            <!-- Aansluiting 1: Lagerzijde -->
+            <div class="input-group">
+              <label class="input-label">Aansluiting 1: Lager Schroefdraad</label>
+              <select id="sel-bearing-thread" onchange="onBearingThreadChange()">
+                <option value="M6x1">M6x1</option>
+                <option value="M8x1" selected>M8x1</option>
+                <option value="M8x1.25">M8x1.25</option>
+                <option value="M10x1">M10x1</option>
+                <option value="M10x1.5">M10x1.5</option>
+                <option value="G 1/8">G 1/8" BSPP</option>
+                <option value="G 1/4">G 1/4" BSPP</option>
+                <option value="1/8 NPT">1/8" NPT</option>
+                <option value="1/4 NPT">1/4" NPT</option>
+                <option value="custom">+ Andere maat invoeren...</option>
+              </select>
+              <div id="custom-thread-box" class="custom-input-box" style="display: none;">
+                <label class="input-label" style="color: #92400E;">Afwijkende maat Aansluiting 1:</label>
+                <input type="text" id="custom-bearing-thread" placeholder="bv. M12x1.5, 3/8 NPT..." oninput="onConfigChange()">
                 <div style="font-size: 11px; color: #92400E; margin-top: 4px;">
-                  ⚠️ Wordt gemarkeerd als <strong>"aan te maken"</strong>.
+                  ⚠️ Artikelnummer wordt automatisch <strong>"aan te maken"</strong> voor de binnendienst.
                 </div>
               </div>
             </div>
+
+            <!-- BIJ DIRECTE MONTAGE: Kniestuk & Verlengstuk opties -->
+            <div id="direct-assembly-options">
+              <div class="input-group">
+                <label class="input-label">Kniestuk nodig? (G 1/4" M x G 1/4" F)</label>
+                <select id="sel-angle" onchange="onConfigChange()">
+                  <option value="straight" selected>Recht (geen kniestuk)</option>
+                  <option value="90">90° Kniestuk (G 1/4" M x G 1/4" F)</option>
+                  <option value="45">45° Kniestuk (G 1/4" M x G 1/4" F)</option>
+                </select>
+              </div>
+
+              <div class="input-group" style="margin-bottom: 0;">
+                <label class="input-label">Verlengstuk nodig? (G 1/4" M x G 1/4" F)</label>
+                <select id="sel-extension" onchange="onExtensionChange()">
+                  <option value="0" selected>Geen verlenging</option>
+                  <option value="15">Verlengstuk 15 mm</option>
+                  <option value="25">Verlengstuk 25 mm</option>
+                  <option value="35">Verlengstuk 35 mm</option>
+                  <option value="50">Verlengstuk 50 mm</option>
+                  <option value="custom">+ Afwijkende lengte...</option>
+                </select>
+                <div id="custom-ext-box" class="custom-input-box" style="display: none;">
+                  <label class="input-label" style="color: #92400E;">Afwijkende verlenging:</label>
+                  <input type="text" id="custom-ext-val" placeholder="bv. 75 mm, 100 mm..." oninput="onConfigChange()">
+                  <div style="font-size: 11px; color: #92400E; margin-top: 4px;">
+                    ⚠️ Wordt gemarkeerd als <strong>"aan te maken"</strong>.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- BIJ AFSTANDSMONTAGE (PULSARLUBE 1702): Vraag naar insteekkoppeling (steeds 8 mm leiding) -->
+            <div id="remote-assembly-options" style="display: none;">
+              <div class="input-group" style="margin-bottom: 0;">
+                <label class="input-label" style="color: #1E40AF;">Welke insteekkoppeling (aan lagerzijde) monteren?</label>
+                <select id="sel-remote-fitting" onchange="onConfigChange()">
+                  <option value="straight-kit" selected>Rechte insteekkoppeling 8 mm - G 1/8" M (Inbegrepen in Pulsarlube kit 1702)</option>
+                  <option value="elbow-90">Knie-insteekkoppeling 90° 8 mm - G 1/8" M (Extra toe te voegen)</option>
+                  <option value="straight-8-g14">Rechte insteekkoppeling 8 mm - G 1/4" M (Voor 8 mm leiding)</option>
+                  <option value="elbow-90-8-g14">Knie-insteekkoppeling 90° 8 mm - G 1/4" M (Voor 8 mm leiding)</option>
+                </select>
+              </div>
+            </div>
           </div>
 
-          <!-- BIJ AFSTANDSMONTAGE (PULSARLUBE 1702): Vraag naar insteekkoppeling (steeds 8 mm leiding) -->
-          <div id="remote-assembly-options" style="display: none;">
-            <div class="input-group" style="margin-bottom: 0;">
-              <label class="input-label" style="color: #1E40AF;">Welke insteekkoppeling (aan lagerzijde) monteren?</label>
-              <select id="sel-remote-fitting" onchange="onConfigChange()">
-                <option value="straight-kit" selected>Rechte insteekkoppeling 8 mm - G 1/8" M (Inbegrepen in Pulsarlube kit 1702)</option>
-                <option value="elbow-90">Knie-insteekkoppeling 90° 8 mm - G 1/8" M (Extra toe te voegen)</option>
-                <option value="straight-8-g14">Rechte insteekkoppeling 8 mm - G 1/4" M (Voor 8 mm leiding)</option>
-                <option value="elbow-90-8-g14">Knie-insteekkoppeling 90° 8 mm - G 1/4" M (Voor 8 mm leiding)</option>
+          <!-- ============================================================= -->
+          <!-- ===== PULSARLUBE SPECIFIEKE PARAMETERS ===== -->
+          <!-- ============================================================= -->
+          <div id="pulsarlube-params-section" style="display: none;">
+            
+            <!-- Pulsarlube Model & Volume -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <div class="input-group">
+                <label class="input-label" style="color: #2563EB;">Pulsarlube Model</label>
+                <select id="sel-pulsar-model" onchange="onPulsarModelChange()">
+                  <option value="M2" selected>Pulsarlube M2 (Elektro-mechanisch vet)</option>
+                  <option value="BT">Pulsarlube BT (Bluetooth BLE vet)</option>
+                  <option value="MSP">Pulsarlube MSP (Extern 24V vet)</option>
+                  <option value="PLC">Pulsarlube PLC (PLC-gestuurd vet)</option>
+                  <option value="OL500">Pulsarlube OL500 (Oliesmering 500 ml)</option>
+                  <option value="MSP Oil">Pulsarlube MSP Oil (Extern 24V olie)</option>
+                </select>
+              </div>
+
+              <div class="input-group">
+                <label class="input-label" style="color: #2563EB;">Volume</label>
+                <select id="sel-pulsar-vol" onchange="onPulsarVolumeChange()">
+                  <option value="60 ml">60 ml</option>
+                  <option value="125 ml" selected>125 ml</option>
+                  <option value="250 ml">250 ml</option>
+                  <option value="500 ml">500 ml</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Service Pack / Vettype in Balg -->
+            <div class="input-group">
+              <label class="input-label" style="color: #2563EB;" id="lbl-pulsar-grease">Servicepack (Vetbalg + Batterij)</label>
+              <select id="sel-pulsar-grease" onchange="onConfigChange()">
+                <!-- Populated dynamically -->
               </select>
             </div>
+
+            <!-- Looptijd / Instelling (1 - 12 maanden) -->
+            <div class="input-group">
+              <label class="input-label">Looptijd / Instelling (1 - 12 maanden)</label>
+              <select id="sel-pulsar-months" onchange="onConfigChange()">
+                <option value="1">1 maand</option>
+                <option value="2">2 maanden</option>
+                <option value="3">3 maanden</option>
+                <option value="4">4 maanden</option>
+                <option value="5">5 maanden</option>
+                <option value="6" selected>6 maanden</option>
+                <option value="7">7 maanden</option>
+                <option value="8">8 maanden</option>
+                <option value="9">9 maanden</option>
+                <option value="10">10 maanden</option>
+                <option value="11">11 maanden</option>
+                <option value="12">12 maanden</option>
+              </select>
+              <div id="pulsar-dispense-info" class="calc-info-box" style="background: #EFF6FF; border-color: #BFDBFE; color: #1E40AF;">
+                <!-- Dynamically updated -->
+              </div>
+            </div>
+
+            <!-- Pulsarlube Montagewijze -->
+            <div class="input-group">
+              <label class="input-label" style="color: #2563EB;">Montagewijze Pulsarlube</label>
+              <select id="sel-pulsar-mount" onchange="onPulsarMountChange()">
+                <option value="remote" selected>Montage op afstand (Verdeelblok 2-8 poorten of kit 1430)</option>
+                <option value="direct">Directe montage (Pulsarlube rechtstreeks op lager)</option>
+                <option value="brush">Borstelset (Ketting- of tandwielsmering met borstel)</option>
+              </select>
+            </div>
+
+            <!-- 1. OPTIE DIRECTE MONTAGE -->
+            <div id="pulsar-direct-box" style="display: none;">
+              <div class="input-group" style="margin-bottom: 0;">
+                <label class="input-label">Lager Schroefdraad (Aansluiting 1)</label>
+                <select id="sel-pulsar-direct-thread" onchange="onPulsarDirectThreadChange()">
+                  <option value="M6x1">M6x1</option>
+                  <option value="M8x1" selected>M8x1</option>
+                  <option value="M8x1.25">M8x1.25</option>
+                  <option value="M10x1">M10x1</option>
+                  <option value="M10x1.5">M10x1.5</option>
+                  <option value="G 1/8">G 1/8" BSPP</option>
+                  <option value="G 1/4">G 1/4" BSPP</option>
+                  <option value="1/8 NPT">1/8" NPT</option>
+                  <option value="1/4 NPT">1/4" NPT</option>
+                  <option value="custom">+ Andere maat invoeren...</option>
+                </select>
+                <div id="pulsar-direct-custom-thread-box" class="custom-input-box" style="display: none;">
+                  <label class="input-label" style="color: #92400E;">Afwijkende maat Lager:</label>
+                  <input type="text" id="custom-pulsar-direct-thread" placeholder="bv. M12x1.5 of 3/8 NPT..." oninput="onConfigChange()">
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. OPTIE BORSTELSET -->
+            <div id="pulsar-brush-box" style="display: none; background: #F8FAFC; border: 1px solid var(--border); border-radius: 12px; padding: 12px;">
+              <div class="input-group">
+                <label class="input-label">Type Smeerborstel (Inclusief terugslagklep art. 1467)</label>
+                <select id="sel-pulsar-brush-type" onchange="onConfigChange()">
+                  <option value="1413" selected>Borstelkit 2" plat nylon (1/8" NPT) - Art. 1413</option>
+                  <option value="1414">Borstelkit 1" rond nylon (1/8" NPT) - Art. 1414</option>
+                </select>
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div class="input-group" style="margin-bottom: 0;">
+                  <label class="input-label">Leidinglengte (max 4.0 m)</label>
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <input type="number" id="inp-pulsar-brush-len" min="0.1" max="4.0" step="0.1" value="1.0" oninput="onPulsarBrushLenInput()">
+                    <span style="font-weight: 700; color: #64748B;">m</span>
+                  </div>
+                </div>
+                <div class="input-group" style="margin-bottom: 0;">
+                  <label class="input-label">Leidingdiameter</label>
+                  <select id="sel-pulsar-brush-diam" onchange="onConfigChange()">
+                    <option value="6 mm" selected>6 mm (art. 1431)</option>
+                    <option value="8 mm">8 mm (art. 1706)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. OPTIE AFSTANDSMONTAGE (VERDEELBLOK OF 1 PUNT) -->
+            <div id="pulsar-remote-box">
+              <div class="input-group">
+                <label class="input-label" style="color: #2563EB;">Aantal Smeerpunten / Verdeelblok</label>
+                <select id="sel-pulsar-ports-count" onchange="onPulsarPortsCountChange()">
+                  <option value="1">1 smeerpunt (via 1250RC-1 kit, art. 1430)</option>
+                  <option value="2" selected>2 smeerpunten (HU Verdeelblok 2 poorten, art. 1480)</option>
+                  <option value="3">3 smeerpunten (HU Verdeelblok 3 poorten, art. 1481)</option>
+                  <option value="4">4 smeerpunten (HU Verdeelblok 4 poorten, art. 1482)</option>
+                  <option value="5">5 smeerpunten (HU Verdeelblok 5 poorten, art. 1483)</option>
+                  <option value="6">6 smeerpunten (HU Verdeelblok 6 poorten, art. 1484)</option>
+                  <option value="7">7 smeerpunten (HU Verdeelblok 7 poorten, art. 1485)</option>
+                  <option value="8">8 smeerpunten (HU Verdeelblok 8 poorten, art. 1486)</option>
+                </select>
+              </div>
+
+              <!-- Dynamische kaarten voor elk individueel smeerpunt -->
+              <div id="pulsar-ports-container" style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+                <!-- Wordt dynamisch gerenderd o.b.v. aantal poorten (1 t/m 8) -->
+              </div>
+            </div>
+
           </div>
 
         </div>
@@ -2364,9 +2679,11 @@
     const STORAGE_KEY = 'IF_HARDWARE_SELECTOR_DATA_V9';
     const DB_STORAGE_KEY = 'IF_CUSTOM_COUPLINGS_DB_V5';
     const ISPL_STORAGE_KEY = 'IF_CUSTOM_ISPL_DB_V6';
+    const PULSAR_STORAGE_KEY = 'IF_CUSTOM_PULSAR_DB_V1';
     let currentPhotoBase64 = null;
     let savedPoints = [];
     let activePointId = null;
+    let currentSystemMode = 'ispl'; // 'ispl' of 'pulsarlube'
 
     // Global Project / Client Information (standaard leeg)
     let generalInfo = {
@@ -2431,6 +2748,32 @@
       }
     }
 
+    function getActivePulsarDatabase() {
+      try {
+        const stored = localStorage.getItem(PULSAR_STORAGE_KEY);
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed) && parsed.length >= (typeof PULSARLUBE_CATALOG !== 'undefined' ? PULSARLUBE_CATALOG.length : 0)) {
+            return parsed;
+          }
+        }
+      } catch (e) {
+        console.error("Pulsar DB storage read error:", e);
+      }
+      const fresh = (typeof PULSARLUBE_CATALOG !== 'undefined') ? PULSARLUBE_CATALOG : [];
+      saveActivePulsarDatabase(fresh);
+      return fresh;
+    }
+
+    function saveActivePulsarDatabase(data) {
+      try {
+        localStorage.setItem(PULSAR_STORAGE_KEY, JSON.stringify(data));
+        PULSARLUBE_CATALOG = data;
+      } catch (e) {
+        console.error("Pulsar DB storage write error:", e);
+      }
+    }
+
     function loadSavedState() {
       try {
         const stored = localStorage.getItem(STORAGE_KEY) || 
@@ -2451,6 +2794,8 @@
           id: 1,
           machine: "",
           point: "",
+          quantityMultiplier: 1,
+          systemType: "ispl",
           material: "Messing vernikkeld",
           mountType: "direct",
           bearingThread: "M8x1",
@@ -2463,6 +2808,21 @@
           impulseConnect: false,
           greaseType: "Grease MP2/3",
           months: 6,
+          pulsarModel: "M2",
+          pulsarVol: "125 ml",
+          pulsarGrease: "Grease MP2/3",
+          pulsarMonths: 6,
+          pulsarMountType: "remote",
+          pulsarBrushType: "1413",
+          pulsarBrushTubeLen: 1.0,
+          pulsarBrushTubeDiam: "6 mm",
+          pulsarPortsCount: 2,
+          pulsarPorts: [
+            { length: 1.0, diam: "6 mm", thread: "M8x1", customThread: "" },
+            { length: 1.0, diam: "6 mm", thread: "M8x1", customThread: "" }
+          ],
+          pulsarDirectThread: "M8x1",
+          customPulsarDirectThread: "",
           photo: null,
           components: []
         }];
@@ -2971,6 +3331,306 @@
       }
     }
 
+    // ========================================================================
+    // PULSARLUBE & SYSTEEM SELECTIE EVENT HANDLERS
+    // ========================================================================
+    function switchSystemMode(sys, triggerUpdate = true) {
+      currentSystemMode = sys;
+      const isplBtn = document.getElementById('btn-sys-ispl');
+      const pulsarBtn = document.getElementById('btn-sys-pulsarlube');
+      const isplSection = document.getElementById('ispl-params-section');
+      const pulsarSection = document.getElementById('pulsarlube-params-section');
+      const dirLabel = document.getElementById('assembly-direction-label');
+
+      if (sys === 'pulsarlube') {
+        if (isplBtn) isplBtn.classList.remove('active');
+        if (pulsarBtn) pulsarBtn.classList.add('active');
+        if (isplSection) isplSection.style.display = 'none';
+        if (pulsarSection) pulsarSection.style.display = 'block';
+        if (dirLabel) dirLabel.innerText = 'Lager ➔ Pulsarlube';
+        populatePulsarVolumes();
+      } else {
+        if (isplBtn) isplBtn.classList.add('active');
+        if (pulsarBtn) pulsarBtn.classList.remove('active');
+        if (isplSection) isplSection.style.display = 'block';
+        if (pulsarSection) pulsarSection.style.display = 'none';
+        if (dirLabel) dirLabel.innerText = 'Lager ➔ ISPL';
+      }
+
+      if (triggerUpdate) {
+        onConfigChange();
+      }
+    }
+
+    function onQuantityChange() {
+      const qtyInput = document.getElementById('cfg-quantity');
+      let qty = parseInt(qtyInput ? qtyInput.value : 1) || 1;
+      if (qty < 1) qty = 1;
+      if (qtyInput) qtyInput.value = qty;
+      const badge = document.getElementById('cfg-qty-badge');
+      if (badge) badge.innerText = `${qty}x actief`;
+      autoSaveActivePoint();
+    }
+
+    function duplicatePoint(id) {
+      const source = savedPoints.find(p => p.id == id);
+      if (!source) return;
+      const newId = Date.now();
+      const clone = JSON.parse(JSON.stringify(source));
+      clone.id = newId;
+      clone.point = clone.point ? `${clone.point} (Kopie)` : 'Kopie';
+      const idx = savedPoints.findIndex(p => p.id == id);
+      savedPoints.splice(idx + 1, 0, clone);
+      activePointId = newId;
+      saveCurrentState();
+      init();
+      loadPointIntoForm(clone);
+      switchTab('config');
+    }
+
+    function onPulsarModelChange() {
+      populatePulsarVolumes();
+      onPulsarVolumeChange();
+    }
+
+    function populatePulsarVolumes(selectedVol = null) {
+      const model = document.getElementById('sel-pulsar-model').value;
+      const selVol = document.getElementById('sel-pulsar-vol');
+      if (!selVol) return;
+
+      let options = [];
+      if (model === 'M2' || model === 'MSP') {
+        options = ['60 ml', '125 ml', '250 ml', '500 ml'];
+      } else if (model === 'BT' || model === 'PLC') {
+        options = ['60 ml', '120 ml', '240 ml', '500 ml'];
+      } else if (model === 'OL500' || model === 'MSP Oil') {
+        options = ['500 ml'];
+      } else {
+        options = ['125 ml', '250 ml', '500 ml'];
+      }
+
+      selVol.innerHTML = options.map(v => `<option value="${v}" ${v === selectedVol ? 'selected' : ''}>${v}</option>`).join('');
+      if (!selVol.value && options.length > 0) selVol.value = options[0];
+      populatePulsarGreases();
+    }
+
+    function populatePulsarGreases(selectedGrease = null) {
+      const model = document.getElementById('sel-pulsar-model').value;
+      const vol = document.getElementById('sel-pulsar-vol').value;
+      const selGrease = document.getElementById('sel-pulsar-grease');
+      const lblGrease = document.getElementById('lbl-pulsar-grease');
+      if (!selGrease) return;
+
+      const isOil = (model === 'OL500' || model === 'MSP Oil');
+      if (lblGrease) {
+        lblGrease.innerText = isOil ? 'Smeermiddel / Olie Navulling' : 'Servicepack (Vetbalg + Batterij)';
+      }
+
+      if (isOil) {
+        selGrease.innerHTML = '<option value="Olie (zelf af te vullen)">Olie reservoir (zelf af te vullen via navuldop)</option>';
+        selGrease.value = 'Olie (zelf af te vullen)';
+      } else {
+        const pulsarDb = getActivePulsarDatabase();
+        let targetVol = vol;
+        if (vol === '120 ml') targetVol = '125 ml';
+        if (vol === '240 ml') targetVol = '250 ml';
+
+        const packs = pulsarDb.filter(x => x.cat === 'Service Packs (Vetbalg + Batterij)' && x.volume === targetVol);
+        if (packs.length > 0) {
+          selGrease.innerHTML = packs.map(x => `
+            <option value="${x.grease}" ${x.grease === selectedGrease ? 'selected' : ''}>
+              ${x.grease} (Art. ${x.code})
+            </option>
+          `).join('');
+        } else {
+          selGrease.innerHTML = `<option value="Grease MP2/3">Grease MP2/3 (Standaard)</option>`;
+        }
+      }
+
+      if (!selGrease.value && selGrease.options.length > 0) {
+        selGrease.selectedIndex = 0;
+      }
+    }
+
+    function onPulsarVolumeChange() {
+      populatePulsarGreases();
+      onConfigChange();
+    }
+
+    function onPulsarMountChange() {
+      const mount = document.getElementById('sel-pulsar-mount').value;
+      const directBox = document.getElementById('pulsar-direct-box');
+      const brushBox = document.getElementById('pulsar-brush-box');
+      const remoteBox = document.getElementById('pulsar-remote-box');
+
+      if (directBox) directBox.style.display = (mount === 'direct') ? 'block' : 'none';
+      if (brushBox) brushBox.style.display = (mount === 'brush') ? 'block' : 'none';
+      if (remoteBox) remoteBox.style.display = (mount === 'remote') ? 'block' : 'none';
+
+      if (mount === 'remote') {
+        renderPulsarPortInputs();
+      }
+      onConfigChange();
+    }
+
+    function onPulsarPortsCountChange() {
+      renderPulsarPortInputs();
+      onConfigChange();
+    }
+
+    function renderPulsarPortInputs() {
+      const container = document.getElementById('pulsar-ports-container');
+      if (!container) return;
+
+      const count = parseInt(document.getElementById('sel-pulsar-ports-count').value) || 1;
+      const model = document.getElementById('sel-pulsar-model').value;
+      const isOil = (model === 'OL500' || model === 'MSP Oil');
+
+      const activeP = savedPoints.find(p => p.id == activePointId);
+      const currentPorts = (activeP && Array.isArray(activeP.pulsarPorts)) ? activeP.pulsarPorts : [];
+
+      let html = '';
+      for (let i = 1; i <= count; i++) {
+        const existing = currentPorts[i - 1] || { length: 1.0, diam: isOil ? '4 mm' : '6 mm', thread: 'M8x1', customThread: '' };
+        const lenVal = Math.min(4.0, Math.max(0.1, parseFloat(existing.length) || 1.0));
+        const isCustom = (existing.thread === 'custom');
+
+        const diamOptions = isOil ? `
+          <option value="4 mm" ${existing.diam === '4 mm' ? 'selected' : ''}>4 mm (art. 1475)</option>
+          <option value="6 mm" ${existing.diam === '6 mm' ? 'selected' : ''}>6 mm (art. 1431)</option>
+        ` : `
+          <option value="6 mm" ${existing.diam === '6 mm' ? 'selected' : ''}>6 mm (art. 1431)</option>
+          <option value="8 mm" ${existing.diam === '8 mm' ? 'selected' : ''}>8 mm (art. 1706)</option>
+        `;
+
+        const standardThreads = ['M6x1', 'M8x1', 'M8x1.25', 'M10x1', 'M10x1.5', 'G 1/8', 'G 1/4', '1/8 NPT', '1/4 NPT'];
+        const threadSelectHtml = standardThreads.map(t => 
+          `<option value="${t}" ${existing.thread === t ? 'selected' : ''}>${t}</option>`
+        ).join('') + `<option value="custom" ${isCustom ? 'selected' : ''}>+ Afwijkend...</option>`;
+
+        html += `
+          <div class="pulsar-port-card" data-port="${i}">
+            <div class="pulsar-port-header">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="pulsar-port-badge">${count > 1 ? `Poort ${i}` : 'Smeerpunt 1'}</span>
+                <span style="font-weight: 800; font-size: 12.5px; color: #1E293B;">Aansluiting ${count > 1 ? `smeerpunt ${i}` : 'lager'}</span>
+              </div>
+              <span style="font-size: 11px; color: #64748B;">Max. 4.0 m leiding</span>
+            </div>
+            <div class="pulsar-port-grid">
+              <div>
+                <label class="input-label" style="font-size: 10.5px; margin-bottom: 4px;">Leidinglengte</label>
+                <div style="display: flex; align-items: center; gap: 4px;">
+                  <input type="number" class="pulsar-port-len" min="0.1" max="4.0" step="0.1" value="${lenVal}" oninput="onPortParamChange()">
+                  <span style="font-size: 12px; font-weight: 800; color: #64748B;">m</span>
+                </div>
+              </div>
+              <div>
+                <label class="input-label" style="font-size: 10.5px; margin-bottom: 4px;">Leidingdiameter</label>
+                <select class="pulsar-port-diam" onchange="onPortParamChange()">
+                  ${diamOptions}
+                </select>
+              </div>
+              <div>
+                <label class="input-label" style="font-size: 10.5px; margin-bottom: 4px;">Lager Schroefdraad</label>
+                <select class="pulsar-port-thread" onchange="onPortThreadChange(${i})">
+                  ${threadSelectHtml}
+                </select>
+              </div>
+            </div>
+            <div id="port-${i}-custom-box" class="custom-input-box" style="display: ${isCustom ? 'block' : 'none'}; margin-top: 8px;">
+              <label class="input-label" style="color: #92400E; font-size: 10.5px;">Afwijkende lagermaat Poort ${i}:</label>
+              <input type="text" class="pulsar-port-custom-thread" placeholder="bv. M12x1.5 of 3/8 NPT" value="${existing.customThread || ''}" oninput="onPortParamChange()">
+            </div>
+          </div>
+        `;
+      }
+
+      container.innerHTML = html;
+    }
+
+    function onPortThreadChange(portIdx) {
+      const card = document.querySelector(`.pulsar-port-card[data-port="${portIdx}"]`);
+      if (!card) return;
+      const threadSel = card.querySelector('.pulsar-port-thread');
+      const customBox = document.getElementById(`port-${portIdx}-custom-box`);
+      if (customBox) {
+        customBox.style.display = (threadSel && threadSel.value === 'custom') ? 'block' : 'none';
+      }
+      onPortParamChange();
+    }
+
+    function onPortParamChange() {
+      const cards = document.querySelectorAll('.pulsar-port-card');
+      const activeP = savedPoints.find(p => p.id == activePointId);
+      const portsData = [];
+
+      cards.forEach(card => {
+        const lenInput = card.querySelector('.pulsar-port-len');
+        let length = parseFloat(lenInput ? lenInput.value : 1.0) || 1.0;
+        if (length > 4.0) {
+          length = 4.0;
+          if (lenInput) lenInput.value = 4.0;
+        }
+        if (length < 0.1) length = 0.1;
+
+        const diamSel = card.querySelector('.pulsar-port-diam');
+        const diam = diamSel ? diamSel.value : '6 mm';
+
+        const threadSel = card.querySelector('.pulsar-port-thread');
+        const thread = threadSel ? threadSel.value : 'M8x1';
+
+        const customInput = card.querySelector('.pulsar-port-custom-thread');
+        const customThread = customInput ? customInput.value.trim() : '';
+
+        portsData.push({ length, diam, thread, customThread });
+      });
+
+      if (activeP) {
+        activeP.pulsarPorts = portsData;
+      }
+      onConfigChange();
+    }
+
+    function onPulsarDirectThreadChange() {
+      const val = document.getElementById('sel-pulsar-direct-thread').value;
+      const customBox = document.getElementById('pulsar-direct-custom-thread-box');
+      if (customBox) customBox.style.display = (val === 'custom') ? 'block' : 'none';
+      onConfigChange();
+    }
+
+    function onPulsarBrushLenInput() {
+      const inp = document.getElementById('inp-pulsar-brush-len');
+      if (inp) {
+        let val = parseFloat(inp.value) || 1.0;
+        if (val > 4.0) { val = 4.0; inp.value = 4.0; }
+        if (val < 0.1) val = 0.1;
+      }
+      onConfigChange();
+    }
+
+    function updatePulsarDispenseCalculator(volStr, months, portsCount) {
+      const infoEl = document.getElementById('pulsar-dispense-info');
+      if (!infoEl) return;
+
+      const volMl = parseInt(volStr) || 125;
+      const totalDays = (months * 30.5);
+      const totalDailyCc = (volMl / totalDays);
+      const ports = Math.max(1, portsCount || 1);
+      const perPortDailyCc = (totalDailyCc / ports).toFixed(2);
+      const perPortWeeklyCc = (totalDailyCc * 7 / ports).toFixed(1);
+
+      if (ports > 1) {
+        infoEl.innerHTML = `
+          <span>⏱️ <strong>${months} maanden:</strong> Totaal <strong>${totalDailyCc.toFixed(2)} ml/dag</strong> (${(totalDailyCc*7).toFixed(1)} ml/week) ➔ <strong>${perPortDailyCc} ml/dag per poort</strong> (${perPortWeeklyCc} ml/week verdeeld over ${ports} poorten).</span>
+        `;
+      } else {
+        infoEl.innerHTML = `
+          <span>⏱️ <strong>${months} maanden:</strong> afgifte ca. <strong>${totalDailyCc.toFixed(2)} ml/dag</strong> (${(totalDailyCc*7).toFixed(1)} ml/week) bij ${volMl} ml unit.</span>
+        `;
+      }
+    }
+
     function onMountTypeChange() {
       const mountType = document.getElementById('sel-mount-type').value;
       const isRemote = (mountType === 'remote');
@@ -3017,52 +3677,117 @@
 
     function onConfigChange() {
       const material = document.getElementById('sel-material').value;
-      const mountType = document.getElementById('sel-mount-type').value;
-
-      let bearingThread = document.getElementById('sel-bearing-thread').value;
-      if (bearingThread === 'custom') {
-        bearingThread = document.getElementById('custom-bearing-thread').value.trim() || 'Afwijkend';
-      }
-
-      const angle = document.getElementById('sel-angle').value;
-      let extension = document.getElementById('sel-extension').value;
-      if (extension === 'custom') {
-        extension = document.getElementById('custom-ext-val').value.trim() || 'Afwijkend';
-      }
-
-      const remoteFitting = document.getElementById('sel-remote-fitting').value;
-      const lubricatorVol = document.getElementById('sel-lubricator-vol').value;
-      const impulseConnectEl = document.getElementById('chk-impulse-connect');
-      const impulseConnect = impulseConnectEl ? impulseConnectEl.checked : false;
-      const greaseType = document.getElementById('sel-grease-type').value;
-      const months = parseInt(document.getElementById('sel-months').value) || 6;
-
-      // Update labels
       const bMat = document.getElementById('badge-mat-label');
       if (bMat) bMat.innerText = material;
-      const bIspl = document.getElementById('badge-ispl-label');
-      if (bIspl) bIspl.innerText = `ISPL ${lubricatorVol}${impulseConnect ? ' + Impulse Connect' : ''} + ${greaseType} (${months} mnd)`;
-      const drawLabel = document.getElementById('drawing-mode-label');
-      if (drawLabel) {
-        drawLabel.innerText = (mountType === 'remote') ? 
-          `Afstandsmontage (Pulsarlube kit art. 1702)${impulseConnect ? ' + Impulse Connect' : ''}` : 
-          `Directe montage${impulseConnect ? ' + Impulse Connect' : ''}`;
+
+      let cfg = {};
+
+      if (currentSystemMode === 'pulsarlube') {
+        const pulsarModel = document.getElementById('sel-pulsar-model').value;
+        const pulsarVol = document.getElementById('sel-pulsar-vol').value;
+        const pulsarGrease = document.getElementById('sel-pulsar-grease').value;
+        const months = parseInt(document.getElementById('sel-pulsar-months').value) || 6;
+        const pulsarMount = document.getElementById('sel-pulsar-mount').value;
+
+        let pulsarDirectThread = document.getElementById('sel-pulsar-direct-thread').value;
+        const customDirectThread = document.getElementById('custom-pulsar-direct-thread').value.trim();
+        if (pulsarDirectThread === 'custom') pulsarDirectThread = customDirectThread || 'Afwijkend';
+
+        const pulsarBrushType = document.getElementById('sel-pulsar-brush-type').value;
+        let brushLen = parseFloat(document.getElementById('inp-pulsar-brush-len').value) || 1.0;
+        if (brushLen > 4.0) brushLen = 4.0;
+        const pulsarBrushTubeDiam = document.getElementById('sel-pulsar-brush-diam').value;
+
+        const portsCount = parseInt(document.getElementById('sel-pulsar-ports-count').value) || 1;
+
+        // Collect ports
+        const activeP = savedPoints.find(p => p.id == activePointId);
+        const ports = (activeP && Array.isArray(activeP.pulsarPorts)) ? activeP.pulsarPorts.slice(0, portsCount) : [];
+        while (ports.length < portsCount) {
+          ports.push({ length: 1.0, diam: '6 mm', thread: 'M8x1', customThread: '' });
+        }
+
+        cfg = {
+          systemType: 'pulsarlube',
+          material,
+          pulsarModel,
+          pulsarVol,
+          pulsarGrease,
+          months,
+          pulsarMountType: pulsarMount,
+          pulsarDirectThread,
+          pulsarBrushType,
+          pulsarBrushTubeLen: brushLen,
+          pulsarBrushTubeDiam,
+          pulsarPortsCount: portsCount,
+          pulsarPorts: ports
+        };
+
+        const bIspl = document.getElementById('badge-ispl-label');
+        if (bIspl) bIspl.innerText = `Pulsarlube ${pulsarModel} (${pulsarVol}) + ${pulsarGrease} (${months} mnd)`;
+
+        const drawLabel = document.getElementById('drawing-mode-label');
+        if (drawLabel) {
+          if (pulsarMount === 'direct') drawLabel.innerText = 'Pulsarlube Directe montage';
+          else if (pulsarMount === 'brush') drawLabel.innerText = `Pulsarlube Borstelset (${pulsarBrushType === '1413' ? '2" Plat' : '1" Rond'})`;
+          else drawLabel.innerText = `Pulsarlube Afstandsmontage (${portsCount} ${portsCount > 1 ? 'poorten' : 'poort'})`;
+        }
+
+        const assBadge = document.getElementById('assembly-badge');
+        if (assBadge) {
+          assBadge.innerText = `${material} | Pulsarlube ${pulsarModel} (${pulsarVol}) ➔ ${pulsarMount}`;
+        }
+
+        updatePulsarDispenseCalculator(pulsarVol, months, portsCount);
+
+      } else {
+        // ISPL Systeem
+        const mountType = document.getElementById('sel-mount-type').value;
+
+        let bearingThread = document.getElementById('sel-bearing-thread').value;
+        if (bearingThread === 'custom') {
+          bearingThread = document.getElementById('custom-bearing-thread').value.trim() || 'Afwijkend';
+        }
+
+        const angle = document.getElementById('sel-angle').value;
+        let extension = document.getElementById('sel-extension').value;
+        if (extension === 'custom') {
+          extension = document.getElementById('custom-ext-val').value.trim() || 'Afwijkend';
+        }
+
+        const remoteFitting = document.getElementById('sel-remote-fitting').value;
+        const lubricatorVol = document.getElementById('sel-lubricator-vol').value;
+        const impulseConnectEl = document.getElementById('chk-impulse-connect');
+        const impulseConnect = impulseConnectEl ? impulseConnectEl.checked : false;
+        const greaseType = document.getElementById('sel-grease-type').value;
+        const months = parseInt(document.getElementById('sel-months').value) || 6;
+
+        cfg = {
+          systemType: 'ispl',
+          material, mountType, bearingThread, angle, extension, remoteFitting, lubricatorVol, impulseConnect, greaseType, months
+        };
+
+        const bIspl = document.getElementById('badge-ispl-label');
+        if (bIspl) bIspl.innerText = `ISPL ${lubricatorVol}${impulseConnect ? ' + Impulse Connect' : ''} + ${greaseType} (${months} mnd)`;
+
+        const drawLabel = document.getElementById('drawing-mode-label');
+        if (drawLabel) {
+          drawLabel.innerText = (mountType === 'remote') ? 
+            `Afstandsmontage (Pulsarlube kit art. 1702)${impulseConnect ? ' + Impulse Connect' : ''}` : 
+            `Directe montage${impulseConnect ? ' + Impulse Connect' : ''}`;
+        }
+
+        const assBadge = document.getElementById('assembly-badge');
+        if (assBadge) {
+          assBadge.innerText = `${material} | Lager ${bearingThread} ➔ ${impulseConnect ? 'Impulse Connect ➔ ' : ''}ISPL ${lubricatorVol}`;
+        }
+
+        updateDispenseCalculator(lubricatorVol, months);
       }
-      const assBadge = document.getElementById('assembly-badge');
-      if (assBadge) {
-        assBadge.innerText = `${material} | Lager ${bearingThread} ➔ ${impulseConnect ? 'Impulse Connect ➔ ' : ''}ISPL ${lubricatorVol}`;
-      }
 
-      updateDispenseCalculator(lubricatorVol, months);
-
-      const components = resolveComponents({
-        material, mountType, bearingThread, angle, extension, remoteFitting, lubricatorVol, impulseConnect, greaseType, months
-      });
-
+      const components = resolveComponents(cfg);
       renderComponentsList(components);
-      render3DExplodedSVG({
-        material, mountType, bearingThread, angle, extension, remoteFitting, lubricatorVol, impulseConnect, greaseType, months
-      });
+      render3DExplodedSVG(cfg);
       autoSaveActivePoint();
     }
 
@@ -3090,6 +3815,328 @@
       const comps = [];
       const mat = cfg.material;
 
+      // ====================================================================
+      // A. PULSARLUBE SYSTEEM RESOLVER
+      // ====================================================================
+      if (cfg.systemType === 'pulsarlube') {
+        const pulsarDb = getActivePulsarDatabase();
+        const isOil = (cfg.pulsarModel === 'OL500' || cfg.pulsarModel === 'MSP Oil');
+
+        // 1. Smeertoestel Dispenser Unit
+        let dispenserCode = '1423';
+        let dispenserName = `Pulsarlube ${cfg.pulsarModel} (${cfg.pulsarVol})`;
+        let dispenserDesc = `Automatische elektro-mechanische smeerunit ${cfg.pulsarModel} (${cfg.pulsarVol})`;
+
+        const matchDisp = pulsarDb.find(item => 
+          item.cat.includes('Dispensers') && 
+          item.name.toLowerCase().includes(cfg.pulsarModel.toLowerCase()) && 
+          (item.volume === cfg.pulsarVol || item.name.includes(cfg.pulsarVol))
+        );
+
+        if (matchDisp) {
+          dispenserCode = matchDisp.code;
+          dispenserName = matchDisp.name;
+          dispenserDesc = matchDisp.desc || dispenserName;
+        }
+
+        comps.push({
+          code: dispenserCode,
+          name: dispenserName,
+          a1: 'Herbruikbaar elektro-mechanisch',
+          a2: 'G 3/8" M / 1/8" NPT',
+          mat: isOil ? 'Kunststof / Aluminium' : 'Kunststof / RVS (IP65)',
+          desc: `${dispenserDesc}, ingesteld op ${cfg.months} maanden (art. ${dispenserCode})`,
+          qty: 1
+        });
+
+        // 2. Service Pack (Vetbalg + Batterij) bij vet-smeertoestellen
+        if (!isOil) {
+          let packCode = '4201';
+          let packName = `Servicepack + ${cfg.pulsarGrease} (${cfg.pulsarVol})`;
+          let targetVol = cfg.pulsarVol;
+          if (targetVol === '120 ml') targetVol = '125 ml';
+          if (targetVol === '240 ml') targetVol = '250 ml';
+
+          const matchPack = pulsarDb.find(item => 
+            item.cat === 'Service Packs (Vetbalg + Batterij)' && 
+            item.grease === cfg.pulsarGrease && 
+            item.volume === targetVol
+          );
+
+          if (matchPack) {
+            packCode = matchPack.code;
+            packName = matchPack.name;
+          }
+
+          comps.push({
+            code: packCode,
+            name: packName,
+            a1: `Inhoud: ${cfg.pulsarVol}`,
+            a2: `Smeermiddel: ${cfg.pulsarGrease}`,
+            mat: 'Mylar balg / Lithium batterij',
+            desc: `Pulsarlube servicepack inclusief voorgevulde vetbalg met ${cfg.pulsarGrease} en OEM lithium batterij (art. ${packCode})`,
+            qty: 1
+          });
+        }
+
+        // 3. Montagewijze Specifiek
+        if (cfg.pulsarMountType === 'direct') {
+          // Directe montage op lager via schroefdraadadapter
+          const bThread = cfg.pulsarDirectThread || 'M8x1';
+          if (bThread !== 'G 3/8' && bThread !== '1/8 NPT') {
+            const matchAdapt = findInCatalog(item => 
+              item.name.includes("Verloopstuk") && 
+              (item.name.includes(bThread + " M") || item.name.includes(bThread + " ")) && 
+              (item.name.includes('G 1/4" F') || item.name.includes('G 1/8" F') || item.name.includes('G 3/8" F')) &&
+              item.mat === mat
+            );
+
+            if (matchAdapt) {
+              comps.push({
+                code: matchAdapt.default_code || 'aan te maken',
+                name: matchAdapt.name,
+                a1: matchAdapt.a1,
+                a2: matchAdapt.a2,
+                mat: mat,
+                desc: matchAdapt.desc,
+                qty: 1
+              });
+            } else {
+              comps.push({
+                code: 'aan te maken',
+                name: `Verloopstuk ${bThread} M x 1/8" NPT F (${mat})`,
+                a1: `${bThread} M (buitendraad)`,
+                a2: '1/8" NPT F (binnendraad)',
+                mat: mat,
+                desc: `Afwijkend verloopstuk ${bThread} naar Pulsarlube 1/8" NPT F. Dient in Odoo te worden aangemaakt.`,
+                qty: 1
+              });
+            }
+          }
+        } else if (cfg.pulsarMountType === 'brush') {
+          // Borstelset
+          const brushCode = cfg.pulsarBrushType || '1413';
+          const isRound = (brushCode === '1414');
+          comps.push({
+            code: brushCode,
+            name: isRound ? 'Borstelkit 1" rond nylon (1/8" NPT)' : 'Borstelkit 2" plat nylon (1/8" NPT)',
+            a1: '1/8" NPT F aansluiting',
+            a2: isRound ? 'Ronde borstelkop 1"' : 'Platte borstelkop 2"',
+            mat: 'Nylon borstelharen / RVS behuizing',
+            desc: `Pulsarlube borstelapplicator voor ketting- of tandwielsmering (art. ${brushCode})`,
+            qty: 1
+          });
+
+          // Terugslagklep art. 1467
+          comps.push({
+            code: '1467',
+            name: 'Terugslagklep (Check valve) 1/8" NPT M x 1/8" NPT F',
+            a1: '1/8" NPT M',
+            a2: '1/8" NPT F',
+            mat: 'Messing vernikkeld / RVS',
+            desc: 'Pulsarlube terugslagventiel tegen leeglopen van leiding (art. 1467)',
+            qty: 1
+          });
+
+          // Leiding
+          const tubeLen = Math.min(4.0, Math.max(0.1, cfg.pulsarBrushTubeLen || 1.0));
+          const tubeM = Math.ceil(tubeLen);
+          const diam = cfg.pulsarBrushTubeDiam || (isOil ? '4 mm' : '6 mm');
+          const tubeCode = (diam === '4 mm') ? '1475' : (diam === '8 mm' ? '1706' : '1431');
+          comps.push({
+            code: tubeCode,
+            name: `Nylon tube ${diam} (afgemeten ${tubeLen.toFixed(1)} m)`,
+            a1: `${diam} buitendiameter`,
+            a2: `Afgemeten lengte: ${tubeLen.toFixed(1)} m`,
+            mat: 'Polyamide (Nylon)',
+            desc: `Flexibele hogedruk nylon smeerleiding ${diam} voor Pulsarlube (art. ${tubeCode})`,
+            qty: tubeM
+          });
+
+          // Insteekkoppelingen (2 stuks)
+          comps.push({
+            code: '1453',
+            name: `Insteekkoppeling Pulsarlube 1/8" NPT M x ${diam} leiding`,
+            a1: '1/8" NPT M',
+            a2: `Push-in ${diam}`,
+            mat: mat,
+            desc: `Rechte insteekkoppeling voor Pulsarlube borstelaansluiting (art. 1453)`,
+            qty: 2
+          });
+
+        } else {
+          // Remote montage: 1 poort (kit 1430) of 2-8 poorten via HU Verdeelblok
+          const count = parseInt(cfg.pulsarPortsCount) || 1;
+
+          if (count === 1) {
+            comps.push({
+              code: '1430',
+              name: 'Installatiekit 1250RC-1 voor montage op afstand (1 smeerpunt)',
+              a1: 'Montagebeugel G 3/8" / 1/8" NPT',
+              a2: 'Inclusief leiding, koppelingen en montagebevestiging',
+              mat: 'Verzinkt staal / Polyamide',
+              desc: 'Complete Pulsarlube montageset 1250RC-1 voor 1 afzonderlijk smeerpunt (art. 1430)',
+              qty: 1
+            });
+
+            const port1 = (cfg.pulsarPorts && cfg.pulsarPorts[0]) ? cfg.pulsarPorts[0] : { thread: 'M8x1', customThread: '' };
+            let bThread = (port1.thread === 'custom') ? (port1.customThread || 'Afwijkend') : port1.thread;
+            if (bThread !== 'G 1/8' && bThread !== '1/8 NPT') {
+              const matchAdapt = findInCatalog(item => 
+                item.name.includes("Verloopstuk") && 
+                (item.name.includes(bThread + " M") || item.name.includes(bThread + " ")) && 
+                (item.name.includes('G 1/8" F') || item.name.includes('G 1/4" F')) &&
+                item.mat === mat
+              );
+              if (matchAdapt) {
+                comps.push({
+                  code: matchAdapt.default_code || 'aan te maken',
+                  name: matchAdapt.name,
+                  a1: matchAdapt.a1,
+                  a2: matchAdapt.a2,
+                  mat: mat,
+                  desc: matchAdapt.desc,
+                  qty: 1
+                });
+              } else {
+                comps.push({
+                  code: 'aan te maken',
+                  name: `Verloopstuk ${bThread} M x G 1/8" F (${mat})`,
+                  a1: `${bThread} M (buitendraad)`,
+                  a2: 'G 1/8" F (binnendraad)',
+                  mat: mat,
+                  desc: `Afwijkende lageraansluiting ${bThread} naar Pulsarlube kit aansluiting (${mat}).`,
+                  qty: 1
+                });
+              }
+            }
+          } else {
+            // Multi-point via HU Type Divider Block (2..8 poorten)
+            const blockCode = String(1480 + (count - 2));
+            comps.push({
+              code: blockCode,
+              name: `HU Type Divider Block ${count} poorten`,
+              a1: '1/8" NPT F (hoofdtoevoer)',
+              a2: `${count}x 1/8" NPT F (uitgangen)`,
+              mat: 'Geanodiseerd aluminium / Messing',
+              desc: `Progressief HU-type verdeelblok met ${count} gedoseerde uitgangspoorten (art. ${blockCode})`,
+              qty: 1
+            });
+
+            comps.push({
+              code: '1453',
+              name: 'Insteekkoppeling Pulsarlube 1/8" NPT M x 6 mm leiding (hoofdtoevoer)',
+              a1: '1/8" NPT M',
+              a2: 'Push-in 6 mm',
+              mat: mat,
+              desc: 'Koppeling voor hoofdtoevoerleiding van smeerunit naar verdeelblok (art. 1453)',
+              qty: 2
+            });
+
+            let sum4 = 0, sum6 = 0, sum8 = 0;
+            const ports = (cfg.pulsarPorts && cfg.pulsarPorts.length) ? cfg.pulsarPorts : [];
+
+            for (let i = 0; i < count; i++) {
+              const p = ports[i] || { length: 1.0, diam: isOil ? '4 mm' : '6 mm', thread: 'M8x1', customThread: '' };
+              const len = Math.min(4.0, Math.max(0.1, parseFloat(p.length) || 1.0));
+              if (p.diam === '4 mm') sum4 += len;
+              else if (p.diam === '8 mm') sum8 += len;
+              else sum6 += len;
+
+              let bThread = (p.thread === 'custom') ? (p.customThread || 'Afwijkend') : p.thread;
+              if (bThread !== 'G 1/8' && bThread !== '1/8 NPT') {
+                const matchAdapt = findInCatalog(item => 
+                  item.name.includes("Verloopstuk") && 
+                  (item.name.includes(bThread + " M") || item.name.includes(bThread + " ")) && 
+                  item.name.includes('G 1/8" F') &&
+                  item.mat === mat
+                );
+                if (matchAdapt) {
+                  comps.push({
+                    code: matchAdapt.default_code || 'aan te maken',
+                    name: matchAdapt.name,
+                    a1: matchAdapt.a1,
+                    a2: matchAdapt.a2,
+                    mat: mat,
+                    desc: matchAdapt.desc,
+                    qty: 1
+                  });
+                } else {
+                  comps.push({
+                    code: 'aan te maken',
+                    name: `Verloopstuk ${bThread} M x G 1/8" F (${mat})`,
+                    a1: `${bThread} M (buitendraad)`,
+                    a2: 'G 1/8" F (binnendraad)',
+                    mat: mat,
+                    desc: `Afwijkend verloopstuk voor poort ${i+1} (${bThread} naar G 1/8").`,
+                    qty: 1
+                  });
+                }
+              }
+            }
+
+            if (sum4 > 0) {
+              comps.push({
+                code: '1475',
+                name: `Nylon tube 4 mm (totaal ${sum4.toFixed(1)} m voor ${count} poorten)`,
+                a1: '4 mm OD',
+                a2: `Lengte: ${sum4.toFixed(1)} m`,
+                mat: 'Polyamide (Nylon)',
+                desc: `Pulsarlube leiding 4 mm (art. 1475)`,
+                qty: Math.ceil(sum4)
+              });
+            }
+            if (sum6 > 0) {
+              comps.push({
+                code: '1431',
+                name: `Nylon tube 6 mm (totaal ${sum6.toFixed(1)} m voor ${count} poorten)`,
+                a1: '6 mm OD',
+                a2: `Lengte: ${sum6.toFixed(1)} m`,
+                mat: 'Polyamide (Nylon)',
+                desc: `Pulsarlube leiding 6 mm (art. 1431)`,
+                qty: Math.ceil(sum6)
+              });
+            }
+            if (sum8 > 0) {
+              comps.push({
+                code: '1706',
+                name: `Nylon tube 8 mm (totaal ${sum8.toFixed(1)} m voor ${count} poorten)`,
+                a1: '8 mm OD',
+                a2: `Lengte: ${sum8.toFixed(1)} m`,
+                mat: 'Polyamide (Nylon)',
+                desc: `Pulsarlube leiding 8 mm (art. 1706)`,
+                qty: Math.ceil(sum8)
+              });
+            }
+
+            comps.push({
+              code: '1453',
+              name: `Insteekkoppelingen verdeelblok uitgangen 1/8" NPT M (${count} stuks)`,
+              a1: '1/8" NPT M',
+              a2: 'Push-in leiding',
+              mat: mat,
+              desc: `Rechte insteekkoppelingen voor ${count} uitgangen van verdeelblok (art. 1453)`,
+              qty: count
+            });
+
+            comps.push({
+              code: '1099.1000',
+              name: `Rechte insteekkoppelingen lagerzijde G 1/8" M (${count} stuks)`,
+              a1: 'Push-in leiding',
+              a2: 'G 1/8" M (buitendraad)',
+              mat: mat,
+              desc: `Insteekkoppelingen aan lagerzijde voor ${count} smeerpunten (${mat})`,
+              qty: count
+            });
+          }
+        }
+
+        return comps;
+      }
+
+      // ====================================================================
+      // B. BESTAANDE ISPL SYSTEEM RESOLVER
+      // ====================================================================
       // 1. ISPL Unit gekoppeld aan exact artikelnummer uit ISPL database
       let isplCode = 'ISPL';
       let isplName = `Interflon Single Point Lubricator ${cfg.lubricatorVol} + ${cfg.greaseType}`;
@@ -3236,7 +4283,7 @@
 
         if (cfg.angle === '90') {
           const match90 = findInCatalog(item => 
-            item.name.includes("Kniestuk 90° G 1/4\"") &&
+            item.name.includes("Kniestuk 90° G 1/4"") && 
             item.mat === mat
           );
           comps.push({
@@ -3250,7 +4297,7 @@
           });
         } else if (cfg.angle === '45') {
           const match45 = findInCatalog(item => 
-            item.name.includes("Kniestuk 45° G 1/4\"") &&
+            item.name.includes("Kniestuk 45° G 1/4"") && 
             item.mat === mat
           );
           comps.push({
@@ -3266,7 +4313,7 @@
 
         if (cfg.extension !== '0') {
           const matchExt = findInCatalog(item => 
-            item.name.includes("Verlengstuk G 1/4\"") && 
+            item.name.includes("Verlengstuk G 1/4"") && 
             item.name.includes(`L=${cfg.extension}mm`) &&
             item.mat === mat
           );
@@ -3322,7 +4369,352 @@
     // ========================================================================
     // 3D EXPLODED VIEW VECTOR ASSEMBLY SVG RENDERING MET REALISTISCHE ONDERDELEN
     // ========================================================================
+    function generatePulsarAssemblySvgMarkup(cfg, isPrint = false) {
+      const isRVS = (cfg.material === 'RVS');
+      const metalStroke = isRVS ? '#334155' : '#78350F';
+      const metalText = isRVS ? '#0F172A' : '#78350F';
+      const months = cfg.months || 6;
+      const model = cfg.pulsarModel || 'M2';
+      const vol = cfg.pulsarVol || '125 ml';
+      const mount = cfg.pulsarMountType || 'remote';
+      const portsCount = parseInt(cfg.pulsarPortsCount) || 1;
+
+      const defs = `
+        <defs>
+          <!-- Pulsarlube Metallic & Case Gradients -->
+          <linearGradient id="pulsarBody" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#1E293B"/>
+            <stop offset="20%" stop-color="#334155"/>
+            <stop offset="50%" stop-color="#475569"/>
+            <stop offset="80%" stop-color="#334155"/>
+            <stop offset="100%" stop-color="#0F172A"/>
+          </linearGradient>
+          <linearGradient id="pulsarBlueTop" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#1E40AF"/>
+            <stop offset="30%" stop-color="#3B82F6"/>
+            <stop offset="60%" stop-color="#60A5FA"/>
+            <stop offset="85%" stop-color="#2563EB"/>
+            <stop offset="100%" stop-color="#1D4ED8"/>
+          </linearGradient>
+          <linearGradient id="pulsarLcd" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#0369A1"/>
+            <stop offset="100%" stop-color="#0C4A6E"/>
+          </linearGradient>
+          <linearGradient id="pulsarBrass" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#92400E"/>
+            <stop offset="25%" stop-color="#FDE68A"/>
+            <stop offset="60%" stop-color="#F59E0B"/>
+            <stop offset="100%" stop-color="#78350F"/>
+          </linearGradient>
+          <linearGradient id="manifoldAlu" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#475569"/>
+            <stop offset="15%" stop-color="#94A3B8"/>
+            <stop offset="45%" stop-color="#E2E8F0"/>
+            <stop offset="75%" stop-color="#94A3B8"/>
+            <stop offset="100%" stop-color="#334155"/>
+          </linearGradient>
+          <linearGradient id="pillowBlockGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#0F766E"/>
+            <stop offset="35%" stop-color="#14B8A6"/>
+            <stop offset="70%" stop-color="#0D9488"/>
+            <stop offset="100%" stop-color="#042F2E"/>
+          </linearGradient>
+        </defs>
+      `;
+
+      let inner = '';
+      let totalH = 500;
+
+      // Month setting badge in top right (same as ISPL red rounded rect)
+      const settingBadge = `
+        <g>
+          <rect x="300" y="12" width="205" height="26" rx="8" fill="#FFF5F5" stroke="#E30613" stroke-width="1.8"/>
+          <text x="402" y="29" font-size="11" font-weight="900" fill="#E30613" text-anchor="middle" letter-spacing="0.4">
+            INSTELLING: ${months} ${months === 1 ? 'MAAND' : 'MAANDEN'} | ${mount === 'remote' ? (portsCount > 1 ? `${portsCount} POORTEN` : '1 SMEERPUNT') : (mount === 'brush' ? 'BORSTEL' : 'DIRECT')}
+          </text>
+        </g>
+      `;
+
+      // Pulsarlube Unit Vector Component
+      const pulsarUnitSvg = (cx, cy) => `
+        <g transform="translate(${cx - 45}, ${cy})">
+          <!-- Top Cap / Dome in Pulsarlube Blue -->
+          <path d="M 6 22 C 6 8, 84 8, 84 22 Z" fill="url(#pulsarBlueTop)" stroke="#1D4ED8" stroke-width="1.2"/>
+          <ellipse cx="45" cy="22" rx="39" ry="6" fill="#2563EB" stroke="#1D4ED8" stroke-width="1"/>
+          
+          <!-- Cylindrical Main Body -->
+          <rect x="6" y="22" width="78" height="96" rx="3" fill="url(#pulsarBody)" stroke="#0F172A" stroke-width="1.5"/>
+          
+          <!-- LCD Status Display Screen -->
+          <rect x="18" y="32" width="54" height="24" rx="4" fill="url(#pulsarLcd)" stroke="#38BDF8" stroke-width="1.2"/>
+          <text x="45" y="44" font-size="8.5" font-family="monospace" font-weight="bold" fill="#F0F9FF" text-anchor="middle">${model} • ${vol}</text>
+          <text x="45" y="52" font-size="8" font-family="monospace" font-weight="900" fill="#38BDF8" text-anchor="middle">MODE: ${months}M • OK</text>
+          
+          <!-- Status LED -->
+          <circle cx="64" cy="44" r="2.2" fill="#22C55E"/>
+          
+          <!-- Window for grease pouch / oil level -->
+          <rect x="22" y="64" width="46" height="36" rx="4" fill="#0F172A" stroke="#475569" stroke-width="1"/>
+          <rect x="25" y="68" width="40" height="28" rx="2" fill="#F59E0B" opacity="0.85"/>
+          <line x1="25" y1="76" x2="65" y2="76" stroke="#FEF3C7" stroke-dasharray="2 2" stroke-width="1"/>
+          <line x1="25" y1="84" x2="65" y2="84" stroke="#FEF3C7" stroke-dasharray="2 2" stroke-width="1"/>
+          <text x="45" y="86" font-size="7.5" font-weight="bold" fill="#78350F" text-anchor="middle">${cfg.pulsarGrease || 'Grease'}</text>
+
+          <!-- Lower Base Collar with G 3/8" M thread -->
+          <rect x="26" y="118" width="38" height="10" fill="url(#pulsarBrass)" stroke="#78350F" stroke-width="1"/>
+          <rect x="34" y="128" width="22" height="14" fill="#475569" stroke="#1E293B" stroke-width="1"/>
+          <line x1="34" y1="131" x2="56" y2="131" stroke="#CBD5E1" stroke-width="1"/>
+          <line x1="34" y1="135" x2="56" y2="135" stroke="#CBD5E1" stroke-width="1"/>
+          <line x1="34" y1="139" x2="56" y2="139" stroke="#CBD5E1" stroke-width="1"/>
+
+          <!-- Label Annotation -->
+          <line x1="85" y1="44" x2="130" y2="44" stroke="#0F172A" stroke-width="1.2"/>
+          <circle cx="85" cy="44" r="2.5" fill="#2563EB"/>
+          <rect x="130" y="32" width="200" height="24" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
+          <text x="140" y="48" font-size="11.5" font-weight="900" fill="#1D4ED8">Pulsarlube ${model} (${vol})</text>
+        </g>
+      `;
+
+      if (mount === 'direct') {
+        const bThread = cfg.pulsarDirectThread || 'M8x1';
+        totalH = 480;
+        inner = `
+          ${defs}
+          ${settingBadge}
+          <line x1="240" y1="20" x2="240" y2="350" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.6"/>
+          
+          <!-- 1. Pulsarlube Unit -->
+          ${pulsarUnitSvg(240, 20)}
+
+          <!-- 2. Adapter Verloopstuk naar Lager -->
+          <g transform="translate(205, 175)">
+            <rect x="12" y="0" width="46" height="24" rx="3" fill="url(#pulsarBrass)" stroke="#78350F" stroke-width="1.2"/>
+            <rect x="22" y="24" width="26" height="14" fill="#475569" stroke="#1E293B" stroke-width="1"/>
+            <line x1="22" y1="27" x2="48" y2="27" stroke="#CBD5E1" stroke-width="1"/>
+            <line x1="22" y1="31" x2="48" y2="31" stroke="#CBD5E1" stroke-width="1"/>
+            <line x1="22" y1="35" x2="48" y2="35" stroke="#CBD5E1" stroke-width="1"/>
+
+            <!-- Annotatie Adapter -->
+            <line x1="58" y1="12" x2="105" y2="12" stroke="#0F172A" stroke-width="1.2"/>
+            <circle cx="58" cy="12" r="2.5" fill="#E30613"/>
+            <rect x="105" y="0" width="195" height="24" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
+            <text x="115" y="16" font-size="11" font-weight="800" fill="#0F172A">Adapter: ${bThread} M x 1/8" NPT F</text>
+          </g>
+
+          <!-- 3. Pillow Block Lagerhuis aan de basis -->
+          <g transform="translate(130, 260)">
+            <rect x="20" y="45" width="180" height="35" rx="6" fill="url(#pillowBlockGrad)" stroke="#042F2E" stroke-width="1.5"/>
+            <path d="M 50 45 C 50 5, 170 5, 170 45 Z" fill="url(#pillowBlockGrad)" stroke="#042F2E" stroke-width="1.5"/>
+            <circle cx="110" cy="38" r="28" fill="#E2E8F0" stroke="#475569" stroke-width="2"/>
+            <circle cx="110" cy="38" r="16" fill="#1E293B"/>
+            <circle cx="40" cy="62" r="5" fill="#0F172A"/>
+            <circle cx="180" cy="62" r="5" fill="#0F172A"/>
+
+            <rect x="102" y="2" width="16" height="10" fill="url(#pulsarBrass)" stroke="#78350F" stroke-width="1"/>
+
+            <!-- Annotatie Lager -->
+            <line x1="180" y1="38" x2="210" y2="38" stroke="#0F172A" stroke-width="1.2"/>
+            <circle cx="180" cy="38" r="2.5" fill="#0F766E"/>
+            <rect x="210" y="26" width="170" height="24" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
+            <text x="220" y="42" font-size="11.5" font-weight="900" fill="#0F766E">Lagerhuis (Draad: ${bThread})</text>
+          </g>
+        `;
+
+      } else if (mount === 'brush') {
+        const brushCode = cfg.pulsarBrushType || '1413';
+        const isRound = (brushCode === '1414');
+        totalH = 500;
+        inner = `
+          ${defs}
+          ${settingBadge}
+          
+          <!-- 1. Pulsarlube Unit op Beugel -->
+          ${pulsarUnitSvg(160, 20)}
+
+          <!-- Montagebeugel indicatie -->
+          <rect x="75" y="60" width="36" height="80" rx="3" fill="#64748B" opacity="0.3"/>
+
+          <!-- 2. Flexibele Leiding van unit naar borstel -->
+          <path d="M 160 162 C 160 210, 260 210, 260 250" fill="none" stroke="#2563EB" stroke-width="5" stroke-linecap="round"/>
+          <path d="M 160 162 C 160 210, 260 210, 260 250" fill="none" stroke="#60A5FA" stroke-width="2" stroke-linecap="round"/>
+
+          <!-- Annotatie Leiding -->
+          <line x1="220" y1="220" x2="290" y2="200" stroke="#0F172A" stroke-width="1.2"/>
+          <circle cx="220" cy="220" r="2.5" fill="#2563EB"/>
+          <rect x="290" y="188" width="190" height="24" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
+          <text x="300" y="204" font-size="11" font-weight="800" fill="#1D4ED8">Nylon Leiding: max 4.0 m</text>
+
+          <!-- 3. Terugslagklep art. 1467 -->
+          <g transform="translate(245, 250)">
+            <rect x="0" y="0" width="30" height="22" rx="3" fill="url(#pulsarBrass)" stroke="#78350F" stroke-width="1.2"/>
+            <polygon points="12,16 18,16 15,6" fill="#1E293B"/>
+            <line x1="30" y1="11" x2="65" y2="11" stroke="#0F172A" stroke-width="1.2"/>
+            <circle cx="30" cy="11" r="2" fill="#E30613"/>
+            <rect x="65" y="0" width="190" height="22" rx="5" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+            <text x="73" y="15" font-size="10.5" font-weight="800" fill="#0F172A">Terugslagklep (Art. 1467)</text>
+          </g>
+
+          <!-- 4. Borstel Applicator -->
+          <g transform="translate(240, 290)">
+            <!-- Borstelhanger -->
+            <rect x="5" y="0" width="30" height="20" rx="3" fill="#334155" stroke="#0F172A" stroke-width="1.2"/>
+            <line x1="20" y1="0" x2="20" y2="20" stroke="#CBD5E1" stroke-width="1"/>
+
+            ${isRound ? `
+              <!-- Ronde borstel 1" (1414) -->
+              <ellipse cx="20" cy="30" rx="18" ry="10" fill="#CBD5E1" stroke="#475569" stroke-width="1"/>
+              <path d="M 6 30 L 34 30 L 30 55 L 10 55 Z" fill="#F8FAFC" stroke="#64748B" stroke-width="1"/>
+              <line x1="12" y1="30" x2="12" y2="55" stroke="#94A3B8" stroke-dasharray="2 1"/>
+              <line x1="16" y1="30" x2="16" y2="55" stroke="#94A3B8" stroke-dasharray="2 1"/>
+              <line x1="20" y1="30" x2="20" y2="55" stroke="#94A3B8" stroke-dasharray="2 1"/>
+              <line x1="24" y1="30" x2="24" y2="55" stroke="#94A3B8" stroke-dasharray="2 1"/>
+              <line x1="28" y1="30" x2="28" y2="55" stroke="#94A3B8" stroke-dasharray="2 1"/>
+            ` : `
+              <!-- Platte borstel 2" (1413) -->
+              <rect x="-10" y="20" width="60" height="12" rx="2" fill="#CBD5E1" stroke="#475569" stroke-width="1"/>
+              <path d="M -8 32 L 48 32 L 45 60 L -5 60 Z" fill="#F8FAFC" stroke="#64748B" stroke-width="1"/>
+              <line x1="-2" y1="32" x2="-2" y2="60" stroke="#94A3B8" stroke-dasharray="2 1"/>
+              <line x1="8" y1="32" x2="8" y2="60" stroke="#94A3B8" stroke-dasharray="2 1"/>
+              <line x1="18" y1="32" x2="18" y2="60" stroke="#94A3B8" stroke-dasharray="2 1"/>
+              <line x1="28" y1="32" x2="28" y2="60" stroke="#94A3B8" stroke-dasharray="2 1"/>
+              <line x1="38" y1="32" x2="38" y2="60" stroke="#94A3B8" stroke-dasharray="2 1"/>
+            `}
+
+            <!-- Aandrijfketting / Tandwiel onder de borstel -->
+            <g transform="translate(-30, 62)">
+              <rect x="0" y="4" width="100" height="16" rx="4" fill="#334155" stroke="#1E293B" stroke-width="1.2"/>
+              <circle cx="15" cy="12" r="5" fill="#E2E8F0"/>
+              <circle cx="38" cy="12" r="5" fill="#E2E8F0"/>
+              <circle cx="62" cy="12" r="5" fill="#E2E8F0"/>
+              <circle cx="85" cy="12" r="5" fill="#E2E8F0"/>
+              <line x1="0" y1="3" x2="100" y2="3" stroke="#F59E0B" stroke-width="2"/>
+            </g>
+
+            <!-- Annotatie Borstel -->
+            <line x1="50" y1="42" x2="85" y2="42" stroke="#0F172A" stroke-width="1.2"/>
+            <circle cx="50" cy="42" r="2.5" fill="#1D4ED8"/>
+            <rect x="85" y="30" width="180" height="24" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
+            <text x="95" y="46" font-size="11" font-weight="900" fill="#1D4ED8">${isRound ? 'Borstel 1" Rond (1414)' : 'Borstel 2" Plat (1413)'}</text>
+          </g>
+        `;
+
+      } else {
+        // Remote: 1 poort (kit 1430) of Multi-point HU Verdeelblok (2-8 poorten)
+        totalH = (portsCount > 4) ? 580 : 520;
+        const isMulti = (portsCount > 1);
+
+        inner = `
+          ${defs}
+          ${settingBadge}
+          
+          <!-- 1. Pulsarlube Unit op Beugel Links/Boven -->
+          ${pulsarUnitSvg(140, 20)}
+
+          <!-- Montagebeugel indicatie -->
+          <rect x="55" y="60" width="36" height="80" rx="3" fill="#64748B" opacity="0.3"/>
+
+          ${isMulti ? `
+            <!-- Hoofdtoevoerleiding van unit naar HU verdeelblok -->
+            <path d="M 140 162 C 140 185, 260 170, 260 195" fill="none" stroke="#1E293B" stroke-width="4.5"/>
+            <path d="M 140 162 C 140 185, 260 170, 260 195" fill="none" stroke="#94A3B8" stroke-width="2"/>
+
+            <!-- Insteekkoppeling toevoer -->
+            <rect x="252" y="195" width="16" height="10" fill="url(#pulsarBrass)" stroke="#78350F" stroke-width="1"/>
+
+            <!-- 2. HU TYPE VERDEELBLOK (2 tot 8 poorten) -->
+            <g transform="translate(195, 205)">
+              <!-- Bloklichaam in geanodiseerd aluminium -->
+              <rect x="0" y="0" width="130" height="${30 + portsCount * 12}" rx="6" fill="url(#manifoldAlu)" stroke="#334155" stroke-width="1.5"/>
+              
+              <!-- Inwendige kanalen en logo -->
+              <text x="65" y="16" font-size="9" font-weight="900" fill="#0F172A" text-anchor="middle" letter-spacing="0.5">HU DIVIDER • ${portsCount}P</text>
+              <line x1="15" y1="22" x2="115" y2="22" stroke="#64748B" stroke-width="1"/>
+
+              <!-- Poorten en insteekkoppelingen aan beide zijden -->
+              ${Array.from({ length: portsCount }).map((_, i) => {
+                const yOff = 30 + i * 12;
+                const isLeft = (i % 2 === 0);
+                const xPort = isLeft ? -10 : 130;
+                return `
+                  <rect x="${xPort}" y="${yOff - 4}" width="10" height="8" fill="url(#pulsarBrass)" stroke="#78350F" stroke-width="0.8"/>
+                  <circle cx="${isLeft ? 15 : 115}" cy="${yOff}" r="3" fill="#0F172A"/>
+                  <text x="${isLeft ? 23 : 107}" y="${yOff + 3}" font-size="7.5" font-weight="bold" fill="#334155" text-anchor="${isLeft ? 'start' : 'end'}">P${i+1}</text>
+                `;
+              }).join('')}
+
+              <!-- Annotatie Verdeelblok -->
+              <line x1="130" y1="20" x2="165" y2="20" stroke="#0F172A" stroke-width="1.2"/>
+              <circle cx="130" cy="20" r="2.5" fill="#2563EB"/>
+              <rect x="165" y="8" width="150" height="24" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
+              <text x="175" y="24" font-size="11" font-weight="900" fill="#1D4ED8">HU Blok (${portsCount} poorten)</text>
+            </g>
+
+            <!-- 3. Leidingen die vertakken naar de smeerpunten -->
+            <g>
+              ${Array.from({ length: portsCount }).map((_, i) => {
+                const isLeft = (i % 2 === 0);
+                const startX = isLeft ? 185 : 335;
+                const startY = 235 + i * 12;
+                const targetX = 60 + (i * (400 / Math.max(1, portsCount - 1)));
+                const targetY = (portsCount > 4) ? 460 : 420;
+                const strokeColor = ['#2563EB', '#0D9488', '#D97706', '#E11D48', '#7C3AED', '#0284C7', '#059669', '#DC2626'][i % 8];
+
+                return `
+                  <path d="M ${startX} ${startY} C ${startX + (isLeft ? -40 : 40)} ${startY + 40}, ${targetX} ${targetY - 50}, ${targetX} ${targetY}" fill="none" stroke="${strokeColor}" stroke-width="2.5" stroke-dasharray="5 3"/>
+                  <circle cx="${targetX}" cy="${targetY}" r="4" fill="${strokeColor}"/>
+                  <rect x="${targetX - 16}" y="${targetY + 4}" width="32" height="14" rx="3" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+                  <text x="${targetX}" y="${targetY + 14}" font-size="8" font-weight="900" fill="#0F172A" text-anchor="middle">P${i+1}</text>
+                `;
+              }).join('')}
+            </g>
+
+            <!-- Lagersymbool aan de basis -->
+            <g transform="translate(170, ${totalH - 60})">
+              <rect x="0" y="10" width="180" height="28" rx="5" fill="url(#pillowBlockGrad)" stroke="#042F2E" stroke-width="1.2"/>
+              <circle cx="90" cy="18" r="16" fill="#E2E8F0" stroke="#475569" stroke-width="1.5"/>
+              <circle cx="90" cy="18" r="9" fill="#1E293B"/>
+              <text x="90" y="50" font-size="10.5" font-weight="800" fill="#042F2E" text-anchor="middle">Smeerpunten op machine (max 4.0m)</text>
+            </g>
+          ` : `
+            <!-- 1 Smeerpunt via Installatiekit 1250RC-1 (art. 1430) -->
+            <path d="M 140 162 C 140 220, 260 220, 260 300" fill="none" stroke="#2563EB" stroke-width="4.5"/>
+            <path d="M 140 162 C 140 220, 260 220, 260 300" fill="none" stroke="#60A5FA" stroke-width="2"/>
+
+            <!-- Annotatie Kit 1430 -->
+            <line x1="200" y1="230" x2="270" y2="210" stroke="#0F172A" stroke-width="1.2"/>
+            <circle cx="200" cy="230" r="2.5" fill="#2563EB"/>
+            <rect x="270" y="198" width="220" height="24" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
+            <text x="280" y="214" font-size="11" font-weight="900" fill="#1D4ED8">Installatiekit 1250RC-1 (Art. 1430)</text>
+
+            <!-- Push-in koppeling aan lager -->
+            <g transform="translate(250, 300)">
+              <rect x="0" y="0" width="20" height="14" fill="url(#pulsarBrass)" stroke="#78350F" stroke-width="1"/>
+              <rect x="5" y="14" width="10" height="10" fill="#475569" stroke="#1E293B" stroke-width="1"/>
+            </g>
+
+            <!-- Lager aan de basis -->
+            <g transform="translate(170, 324)">
+              <rect x="20" y="30" width="140" height="28" rx="5" fill="url(#pillowBlockGrad)" stroke="#042F2E" stroke-width="1.5"/>
+              <path d="M 45 30 C 45 5, 135 5, 135 30 Z" fill="url(#pillowBlockGrad)" stroke="#042F2E" stroke-width="1.5"/>
+              <circle cx="90" cy="24" r="20" fill="#E2E8F0" stroke="#475569" stroke-width="1.5"/>
+              <circle cx="90" cy="24" r="11" fill="#1E293B"/>
+
+              <line x1="145" y1="24" x2="180" y2="24" stroke="#0F172A" stroke-width="1.2"/>
+              <circle cx="145" cy="24" r="2.5" fill="#0F766E"/>
+              <rect x="180" y="12" width="130" height="24" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
+              <text x="190" y="28" font-size="11" font-weight="800" fill="#0F766E">Lagerpunt 1</text>
+            </g>
+          `}
+        `;
+      }
+
+      return `<svg viewBox="0 0 520 ${totalH}" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
+    }
+
     function generateAssemblySvgMarkup(cfg, isPrint = false) {
+      if (cfg && cfg.systemType === 'pulsarlube') {
+        return generatePulsarAssemblySvgMarkup(cfg, isPrint);
+      }
       const volKey = (cfg.lubricatorVol || '125ml').replace('ml', '');
       const isplImgSrc = `ispl-${volKey}.png`;
       const isRVS = (cfg.material === 'RVS');
@@ -3847,58 +5239,106 @@
 
       const machine = machineInput.value.trim();
       const point = pointInput.value.trim();
+      const quantityMultiplier = parseInt(document.getElementById('cfg-quantity').value) || 1;
       const material = document.getElementById('sel-material').value;
-      const mountType = document.getElementById('sel-mount-type').value;
 
-      let bearingThread = document.getElementById('sel-bearing-thread').value;
-      const customBearingThread = document.getElementById('custom-bearing-thread').value.trim();
-      if (bearingThread === 'custom') {
-        bearingThread = customBearingThread || 'Afwijkend';
+      let pointObj = {
+        id: activePointId || Date.now(),
+        machine,
+        point,
+        quantityMultiplier,
+        systemType: currentSystemMode,
+        material,
+        photo: currentPhotoBase64
+      };
+
+      if (currentSystemMode === 'pulsarlube') {
+        const pulsarModel = document.getElementById('sel-pulsar-model').value;
+        const pulsarVol = document.getElementById('sel-pulsar-vol').value;
+        const pulsarGrease = document.getElementById('sel-pulsar-grease').value;
+        const months = parseInt(document.getElementById('sel-pulsar-months').value) || 6;
+        const pulsarMountType = document.getElementById('sel-pulsar-mount').value;
+
+        let pulsarDirectThread = document.getElementById('sel-pulsar-direct-thread').value;
+        const customDirectThread = document.getElementById('custom-pulsar-direct-thread').value.trim();
+        if (pulsarDirectThread === 'custom') pulsarDirectThread = customDirectThread || 'Afwijkend';
+
+        const pulsarBrushType = document.getElementById('sel-pulsar-brush-type').value;
+        let brushLen = parseFloat(document.getElementById('inp-pulsar-brush-len').value) || 1.0;
+        if (brushLen > 4.0) brushLen = 4.0;
+        const pulsarBrushTubeDiam = document.getElementById('sel-pulsar-brush-diam').value;
+        const pulsarPortsCount = parseInt(document.getElementById('sel-pulsar-ports-count').value) || 1;
+
+        // Ports data
+        const activeP = savedPoints.find(p => p.id == activePointId);
+        const ports = (activeP && Array.isArray(activeP.pulsarPorts)) ? activeP.pulsarPorts.slice(0, pulsarPortsCount) : [];
+        while (ports.length < pulsarPortsCount) {
+          ports.push({ length: 1.0, diam: '6 mm', thread: 'M8x1', customThread: '' });
+        }
+
+        const cfg = {
+          systemType: 'pulsarlube',
+          material,
+          pulsarModel,
+          pulsarVol,
+          pulsarGrease,
+          months,
+          pulsarMountType,
+          pulsarDirectThread,
+          customDirectThread,
+          pulsarBrushType,
+          pulsarBrushTubeLen: brushLen,
+          pulsarBrushTubeDiam,
+          pulsarPortsCount,
+          pulsarPorts: ports
+        };
+
+        pointObj = {
+          ...pointObj,
+          ...cfg,
+          components: resolveComponents(cfg)
+        };
+      } else {
+        // ISPL
+        const mountType = document.getElementById('sel-mount-type').value;
+
+        let bearingThread = document.getElementById('sel-bearing-thread').value;
+        const customBearingThread = document.getElementById('custom-bearing-thread').value.trim();
+        if (bearingThread === 'custom') {
+          bearingThread = customBearingThread || 'Afwijkend';
+        }
+
+        const angle = document.getElementById('sel-angle').value;
+        let extension = document.getElementById('sel-extension').value;
+        const customExtension = document.getElementById('custom-ext-val').value.trim();
+        if (extension === 'custom') {
+          extension = customExtension || 'Afwijkend';
+        }
+
+        const remoteFitting = document.getElementById('sel-remote-fitting').value;
+        const lubricatorVol = document.getElementById('sel-lubricator-vol').value;
+        const impulseConnectEl = document.getElementById('chk-impulse-connect');
+        const impulseConnect = impulseConnectEl ? impulseConnectEl.checked : false;
+        const greaseType = document.getElementById('sel-grease-type').value;
+        const months = parseInt(document.getElementById('sel-months').value) || 6;
+
+        const cfg = {
+          systemType: 'ispl',
+          material, mountType, bearingThread, customBearingThread, angle, extension, customExtension, remoteFitting, lubricatorVol, impulseConnect, greaseType, months
+        };
+
+        pointObj = {
+          ...pointObj,
+          ...cfg,
+          components: resolveComponents(cfg)
+        };
       }
-
-      const angle = document.getElementById('sel-angle').value;
-      let extension = document.getElementById('sel-extension').value;
-      const customExtension = document.getElementById('custom-ext-val').value.trim();
-      if (extension === 'custom') {
-        extension = customExtension || 'Afwijkend';
-      }
-
-      const remoteFitting = document.getElementById('sel-remote-fitting').value;
-      const lubricatorVol = document.getElementById('sel-lubricator-vol').value;
-      const impulseConnectEl = document.getElementById('chk-impulse-connect');
-      const impulseConnect = impulseConnectEl ? impulseConnectEl.checked : false;
-      const greaseType = document.getElementById('sel-grease-type').value;
-      const months = parseInt(document.getElementById('sel-months').value) || 6;
-
-      const components = resolveComponents({
-        material, mountType, bearingThread, angle, extension, remoteFitting, lubricatorVol, impulseConnect, greaseType, months
-      });
 
       if (!activePointId) {
-        activePointId = Date.now();
+        activePointId = pointObj.id;
       }
 
       const existingIndex = savedPoints.findIndex(p => p.id == activePointId);
-      const pointObj = {
-        id: activePointId,
-        machine,
-        point,
-        material,
-        mountType,
-        bearingThread,
-        customBearingThread,
-        angle,
-        extension,
-        customExtension,
-        remoteFitting,
-        lubricatorVol,
-        impulseConnect,
-        greaseType,
-        months,
-        photo: currentPhotoBase64,
-        components
-      };
-
       if (existingIndex >= 0) {
         savedPoints[existingIndex] = pointObj;
       } else {
@@ -3932,41 +5372,77 @@
       activePointId = p.id;
       document.getElementById('cfg-machine').value = p.machine || '';
       document.getElementById('cfg-point').value = p.point || '';
+      
+      const qty = parseInt(p.quantityMultiplier) || 1;
+      const qtyInput = document.getElementById('cfg-quantity');
+      if (qtyInput) qtyInput.value = qty;
+      const qtyBadge = document.getElementById('cfg-qty-badge');
+      if (qtyBadge) qtyBadge.innerText = `${qty}x actief`;
+
       document.getElementById('sel-material').value = p.material || 'Messing vernikkeld';
-      document.getElementById('sel-mount-type').value = p.mountType || 'direct';
 
-      onMountTypeChange();
+      const sys = p.systemType || 'ispl';
+      switchSystemMode(sys, false);
 
-      const standardThreads = ['M6x1', 'M8x1', 'M8x1.25', 'M10x1', 'M10x1.5', 'G 1/8', 'G 1/4', '1/8 NPT', '1/4 NPT'];
-      if (!standardThreads.includes(p.bearingThread)) {
-        document.getElementById('sel-bearing-thread').value = 'custom';
-        document.getElementById('custom-bearing-thread').value = p.customBearingThread || p.bearingThread;
-        document.getElementById('custom-thread-box').style.display = 'block';
+      if (sys === 'pulsarlube') {
+        document.getElementById('sel-pulsar-model').value = p.pulsarModel || 'M2';
+        populatePulsarVolumes(p.pulsarVol || '125 ml');
+        populatePulsarGreases(p.pulsarGrease || 'Grease MP2/3');
+        document.getElementById('sel-pulsar-months').value = p.months || 6;
+        document.getElementById('sel-pulsar-mount').value = p.pulsarMountType || 'remote';
+
+        const standardDirectThreads = ['M6x1', 'M8x1', 'M8x1.25', 'M10x1', 'M10x1.5', 'G 1/8', 'G 1/4', '1/8 NPT', '1/4 NPT'];
+        if (!standardDirectThreads.includes(p.pulsarDirectThread)) {
+          document.getElementById('sel-pulsar-direct-thread').value = 'custom';
+          document.getElementById('custom-pulsar-direct-thread').value = p.customDirectThread || p.pulsarDirectThread || '';
+          document.getElementById('pulsar-direct-custom-thread-box').style.display = 'block';
+        } else {
+          document.getElementById('sel-pulsar-direct-thread').value = p.pulsarDirectThread || 'M8x1';
+          document.getElementById('pulsar-direct-custom-thread-box').style.display = 'none';
+        }
+
+        document.getElementById('sel-pulsar-brush-type').value = p.pulsarBrushType || '1413';
+        document.getElementById('inp-pulsar-brush-len').value = (p.pulsarBrushTubeLen !== undefined) ? p.pulsarBrushTubeLen : 1.0;
+        document.getElementById('sel-pulsar-brush-diam').value = p.pulsarBrushTubeDiam || '6 mm';
+
+        document.getElementById('sel-pulsar-ports-count').value = p.pulsarPortsCount || 2;
+        onPulsarMountChange();
       } else {
-        document.getElementById('sel-bearing-thread').value = p.bearingThread || 'M8x1';
-        document.getElementById('custom-thread-box').style.display = 'none';
+        // ISPL
+        document.getElementById('sel-mount-type').value = p.mountType || 'direct';
+        onMountTypeChange();
+
+        const standardThreads = ['M6x1', 'M8x1', 'M8x1.25', 'M10x1', 'M10x1.5', 'G 1/8', 'G 1/4', '1/8 NPT', '1/4 NPT'];
+        if (!standardThreads.includes(p.bearingThread)) {
+          document.getElementById('sel-bearing-thread').value = 'custom';
+          document.getElementById('custom-bearing-thread').value = p.customBearingThread || p.bearingThread;
+          document.getElementById('custom-thread-box').style.display = 'block';
+        } else {
+          document.getElementById('sel-bearing-thread').value = p.bearingThread || 'M8x1';
+          document.getElementById('custom-thread-box').style.display = 'none';
+        }
+
+        document.getElementById('sel-angle').value = p.angle || 'straight';
+
+        const standardExts = ['0', '15', '25', '35', '50'];
+        if (!standardExts.includes(p.extension)) {
+          document.getElementById('sel-extension').value = 'custom';
+          document.getElementById('custom-ext-val').value = p.customExtension || p.extension;
+          document.getElementById('custom-ext-box').style.display = 'block';
+        } else {
+          document.getElementById('sel-extension').value = p.extension || '0';
+          document.getElementById('custom-ext-box').style.display = 'none';
+        }
+
+        const validRemoteFittings = ['straight-kit', 'elbow-90', 'straight-8-g14', 'elbow-90-8-g14'];
+        document.getElementById('sel-remote-fitting').value = validRemoteFittings.includes(p.remoteFitting) ? p.remoteFitting : 'straight-kit';
+        document.getElementById('sel-lubricator-vol').value = p.lubricatorVol || '125ml';
+        const impulseConnectEl = document.getElementById('chk-impulse-connect');
+        if (impulseConnectEl) impulseConnectEl.checked = !!p.impulseConnect;
+        populateGreaseTypes(p.greaseType);
+
+        document.getElementById('sel-months').value = p.months || 6;
       }
-
-      document.getElementById('sel-angle').value = p.angle || 'straight';
-
-      const standardExts = ['0', '15', '25', '35', '50'];
-      if (!standardExts.includes(p.extension)) {
-        document.getElementById('sel-extension').value = 'custom';
-        document.getElementById('custom-ext-val').value = p.customExtension || p.extension;
-        document.getElementById('custom-ext-box').style.display = 'block';
-      } else {
-        document.getElementById('sel-extension').value = p.extension || '0';
-        document.getElementById('custom-ext-box').style.display = 'none';
-      }
-
-      const validRemoteFittings = ['straight-kit', 'elbow-90', 'straight-8-g14', 'elbow-90-8-g14'];
-      document.getElementById('sel-remote-fitting').value = validRemoteFittings.includes(p.remoteFitting) ? p.remoteFitting : 'straight-kit';
-      document.getElementById('sel-lubricator-vol').value = p.lubricatorVol || '125ml';
-      const impulseConnectEl = document.getElementById('chk-impulse-connect');
-      if (impulseConnectEl) impulseConnectEl.checked = !!p.impulseConnect;
-      populateGreaseTypes(p.greaseType);
-
-      document.getElementById('sel-months').value = p.months || 6;
 
       currentPhotoBase64 = p.photo;
       if (p.photo) {
@@ -4017,32 +5493,56 @@
         return;
       }
 
-      container.innerHTML = savedPoints.map((p, idx) => `
-        <div class="saved-point-row" draggable="true" data-index="${idx}" data-id="${p.id}" style="border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; background: white; box-shadow: var(--shadow-sm); cursor: grab; transition: transform 0.15s, border-color 0.15s;">
-          <div style="display: flex; gap: 14px; align-items: center;">
-            <div style="width: 80px; height: 70px; border-radius: 10px; background: #E2E8F0; overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #64748B; flex-shrink: 0;">
-              ${p.photo ? `<img src="${p.photo}" style="width: 100%; height: 100%; object-fit: cover;">` : 'Geen foto'}
-            </div>
-            <div>
-              <div style="font-weight: 800; font-size: 14px; color: var(--dark);">${p.machine || 'Machine'} ➔ ${p.point || 'Smeerpunt'}</div>
-              <div style="font-size: 12px; color: var(--text-muted); margin-top: 3px;">
-                ${p.mountType === 'remote' ? 'Afstandsmontage (Pulsarlube 1702)' : 'Directe montage'} • Materiaal: <strong>${p.material}</strong> • Lager: <strong>${p.bearingThread}</strong> • ISPL: <strong>${p.lubricatorVol}${p.impulseConnect ? ' + Impulse Connect (7213)' : ''} + ${p.greaseType} (${p.months} mnd)</strong>
+      container.innerHTML = savedPoints.map((p, idx) => {
+        const isPulsar = (p.systemType === 'pulsarlube');
+        const mult = parseInt(p.quantityMultiplier) || 1;
+
+        let detailText = '';
+        if (isPulsar) {
+          const mountStr = (p.pulsarMountType === 'brush') 
+            ? `Borstelset (${p.pulsarBrushType === '1413' ? '2" plat' : '1" rond'})` 
+            : (p.pulsarMountType === 'direct' ? 'Direct op lager' : `Verdeelblok (${p.pulsarPortsCount || 1} poorten)`);
+          detailText = `<strong>Pulsarlube ${p.pulsarModel || 'M2'} (${p.pulsarVol || '125 ml'})</strong> + ${p.pulsarGrease || 'Grease'} (${p.months || 6} mnd) • Montage: ${mountStr} • Materiaal: ${p.material}`;
+        } else {
+          detailText = `${p.mountType === 'remote' ? 'Afstandsmontage (Pulsarlube 1702)' : 'Directe montage'} • Materiaal: <strong>${p.material}</strong> • Lager: <strong>${p.bearingThread}</strong> • ISPL: <strong>${p.lubricatorVol}${p.impulseConnect ? ' + Impulse Connect (7213)' : ''} + ${p.greaseType} (${p.months} mnd)</strong>`;
+        }
+
+        return `
+          <div class="saved-point-row" draggable="true" data-index="${idx}" data-id="${p.id}" style="border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; background: white; box-shadow: var(--shadow-sm); cursor: grab; transition: transform 0.15s, border-color 0.15s;">
+            <div style="display: flex; gap: 14px; align-items: center;">
+              <div style="width: 80px; height: 70px; border-radius: 10px; background: #E2E8F0; overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #64748B; flex-shrink: 0;">
+                ${p.photo ? `<img src="${p.photo}" style="width: 100%; height: 100%; object-fit: cover;">` : 'Geen foto'}
+              </div>
+              <div>
+                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                  <span style="font-weight: 800; font-size: 14px; color: var(--dark);">${p.machine || 'Machine'} ➔ ${p.point || 'Smeerpunt'}</span>
+                  ${isPulsar 
+                    ? `<span style="background: #EFF6FF; color: #1D4ED8; font-weight: 900; font-size: 10.5px; padding: 2px 7px; border-radius: 6px; border: 1px solid #BFDBFE;">PULSARLUBE</span>`
+                    : `<span style="background: #FFF1F2; color: #E11D48; font-weight: 900; font-size: 10.5px; padding: 2px 7px; border-radius: 6px; border: 1px solid #FECDD3;">ISPL</span>`}
+                  ${mult > 1 
+                    ? `<span style="background: #FEF3C7; color: #B45309; font-weight: 900; font-size: 10.5px; padding: 2px 7px; border-radius: 6px; border: 1px solid #FDE68A;">${mult}x opstelling</span>` 
+                    : ''}
+                </div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">
+                  ${detailText}
+                </div>
               </div>
             </div>
+            <div style="display: flex; gap: 6px; align-items: center;">
+              <button class="btn-pill-outline" style="padding: 6px 12px; font-size: 12px;" onclick="selectAndEditPoint(${p.id})">Bewerken</button>
+              <button class="btn-pill-outline" style="padding: 6px 12px; font-size: 12px; color: #2563EB; border-color: #BFDBFE; font-weight: 700;" onclick="duplicatePoint(${p.id})" title="Kopieer dit smeerpunt">📋 Kopiëren</button>
+              <button class="btn-pill-outline drag-handle-btn" title="Sleep om volgorde te wijzigen" style="color: #475569; border-color: #CBD5E1; padding: 6px 10px; font-size: 12px; cursor: grab;">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                  <line x1="3" y1="6" x2="21" y2="6"/>
+                  <line x1="3" y1="12" x2="21" y2="12"/>
+                  <line x1="3" y1="18" x2="21" y2="18"/>
+                </svg>
+              </button>
+              <button class="btn-pill-outline" style="color: #DC2626; border-color: #FECACA; padding: 6px 10px; font-size: 12px;" onclick="deletePoint(${p.id})">✕</button>
+            </div>
           </div>
-          <div style="display: flex; gap: 8px; align-items: center;">
-            <button class="btn-pill-outline" style="padding: 6px 14px; font-size: 12px;" onclick="selectAndEditPoint(${p.id})">Bewerken</button>
-            <button class="btn-pill-outline drag-handle-btn" title="Sleep om volgorde te wijzigen" style="color: #475569; border-color: #CBD5E1; padding: 6px 10px; font-size: 12px; cursor: grab;">
-              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                <line x1="3" y1="6" x2="21" y2="6"/>
-                <line x1="3" y1="12" x2="21" y2="12"/>
-                <line x1="3" y1="18" x2="21" y2="18"/>
-              </svg>
-            </button>
-            <button class="btn-pill-outline" style="color: #DC2626; border-color: #FECACA; padding: 6px 10px; font-size: 12px;" onclick="deletePoint(${p.id})">✕</button>
-          </div>
-        </div>
-      `).join('');
+        `;
+      }).join('');
 
       initDragAndDrop();
     }
@@ -4159,12 +5659,14 @@
       const bomMap = new Map();
 
       savedPoints.forEach(p => {
+        const mult = parseInt(p.quantityMultiplier) || 1;
         (p.components || []).forEach(c => {
+          const effectiveQty = c.qty * mult;
           if (bomMap.has(c.code)) {
             const item = bomMap.get(c.code);
-            item.qty += c.qty;
+            item.qty += effectiveQty;
           } else {
-            bomMap.set(c.code, { ...c });
+            bomMap.set(c.code, { ...c, qty: effectiveQty });
           }
         });
       });
@@ -4192,9 +5694,6 @@
       }).join('');
     }
 
-    // ========================================================================
-    // DOSSIER EXPORT & IMPORT (JSON BACKUP VAN VOLLEDIG KLANTDOSSIER)
-    // ========================================================================
     function exportDossierJSON() {
       const data = {
         app: "Hardware Selector Dossier",
@@ -4304,7 +5803,7 @@
             <div style="border-bottom: 3px solid #E30613; padding-bottom: 8px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: flex-end;">
               <div>
                 <h1 style="color: #E30613; font-size: 20px; font-weight: 900; margin: 0;">TECHNISCH MONTAGE DOSSIER</h1>
-                <div style="font-size: 13px; color: #0F172A; font-weight: bold; margin-top: 4px;">Klant: ${generalInfo.client} | Project: ${generalInfo.project}</div>
+                <div style="font-size: 13px; color: #0F172A; font-weight: bold; margin-top: 4px;">Klant: ${generalInfo.client || '-'} | Project: ${generalInfo.project || '-'}</div>
                 <div style="font-size: 11px; color: #64748B;">Contact: ${generalInfo.contact || '-'} | Adviseur: ${generalInfo.advisor || '-'}</div>
               </div>
               <div style="text-align: right; font-size: 11px; color: #64748B;">
@@ -4317,15 +5816,47 @@
         `;
 
         filteredPoints.forEach((p, idx) => {
+          const isPulsar = (p.systemType === 'pulsarlube');
+          const mult = parseInt(p.quantityMultiplier) || 1;
+
+          let specRows = '';
+          if (isPulsar) {
+            const mountStr = (p.pulsarMountType === 'brush') 
+              ? `Borstelset (${p.pulsarBrushType === '1413' ? '2" Plat nylon' : '1" Rond nylon'})` 
+              : (p.pulsarMountType === 'direct' ? `Directe montage op lager (${p.pulsarDirectThread || 'M8x1'})` : `Afstandsmontage via Verdeelblok (${p.pulsarPortsCount || 1} poorten)`);
+
+            specRows = `
+              <tr><td style="padding: 4px 0; color: #64748B; width: 140px;">Smeersysteem:</td><td style="padding: 4px 0; font-weight: bold; color: #2563EB;">Pulsarlube ${p.pulsarModel || 'M2'} (${p.pulsarVol || '125 ml'})</td></tr>
+              <tr><td style="padding: 4px 0; color: #64748B;">Smeermiddel / Vet:</td><td style="padding: 4px 0; font-weight: bold;">${p.pulsarGrease || 'Grease'}</td></tr>
+              <tr><td style="padding: 4px 0; color: #64748B;">Looptijd instelling:</td><td style="padding: 4px 0; font-weight: bold;">${p.months || 6} maanden</td></tr>
+              <tr><td style="padding: 4px 0; color: #64748B;">Montagewijze:</td><td style="padding: 4px 0; font-weight: bold;">${mountStr}</td></tr>
+              <tr><td style="padding: 4px 0; color: #64748B;">Aantal opstellingen:</td><td style="padding: 4px 0; font-weight: bold; color: #B45309;">${mult}x identieke opstelling${mult > 1 ? 'en' : ''}</td></tr>
+            `;
+          } else {
+            specRows = `
+              <tr><td style="padding: 4px 0; color: #64748B; width: 140px;">Aansluiting 1 (Lager):</td><td style="padding: 4px 0; font-weight: bold;">${p.bearingThread}</td></tr>
+              <tr><td style="padding: 4px 0; color: #64748B;">ISPL Smeerunit:</td><td style="padding: 4px 0; font-weight: bold; color: #E30613;">${p.lubricatorVol} + ${p.greaseType}</td></tr>
+              <tr><td style="padding: 4px 0; color: #64748B;">Impulse Connect:</td><td style="padding: 4px 0; font-weight: bold;">${p.impulseConnect ? 'Ja (Drukversterker 10 bar + Bluetooth, art. 7213)' : 'Nee'}</td></tr>
+              <tr><td style="padding: 4px 0; color: #64748B;">Looptijd instelling:</td><td style="padding: 4px 0; font-weight: bold;">${p.months} maanden</td></tr>
+              <tr><td style="padding: 4px 0; color: #64748B;">Kniestuk / Hoek:</td><td style="padding: 4px 0; font-weight: bold;">${p.angle === 'straight' ? 'Recht (geen)' : p.angle + '° knie'}</td></tr>
+              <tr><td style="padding: 4px 0; color: #64748B;">Verlengstuk:</td><td style="padding: 4px 0; font-weight: bold;">${p.extension === '0' ? 'Geen verlenging' : p.extension + ' mm'}</td></tr>
+              <tr><td style="padding: 4px 0; color: #64748B;">Montagewijze:</td><td style="padding: 4px 0; font-weight: bold;">${p.mountType === 'remote' ? 'Afstand (Pulsarlube 2000RC-1 kit art. 1702)' : 'Direct op lager'}</td></tr>
+              <tr><td style="padding: 4px 0; color: #64748B;">Aantal opstellingen:</td><td style="padding: 4px 0; font-weight: bold; color: #B45309;">${mult}x identieke opstelling${mult > 1 ? 'en' : ''}</td></tr>
+            `;
+          }
+
           detailHtml += `
             <div style="border: 1px solid #CBD5E1; border-radius: 12px; padding: 16px; margin-bottom: 20px; background: white; page-break-inside: avoid;">
               <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #F1F5F9; padding-bottom: 8px; margin-bottom: 12px;">
                 <div>
-                  <span style="background: #E30613; color: white; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 900; margin-right: 6px;">PUNT ${idx + 1}</span>
-                  <strong style="font-size: 15px; color: #0F172A;">${p.machine} ➔ ${p.point}</strong>
+                  <span style="background: ${isPulsar ? '#2563EB' : '#E30613'}; color: white; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 900; margin-right: 6px;">
+                    ${isPulsar ? 'PULSARLUBE' : 'ISPL'} • PUNT ${idx + 1}
+                  </span>
+                  <strong style="font-size: 15px; color: #0F172A;">${p.machine || 'Machine'} ➔ ${p.point || 'Smeerpunt'}</strong>
+                  ${mult > 1 ? `<span style="background: #FEF3C7; color: #B45309; font-weight: 900; font-size: 11px; padding: 2px 7px; border-radius: 6px; margin-left: 8px;">${mult}x opstelling</span>` : ''}
                 </div>
                 <div style="font-size: 11.5px; color: #64748B; font-weight: bold;">
-                  ${p.mountType === 'remote' ? 'Afstandsmontage (Pulsarlube 1702)' : 'Directe montage'} • ${p.material}
+                  Materiaal: ${p.material}
                 </div>
               </div>
 
@@ -4333,13 +5864,7 @@
               <div style="display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 16px; margin-bottom: 14px; align-items: start;">
                 <div>
                   <table style="width: 100%; border-collapse: collapse; font-size: 11.5px; margin-bottom: 10px;">
-                    <tr><td style="padding: 4px 0; color: #64748B; width: 140px;">Aansluiting 1 (Lager):</td><td style="padding: 4px 0; font-weight: bold;">${p.bearingThread}</td></tr>
-                    <tr><td style="padding: 4px 0; color: #64748B;">ISPL Smeerunit:</td><td style="padding: 4px 0; font-weight: bold; color: #E30613;">${p.lubricatorVol} + ${p.greaseType}</td></tr>
-                    <tr><td style="padding: 4px 0; color: #64748B;">Impulse Connect:</td><td style="padding: 4px 0; font-weight: bold;">${p.impulseConnect ? 'Ja (Drukversterker 10 bar + Bluetooth, art. 7213)' : 'Nee'}</td></tr>
-                    <tr><td style="padding: 4px 0; color: #64748B;">Looptijd instelling:</td><td style="padding: 4px 0; font-weight: bold;">${p.months} maanden</td></tr>
-                    <tr><td style="padding: 4px 0; color: #64748B;">Kniestuk / Hoek:</td><td style="padding: 4px 0; font-weight: bold;">${p.angle === 'straight' ? 'Recht (geen)' : p.angle + '° knie'}</td></tr>
-                    <tr><td style="padding: 4px 0; color: #64748B;">Verlengstuk:</td><td style="padding: 4px 0; font-weight: bold;">${p.extension === '0' ? 'Geen verlenging' : p.extension + ' mm'}</td></tr>
-                    <tr><td style="padding: 4px 0; color: #64748B;">Montagewijze:</td><td style="padding: 4px 0; font-weight: bold;">${p.mountType === 'remote' ? 'Afstand (Pulsarlube 2000RC-1 kit art. 1702)' : 'Direct op lager'}</td></tr>
+                    ${specRows}
                   </table>
 
                   ${p.photo ? `
@@ -4351,21 +5876,23 @@
 
                 <!-- Volledige 3D Exploded View SVG Samenstelling -->
                 <div style="border: 1px solid #E2E8F0; border-radius: 10px; padding: 10px; background: #FFFFFF; text-align: center;">
-                  <div style="font-size: 10px; font-weight: 800; color: #E30613; margin-bottom: 6px; text-transform: uppercase;">3D Exploded View Samenstelling</div>
+                  <div style="font-size: 10px; font-weight: 800; color: ${isPulsar ? '#2563EB' : '#E30613'}; margin-bottom: 6px; text-transform: uppercase;">3D Exploded View Samenstelling</div>
                   ${generateAssemblySvgMarkup(p, true)}
                 </div>
               </div>
 
               <!-- Stuklijst tabel voor dit specifieke punt -->
               <div style="margin-top: 8px;">
-                <div style="font-size: 11px; font-weight: 800; color: #475569; text-transform: uppercase; margin-bottom: 4px;">Benodigde Onderdelen voor dit smeerpunt:</div>
+                <div style="font-size: 11px; font-weight: 800; color: #475569; text-transform: uppercase; margin-bottom: 4px;">
+                  Benodigde Onderdelen voor dit smeerpunt ${mult > 1 ? `(Inclusief vermenigvuldiger x${mult})` : ''}:
+                </div>
                 <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
                   <thead>
                     <tr style="background: #F1F5F9; text-align: left;">
                       <th style="padding: 5px 8px; width: 110px;">Art. Code</th>
                       <th style="padding: 5px 8px;">Omschrijving</th>
                       <th style="padding: 5px 8px;">Aansluitingen</th>
-                      <th style="padding: 5px 8px; text-align: center; width: 50px;">Aantal</th>
+                      <th style="padding: 5px 8px; text-align: center; width: 60px;">Aantal</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -4374,7 +5901,7 @@
                         <td style="padding: 5px 8px; font-family: monospace; font-weight: bold;">${c.code}</td>
                         <td style="padding: 5px 8px;"><strong>${c.name}</strong></td>
                         <td style="padding: 5px 8px; color: #64748B;">${c.a1} ➔ ${c.a2}</td>
-                        <td style="padding: 5px 8px; text-align: center; font-weight: 900;">${c.qty}</td>
+                        <td style="padding: 5px 8px; text-align: center; font-weight: 900;">${c.qty * mult}</td>
                       </tr>
                     `).join('')}
                   </tbody>
@@ -4384,12 +5911,14 @@
           `;
         });
 
-        // Totale stuklijst op het einde van het gedetailleerde rapport (op een nieuwe pagina)
+        // Totale stuklijst op het einde van het gedetailleerde rapport
         const bomMap = new Map();
         filteredPoints.forEach(p => {
+          const mult = parseInt(p.quantityMultiplier) || 1;
           (p.components || []).forEach(c => {
-            if (bomMap.has(c.code)) bomMap.get(c.code).qty += c.qty;
-            else bomMap.set(c.code, { ...c });
+            const effQty = c.qty * mult;
+            if (bomMap.has(c.code)) bomMap.get(c.code).qty += effQty;
+            else bomMap.set(c.code, { ...c, qty: effQty });
           });
         });
 
@@ -4439,11 +5968,20 @@
         `;
 
         filteredPoints.forEach((p, idx) => {
+          const isPulsar = (p.systemType === 'pulsarlube');
+          const mult = parseInt(p.quantityMultiplier) || 1;
+          const sysSummary = isPulsar 
+            ? `Pulsarlube ${p.pulsarModel} (${p.pulsarVol}) + ${p.pulsarGrease} (${p.months} mnd)` 
+            : `ISPL ${p.lubricatorVol}${p.impulseConnect ? ' + Impulse' : ''} + ${p.greaseType} (${p.months} mnd)`;
+
           compactHtml += `
             <div style="border: 1px solid #E2E8F0; border-radius: 8px; padding: 12px; margin-bottom: 12px; background: white; page-break-inside: avoid;">
               <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #F1F5F9; padding-bottom: 6px; margin-bottom: 8px;">
-                <div style="font-weight: 900; font-size: 13.5px; color: #0F172A;">${idx + 1}. Machine: ${p.machine || 'Machine'} ➔ Smeerpunt: ${p.point || 'Smeerpunt'}</div>
-                <div style="font-size: 11.5px; color: #64748B;">Lager: ${p.bearingThread} | ${p.material} | ${p.lubricatorVol}${p.impulseConnect ? ' + Impulse Connect' : ''} + ${p.greaseType} (${p.months} mnd)</div>
+                <div style="font-weight: 900; font-size: 13.5px; color: #0F172A;">
+                  ${idx + 1}. Machine: ${p.machine || 'Machine'} ➔ Smeerpunt: ${p.point || 'Smeerpunt'}
+                  ${mult > 1 ? `<span style="background: #FEF3C7; color: #B45309; font-weight: 900; font-size: 10.5px; padding: 2px 6px; border-radius: 4px; margin-left: 6px;">${mult}x opstelling</span>` : ''}
+                </div>
+                <div style="font-size: 11.5px; color: #64748B;">${sysSummary} | ${p.material}</div>
               </div>
               <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
                 <thead>
@@ -4460,7 +5998,7 @@
                       <td style="padding: 5px 8px; font-weight: bold; font-family: monospace;">${c.code}</td>
                       <td style="padding: 5px 8px;">${c.name}</td>
                       <td style="padding: 5px 8px; color: #64748B;">${c.a1} ➔ ${c.a2}</td>
-                      <td style="padding: 5px 8px; text-align: center; font-weight: 900;">${c.qty}</td>
+                      <td style="padding: 5px 8px; text-align: center; font-weight: 900;">${c.qty * mult}</td>
                     </tr>
                   `).join('')}
                 </tbody>
@@ -4469,12 +6007,14 @@
           `;
         });
 
-        // Totale stuklijst op het einde van het compacte rapport (op een nieuwe pagina)
+        // Totale stuklijst op het einde van het compacte rapport
         const bomMap = new Map();
         filteredPoints.forEach(p => {
+          const mult = parseInt(p.quantityMultiplier) || 1;
           (p.components || []).forEach(c => {
-            if (bomMap.has(c.code)) bomMap.get(c.code).qty += c.qty;
-            else bomMap.set(c.code, { ...c });
+            const effQty = c.qty * mult;
+            if (bomMap.has(c.code)) bomMap.get(c.code).qty += effQty;
+            else bomMap.set(c.code, { ...c, qty: effQty });
           });
         });
 
@@ -4520,15 +6060,14 @@
       }, 300);
     }
 
-    // ========================================================================
-    // ECHTE EXCEL (.XLSX) EXPORT VOOR ODOO OFFERTE
-    // ========================================================================
     function exportOdooExcel() {
       const bomMap = new Map();
       savedPoints.forEach(p => {
+        const mult = parseInt(p.quantityMultiplier) || 1;
         (p.components || []).forEach(c => {
-          if (bomMap.has(c.code)) bomMap.get(c.code).qty += c.qty;
-          else bomMap.set(c.code, { ...c });
+          const effectiveQty = c.qty * mult;
+          if (bomMap.has(c.code)) bomMap.get(c.code).qty += effectiveQty;
+          else bomMap.set(c.code, { ...c, qty: effectiveQty });
         });
       });
 

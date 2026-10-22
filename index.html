@@ -2784,6 +2784,29 @@
           savedPoints = parsed.points || [];
           activePointId = parsed.activeId || (savedPoints[0] ? savedPoints[0].id : null);
           if (parsed.generalInfo) generalInfo = parsed.generalInfo;
+
+          // Hydrate any previously saved points with defaults for new Pulsarlube & Multiplier features
+          savedPoints.forEach(p => {
+            if (!p.systemType) p.systemType = 'ispl';
+            if (!p.quantityMultiplier) p.quantityMultiplier = 1;
+            if (!p.pulsarModel) p.pulsarModel = 'M2';
+            if (!p.pulsarVol) p.pulsarVol = '125 ml';
+            if (!p.pulsarGrease) p.pulsarGrease = 'Grease MP2/3';
+            if (!p.pulsarMonths) p.pulsarMonths = p.months || 6;
+            if (!p.pulsarMountType) p.pulsarMountType = 'remote';
+            if (!p.pulsarBrushType) p.pulsarBrushType = '1413';
+            if (p.pulsarBrushTubeLen === undefined) p.pulsarBrushTubeLen = 1.0;
+            if (!p.pulsarBrushTubeDiam) p.pulsarBrushTubeDiam = '6 mm';
+            if (!p.pulsarPortsCount) p.pulsarPortsCount = 2;
+            if (!p.pulsarPorts || !Array.isArray(p.pulsarPorts)) {
+              p.pulsarPorts = [
+                { length: 1.0, diam: '6 mm', thread: 'M8x1', customThread: '' },
+                { length: 1.0, diam: '6 mm', thread: 'M8x1', customThread: '' }
+              ];
+            }
+            if (!p.pulsarDirectThread) p.pulsarDirectThread = 'M8x1';
+            if (!p.customPulsarDirectThread) p.customPulsarDirectThread = '';
+          });
         }
       } catch (e) {
         console.error("Storage error:", e);
@@ -3336,6 +3359,11 @@
     // ========================================================================
     function switchSystemMode(sys, triggerUpdate = true) {
       currentSystemMode = sys;
+      const activeP = savedPoints.find(p => p.id == activePointId);
+      if (activeP) {
+        activeP.systemType = sys;
+      }
+
       const isplBtn = document.getElementById('btn-sys-ispl');
       const pulsarBtn = document.getElementById('btn-sys-pulsarlube');
       const isplSection = document.getElementById('ispl-params-section');
@@ -3348,7 +3376,18 @@
         if (isplSection) isplSection.style.display = 'none';
         if (pulsarSection) pulsarSection.style.display = 'block';
         if (dirLabel) dirLabel.innerText = 'Lager ➔ Pulsarlube';
-        populatePulsarVolumes();
+        
+        populatePulsarVolumes(activeP ? activeP.pulsarVol : null);
+        populatePulsarGreases(activeP ? activeP.pulsarGrease : null);
+        if (activeP && activeP.pulsarMountType) {
+          const mountEl = document.getElementById('sel-pulsar-mount');
+          if (mountEl) mountEl.value = activeP.pulsarMountType;
+        }
+        if (activeP && activeP.pulsarPortsCount) {
+          const portsCountEl = document.getElementById('sel-pulsar-ports-count');
+          if (portsCountEl) portsCountEl.value = activeP.pulsarPortsCount;
+        }
+        onPulsarMountChange();
       } else {
         if (isplBtn) isplBtn.classList.add('active');
         if (pulsarBtn) pulsarBtn.classList.remove('active');
@@ -4283,7 +4322,7 @@
 
         if (cfg.angle === '90') {
           const match90 = findInCatalog(item => 
-            item.name.includes("Kniestuk 90° G 1/4"") && 
+            item.name.includes('Kniestuk 90° G 1/4"') && 
             item.mat === mat
           );
           comps.push({
@@ -4297,7 +4336,7 @@
           });
         } else if (cfg.angle === '45') {
           const match45 = findInCatalog(item => 
-            item.name.includes("Kniestuk 45° G 1/4"") && 
+            item.name.includes('Kniestuk 45° G 1/4"') && 
             item.mat === mat
           );
           comps.push({
@@ -4313,7 +4352,7 @@
 
         if (cfg.extension !== '0') {
           const matchExt = findInCatalog(item => 
-            item.name.includes("Verlengstuk G 1/4"") && 
+            item.name.includes('Verlengstuk G 1/4"') && 
             item.name.includes(`L=${cfg.extension}mm`) &&
             item.mat === mat
           );

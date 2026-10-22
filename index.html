@@ -2568,10 +2568,10 @@
       <!-- Tab Switcher: Koppelingen vs ISPL & Pulsarlube -->
       <div style="display: flex; gap: 8px; margin-bottom: 14px; border-bottom: 1px solid var(--border); padding-bottom: 10px;">
         <button id="db-tab-btn-couplings" class="btn-pill-primary" style="padding: 7px 18px; font-size: 12px;" onclick="switchDbTab('couplings')">
-          📦 Koppelingen, Kits &amp; Toebehoren (<span id="db-count-couplings">92</span>)
+          📦 Koppelingen &amp; Fittingen (<span id="db-count-couplings">74</span>)
         </button>
         <button id="db-tab-btn-ispl" class="btn-pill-outline" style="padding: 7px 18px; font-size: 12px;" onclick="switchDbTab('ispl')">
-          🛢️ ISPL &amp; Pulsarlube Smeerunits (<span id="db-count-ispl">96</span>)
+          🛢️ ISPL &amp; Pulsarlube Toestellen &amp; Toebehoren (<span id="db-count-ispl">113</span>)
         </button>
       </div>
 
@@ -2733,11 +2733,11 @@
     </div>
   </div>
 
-  <script src="couplings-data.js?v=26"></script>
+  <script src="couplings-data.js?v=27"></script>
   <script>
     const STORAGE_KEY = 'IF_HARDWARE_SELECTOR_DATA_V10';
-    const DB_STORAGE_KEY = 'IF_CUSTOM_COUPLINGS_DB_V10';
-    const ISPL_STORAGE_KEY = 'IF_CUSTOM_ISPL_DB_V10';
+    const DB_STORAGE_KEY = 'IF_CUSTOM_COUPLINGS_DB_V11';
+    const ISPL_STORAGE_KEY = 'IF_CUSTOM_ISPL_DB_V11';
     const PULSAR_STORAGE_KEY = 'IF_CUSTOM_PULSAR_DB_V3';
     let currentPhotoBase64 = null;
     let savedPoints = [];
@@ -2759,7 +2759,8 @@
         if (stored) {
           const parsed = JSON.parse(stored);
           const hasAdapter = Array.isArray(parsed) && parsed.some(item => (item.default_code === '1099.1070'));
-          if (hasAdapter && parsed.length >= (typeof COUPLINGS_DATA !== 'undefined' ? COUPLINGS_DATA.length : 0)) {
+          const hasNoBlocks = Array.isArray(parsed) && !parsed.some(item => (item.default_code === '1480'));
+          if (hasAdapter && hasNoBlocks && parsed.length >= (typeof COUPLINGS_DATA !== 'undefined' ? COUPLINGS_DATA.length : 0)) {
             return parsed;
           }
         }
@@ -2788,7 +2789,8 @@
           const hasImpulse = Array.isArray(parsed) && parsed.some(item => (item.code || item.default_code) === '7213');
           const hasPulsar = Array.isArray(parsed) && parsed.some(item => (item.code || item.default_code) === '1422');
           const hasPLC480 = Array.isArray(parsed) && parsed.some(item => (item.code || item.default_code) === '1459' && item.volume === '480 ml');
-          if (hasImpulse && hasPulsar && hasPLC480 && parsed.length >= (typeof ISPL_CATALOG !== 'undefined' ? ISPL_CATALOG.length : 0)) {
+          const hasBlock = Array.isArray(parsed) && parsed.some(item => (item.code || item.default_code) === '1480');
+          if (hasImpulse && hasPulsar && hasPLC480 && hasBlock && parsed.length >= (typeof ISPL_CATALOG !== 'undefined' ? ISPL_CATALOG.length : 0)) {
             return parsed;
           }
         }
@@ -7091,7 +7093,7 @@
     }
 
         function downloadDatabaseTemplateXLSX() {
-      // Sheet 1: Koppelingen & Kits
+      // Sheet 1: Koppelingen & Fittingen (Enkel fittingen, verloopstukken, reducties, etc.)
       const coupTemplateRows = [
         {
           "default_code": "1099.1000",
@@ -7123,7 +7125,7 @@
         { wch: 50 }
       ];
 
-      // Sheet 2: ISPL & Pulsarlube
+      // Sheet 2: ISPL & Pulsarlube Toestellen & Toebehoren (Units, Servicepacks, Kits, Verdeelblokken, Leidingen, Borstels)
       const isplTemplateRows = [
         {
           "default_code": "1082",
@@ -7154,6 +7156,26 @@
           "materiaal": "Mylar balg / Lithium batterij",
           "categorie": "Service Packs (Vetbalg + Batterij)",
           "description": "OEM Servicepack 250 ml gevuld met Grease MP2/3 inclusief lithium batterijpack (art. 4203)"
+        },
+        {
+          "default_code": "1480",
+          "name": "HU Type Divider Block 2 poorten (incl. 6 mm uitgangskoppelingen)",
+          "volume": "2 poorten",
+          "grease": "-",
+          "draad": "1/8\" NPT F x 6 mm",
+          "materiaal": "Geanodiseerd aluminium / Messing",
+          "categorie": "Verdeelblokken",
+          "description": "Progressief HU-type verdeelblok met 2 poorten (art. 1480)"
+        },
+        {
+          "default_code": "1430",
+          "name": "Installatiekit 1250RC-1 voor montage op afstand (G 3/8\" naar G 1/8\")",
+          "volume": "Kit",
+          "grease": "-",
+          "draad": "G 3/8\" F x G 1/8\" M",
+          "materiaal": "Verzinkt staal / Messing",
+          "categorie": "Installatiekits",
+          "description": "Pulsarlube montagekit 1250RC-1 inclusief beugel en verloopstuk G 3/8\" naar G 1/8\" (art. 1430)"
         }
       ];
       const ws2 = XLSX.utils.json_to_sheet(isplTemplateRows);
@@ -7169,8 +7191,8 @@
       ];
 
       const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws1, "Koppelingen & Kits");
-      XLSX.utils.book_append_sheet(wb, ws2, "ISPL & Pulsarlube");
+      XLSX.utils.book_append_sheet(wb, ws1, "Koppelingen & Fittingen");
+      XLSX.utils.book_append_sheet(wb, ws2, "ISPL & Pulsarlube Toebehoren");
 
       XLSX.writeFile(wb, "Odoo_Hardware_Database_Template.xlsx");
     }
@@ -7224,8 +7246,8 @@ function exportDatabaseExcelXLSX() {
       ];
 
       const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws1, "Koppelingen & Kits");
-      XLSX.utils.book_append_sheet(wb, ws2, "ISPL & Pulsarlube");
+      XLSX.utils.book_append_sheet(wb, ws1, "Koppelingen & Fittingen");
+      XLSX.utils.book_append_sheet(wb, ws2, "ISPL & Pulsarlube Toebehoren");
 
       const filename = `Odoo_Hardware_Database_${new Date().toISOString().slice(0,10)}.xlsx`;
       XLSX.writeFile(wb, filename);

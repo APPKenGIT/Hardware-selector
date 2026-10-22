@@ -652,7 +652,10 @@ let ISPL_CATALOG = [
     "name": "Interflon Single Point Lubricator 15 ml + Grease MP2/3",
     "thread": "G 1/4\" M",
     "mat": "Polycarbonaat / Kunststof",
-    "desc": "Automatische smeerunit 15ml gevuld met Interflon Grease MP2/3 (art. 1082)"
+    "desc": "Automatische smeerunit 15ml gevuld met Interflon Grease MP2/3 (art. 1082)",
+    "default_code": "1082",
+    "system": "ispl",
+    "cat": "ISPL Smeerunits"
   },
   {
     "code": "1096",
@@ -662,7 +665,10 @@ let ISPL_CATALOG = [
     "name": "Interflon Single Point Lubricator 15 ml + Grease MP1",
     "thread": "G 1/4\" M",
     "mat": "Polycarbonaat / Kunststof",
-    "desc": "Automatische smeerunit 15ml gevuld met Interflon Grease MP1 (art. 1096)"
+    "desc": "Automatische smeerunit 15ml gevuld met Interflon Grease MP1 (art. 1096)",
+    "default_code": "1096",
+    "system": "ispl",
+    "cat": "ISPL Smeerunits"
   },
   {
     "code": "1097",
@@ -672,7 +678,10 @@ let ISPL_CATALOG = [
     "name": "Interflon Single Point Lubricator 15 ml + Food grease HD2",
     "thread": "G 1/4\" M",
     "mat": "Polycarbonaat / Kunststof",
-    "desc": "Automatische smeerunit 15ml gevuld met Interflon Food grease HD2 (art. 1097)"
+    "desc": "Automatische smeerunit 15ml gevuld met Interflon Food grease HD2 (art. 1097)",
+    "default_code": "1097",
+    "system": "ispl",
+    "cat": "ISPL Smeerunits"
   },
   {
     "code": "7612",
@@ -682,7 +691,10 @@ let ISPL_CATALOG = [
     "name": "Interflon Single Point Lubricator 15 ml + Food grease LT2",
     "thread": "G 1/4\" M",
     "mat": "Polycarbonaat / Kunststof",
-    "desc": "Automatische smeerunit 15ml gevuld met Interflon Food grease LT2 (art. 7612)"
+    "desc": "Automatische smeerunit 15ml gevuld met Interflon Food grease LT2 (art. 7612)",
+    "default_code": "7612",
+    "system": "ispl",
+    "cat": "ISPL Smeerunits"
   },
   {
     "code": "1051",
@@ -692,7 +704,10 @@ let ISPL_CATALOG = [
     "name": "Interflon Single Point Lubricator 30 ml + Grease MP2/3",
     "thread": "G 1/4\" M",
     "mat": "Polycarbonaat / Kunststof",
-    "desc": "Automatische smeerunit 30ml gevuld met Interflon Grease MP2/3 (art. 1051)"
+    "desc": "Automatische smeerunit 30ml gevuld met Interflon Grease MP2/3 (art. 1051)",
+    "default_code": "1051",
+    "system": "ispl",
+    "cat": "ISPL Smeerunits"
   },
   {
     "code": "1066",
@@ -702,7 +717,10 @@ let ISPL_CATALOG = [
     "name": "Interflon Single Point Lubricator 30 ml + Food grease LT2",
     "thread": "G 1/4\" M",
     "mat": "Polycarbonaat / Kunststof",
-    "desc": "Automatische smeerunit 30ml gevuld met Interflon Food grease LT2 (art. 1066)"
+    "desc": "Automatische smeerunit 30ml gevuld met Interflon Food grease LT2 (art. 1066)",
+    "default_code": "1066",
+    "system": "ispl",
+    "cat": "ISPL Smeerunits"
   },
   {
     "code": "1042",
@@ -712,7 +730,10 @@ let ISPL_CATALOG = [
     "name": "Interflon Single Point Lubricator 30 ml + Food lube G150",
     "thread": "G 1/4\" M",
     "mat": "Polycarbonaat / Kunststof",
-    "desc": "Automatische smeerunit 30ml gevuld met Interflon Food lube G150 (art. 1042)"
+    "desc": "Automatische smeerunit 30ml gevuld met Interflon Food lube G150 (art. 1042)",
+    "default_code": "1042",
+    "system": "ispl",
+    "cat": "ISPL Smeerunits"
   },
   {
     "code": "1053",
@@ -722,7 +743,10 @@ let ISPL_CATALOG = [
     "name": "Interflon Single Point Lubricator 30 ml + Food lube G220",
     "thread": "G 1/4\" M",
     "mat": "Polycarbonaat / Kunststof",
-    "desc": "Automatische smeerunit 30ml gevuld met Interflon Food lube G220 (art. 1053)"
+    "desc": "Automatische smeerunit 30ml gevuld met Interflon Food lube G220 (art. 1053)",
+    "default_code": "1053",
+    "system": "ispl",
+    "cat": "ISPL Smeerunits"
   },
   {
     "code": "1071",
@@ -732,7 +756,10 @@ let ISPL_CATALOG = [
     "name": "Interflon Single Point Lubricator 60 ml + Grease MP2/3",
     "thread": "G 1/4\" M",
     "mat": "Polycarbonaat / Kunststof",
-    "desc": "Automatische smeerunit 60ml gevuld met Interflon Grease MP2/3 (art. 1071)"
+    "desc": "Automatische smeerunit 60ml gevuld met Interflon Grease MP2/3 (art. 1071)",
+    "default_code": "1071",
+    "system": "ispl",
+    "cat": "ISPL Smeerunits"
   },
   {
     "code": "1049",
@@ -742,7 +769,10 @@ let ISPL_CATALOG = [
     "name": "Interflon Single Point Lubricator 60 ml + Grease LS1/2",
     "thread": "G 1/4\" M",
     "mat": "Polycarbonaat / Kunststof",
-    "desc": "Automatische smeerunit 60ml gevuld met Interflon Grease LS1/2 (art. 1049)"
+    "desc": "Automatische smeerunit 60ml gevuld met Interflon Grease LS1/2 (art. 1049)",
+    "default_code": "1049",
+    "system": "ispl",
+    "cat": "ISPL Smeerunits"
   },
   {
     "code": "1079",
@@ -752,7 +782,10 @@ let ISPL_CATALOG = [
     "name": "Interflon Single Point Lubricator 60 ml + Grease HD2",
     "thread": "G 1/4\" M",
     "mat": "Polycarbonaat / Kunststof",
-    "desc": "Automatische smeerunit 60ml gevuld met Interflon Grease HD2 (art. 1079)"
+    "desc": "Automatische smeerunit 60ml gevuld met Interflon Grease HD2 (art. 1079)",
+    "default_code": "1079",
+    "system": "ispl",
+    "cat": "ISPL Smeerunits"
   },
   {
     "code": "1074",
@@ -762,7 +795,10 @@ let ISPL_CATALOG = [
     "name": "Interflon Single Point Lubricator 60 ml + Food grease 1",
     "thread": "G 1/4\" M",
     "mat": "Polycarbonaat / Kunststof",
-    "desc": "Automatische smeerunit 60ml gevuld met Interflon Food grease 1 (art. 1074)"
+    "desc": "Automatische smeerunit 60ml gevuld met Interflon Food grease 1 (art. 1074)",
+    "default_code": "1074",
+    "system": "ispl",
+    "cat": "ISPL Smeerunits"
   },
   {
     "code": "1077",
@@ -772,7 +808,10 @@ let ISPL_CATALOG = [
     "name": "Interflon Single Point Lubricator 60 ml + Food grease EP",
     "thread": "G 1/4\" M",
     "mat": "Polycarbonaat / Kunststof",
-    "desc": "Automatische smeerunit 60ml gevuld met Interflon Food grease EP (art. 1077)"
+    "desc": "Automatische smeerunit 60ml gevuld met Interflon Food grease EP (art. 1077)",
+    "default_code": "1077",
+    "system": "ispl",
+    "cat": "ISPL Smeerunits"
   },
   {
     "code": "1078",
@@ -782,7 +821,10 @@ let ISPL_CATALOG = [
     "name": "Interflon Single Point Lubricator 60 ml + Food grease LT2",
     "thread": "G 1/4\" M",
     "mat": "Polycarbonaat / Kunststof",
-    "desc": "Automatische smeerunit 60ml gevuld met Interflon Food grease LT2 (art. 1078)"
+    "desc": "Automatische smeerunit 60ml gevuld met Interflon Food grease LT2 (art. 1078)",
+    "default_code": "1078",
+    "system": "ispl",
+    "cat": "ISPL Smeerunits"
   },
   {
     "code": "1075",
@@ -792,7 +834,10 @@ let ISPL_CATALOG = [
     "name": "Interflon Single Point Lubricator 60 ml + Food lube G150",
     "thread": "G 1/4\" M",
     "mat": "Polycarbonaat / Kunststof",
-    "desc": "Automatische smeerunit 60ml gevuld met Interflon Food lube G150 (art. 1075)"
+    "desc": "Automatische smeerunit 60ml gevuld met Interflon Food lube G150 (art. 1075)",
+    "default_code": "1075",
+    "system": "ispl",
+    "cat": "ISPL Smeerunits"
   },
   {
     "code": "1061",
@@ -802,7 +847,10 @@ let ISPL_CATALOG = [
     "name": "Interflon Single Point Lubricator 125 ml + Grease MP2/3",
     "thread": "G 1/4\" M",
     "mat": "Polycarbonaat / Kunststof",
-    "desc": "Automatische smeerunit 125ml gevuld met Interflon Grease MP2/3 (art. 1061)"
+    "desc": "Automatische smeerunit 125ml gevuld met Interflon Grease MP2/3 (art. 1061)",
+    "default_code": "1061",
+    "system": "ispl",
+    "cat": "ISPL Smeerunits"
   },
   {
     "code": "1086",
@@ -812,7 +860,10 @@ let ISPL_CATALOG = [
     "name": "Interflon Single Point Lubricator 125 ml + Grease LS1/2",
     "thread": "G 1/4\" M",
     "mat": "Polycarbonaat / Kunststof",
-    "desc": "Automatische smeerunit 125ml gevuld met Interflon Grease LS1/2 (art. 1086)"
+    "desc": "Automatische smeerunit 125ml gevuld met Interflon Grease LS1/2 (art. 1086)",
+    "default_code": "1086",
+    "system": "ispl",
+    "cat": "ISPL Smeerunits"
   },
   {
     "code": "1081",
@@ -822,7 +873,10 @@ let ISPL_CATALOG = [
     "name": "Interflon Single Point Lubricator 125 ml + Grease HD2",
     "thread": "G 1/4\" M",
     "mat": "Polycarbonaat / Kunststof",
-    "desc": "Automatische smeerunit 125ml gevuld met Interflon Grease HD2 (art. 1081)"
+    "desc": "Automatische smeerunit 125ml gevuld met Interflon Grease HD2 (art. 1081)",
+    "default_code": "1081",
+    "system": "ispl",
+    "cat": "ISPL Smeerunits"
   },
   {
     "code": "1067",
@@ -832,7 +886,10 @@ let ISPL_CATALOG = [
     "name": "Interflon Single Point Lubricator 125 ml + Food grease 1",
     "thread": "G 1/4\" M",
     "mat": "Polycarbonaat / Kunststof",
-    "desc": "Automatische smeerunit 125ml gevuld met Interflon Food grease 1 (art. 1067)"
+    "desc": "Automatische smeerunit 125ml gevuld met Interflon Food grease 1 (art. 1067)",
+    "default_code": "1067",
+    "system": "ispl",
+    "cat": "ISPL Smeerunits"
   },
   {
     "code": "1065",
@@ -842,7 +899,10 @@ let ISPL_CATALOG = [
     "name": "Interflon Single Point Lubricator 125 ml + Food grease EP",
     "thread": "G 1/4\" M",
     "mat": "Polycarbonaat / Kunststof",
-    "desc": "Automatische smeerunit 125ml gevuld met Interflon Food grease EP (art. 1065)"
+    "desc": "Automatische smeerunit 125ml gevuld met Interflon Food grease EP (art. 1065)",
+    "default_code": "1065",
+    "system": "ispl",
+    "cat": "ISPL Smeerunits"
   },
   {
     "code": "1083",
@@ -852,7 +912,10 @@ let ISPL_CATALOG = [
     "name": "Interflon Single Point Lubricator 125 ml + Food grease LT2",
     "thread": "G 1/4\" M",
     "mat": "Polycarbonaat / Kunststof",
-    "desc": "Automatische smeerunit 125ml gevuld met Interflon Food grease LT2 (art. 1083)"
+    "desc": "Automatische smeerunit 125ml gevuld met Interflon Food grease LT2 (art. 1083)",
+    "default_code": "1083",
+    "system": "ispl",
+    "cat": "ISPL Smeerunits"
   },
   {
     "code": "1068",
@@ -862,7 +925,10 @@ let ISPL_CATALOG = [
     "name": "Interflon Single Point Lubricator 125 ml + Lube PN32",
     "thread": "G 1/4\" M",
     "mat": "Polycarbonaat / Kunststof",
-    "desc": "Automatische smeerunit 125ml gevuld met Interflon Lube PN32 (art. 1068)"
+    "desc": "Automatische smeerunit 125ml gevuld met Interflon Lube PN32 (art. 1068)",
+    "default_code": "1068",
+    "system": "ispl",
+    "cat": "ISPL Smeerunits"
   },
   {
     "code": "1064",
@@ -872,7 +938,10 @@ let ISPL_CATALOG = [
     "name": "Interflon Single Point Lubricator 125 ml + Lube PN68",
     "thread": "G 1/4\" M",
     "mat": "Polycarbonaat / Kunststof",
-    "desc": "Automatische smeerunit 125ml gevuld met Interflon Lube PN68 (art. 1064)"
+    "desc": "Automatische smeerunit 125ml gevuld met Interflon Lube PN68 (art. 1064)",
+    "default_code": "1064",
+    "system": "ispl",
+    "cat": "ISPL Smeerunits"
   },
   {
     "code": "1069",
@@ -882,7 +951,10 @@ let ISPL_CATALOG = [
     "name": "Interflon Single Point Lubricator 125 ml + Food lube G150",
     "thread": "G 1/4\" M",
     "mat": "Polycarbonaat / Kunststof",
-    "desc": "Automatische smeerunit 125ml gevuld met Interflon Food lube G150 (art. 1069)"
+    "desc": "Automatische smeerunit 125ml gevuld met Interflon Food lube G150 (art. 1069)",
+    "default_code": "1069",
+    "system": "ispl",
+    "cat": "ISPL Smeerunits"
   },
   {
     "code": "1041",
@@ -892,7 +964,10 @@ let ISPL_CATALOG = [
     "name": "Interflon Single Point Lubricator 250 ml + Grease LS1/2",
     "thread": "G 1/4\" M",
     "mat": "Polycarbonaat / Kunststof",
-    "desc": "Automatische smeerunit 250ml gevuld met Interflon Grease LS1/2 (art. 1041)"
+    "desc": "Automatische smeerunit 250ml gevuld met Interflon Grease LS1/2 (art. 1041)",
+    "default_code": "1041",
+    "system": "ispl",
+    "cat": "ISPL Smeerunits"
   },
   {
     "code": "1087",
@@ -902,7 +977,10 @@ let ISPL_CATALOG = [
     "name": "Interflon Single Point Lubricator 250 ml + Grease MP2/3",
     "thread": "G 1/4\" M",
     "mat": "Polycarbonaat / Kunststof",
-    "desc": "Automatische smeerunit 250ml gevuld met Interflon Grease MP2/3 (art. 1087)"
+    "desc": "Automatische smeerunit 250ml gevuld met Interflon Grease MP2/3 (art. 1087)",
+    "default_code": "1087",
+    "system": "ispl",
+    "cat": "ISPL Smeerunits"
   },
   {
     "code": "1070",
@@ -912,7 +990,10 @@ let ISPL_CATALOG = [
     "name": "Interflon Single Point Lubricator 250 ml + Food grease LT2",
     "thread": "G 1/4\" M",
     "mat": "Polycarbonaat / Kunststof",
-    "desc": "Automatische smeerunit 250ml gevuld met Interflon Food grease LT2 (art. 1070)"
+    "desc": "Automatische smeerunit 250ml gevuld met Interflon Food grease LT2 (art. 1070)",
+    "default_code": "1070",
+    "system": "ispl",
+    "cat": "ISPL Smeerunits"
   },
   {
     "code": "1060",
@@ -922,7 +1003,10 @@ let ISPL_CATALOG = [
     "name": "Interflon Single Point Lubricator 250 ml + Lube PN68",
     "thread": "G 1/4\" M",
     "mat": "Polycarbonaat / Kunststof",
-    "desc": "Automatische smeerunit 250ml gevuld met Interflon Lube PN68 (art. 1060)"
+    "desc": "Automatische smeerunit 250ml gevuld met Interflon Lube PN68 (art. 1060)",
+    "default_code": "1060",
+    "system": "ispl",
+    "cat": "ISPL Smeerunits"
   },
   {
     "code": "1095",
@@ -932,7 +1016,10 @@ let ISPL_CATALOG = [
     "name": "Interflon Single Point Lubricator 250 ml + Food lube G150",
     "thread": "G 1/4\" M",
     "mat": "Polycarbonaat / Kunststof",
-    "desc": "Automatische smeerunit 250ml gevuld met Interflon Food lube G150 (art. 1095)"
+    "desc": "Automatische smeerunit 250ml gevuld met Interflon Food lube G150 (art. 1095)",
+    "default_code": "1095",
+    "system": "ispl",
+    "cat": "ISPL Smeerunits"
   },
   {
     "code": "1702",
@@ -942,7 +1029,10 @@ let ISPL_CATALOG = [
     "thread": "G 1/4\" F naar G 1/8\" M",
     "name": "Pulsarlube 2000RC-1 Installatiekit voor montage op afstand",
     "mat": "Verzinkt staal / RVS / Polyamide",
-    "desc": "Complete installatiekit Pulsarlube 2000RC-1 inclusief beugel, max. 20 cm slang 8 mm en rechte insteekkoppeling (art. 1702)"
+    "desc": "Complete installatiekit Pulsarlube 2000RC-1 inclusief beugel, max. 20 cm slang 8 mm en rechte insteekkoppeling (art. 1702)",
+    "default_code": "1702",
+    "system": "ispl",
+    "cat": "ISPL Smeerunits"
   },
   {
     "code": "7213",
@@ -952,13 +1042,11 @@ let ISPL_CATALOG = [
     "thread": "G 1/4\" F naar G 1/4\" M",
     "name": "Interflon Impulse Connect (Drukversterker 10 bar + Bluetooth)",
     "mat": "Kunststof / RVS (IP68)",
-    "desc": "Elektromechanische drukversterker tot 10 bar met Bluetooth® connectiviteit en geïntegreerde terugslagklep, montage direct onder ISPL (art. 7213)"
-  }
-];
-
-
-// Officiële Pulsarlube Catalogus (Dispensers, Servicepacks, Verdeelblokken, Leidingen, Borstels)
-let PULSARLUBE_CATALOG = [
+    "desc": "Elektromechanische drukversterker tot 10 bar met Bluetooth® connectiviteit en geïntegreerde terugslagklep, montage direct onder ISPL (art. 7213)",
+    "default_code": "7213",
+    "system": "ispl",
+    "cat": "ISPL Smeerunits"
+  },
   {
     "code": "1422",
     "cat": "Dispensers (Vet)",
@@ -969,7 +1057,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Herbruikbaar elektro-mechanisch",
     "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
     "mat": "Kunststof / RVS (IP65)",
-    "desc": "Elektro-mechanische automatische smeerunit 30-60 bar (art. 1422)"
+    "desc": "Elektro-mechanische automatische smeerunit 30-60 bar (art. 1422)",
+    "default_code": "1422",
+    "system": "pulsarlube",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)"
   },
   {
     "code": "1423",
@@ -981,7 +1072,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Herbruikbaar elektro-mechanisch",
     "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
     "mat": "Kunststof / RVS (IP65)",
-    "desc": "Elektro-mechanische automatische smeerunit 30-60 bar (art. 1423)"
+    "desc": "Elektro-mechanische automatische smeerunit 30-60 bar (art. 1423)",
+    "default_code": "1423",
+    "system": "pulsarlube",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)"
   },
   {
     "code": "1424",
@@ -993,7 +1087,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Herbruikbaar elektro-mechanisch",
     "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
     "mat": "Kunststof / RVS (IP65)",
-    "desc": "Elektro-mechanische automatische smeerunit 30-60 bar (art. 1424)"
+    "desc": "Elektro-mechanische automatische smeerunit 30-60 bar (art. 1424)",
+    "default_code": "1424",
+    "system": "pulsarlube",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)"
   },
   {
     "code": "1425",
@@ -1005,7 +1102,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Herbruikbaar elektro-mechanisch",
     "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
     "mat": "Kunststof / RVS (IP65)",
-    "desc": "Elektro-mechanische automatische smeerunit 30-60 bar (art. 1425)"
+    "desc": "Elektro-mechanische automatische smeerunit 30-60 bar (art. 1425)",
+    "default_code": "1425",
+    "system": "pulsarlube",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)"
   },
   {
     "code": "1477",
@@ -1017,7 +1117,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Bluetooth BLE connectiviteit",
     "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
     "mat": "Kunststof / RVS (IP65)",
-    "desc": "Draadloos bewaakte automatische smeerunit via Bluetooth app (art. 1477)"
+    "desc": "Draadloos bewaakte automatische smeerunit via Bluetooth app (art. 1477)",
+    "default_code": "1477",
+    "system": "pulsarlube",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)"
   },
   {
     "code": "1478",
@@ -1029,7 +1132,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Bluetooth BLE connectiviteit",
     "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
     "mat": "Kunststof / RVS (IP65)",
-    "desc": "Draadloos bewaakte automatische smeerunit via Bluetooth app (art. 1478)"
+    "desc": "Draadloos bewaakte automatische smeerunit via Bluetooth app (art. 1478)",
+    "default_code": "1478",
+    "system": "pulsarlube",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)"
   },
   {
     "code": "1479",
@@ -1041,7 +1147,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Bluetooth BLE connectiviteit",
     "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
     "mat": "Kunststof / RVS (IP65)",
-    "desc": "Draadloos bewaakte automatische smeerunit via Bluetooth app (art. 1479)"
+    "desc": "Draadloos bewaakte automatische smeerunit via Bluetooth app (art. 1479)",
+    "default_code": "1479",
+    "system": "pulsarlube",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)"
   },
   {
     "code": "1448",
@@ -1053,7 +1162,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Extern gevoed AC",
     "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
     "mat": "Kunststof / RVS (IP65)",
-    "desc": "Extern gevoed synchroon met machine 110-240V AC (art. 1448)"
+    "desc": "Extern gevoed synchroon met machine 110-240V AC (art. 1448)",
+    "default_code": "1448",
+    "system": "pulsarlube",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)"
   },
   {
     "code": "1447",
@@ -1065,7 +1177,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Extern gevoed DC",
     "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
     "mat": "Kunststof / RVS (IP65)",
-    "desc": "Extern gevoed synchroon met machine 12-24V DC (art. 1447)"
+    "desc": "Extern gevoed synchroon met machine 12-24V DC (art. 1447)",
+    "default_code": "1447",
+    "system": "pulsarlube",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)"
   },
   {
     "code": "1446",
@@ -1077,7 +1192,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Extern gevoed AC",
     "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
     "mat": "Kunststof / RVS (IP65)",
-    "desc": "Extern gevoed synchroon met machine 110-240V AC (art. 1446)"
+    "desc": "Extern gevoed synchroon met machine 110-240V AC (art. 1446)",
+    "default_code": "1446",
+    "system": "pulsarlube",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)"
   },
   {
     "code": "1445",
@@ -1089,7 +1207,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Extern gevoed DC",
     "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
     "mat": "Kunststof / RVS (IP65)",
-    "desc": "Extern gevoed synchroon met machine 12-24V DC (art. 1445)"
+    "desc": "Extern gevoed synchroon met machine 12-24V DC (art. 1445)",
+    "default_code": "1445",
+    "system": "pulsarlube",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)"
   },
   {
     "code": "1444",
@@ -1101,7 +1222,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Extern gevoed AC",
     "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
     "mat": "Kunststof / RVS (IP65)",
-    "desc": "Extern gevoed synchroon met machine 110-240V AC (art. 1444)"
+    "desc": "Extern gevoed synchroon met machine 110-240V AC (art. 1444)",
+    "default_code": "1444",
+    "system": "pulsarlube",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)"
   },
   {
     "code": "1443",
@@ -1113,7 +1237,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Extern gevoed DC",
     "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
     "mat": "Kunststof / RVS (IP65)",
-    "desc": "Extern gevoed synchroon met machine 12-24V DC (art. 1443)"
+    "desc": "Extern gevoed synchroon met machine 12-24V DC (art. 1443)",
+    "default_code": "1443",
+    "system": "pulsarlube",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)"
   },
   {
     "code": "1442",
@@ -1125,7 +1252,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Extern gevoed AC",
     "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
     "mat": "Kunststof / RVS (IP65)",
-    "desc": "Extern gevoed synchroon met machine 110-240V AC (art. 1442)"
+    "desc": "Extern gevoed synchroon met machine 110-240V AC (art. 1442)",
+    "default_code": "1442",
+    "system": "pulsarlube",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)"
   },
   {
     "code": "1441",
@@ -1137,7 +1267,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Extern gevoed DC",
     "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
     "mat": "Kunststof / RVS (IP65)",
-    "desc": "Extern gevoed synchroon met machine 12-24V DC (art. 1441)"
+    "desc": "Extern gevoed synchroon met machine 12-24V DC (art. 1441)",
+    "default_code": "1441",
+    "system": "pulsarlube",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)"
   },
   {
     "code": "1450",
@@ -1149,7 +1282,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "PLC gestuurd",
     "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
     "mat": "Kunststof / RVS (IP65)",
-    "desc": "Aangestuurd via PLC signaal machine (art. 1450)"
+    "desc": "Aangestuurd via PLC signaal machine (art. 1450)",
+    "default_code": "1450",
+    "system": "pulsarlube",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)"
   },
   {
     "code": "1455",
@@ -1161,7 +1297,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "PLC gestuurd",
     "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
     "mat": "Kunststof / RVS (IP65)",
-    "desc": "Aangestuurd via PLC signaal machine (art. 1455)"
+    "desc": "Aangestuurd via PLC signaal machine (art. 1455)",
+    "default_code": "1455",
+    "system": "pulsarlube",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)"
   },
   {
     "code": "1457",
@@ -1173,7 +1312,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "PLC gestuurd",
     "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
     "mat": "Kunststof / RVS (IP65)",
-    "desc": "Aangestuurd via PLC signaal machine (art. 1457)"
+    "desc": "Aangestuurd via PLC signaal machine (art. 1457)",
+    "default_code": "1457",
+    "system": "pulsarlube",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)"
   },
   {
     "code": "1459",
@@ -1185,7 +1327,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "PLC gestuurd",
     "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
     "mat": "Kunststof / RVS (IP65)",
-    "desc": "Aangestuurd via PLC signaal machine (art. 1459)"
+    "desc": "Aangestuurd via PLC signaal machine (art. 1459)",
+    "default_code": "1459",
+    "system": "pulsarlube",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)"
   },
   {
     "code": "1411",
@@ -1197,7 +1342,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Oliedispenser herbruikbaar",
     "a2": "1/8\" NPT M",
     "mat": "Kunststof / RVS",
-    "desc": "Elektro-mechanische oliesmeerdispenser 500 ml (art. 1411)"
+    "desc": "Elektro-mechanische oliesmeerdispenser 500 ml (art. 1411)",
+    "default_code": "1411",
+    "system": "pulsarlube",
+    "thread": "1/8\" NPT M"
   },
   {
     "code": "1437",
@@ -1209,7 +1357,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Extern gevoed AC",
     "a2": "1/8\" NPT M",
     "mat": "Kunststof / RVS",
-    "desc": "Oliesmeerdispenser extern gevoed 110-240V AC (art. 1437)"
+    "desc": "Oliesmeerdispenser extern gevoed 110-240V AC (art. 1437)",
+    "default_code": "1437",
+    "system": "pulsarlube",
+    "thread": "1/8\" NPT M"
   },
   {
     "code": "1449",
@@ -1221,7 +1372,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Extern gevoed DC",
     "a2": "1/8\" NPT M",
     "mat": "Kunststof / RVS",
-    "desc": "Oliesmeerdispenser extern gevoed 12-24V DC (art. 1449)"
+    "desc": "Oliesmeerdispenser extern gevoed 12-24V DC (art. 1449)",
+    "default_code": "1449",
+    "system": "pulsarlube",
+    "thread": "1/8\" NPT M"
   },
   {
     "code": "4419",
@@ -1233,7 +1387,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Vervangbare balg",
     "a2": "Pulsarlube bajonetsluiting",
     "mat": "Vetbalg + Alkaline/Lithium batterij",
-    "desc": "Complete navulset 60 ml gevuld met Interflon Grease MP2/3 inclusief nieuwe batterijpack (art. 4419)"
+    "desc": "Complete navulset 60 ml gevuld met Interflon Grease MP2/3 inclusief nieuwe batterijpack (art. 4419)",
+    "default_code": "4419",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
   },
   {
     "code": "4210",
@@ -1245,7 +1402,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Vervangbare balg",
     "a2": "Pulsarlube bajonetsluiting",
     "mat": "Vetbalg + Alkaline/Lithium batterij",
-    "desc": "Complete navulset 60 ml gevuld met Interflon Food grease LT2 inclusief nieuwe batterijpack (art. 4210)"
+    "desc": "Complete navulset 60 ml gevuld met Interflon Food grease LT2 inclusief nieuwe batterijpack (art. 4210)",
+    "default_code": "4210",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
   },
   {
     "code": "4201",
@@ -1257,7 +1417,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Vervangbare balg",
     "a2": "Pulsarlube bajonetsluiting",
     "mat": "Vetbalg + Alkaline/Lithium batterij",
-    "desc": "Complete navulset 125 ml gevuld met Interflon Grease MP2/3 inclusief nieuwe batterijpack (art. 4201)"
+    "desc": "Complete navulset 125 ml gevuld met Interflon Grease MP2/3 inclusief nieuwe batterijpack (art. 4201)",
+    "default_code": "4201",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
   },
   {
     "code": "4202",
@@ -1269,7 +1432,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Vervangbare balg",
     "a2": "Pulsarlube bajonetsluiting",
     "mat": "Vetbalg + Alkaline/Lithium batterij",
-    "desc": "Complete navulset 125 ml gevuld met Interflon Grease MP00 inclusief nieuwe batterijpack (art. 4202)"
+    "desc": "Complete navulset 125 ml gevuld met Interflon Grease MP00 inclusief nieuwe batterijpack (art. 4202)",
+    "default_code": "4202",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
   },
   {
     "code": "4203",
@@ -1281,7 +1447,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Vervangbare balg",
     "a2": "Pulsarlube bajonetsluiting",
     "mat": "Vetbalg + Alkaline/Lithium batterij",
-    "desc": "Complete navulset 125 ml gevuld met Interflon Grease LS2 inclusief nieuwe batterijpack (art. 4203)"
+    "desc": "Complete navulset 125 ml gevuld met Interflon Grease LS2 inclusief nieuwe batterijpack (art. 4203)",
+    "default_code": "4203",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
   },
   {
     "code": "4207",
@@ -1293,7 +1462,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Vervangbare balg",
     "a2": "Pulsarlube bajonetsluiting",
     "mat": "Vetbalg + Alkaline/Lithium batterij",
-    "desc": "Complete navulset 125 ml gevuld met Interflon Grease LS1/2 inclusief nieuwe batterijpack (art. 4207)"
+    "desc": "Complete navulset 125 ml gevuld met Interflon Grease LS1/2 inclusief nieuwe batterijpack (art. 4207)",
+    "default_code": "4207",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
   },
   {
     "code": "4206",
@@ -1305,7 +1477,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Vervangbare balg",
     "a2": "Pulsarlube bajonetsluiting",
     "mat": "Vetbalg + Alkaline/Lithium batterij",
-    "desc": "Complete navulset 125 ml gevuld met Interflon Grease HTG inclusief nieuwe batterijpack (art. 4206)"
+    "desc": "Complete navulset 125 ml gevuld met Interflon Grease HTG inclusief nieuwe batterijpack (art. 4206)",
+    "default_code": "4206",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
   },
   {
     "code": "4209",
@@ -1317,7 +1492,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Vervangbare balg",
     "a2": "Pulsarlube bajonetsluiting",
     "mat": "Vetbalg + Alkaline/Lithium batterij",
-    "desc": "Complete navulset 125 ml gevuld met Interflon Grease HD2 inclusief nieuwe batterijpack (art. 4209)"
+    "desc": "Complete navulset 125 ml gevuld met Interflon Grease HD2 inclusief nieuwe batterijpack (art. 4209)",
+    "default_code": "4209",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
   },
   {
     "code": "4204",
@@ -1329,7 +1507,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Vervangbare balg",
     "a2": "Pulsarlube bajonetsluiting",
     "mat": "Vetbalg + Alkaline/Lithium batterij",
-    "desc": "Complete navulset 125 ml gevuld met Interflon Food grease 1 inclusief nieuwe batterijpack (art. 4204)"
+    "desc": "Complete navulset 125 ml gevuld met Interflon Food grease 1 inclusief nieuwe batterijpack (art. 4204)",
+    "default_code": "4204",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
   },
   {
     "code": "4205",
@@ -1341,7 +1522,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Vervangbare balg",
     "a2": "Pulsarlube bajonetsluiting",
     "mat": "Vetbalg + Alkaline/Lithium batterij",
-    "desc": "Complete navulset 125 ml gevuld met Interflon Food grease EP inclusief nieuwe batterijpack (art. 4205)"
+    "desc": "Complete navulset 125 ml gevuld met Interflon Food grease EP inclusief nieuwe batterijpack (art. 4205)",
+    "default_code": "4205",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
   },
   {
     "code": "4208",
@@ -1353,7 +1537,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Vervangbare balg",
     "a2": "Pulsarlube bajonetsluiting",
     "mat": "Vetbalg + Alkaline/Lithium batterij",
-    "desc": "Complete navulset 125 ml gevuld met Interflon Food grease LT2 inclusief nieuwe batterijpack (art. 4208)"
+    "desc": "Complete navulset 125 ml gevuld met Interflon Food grease LT2 inclusief nieuwe batterijpack (art. 4208)",
+    "default_code": "4208",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
   },
   {
     "code": "4401",
@@ -1365,7 +1552,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Vervangbare balg",
     "a2": "Pulsarlube bajonetsluiting",
     "mat": "Vetbalg + Alkaline/Lithium batterij",
-    "desc": "Complete navulset 250 ml gevuld met Interflon Grease MP2/3 inclusief nieuwe batterijpack (art. 4401)"
+    "desc": "Complete navulset 250 ml gevuld met Interflon Grease MP2/3 inclusief nieuwe batterijpack (art. 4401)",
+    "default_code": "4401",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
   },
   {
     "code": "4402",
@@ -1377,7 +1567,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Vervangbare balg",
     "a2": "Pulsarlube bajonetsluiting",
     "mat": "Vetbalg + Alkaline/Lithium batterij",
-    "desc": "Complete navulset 250 ml gevuld met Interflon Grease MP1 inclusief nieuwe batterijpack (art. 4402)"
+    "desc": "Complete navulset 250 ml gevuld met Interflon Grease MP1 inclusief nieuwe batterijpack (art. 4402)",
+    "default_code": "4402",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
   },
   {
     "code": "4403",
@@ -1389,7 +1582,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Vervangbare balg",
     "a2": "Pulsarlube bajonetsluiting",
     "mat": "Vetbalg + Alkaline/Lithium batterij",
-    "desc": "Complete navulset 250 ml gevuld met Interflon Grease LS2 inclusief nieuwe batterijpack (art. 4403)"
+    "desc": "Complete navulset 250 ml gevuld met Interflon Grease LS2 inclusief nieuwe batterijpack (art. 4403)",
+    "default_code": "4403",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
   },
   {
     "code": "4407",
@@ -1401,7 +1597,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Vervangbare balg",
     "a2": "Pulsarlube bajonetsluiting",
     "mat": "Vetbalg + Alkaline/Lithium batterij",
-    "desc": "Complete navulset 250 ml gevuld met Interflon Grease LS1/2 inclusief nieuwe batterijpack (art. 4407)"
+    "desc": "Complete navulset 250 ml gevuld met Interflon Grease LS1/2 inclusief nieuwe batterijpack (art. 4407)",
+    "default_code": "4407",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
   },
   {
     "code": "4406",
@@ -1413,7 +1612,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Vervangbare balg",
     "a2": "Pulsarlube bajonetsluiting",
     "mat": "Vetbalg + Alkaline/Lithium batterij",
-    "desc": "Complete navulset 250 ml gevuld met Interflon Grease HTG inclusief nieuwe batterijpack (art. 4406)"
+    "desc": "Complete navulset 250 ml gevuld met Interflon Grease HTG inclusief nieuwe batterijpack (art. 4406)",
+    "default_code": "4406",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
   },
   {
     "code": "4418",
@@ -1425,7 +1627,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Vervangbare balg",
     "a2": "Pulsarlube bajonetsluiting",
     "mat": "Vetbalg + Alkaline/Lithium batterij",
-    "desc": "Complete navulset 250 ml gevuld met Interflon Grease HD2 inclusief nieuwe batterijpack (art. 4418)"
+    "desc": "Complete navulset 250 ml gevuld met Interflon Grease HD2 inclusief nieuwe batterijpack (art. 4418)",
+    "default_code": "4418",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
   },
   {
     "code": "4404",
@@ -1437,7 +1642,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Vervangbare balg",
     "a2": "Pulsarlube bajonetsluiting",
     "mat": "Vetbalg + Alkaline/Lithium batterij",
-    "desc": "Complete navulset 250 ml gevuld met Interflon Food grease 1 inclusief nieuwe batterijpack (art. 4404)"
+    "desc": "Complete navulset 250 ml gevuld met Interflon Food grease 1 inclusief nieuwe batterijpack (art. 4404)",
+    "default_code": "4404",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
   },
   {
     "code": "4405",
@@ -1449,7 +1657,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Vervangbare balg",
     "a2": "Pulsarlube bajonetsluiting",
     "mat": "Vetbalg + Alkaline/Lithium batterij",
-    "desc": "Complete navulset 250 ml gevuld met Interflon Food grease EP inclusief nieuwe batterijpack (art. 4405)"
+    "desc": "Complete navulset 250 ml gevuld met Interflon Food grease EP inclusief nieuwe batterijpack (art. 4405)",
+    "default_code": "4405",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
   },
   {
     "code": "4415",
@@ -1461,7 +1672,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Vervangbare balg",
     "a2": "Pulsarlube bajonetsluiting",
     "mat": "Vetbalg + Alkaline/Lithium batterij",
-    "desc": "Complete navulset 250 ml gevuld met Interflon Food grease LT2 inclusief nieuwe batterijpack (art. 4415)"
+    "desc": "Complete navulset 250 ml gevuld met Interflon Food grease LT2 inclusief nieuwe batterijpack (art. 4415)",
+    "default_code": "4415",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
   },
   {
     "code": "4408",
@@ -1473,7 +1687,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Vervangbare balg",
     "a2": "Pulsarlube bajonetsluiting",
     "mat": "Vetbalg + Alkaline/Lithium batterij",
-    "desc": "Complete navulset 500 ml gevuld met Interflon Grease MP2/3 inclusief nieuwe batterijpack (art. 4408)"
+    "desc": "Complete navulset 500 ml gevuld met Interflon Grease MP2/3 inclusief nieuwe batterijpack (art. 4408)",
+    "default_code": "4408",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
   },
   {
     "code": "4426",
@@ -1485,7 +1702,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Vervangbare balg",
     "a2": "Pulsarlube bajonetsluiting",
     "mat": "Vetbalg + Alkaline/Lithium batterij",
-    "desc": "Complete navulset 500 ml gevuld met Interflon Grease MP1 inclusief nieuwe batterijpack (art. 4426)"
+    "desc": "Complete navulset 500 ml gevuld met Interflon Grease MP1 inclusief nieuwe batterijpack (art. 4426)",
+    "default_code": "4426",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
   },
   {
     "code": "4409",
@@ -1497,7 +1717,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Vervangbare balg",
     "a2": "Pulsarlube bajonetsluiting",
     "mat": "Vetbalg + Alkaline/Lithium batterij",
-    "desc": "Complete navulset 500 ml gevuld met Interflon Grease LS2 inclusief nieuwe batterijpack (art. 4409)"
+    "desc": "Complete navulset 500 ml gevuld met Interflon Grease LS2 inclusief nieuwe batterijpack (art. 4409)",
+    "default_code": "4409",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
   },
   {
     "code": "4413",
@@ -1509,7 +1732,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Vervangbare balg",
     "a2": "Pulsarlube bajonetsluiting",
     "mat": "Vetbalg + Alkaline/Lithium batterij",
-    "desc": "Complete navulset 500 ml gevuld met Interflon Grease LS1/2 inclusief nieuwe batterijpack (art. 4413)"
+    "desc": "Complete navulset 500 ml gevuld met Interflon Grease LS1/2 inclusief nieuwe batterijpack (art. 4413)",
+    "default_code": "4413",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
   },
   {
     "code": "4412",
@@ -1521,7 +1747,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Vervangbare balg",
     "a2": "Pulsarlube bajonetsluiting",
     "mat": "Vetbalg + Alkaline/Lithium batterij",
-    "desc": "Complete navulset 500 ml gevuld met Interflon Grease HTG inclusief nieuwe batterijpack (art. 4412)"
+    "desc": "Complete navulset 500 ml gevuld met Interflon Grease HTG inclusief nieuwe batterijpack (art. 4412)",
+    "default_code": "4412",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
   },
   {
     "code": "4416",
@@ -1533,7 +1762,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Vervangbare balg",
     "a2": "Pulsarlube bajonetsluiting",
     "mat": "Vetbalg + Alkaline/Lithium batterij",
-    "desc": "Complete navulset 500 ml gevuld met Interflon Grease HD2 inclusief nieuwe batterijpack (art. 4416)"
+    "desc": "Complete navulset 500 ml gevuld met Interflon Grease HD2 inclusief nieuwe batterijpack (art. 4416)",
+    "default_code": "4416",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
   },
   {
     "code": "4424",
@@ -1545,7 +1777,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Vervangbare balg",
     "a2": "Pulsarlube bajonetsluiting",
     "mat": "Vetbalg + Alkaline/Lithium batterij",
-    "desc": "Complete navulset 500 ml gevuld met Interflon Grease HS2 inclusief nieuwe batterijpack (art. 4424)"
+    "desc": "Complete navulset 500 ml gevuld met Interflon Grease HS2 inclusief nieuwe batterijpack (art. 4424)",
+    "default_code": "4424",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
   },
   {
     "code": "4410",
@@ -1557,7 +1792,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Vervangbare balg",
     "a2": "Pulsarlube bajonetsluiting",
     "mat": "Vetbalg + Alkaline/Lithium batterij",
-    "desc": "Complete navulset 500 ml gevuld met Interflon Food grease 1 inclusief nieuwe batterijpack (art. 4410)"
+    "desc": "Complete navulset 500 ml gevuld met Interflon Food grease 1 inclusief nieuwe batterijpack (art. 4410)",
+    "default_code": "4410",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
   },
   {
     "code": "4411",
@@ -1569,7 +1807,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Vervangbare balg",
     "a2": "Pulsarlube bajonetsluiting",
     "mat": "Vetbalg + Alkaline/Lithium batterij",
-    "desc": "Complete navulset 500 ml gevuld met Interflon Food grease EP inclusief nieuwe batterijpack (art. 4411)"
+    "desc": "Complete navulset 500 ml gevuld met Interflon Food grease EP inclusief nieuwe batterijpack (art. 4411)",
+    "default_code": "4411",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
   },
   {
     "code": "4414",
@@ -1581,7 +1822,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Vervangbare balg",
     "a2": "Pulsarlube bajonetsluiting",
     "mat": "Vetbalg + Alkaline/Lithium batterij",
-    "desc": "Complete navulset 500 ml gevuld met Interflon Food grease LT2 inclusief nieuwe batterijpack (art. 4414)"
+    "desc": "Complete navulset 500 ml gevuld met Interflon Food grease LT2 inclusief nieuwe batterijpack (art. 4414)",
+    "default_code": "4414",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
   },
   {
     "code": "4425",
@@ -1593,7 +1837,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Vervangbare balg",
     "a2": "Pulsarlube bajonetsluiting",
     "mat": "Vetbalg + Alkaline/Lithium batterij",
-    "desc": "Complete navulset 500 ml gevuld met Interflon Food grease HD2 inclusief nieuwe batterijpack (art. 4425)"
+    "desc": "Complete navulset 500 ml gevuld met Interflon Food grease HD2 inclusief nieuwe batterijpack (art. 4425)",
+    "default_code": "4425",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
   },
   {
     "code": "4428",
@@ -1605,7 +1852,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Vervangbare balg",
     "a2": "Pulsarlube bajonetsluiting",
     "mat": "Vetbalg + Alkaline/Lithium batterij",
-    "desc": "Complete navulset 500 ml gevuld met Interflon Food grease HS1 inclusief nieuwe batterijpack (art. 4428)"
+    "desc": "Complete navulset 500 ml gevuld met Interflon Food grease HS1 inclusief nieuwe batterijpack (art. 4428)",
+    "default_code": "4428",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
   },
   {
     "code": "1480",
@@ -1617,7 +1867,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Inlaat 1/8\" NPT F",
     "a2": "2x Uitlaat 1/8\" NPT F",
     "mat": "Vernikkeld staal",
-    "desc": "Progressief verdeelblok 2 poorten voor Pulsarlube (max. 4m leiding) (art. 1480)"
+    "desc": "Progressief verdeelblok 2 poorten voor Pulsarlube (max. 4m leiding) (art. 1480)",
+    "default_code": "1480",
+    "system": "pulsarlube",
+    "thread": "2x Uitlaat 1/8\" NPT F"
   },
   {
     "code": "1481",
@@ -1629,7 +1882,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Inlaat 1/8\" NPT F",
     "a2": "3x Uitlaat 1/8\" NPT F",
     "mat": "Vernikkeld staal",
-    "desc": "Progressief verdeelblok 3 poorten voor Pulsarlube (max. 4m leiding) (art. 1481)"
+    "desc": "Progressief verdeelblok 3 poorten voor Pulsarlube (max. 4m leiding) (art. 1481)",
+    "default_code": "1481",
+    "system": "pulsarlube",
+    "thread": "3x Uitlaat 1/8\" NPT F"
   },
   {
     "code": "1482",
@@ -1641,7 +1897,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Inlaat 1/8\" NPT F",
     "a2": "4x Uitlaat 1/8\" NPT F",
     "mat": "Vernikkeld staal",
-    "desc": "Progressief verdeelblok 4 poorten voor Pulsarlube (max. 4m leiding) (art. 1482)"
+    "desc": "Progressief verdeelblok 4 poorten voor Pulsarlube (max. 4m leiding) (art. 1482)",
+    "default_code": "1482",
+    "system": "pulsarlube",
+    "thread": "4x Uitlaat 1/8\" NPT F"
   },
   {
     "code": "1483",
@@ -1653,7 +1912,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Inlaat 1/8\" NPT F",
     "a2": "5x Uitlaat 1/8\" NPT F",
     "mat": "Vernikkeld staal",
-    "desc": "Progressief verdeelblok 5 poorten voor Pulsarlube (max. 4m leiding) (art. 1483)"
+    "desc": "Progressief verdeelblok 5 poorten voor Pulsarlube (max. 4m leiding) (art. 1483)",
+    "default_code": "1483",
+    "system": "pulsarlube",
+    "thread": "5x Uitlaat 1/8\" NPT F"
   },
   {
     "code": "1484",
@@ -1665,7 +1927,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Inlaat 1/8\" NPT F",
     "a2": "6x Uitlaat 1/8\" NPT F",
     "mat": "Vernikkeld staal",
-    "desc": "Progressief verdeelblok 6 poorten voor Pulsarlube (max. 4m leiding) (art. 1484)"
+    "desc": "Progressief verdeelblok 6 poorten voor Pulsarlube (max. 4m leiding) (art. 1484)",
+    "default_code": "1484",
+    "system": "pulsarlube",
+    "thread": "6x Uitlaat 1/8\" NPT F"
   },
   {
     "code": "1485",
@@ -1677,7 +1942,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Inlaat 1/8\" NPT F",
     "a2": "7x Uitlaat 1/8\" NPT F",
     "mat": "Vernikkeld staal",
-    "desc": "Progressief verdeelblok 7 poorten voor Pulsarlube (max. 4m leiding) (art. 1485)"
+    "desc": "Progressief verdeelblok 7 poorten voor Pulsarlube (max. 4m leiding) (art. 1485)",
+    "default_code": "1485",
+    "system": "pulsarlube",
+    "thread": "7x Uitlaat 1/8\" NPT F"
   },
   {
     "code": "1486",
@@ -1689,7 +1957,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Inlaat 1/8\" NPT F",
     "a2": "8x Uitlaat 1/8\" NPT F",
     "mat": "Vernikkeld staal",
-    "desc": "Progressief verdeelblok 8 poorten voor Pulsarlube (max. 4m leiding) (art. 1486)"
+    "desc": "Progressief verdeelblok 8 poorten voor Pulsarlube (max. 4m leiding) (art. 1486)",
+    "default_code": "1486",
+    "system": "pulsarlube",
+    "thread": "8x Uitlaat 1/8\" NPT F"
   },
   {
     "code": "1475",
@@ -1701,7 +1972,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Push-in 4 mm",
     "a2": "Push-in 4 mm",
     "mat": "Nylon PA12",
-    "desc": "Hogedrukleiding 4 mm voor Pulsarlube oliesmeersystemen (art. 1475)"
+    "desc": "Hogedrukleiding 4 mm voor Pulsarlube oliesmeersystemen (art. 1475)",
+    "default_code": "1475",
+    "system": "pulsarlube",
+    "thread": "Push-in 4 mm"
   },
   {
     "code": "1431",
@@ -1713,7 +1987,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Push-in 6 mm",
     "a2": "Push-in 6 mm",
     "mat": "Nylon PA12",
-    "desc": "Hogedrukleiding 6 mm voor Pulsarlube verdeelblokken en installatiekits (art. 1431)"
+    "desc": "Hogedrukleiding 6 mm voor Pulsarlube verdeelblokken en installatiekits (art. 1431)",
+    "default_code": "1431",
+    "system": "pulsarlube",
+    "thread": "Push-in 6 mm"
   },
   {
     "code": "1706",
@@ -1725,7 +2002,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Push-in 8 mm",
     "a2": "Push-in 8 mm",
     "mat": "Nylon PA12",
-    "desc": "Hogedrukleiding 8 mm voor Pulsarlube vetinstallatiekits tot 4m (art. 1706)"
+    "desc": "Hogedrukleiding 8 mm voor Pulsarlube vetinstallatiekits tot 4m (art. 1706)",
+    "default_code": "1706",
+    "system": "pulsarlube",
+    "thread": "Push-in 8 mm"
   },
   {
     "code": "1413",
@@ -1737,7 +2017,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "1/8\" NPT F",
     "a2": "Platte borstel nylon",
     "mat": "Messing / Nylon borstelharen",
-    "desc": "Platte kettingsmeerborstel 2 inch inclusief montagebeugel en doorvoer (art. 1413)"
+    "desc": "Platte kettingsmeerborstel 2 inch inclusief montagebeugel en doorvoer (art. 1413)",
+    "default_code": "1413",
+    "system": "pulsarlube",
+    "thread": "Platte borstel nylon"
   },
   {
     "code": "1414",
@@ -1749,7 +2032,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "1/8\" NPT F",
     "a2": "Ronde borstel nylon",
     "mat": "Messing / Nylon borstelharen",
-    "desc": "Ronde smeerborstel 1 inch voor ketting- en kabeltoepassing inclusief beugel (art. 1414)"
+    "desc": "Ronde smeerborstel 1 inch voor ketting- en kabeltoepassing inclusief beugel (art. 1414)",
+    "default_code": "1414",
+    "system": "pulsarlube",
+    "thread": "Ronde borstel nylon"
   },
   {
     "code": "1430",
@@ -1761,7 +2047,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Montagebeugel Pulsarlube M",
     "a2": "Leiding 6 mm + koppeling",
     "mat": "Verzinkt staal / Polyamide",
-    "desc": "Complete montagekit op afstand voor Pulsarlube M inclusief beugel en koppelingen (art. 1430)"
+    "desc": "Complete montagekit op afstand voor Pulsarlube M inclusief beugel en koppelingen (art. 1430)",
+    "default_code": "1430",
+    "system": "pulsarlube",
+    "thread": "Leiding 6 mm + koppeling"
   },
   {
     "code": "1415",
@@ -1773,7 +2062,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Montagebeugel oliedispenser",
     "a2": "Leiding 4 mm + koppeling",
     "mat": "Verzinkt staal / Polyamide",
-    "desc": "Montagekit voor oliesmering 1 smeerpunt (art. 1415)"
+    "desc": "Montagekit voor oliesmering 1 smeerpunt (art. 1415)",
+    "default_code": "1415",
+    "system": "pulsarlube",
+    "thread": "Leiding 4 mm + koppeling"
   },
   {
     "code": "1416",
@@ -1785,7 +2077,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Montagebeugel + verdeler 2",
     "a2": "2x leiding 4 mm + koppelingen",
     "mat": "Verzinkt staal / Messing",
-    "desc": "Montagekit voor oliesmering 2 smeerpunten (art. 1416)"
+    "desc": "Montagekit voor oliesmering 2 smeerpunten (art. 1416)",
+    "default_code": "1416",
+    "system": "pulsarlube",
+    "thread": "2x leiding 4 mm + koppelingen"
   },
   {
     "code": "1417",
@@ -1797,7 +2092,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Montagebeugel + verdeler 3",
     "a2": "3x leiding 4 mm + koppelingen",
     "mat": "Verzinkt staal / Messing",
-    "desc": "Montagekit voor oliesmering 3 smeerpunten (art. 1417)"
+    "desc": "Montagekit voor oliesmering 3 smeerpunten (art. 1417)",
+    "default_code": "1417",
+    "system": "pulsarlube",
+    "thread": "3x leiding 4 mm + koppelingen"
   },
   {
     "code": "1418",
@@ -1809,7 +2107,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "Montagebeugel + verdeler 4",
     "a2": "4x leiding 4 mm + koppelingen",
     "mat": "Verzinkt staal / Messing",
-    "desc": "Montagekit voor oliesmering 4 smeerpunten (art. 1418)"
+    "desc": "Montagekit voor oliesmering 4 smeerpunten (art. 1418)",
+    "default_code": "1418",
+    "system": "pulsarlube",
+    "thread": "4x leiding 4 mm + koppelingen"
   },
   {
     "code": "1467",
@@ -1821,7 +2122,10 @@ let PULSARLUBE_CATALOG = [
     "a1": "1/8\" NPT M",
     "a2": "1/8\" NPT F",
     "mat": "Messing vernikkeld",
-    "desc": "Hydraulische terugslagklep voorkomt terugvloeien van smeermiddel (art. 1467)"
+    "desc": "Hydraulische terugslagklep voorkomt terugvloeien van smeermiddel (art. 1467)",
+    "default_code": "1467",
+    "system": "pulsarlube",
+    "thread": "1/8\" NPT F"
   },
   {
     "code": "1453",
@@ -1833,6 +2137,1437 @@ let PULSARLUBE_CATALOG = [
     "a1": "Push-in 6 mm",
     "a2": "1/8\" NPT M",
     "mat": "Messing vernikkeld",
-    "desc": "Rechte insteekkoppeling voor Pulsarlube verdeelblokken en kits (art. 1453)"
+    "desc": "Rechte insteekkoppeling voor Pulsarlube verdeelblokken en kits (art. 1453)",
+    "default_code": "1453",
+    "system": "pulsarlube",
+    "thread": "1/8\" NPT M"
+  },
+  {
+    "code": "1412",
+    "default_code": "1412",
+    "cat": "Batterijen & Toebehoren",
+    "system": "pulsarlube",
+    "name": "Battery pack (alkaline) + absorbing pad voor OL500",
+    "volume": "-",
+    "vol_ml": 0,
+    "grease": "Olie",
+    "thread": "-",
+    "a1": "-",
+    "a2": "-",
+    "mat": "Alkaline batterijpack / Absorptiepad",
+    "desc": "Vervangende batterijpack alkaline inclusief absorberende pad voor Pulsarlube OL500 (art. 1412)"
+  },
+  {
+    "code": "1401",
+    "default_code": "1401",
+    "cat": "Batterijen & Toebehoren",
+    "system": "pulsarlube",
+    "name": "Battery pack Pulsarlube M (Alkaline 4.5V)",
+    "volume": "-",
+    "vol_ml": 0,
+    "grease": "-",
+    "thread": "-",
+    "a1": "-",
+    "a2": "-",
+    "mat": "Alkaline batterijpack",
+    "desc": "Standaard alkaline batterijpack voor Pulsarlube M series (art. 1401)"
+  },
+  {
+    "code": "1438",
+    "default_code": "1438",
+    "cat": "Batterijen & Toebehoren",
+    "system": "pulsarlube",
+    "name": "Battery pack Pulsarlube M (Lithium 4.5V)",
+    "volume": "-",
+    "vol_ml": 0,
+    "grease": "-",
+    "thread": "-",
+    "a1": "-",
+    "a2": "-",
+    "mat": "Lithium batterijpack",
+    "desc": "Hoogwaardige lithium batterijpack voor lage temperaturen en lange levensduur Pulsarlube M (art. 1438)"
+  },
+  {
+    "code": "1466",
+    "default_code": "1466",
+    "cat": "Dispensers (Vet)",
+    "system": "pulsarlube",
+    "name": "Pulsarlube PLC interval (60 ml)",
+    "volume": "60 ml",
+    "vol_ml": 60,
+    "grease": "-",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "a1": "PLC gestuurd",
+    "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "mat": "Kunststof / RVS (IP65)",
+    "desc": "Elektro-mechanische automatische smeerunit PLC gestuurd - interval modus (art. 1466)"
+  },
+  {
+    "code": "1456",
+    "default_code": "1456",
+    "cat": "Dispensers (Vet)",
+    "system": "pulsarlube",
+    "name": "Pulsarlube PLC interval (120 ml)",
+    "volume": "120 ml",
+    "vol_ml": 120,
+    "grease": "-",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "a1": "PLC gestuurd",
+    "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "mat": "Kunststof / RVS (IP65)",
+    "desc": "Elektro-mechanische automatische smeerunit PLC gestuurd - interval modus (art. 1456)"
+  },
+  {
+    "code": "1458",
+    "default_code": "1458",
+    "cat": "Dispensers (Vet)",
+    "system": "pulsarlube",
+    "name": "Pulsarlube PLC interval (240 ml)",
+    "volume": "240 ml",
+    "vol_ml": 240,
+    "grease": "-",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "a1": "PLC gestuurd",
+    "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "mat": "Kunststof / RVS (IP65)",
+    "desc": "Elektro-mechanische automatische smeerunit PLC gestuurd - interval modus (art. 1458)"
+  },
+  {
+    "code": "1460",
+    "default_code": "1460",
+    "cat": "Dispensers (Vet)",
+    "system": "pulsarlube",
+    "name": "Pulsarlube PLC interval (480 ml)",
+    "volume": "480 ml",
+    "vol_ml": 480,
+    "grease": "-",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "a1": "PLC gestuurd",
+    "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "mat": "Kunststof / RVS (IP65)",
+    "desc": "Elektro-mechanische automatische smeerunit PLC gestuurd - interval modus (art. 1460)"
+  },
+  {
+    "code": "1451",
+    "default_code": "1451",
+    "cat": "Dispensers (Vet)",
+    "system": "pulsarlube",
+    "name": "Pulsarlube EXPL ATEX Explosieveilig (120 ml)",
+    "volume": "120 ml",
+    "vol_ml": 120,
+    "grease": "-",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "a1": "ATEX Zone 0/20",
+    "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "mat": "Antistatisch / ATEX Zone 0/20",
+    "desc": "ATEX explosieveilige automatische elektro-mechanische smeerunit (art. 1451)"
+  },
+  {
+    "code": "1452",
+    "default_code": "1452",
+    "cat": "Dispensers (Vet)",
+    "system": "pulsarlube",
+    "name": "Pulsarlube EXPL ATEX Explosieveilig (240 ml)",
+    "volume": "240 ml",
+    "vol_ml": 240,
+    "grease": "-",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "a1": "ATEX Zone 0/20",
+    "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "mat": "Antistatisch / ATEX Zone 0/20",
+    "desc": "ATEX explosieveilige automatische elektro-mechanische smeerunit (art. 1452)"
+  },
+  {
+    "code": "1461",
+    "default_code": "1461",
+    "cat": "Dispensers (Vet)",
+    "system": "pulsarlube",
+    "name": "Pulsarlube Mi trillingsgestuurd (60 ml)",
+    "volume": "60 ml",
+    "vol_ml": 60,
+    "grease": "-",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "a1": "Trillingssensor",
+    "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "mat": "Kunststof / RVS (IP65)",
+    "desc": "Automatische smeerunit met ingebouwde trillingssensor / machineactiviteit detectie (art. 1461)"
+  },
+  {
+    "code": "1462",
+    "default_code": "1462",
+    "cat": "Dispensers (Vet)",
+    "system": "pulsarlube",
+    "name": "Pulsarlube Mi trillingsgestuurd (125 ml)",
+    "volume": "125 ml",
+    "vol_ml": 125,
+    "grease": "-",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "a1": "Trillingssensor",
+    "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "mat": "Kunststof / RVS (IP65)",
+    "desc": "Automatische smeerunit met ingebouwde trillingssensor / machineactiviteit detectie (art. 1462)"
+  }
+];
+
+let PULSARLUBE_CATALOG = [
+  {
+    "code": "1422",
+    "cat": "Dispensers (Vet)",
+    "name": "Pulsarlube M2 (60 ml)",
+    "volume": "60 ml",
+    "vol_ml": 60,
+    "grease": "-",
+    "a1": "Herbruikbaar elektro-mechanisch",
+    "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "mat": "Kunststof / RVS (IP65)",
+    "desc": "Elektro-mechanische automatische smeerunit 30-60 bar (art. 1422)",
+    "default_code": "1422",
+    "system": "pulsarlube",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)"
+  },
+  {
+    "code": "1423",
+    "cat": "Dispensers (Vet)",
+    "name": "Pulsarlube M2 (125 ml)",
+    "volume": "125 ml",
+    "vol_ml": 125,
+    "grease": "-",
+    "a1": "Herbruikbaar elektro-mechanisch",
+    "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "mat": "Kunststof / RVS (IP65)",
+    "desc": "Elektro-mechanische automatische smeerunit 30-60 bar (art. 1423)",
+    "default_code": "1423",
+    "system": "pulsarlube",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)"
+  },
+  {
+    "code": "1424",
+    "cat": "Dispensers (Vet)",
+    "name": "Pulsarlube M2 (250 ml)",
+    "volume": "250 ml",
+    "vol_ml": 250,
+    "grease": "-",
+    "a1": "Herbruikbaar elektro-mechanisch",
+    "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "mat": "Kunststof / RVS (IP65)",
+    "desc": "Elektro-mechanische automatische smeerunit 30-60 bar (art. 1424)",
+    "default_code": "1424",
+    "system": "pulsarlube",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)"
+  },
+  {
+    "code": "1425",
+    "cat": "Dispensers (Vet)",
+    "name": "Pulsarlube M2 (500 ml)",
+    "volume": "500 ml",
+    "vol_ml": 500,
+    "grease": "-",
+    "a1": "Herbruikbaar elektro-mechanisch",
+    "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "mat": "Kunststof / RVS (IP65)",
+    "desc": "Elektro-mechanische automatische smeerunit 30-60 bar (art. 1425)",
+    "default_code": "1425",
+    "system": "pulsarlube",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)"
+  },
+  {
+    "code": "1477",
+    "cat": "Dispensers (Vet)",
+    "name": "Pulsarlube BT (60 ml)",
+    "volume": "60 ml",
+    "vol_ml": 60,
+    "grease": "-",
+    "a1": "Bluetooth BLE connectiviteit",
+    "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "mat": "Kunststof / RVS (IP65)",
+    "desc": "Draadloos bewaakte automatische smeerunit via Bluetooth app (art. 1477)",
+    "default_code": "1477",
+    "system": "pulsarlube",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)"
+  },
+  {
+    "code": "1478",
+    "cat": "Dispensers (Vet)",
+    "name": "Pulsarlube BT (120 ml)",
+    "volume": "120 ml",
+    "vol_ml": 120,
+    "grease": "-",
+    "a1": "Bluetooth BLE connectiviteit",
+    "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "mat": "Kunststof / RVS (IP65)",
+    "desc": "Draadloos bewaakte automatische smeerunit via Bluetooth app (art. 1478)",
+    "default_code": "1478",
+    "system": "pulsarlube",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)"
+  },
+  {
+    "code": "1479",
+    "cat": "Dispensers (Vet)",
+    "name": "Pulsarlube BT (240 ml)",
+    "volume": "240 ml",
+    "vol_ml": 240,
+    "grease": "-",
+    "a1": "Bluetooth BLE connectiviteit",
+    "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "mat": "Kunststof / RVS (IP65)",
+    "desc": "Draadloos bewaakte automatische smeerunit via Bluetooth app (art. 1479)",
+    "default_code": "1479",
+    "system": "pulsarlube",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)"
+  },
+  {
+    "code": "1448",
+    "cat": "Dispensers (Vet)",
+    "name": "Pulsarlube MSP AC (60 ml)",
+    "volume": "60 ml",
+    "vol_ml": 60,
+    "grease": "-",
+    "a1": "Extern gevoed AC",
+    "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "mat": "Kunststof / RVS (IP65)",
+    "desc": "Extern gevoed synchroon met machine 110-240V AC (art. 1448)",
+    "default_code": "1448",
+    "system": "pulsarlube",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)"
+  },
+  {
+    "code": "1447",
+    "cat": "Dispensers (Vet)",
+    "name": "Pulsarlube MSP DC (60 ml)",
+    "volume": "60 ml",
+    "vol_ml": 60,
+    "grease": "-",
+    "a1": "Extern gevoed DC",
+    "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "mat": "Kunststof / RVS (IP65)",
+    "desc": "Extern gevoed synchroon met machine 12-24V DC (art. 1447)",
+    "default_code": "1447",
+    "system": "pulsarlube",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)"
+  },
+  {
+    "code": "1446",
+    "cat": "Dispensers (Vet)",
+    "name": "Pulsarlube MSP AC (125 ml)",
+    "volume": "125 ml",
+    "vol_ml": 125,
+    "grease": "-",
+    "a1": "Extern gevoed AC",
+    "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "mat": "Kunststof / RVS (IP65)",
+    "desc": "Extern gevoed synchroon met machine 110-240V AC (art. 1446)",
+    "default_code": "1446",
+    "system": "pulsarlube",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)"
+  },
+  {
+    "code": "1445",
+    "cat": "Dispensers (Vet)",
+    "name": "Pulsarlube MSP DC (125 ml)",
+    "volume": "125 ml",
+    "vol_ml": 125,
+    "grease": "-",
+    "a1": "Extern gevoed DC",
+    "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "mat": "Kunststof / RVS (IP65)",
+    "desc": "Extern gevoed synchroon met machine 12-24V DC (art. 1445)",
+    "default_code": "1445",
+    "system": "pulsarlube",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)"
+  },
+  {
+    "code": "1444",
+    "cat": "Dispensers (Vet)",
+    "name": "Pulsarlube MSP AC (250 ml)",
+    "volume": "250 ml",
+    "vol_ml": 250,
+    "grease": "-",
+    "a1": "Extern gevoed AC",
+    "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "mat": "Kunststof / RVS (IP65)",
+    "desc": "Extern gevoed synchroon met machine 110-240V AC (art. 1444)",
+    "default_code": "1444",
+    "system": "pulsarlube",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)"
+  },
+  {
+    "code": "1443",
+    "cat": "Dispensers (Vet)",
+    "name": "Pulsarlube MSP DC (250 ml)",
+    "volume": "250 ml",
+    "vol_ml": 250,
+    "grease": "-",
+    "a1": "Extern gevoed DC",
+    "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "mat": "Kunststof / RVS (IP65)",
+    "desc": "Extern gevoed synchroon met machine 12-24V DC (art. 1443)",
+    "default_code": "1443",
+    "system": "pulsarlube",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)"
+  },
+  {
+    "code": "1442",
+    "cat": "Dispensers (Vet)",
+    "name": "Pulsarlube MSP AC (500 ml)",
+    "volume": "500 ml",
+    "vol_ml": 500,
+    "grease": "-",
+    "a1": "Extern gevoed AC",
+    "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "mat": "Kunststof / RVS (IP65)",
+    "desc": "Extern gevoed synchroon met machine 110-240V AC (art. 1442)",
+    "default_code": "1442",
+    "system": "pulsarlube",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)"
+  },
+  {
+    "code": "1441",
+    "cat": "Dispensers (Vet)",
+    "name": "Pulsarlube MSP DC (500 ml)",
+    "volume": "500 ml",
+    "vol_ml": 500,
+    "grease": "-",
+    "a1": "Extern gevoed DC",
+    "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "mat": "Kunststof / RVS (IP65)",
+    "desc": "Extern gevoed synchroon met machine 12-24V DC (art. 1441)",
+    "default_code": "1441",
+    "system": "pulsarlube",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)"
+  },
+  {
+    "code": "1450",
+    "cat": "Dispensers (Vet)",
+    "name": "Pulsarlube PLC monthly (60 ml)",
+    "volume": "60 ml",
+    "vol_ml": 60,
+    "grease": "-",
+    "a1": "PLC gestuurd",
+    "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "mat": "Kunststof / RVS (IP65)",
+    "desc": "Aangestuurd via PLC signaal machine (art. 1450)",
+    "default_code": "1450",
+    "system": "pulsarlube",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)"
+  },
+  {
+    "code": "1455",
+    "cat": "Dispensers (Vet)",
+    "name": "Pulsarlube PLC monthly (120 ml)",
+    "volume": "120 ml",
+    "vol_ml": 120,
+    "grease": "-",
+    "a1": "PLC gestuurd",
+    "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "mat": "Kunststof / RVS (IP65)",
+    "desc": "Aangestuurd via PLC signaal machine (art. 1455)",
+    "default_code": "1455",
+    "system": "pulsarlube",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)"
+  },
+  {
+    "code": "1457",
+    "cat": "Dispensers (Vet)",
+    "name": "Pulsarlube PLC monthly (240 ml)",
+    "volume": "240 ml",
+    "vol_ml": 240,
+    "grease": "-",
+    "a1": "PLC gestuurd",
+    "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "mat": "Kunststof / RVS (IP65)",
+    "desc": "Aangestuurd via PLC signaal machine (art. 1457)",
+    "default_code": "1457",
+    "system": "pulsarlube",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)"
+  },
+  {
+    "code": "1459",
+    "cat": "Dispensers (Vet)",
+    "name": "Pulsarlube PLC monthly (500 ml)",
+    "volume": "500 ml",
+    "vol_ml": 500,
+    "grease": "-",
+    "a1": "PLC gestuurd",
+    "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "mat": "Kunststof / RVS (IP65)",
+    "desc": "Aangestuurd via PLC signaal machine (art. 1459)",
+    "default_code": "1459",
+    "system": "pulsarlube",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)"
+  },
+  {
+    "code": "1411",
+    "cat": "Dispensers (Olie)",
+    "name": "Pulsarlube OL500 (500 ml)",
+    "volume": "500 ml",
+    "vol_ml": 500,
+    "grease": "Olie",
+    "a1": "Oliedispenser herbruikbaar",
+    "a2": "1/8\" NPT M",
+    "mat": "Kunststof / RVS",
+    "desc": "Elektro-mechanische oliesmeerdispenser 500 ml (art. 1411)",
+    "default_code": "1411",
+    "system": "pulsarlube",
+    "thread": "1/8\" NPT M"
+  },
+  {
+    "code": "1437",
+    "cat": "Dispensers (Olie)",
+    "name": "Pulsarlube MSP Oil AC (500 ml)",
+    "volume": "500 ml",
+    "vol_ml": 500,
+    "grease": "Olie",
+    "a1": "Extern gevoed AC",
+    "a2": "1/8\" NPT M",
+    "mat": "Kunststof / RVS",
+    "desc": "Oliesmeerdispenser extern gevoed 110-240V AC (art. 1437)",
+    "default_code": "1437",
+    "system": "pulsarlube",
+    "thread": "1/8\" NPT M"
+  },
+  {
+    "code": "1449",
+    "cat": "Dispensers (Olie)",
+    "name": "Pulsarlube MSP Oil DC (500 ml)",
+    "volume": "500 ml",
+    "vol_ml": 500,
+    "grease": "Olie",
+    "a1": "Extern gevoed DC",
+    "a2": "1/8\" NPT M",
+    "mat": "Kunststof / RVS",
+    "desc": "Oliesmeerdispenser extern gevoed 12-24V DC (art. 1449)",
+    "default_code": "1449",
+    "system": "pulsarlube",
+    "thread": "1/8\" NPT M"
+  },
+  {
+    "code": "4419",
+    "cat": "Service Packs (Vetbalg + Batterij)",
+    "name": "Servicepack + Grease MP2/3",
+    "volume": "60 ml",
+    "vol_ml": 60,
+    "grease": "Grease MP2/3",
+    "a1": "Vervangbare balg",
+    "a2": "Pulsarlube bajonetsluiting",
+    "mat": "Vetbalg + Alkaline/Lithium batterij",
+    "desc": "Complete navulset 60 ml gevuld met Interflon Grease MP2/3 inclusief nieuwe batterijpack (art. 4419)",
+    "default_code": "4419",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
+  },
+  {
+    "code": "4210",
+    "cat": "Service Packs (Vetbalg + Batterij)",
+    "name": "Servicepack + Food grease LT2",
+    "volume": "60 ml",
+    "vol_ml": 60,
+    "grease": "Food grease LT2",
+    "a1": "Vervangbare balg",
+    "a2": "Pulsarlube bajonetsluiting",
+    "mat": "Vetbalg + Alkaline/Lithium batterij",
+    "desc": "Complete navulset 60 ml gevuld met Interflon Food grease LT2 inclusief nieuwe batterijpack (art. 4210)",
+    "default_code": "4210",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
+  },
+  {
+    "code": "4201",
+    "cat": "Service Packs (Vetbalg + Batterij)",
+    "name": "Servicepack + Grease MP2/3",
+    "volume": "125 ml",
+    "vol_ml": 125,
+    "grease": "Grease MP2/3",
+    "a1": "Vervangbare balg",
+    "a2": "Pulsarlube bajonetsluiting",
+    "mat": "Vetbalg + Alkaline/Lithium batterij",
+    "desc": "Complete navulset 125 ml gevuld met Interflon Grease MP2/3 inclusief nieuwe batterijpack (art. 4201)",
+    "default_code": "4201",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
+  },
+  {
+    "code": "4202",
+    "cat": "Service Packs (Vetbalg + Batterij)",
+    "name": "Servicepack + Grease MP00",
+    "volume": "125 ml",
+    "vol_ml": 125,
+    "grease": "Grease MP00",
+    "a1": "Vervangbare balg",
+    "a2": "Pulsarlube bajonetsluiting",
+    "mat": "Vetbalg + Alkaline/Lithium batterij",
+    "desc": "Complete navulset 125 ml gevuld met Interflon Grease MP00 inclusief nieuwe batterijpack (art. 4202)",
+    "default_code": "4202",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
+  },
+  {
+    "code": "4203",
+    "cat": "Service Packs (Vetbalg + Batterij)",
+    "name": "Servicepack + Grease LS2",
+    "volume": "125 ml",
+    "vol_ml": 125,
+    "grease": "Grease LS2",
+    "a1": "Vervangbare balg",
+    "a2": "Pulsarlube bajonetsluiting",
+    "mat": "Vetbalg + Alkaline/Lithium batterij",
+    "desc": "Complete navulset 125 ml gevuld met Interflon Grease LS2 inclusief nieuwe batterijpack (art. 4203)",
+    "default_code": "4203",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
+  },
+  {
+    "code": "4207",
+    "cat": "Service Packs (Vetbalg + Batterij)",
+    "name": "Servicepack + Grease LS1/2",
+    "volume": "125 ml",
+    "vol_ml": 125,
+    "grease": "Grease LS1/2",
+    "a1": "Vervangbare balg",
+    "a2": "Pulsarlube bajonetsluiting",
+    "mat": "Vetbalg + Alkaline/Lithium batterij",
+    "desc": "Complete navulset 125 ml gevuld met Interflon Grease LS1/2 inclusief nieuwe batterijpack (art. 4207)",
+    "default_code": "4207",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
+  },
+  {
+    "code": "4206",
+    "cat": "Service Packs (Vetbalg + Batterij)",
+    "name": "Servicepack + Grease HTG",
+    "volume": "125 ml",
+    "vol_ml": 125,
+    "grease": "Grease HTG",
+    "a1": "Vervangbare balg",
+    "a2": "Pulsarlube bajonetsluiting",
+    "mat": "Vetbalg + Alkaline/Lithium batterij",
+    "desc": "Complete navulset 125 ml gevuld met Interflon Grease HTG inclusief nieuwe batterijpack (art. 4206)",
+    "default_code": "4206",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
+  },
+  {
+    "code": "4209",
+    "cat": "Service Packs (Vetbalg + Batterij)",
+    "name": "Servicepack + Grease HD2",
+    "volume": "125 ml",
+    "vol_ml": 125,
+    "grease": "Grease HD2",
+    "a1": "Vervangbare balg",
+    "a2": "Pulsarlube bajonetsluiting",
+    "mat": "Vetbalg + Alkaline/Lithium batterij",
+    "desc": "Complete navulset 125 ml gevuld met Interflon Grease HD2 inclusief nieuwe batterijpack (art. 4209)",
+    "default_code": "4209",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
+  },
+  {
+    "code": "4204",
+    "cat": "Service Packs (Vetbalg + Batterij)",
+    "name": "Servicepack + Food grease 1",
+    "volume": "125 ml",
+    "vol_ml": 125,
+    "grease": "Food grease 1",
+    "a1": "Vervangbare balg",
+    "a2": "Pulsarlube bajonetsluiting",
+    "mat": "Vetbalg + Alkaline/Lithium batterij",
+    "desc": "Complete navulset 125 ml gevuld met Interflon Food grease 1 inclusief nieuwe batterijpack (art. 4204)",
+    "default_code": "4204",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
+  },
+  {
+    "code": "4205",
+    "cat": "Service Packs (Vetbalg + Batterij)",
+    "name": "Servicepack + Food grease EP",
+    "volume": "125 ml",
+    "vol_ml": 125,
+    "grease": "Food grease EP",
+    "a1": "Vervangbare balg",
+    "a2": "Pulsarlube bajonetsluiting",
+    "mat": "Vetbalg + Alkaline/Lithium batterij",
+    "desc": "Complete navulset 125 ml gevuld met Interflon Food grease EP inclusief nieuwe batterijpack (art. 4205)",
+    "default_code": "4205",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
+  },
+  {
+    "code": "4208",
+    "cat": "Service Packs (Vetbalg + Batterij)",
+    "name": "Servicepack + Food grease LT2",
+    "volume": "125 ml",
+    "vol_ml": 125,
+    "grease": "Food grease LT2",
+    "a1": "Vervangbare balg",
+    "a2": "Pulsarlube bajonetsluiting",
+    "mat": "Vetbalg + Alkaline/Lithium batterij",
+    "desc": "Complete navulset 125 ml gevuld met Interflon Food grease LT2 inclusief nieuwe batterijpack (art. 4208)",
+    "default_code": "4208",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
+  },
+  {
+    "code": "4401",
+    "cat": "Service Packs (Vetbalg + Batterij)",
+    "name": "Servicepack + Grease MP2/3",
+    "volume": "250 ml",
+    "vol_ml": 250,
+    "grease": "Grease MP2/3",
+    "a1": "Vervangbare balg",
+    "a2": "Pulsarlube bajonetsluiting",
+    "mat": "Vetbalg + Alkaline/Lithium batterij",
+    "desc": "Complete navulset 250 ml gevuld met Interflon Grease MP2/3 inclusief nieuwe batterijpack (art. 4401)",
+    "default_code": "4401",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
+  },
+  {
+    "code": "4402",
+    "cat": "Service Packs (Vetbalg + Batterij)",
+    "name": "Servicepack + Grease MP1",
+    "volume": "250 ml",
+    "vol_ml": 250,
+    "grease": "Grease MP1",
+    "a1": "Vervangbare balg",
+    "a2": "Pulsarlube bajonetsluiting",
+    "mat": "Vetbalg + Alkaline/Lithium batterij",
+    "desc": "Complete navulset 250 ml gevuld met Interflon Grease MP1 inclusief nieuwe batterijpack (art. 4402)",
+    "default_code": "4402",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
+  },
+  {
+    "code": "4403",
+    "cat": "Service Packs (Vetbalg + Batterij)",
+    "name": "Servicepack + Grease LS2",
+    "volume": "250 ml",
+    "vol_ml": 250,
+    "grease": "Grease LS2",
+    "a1": "Vervangbare balg",
+    "a2": "Pulsarlube bajonetsluiting",
+    "mat": "Vetbalg + Alkaline/Lithium batterij",
+    "desc": "Complete navulset 250 ml gevuld met Interflon Grease LS2 inclusief nieuwe batterijpack (art. 4403)",
+    "default_code": "4403",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
+  },
+  {
+    "code": "4407",
+    "cat": "Service Packs (Vetbalg + Batterij)",
+    "name": "Servicepack + Grease LS1/2",
+    "volume": "250 ml",
+    "vol_ml": 250,
+    "grease": "Grease LS1/2",
+    "a1": "Vervangbare balg",
+    "a2": "Pulsarlube bajonetsluiting",
+    "mat": "Vetbalg + Alkaline/Lithium batterij",
+    "desc": "Complete navulset 250 ml gevuld met Interflon Grease LS1/2 inclusief nieuwe batterijpack (art. 4407)",
+    "default_code": "4407",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
+  },
+  {
+    "code": "4406",
+    "cat": "Service Packs (Vetbalg + Batterij)",
+    "name": "Servicepack + Grease HTG",
+    "volume": "250 ml",
+    "vol_ml": 250,
+    "grease": "Grease HTG",
+    "a1": "Vervangbare balg",
+    "a2": "Pulsarlube bajonetsluiting",
+    "mat": "Vetbalg + Alkaline/Lithium batterij",
+    "desc": "Complete navulset 250 ml gevuld met Interflon Grease HTG inclusief nieuwe batterijpack (art. 4406)",
+    "default_code": "4406",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
+  },
+  {
+    "code": "4418",
+    "cat": "Service Packs (Vetbalg + Batterij)",
+    "name": "Servicepack + Grease HD2",
+    "volume": "250 ml",
+    "vol_ml": 250,
+    "grease": "Grease HD2",
+    "a1": "Vervangbare balg",
+    "a2": "Pulsarlube bajonetsluiting",
+    "mat": "Vetbalg + Alkaline/Lithium batterij",
+    "desc": "Complete navulset 250 ml gevuld met Interflon Grease HD2 inclusief nieuwe batterijpack (art. 4418)",
+    "default_code": "4418",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
+  },
+  {
+    "code": "4404",
+    "cat": "Service Packs (Vetbalg + Batterij)",
+    "name": "Servicepack + Food grease 1",
+    "volume": "250 ml",
+    "vol_ml": 250,
+    "grease": "Food grease 1",
+    "a1": "Vervangbare balg",
+    "a2": "Pulsarlube bajonetsluiting",
+    "mat": "Vetbalg + Alkaline/Lithium batterij",
+    "desc": "Complete navulset 250 ml gevuld met Interflon Food grease 1 inclusief nieuwe batterijpack (art. 4404)",
+    "default_code": "4404",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
+  },
+  {
+    "code": "4405",
+    "cat": "Service Packs (Vetbalg + Batterij)",
+    "name": "Servicepack + Food grease EP",
+    "volume": "250 ml",
+    "vol_ml": 250,
+    "grease": "Food grease EP",
+    "a1": "Vervangbare balg",
+    "a2": "Pulsarlube bajonetsluiting",
+    "mat": "Vetbalg + Alkaline/Lithium batterij",
+    "desc": "Complete navulset 250 ml gevuld met Interflon Food grease EP inclusief nieuwe batterijpack (art. 4405)",
+    "default_code": "4405",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
+  },
+  {
+    "code": "4415",
+    "cat": "Service Packs (Vetbalg + Batterij)",
+    "name": "Servicepack + Food grease LT2",
+    "volume": "250 ml",
+    "vol_ml": 250,
+    "grease": "Food grease LT2",
+    "a1": "Vervangbare balg",
+    "a2": "Pulsarlube bajonetsluiting",
+    "mat": "Vetbalg + Alkaline/Lithium batterij",
+    "desc": "Complete navulset 250 ml gevuld met Interflon Food grease LT2 inclusief nieuwe batterijpack (art. 4415)",
+    "default_code": "4415",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
+  },
+  {
+    "code": "4408",
+    "cat": "Service Packs (Vetbalg + Batterij)",
+    "name": "Servicepack + Grease MP2/3",
+    "volume": "500 ml",
+    "vol_ml": 500,
+    "grease": "Grease MP2/3",
+    "a1": "Vervangbare balg",
+    "a2": "Pulsarlube bajonetsluiting",
+    "mat": "Vetbalg + Alkaline/Lithium batterij",
+    "desc": "Complete navulset 500 ml gevuld met Interflon Grease MP2/3 inclusief nieuwe batterijpack (art. 4408)",
+    "default_code": "4408",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
+  },
+  {
+    "code": "4426",
+    "cat": "Service Packs (Vetbalg + Batterij)",
+    "name": "Servicepack + Grease MP1",
+    "volume": "500 ml",
+    "vol_ml": 500,
+    "grease": "Grease MP1",
+    "a1": "Vervangbare balg",
+    "a2": "Pulsarlube bajonetsluiting",
+    "mat": "Vetbalg + Alkaline/Lithium batterij",
+    "desc": "Complete navulset 500 ml gevuld met Interflon Grease MP1 inclusief nieuwe batterijpack (art. 4426)",
+    "default_code": "4426",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
+  },
+  {
+    "code": "4409",
+    "cat": "Service Packs (Vetbalg + Batterij)",
+    "name": "Servicepack + Grease LS2",
+    "volume": "500 ml",
+    "vol_ml": 500,
+    "grease": "Grease LS2",
+    "a1": "Vervangbare balg",
+    "a2": "Pulsarlube bajonetsluiting",
+    "mat": "Vetbalg + Alkaline/Lithium batterij",
+    "desc": "Complete navulset 500 ml gevuld met Interflon Grease LS2 inclusief nieuwe batterijpack (art. 4409)",
+    "default_code": "4409",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
+  },
+  {
+    "code": "4413",
+    "cat": "Service Packs (Vetbalg + Batterij)",
+    "name": "Servicepack + Grease LS1/2",
+    "volume": "500 ml",
+    "vol_ml": 500,
+    "grease": "Grease LS1/2",
+    "a1": "Vervangbare balg",
+    "a2": "Pulsarlube bajonetsluiting",
+    "mat": "Vetbalg + Alkaline/Lithium batterij",
+    "desc": "Complete navulset 500 ml gevuld met Interflon Grease LS1/2 inclusief nieuwe batterijpack (art. 4413)",
+    "default_code": "4413",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
+  },
+  {
+    "code": "4412",
+    "cat": "Service Packs (Vetbalg + Batterij)",
+    "name": "Servicepack + Grease HTG",
+    "volume": "500 ml",
+    "vol_ml": 500,
+    "grease": "Grease HTG",
+    "a1": "Vervangbare balg",
+    "a2": "Pulsarlube bajonetsluiting",
+    "mat": "Vetbalg + Alkaline/Lithium batterij",
+    "desc": "Complete navulset 500 ml gevuld met Interflon Grease HTG inclusief nieuwe batterijpack (art. 4412)",
+    "default_code": "4412",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
+  },
+  {
+    "code": "4416",
+    "cat": "Service Packs (Vetbalg + Batterij)",
+    "name": "Servicepack + Grease HD2",
+    "volume": "500 ml",
+    "vol_ml": 500,
+    "grease": "Grease HD2",
+    "a1": "Vervangbare balg",
+    "a2": "Pulsarlube bajonetsluiting",
+    "mat": "Vetbalg + Alkaline/Lithium batterij",
+    "desc": "Complete navulset 500 ml gevuld met Interflon Grease HD2 inclusief nieuwe batterijpack (art. 4416)",
+    "default_code": "4416",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
+  },
+  {
+    "code": "4424",
+    "cat": "Service Packs (Vetbalg + Batterij)",
+    "name": "Servicepack + Grease HS2",
+    "volume": "500 ml",
+    "vol_ml": 500,
+    "grease": "Grease HS2",
+    "a1": "Vervangbare balg",
+    "a2": "Pulsarlube bajonetsluiting",
+    "mat": "Vetbalg + Alkaline/Lithium batterij",
+    "desc": "Complete navulset 500 ml gevuld met Interflon Grease HS2 inclusief nieuwe batterijpack (art. 4424)",
+    "default_code": "4424",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
+  },
+  {
+    "code": "4410",
+    "cat": "Service Packs (Vetbalg + Batterij)",
+    "name": "Servicepack + Food grease 1",
+    "volume": "500 ml",
+    "vol_ml": 500,
+    "grease": "Food grease 1",
+    "a1": "Vervangbare balg",
+    "a2": "Pulsarlube bajonetsluiting",
+    "mat": "Vetbalg + Alkaline/Lithium batterij",
+    "desc": "Complete navulset 500 ml gevuld met Interflon Food grease 1 inclusief nieuwe batterijpack (art. 4410)",
+    "default_code": "4410",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
+  },
+  {
+    "code": "4411",
+    "cat": "Service Packs (Vetbalg + Batterij)",
+    "name": "Servicepack + Food grease EP",
+    "volume": "500 ml",
+    "vol_ml": 500,
+    "grease": "Food grease EP",
+    "a1": "Vervangbare balg",
+    "a2": "Pulsarlube bajonetsluiting",
+    "mat": "Vetbalg + Alkaline/Lithium batterij",
+    "desc": "Complete navulset 500 ml gevuld met Interflon Food grease EP inclusief nieuwe batterijpack (art. 4411)",
+    "default_code": "4411",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
+  },
+  {
+    "code": "4414",
+    "cat": "Service Packs (Vetbalg + Batterij)",
+    "name": "Servicepack + Food grease LT2",
+    "volume": "500 ml",
+    "vol_ml": 500,
+    "grease": "Food grease LT2",
+    "a1": "Vervangbare balg",
+    "a2": "Pulsarlube bajonetsluiting",
+    "mat": "Vetbalg + Alkaline/Lithium batterij",
+    "desc": "Complete navulset 500 ml gevuld met Interflon Food grease LT2 inclusief nieuwe batterijpack (art. 4414)",
+    "default_code": "4414",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
+  },
+  {
+    "code": "4425",
+    "cat": "Service Packs (Vetbalg + Batterij)",
+    "name": "Servicepack + Food grease HD2",
+    "volume": "500 ml",
+    "vol_ml": 500,
+    "grease": "Food grease HD2",
+    "a1": "Vervangbare balg",
+    "a2": "Pulsarlube bajonetsluiting",
+    "mat": "Vetbalg + Alkaline/Lithium batterij",
+    "desc": "Complete navulset 500 ml gevuld met Interflon Food grease HD2 inclusief nieuwe batterijpack (art. 4425)",
+    "default_code": "4425",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
+  },
+  {
+    "code": "4428",
+    "cat": "Service Packs (Vetbalg + Batterij)",
+    "name": "Servicepack + Food grease HS1",
+    "volume": "500 ml",
+    "vol_ml": 500,
+    "grease": "Food grease HS1",
+    "a1": "Vervangbare balg",
+    "a2": "Pulsarlube bajonetsluiting",
+    "mat": "Vetbalg + Alkaline/Lithium batterij",
+    "desc": "Complete navulset 500 ml gevuld met Interflon Food grease HS1 inclusief nieuwe batterijpack (art. 4428)",
+    "default_code": "4428",
+    "system": "pulsarlube",
+    "thread": "Pulsarlube bajonetsluiting"
+  },
+  {
+    "code": "1480",
+    "cat": "Verdeelblokken",
+    "name": "HU Type Divider Block 2 poorten",
+    "volume": "2 uitgangen",
+    "vol_ml": 0,
+    "grease": "Vet",
+    "a1": "Inlaat 1/8\" NPT F",
+    "a2": "2x Uitlaat 1/8\" NPT F",
+    "mat": "Vernikkeld staal",
+    "desc": "Progressief verdeelblok 2 poorten voor Pulsarlube (max. 4m leiding) (art. 1480)",
+    "default_code": "1480",
+    "system": "pulsarlube",
+    "thread": "2x Uitlaat 1/8\" NPT F"
+  },
+  {
+    "code": "1481",
+    "cat": "Verdeelblokken",
+    "name": "HU Type Divider Block 3 poorten",
+    "volume": "3 uitgangen",
+    "vol_ml": 0,
+    "grease": "Vet",
+    "a1": "Inlaat 1/8\" NPT F",
+    "a2": "3x Uitlaat 1/8\" NPT F",
+    "mat": "Vernikkeld staal",
+    "desc": "Progressief verdeelblok 3 poorten voor Pulsarlube (max. 4m leiding) (art. 1481)",
+    "default_code": "1481",
+    "system": "pulsarlube",
+    "thread": "3x Uitlaat 1/8\" NPT F"
+  },
+  {
+    "code": "1482",
+    "cat": "Verdeelblokken",
+    "name": "HU Type Divider Block 4 poorten",
+    "volume": "4 uitgangen",
+    "vol_ml": 0,
+    "grease": "Vet",
+    "a1": "Inlaat 1/8\" NPT F",
+    "a2": "4x Uitlaat 1/8\" NPT F",
+    "mat": "Vernikkeld staal",
+    "desc": "Progressief verdeelblok 4 poorten voor Pulsarlube (max. 4m leiding) (art. 1482)",
+    "default_code": "1482",
+    "system": "pulsarlube",
+    "thread": "4x Uitlaat 1/8\" NPT F"
+  },
+  {
+    "code": "1483",
+    "cat": "Verdeelblokken",
+    "name": "HU Type Divider Block 5 poorten",
+    "volume": "5 uitgangen",
+    "vol_ml": 0,
+    "grease": "Vet",
+    "a1": "Inlaat 1/8\" NPT F",
+    "a2": "5x Uitlaat 1/8\" NPT F",
+    "mat": "Vernikkeld staal",
+    "desc": "Progressief verdeelblok 5 poorten voor Pulsarlube (max. 4m leiding) (art. 1483)",
+    "default_code": "1483",
+    "system": "pulsarlube",
+    "thread": "5x Uitlaat 1/8\" NPT F"
+  },
+  {
+    "code": "1484",
+    "cat": "Verdeelblokken",
+    "name": "HU Type Divider Block 6 poorten",
+    "volume": "6 uitgangen",
+    "vol_ml": 0,
+    "grease": "Vet",
+    "a1": "Inlaat 1/8\" NPT F",
+    "a2": "6x Uitlaat 1/8\" NPT F",
+    "mat": "Vernikkeld staal",
+    "desc": "Progressief verdeelblok 6 poorten voor Pulsarlube (max. 4m leiding) (art. 1484)",
+    "default_code": "1484",
+    "system": "pulsarlube",
+    "thread": "6x Uitlaat 1/8\" NPT F"
+  },
+  {
+    "code": "1485",
+    "cat": "Verdeelblokken",
+    "name": "HU Type Divider Block 7 poorten",
+    "volume": "7 uitgangen",
+    "vol_ml": 0,
+    "grease": "Vet",
+    "a1": "Inlaat 1/8\" NPT F",
+    "a2": "7x Uitlaat 1/8\" NPT F",
+    "mat": "Vernikkeld staal",
+    "desc": "Progressief verdeelblok 7 poorten voor Pulsarlube (max. 4m leiding) (art. 1485)",
+    "default_code": "1485",
+    "system": "pulsarlube",
+    "thread": "7x Uitlaat 1/8\" NPT F"
+  },
+  {
+    "code": "1486",
+    "cat": "Verdeelblokken",
+    "name": "HU Type Divider Block 8 poorten",
+    "volume": "8 uitgangen",
+    "vol_ml": 0,
+    "grease": "Vet",
+    "a1": "Inlaat 1/8\" NPT F",
+    "a2": "8x Uitlaat 1/8\" NPT F",
+    "mat": "Vernikkeld staal",
+    "desc": "Progressief verdeelblok 8 poorten voor Pulsarlube (max. 4m leiding) (art. 1486)",
+    "default_code": "1486",
+    "system": "pulsarlube",
+    "thread": "8x Uitlaat 1/8\" NPT F"
+  },
+  {
+    "code": "1475",
+    "cat": "Nylon Leidingen",
+    "name": "Nylon tube 4 mm (per meter)",
+    "volume": "4 mm OD / 2.5 mm ID",
+    "vol_ml": 0,
+    "grease": "Olie",
+    "a1": "Push-in 4 mm",
+    "a2": "Push-in 4 mm",
+    "mat": "Nylon PA12",
+    "desc": "Hogedrukleiding 4 mm voor Pulsarlube oliesmeersystemen (art. 1475)",
+    "default_code": "1475",
+    "system": "pulsarlube",
+    "thread": "Push-in 4 mm"
+  },
+  {
+    "code": "1431",
+    "cat": "Nylon Leidingen",
+    "name": "Nylon tube 6 mm (per meter)",
+    "volume": "6 mm OD / 4 mm ID",
+    "vol_ml": 0,
+    "grease": "Vet / Olie",
+    "a1": "Push-in 6 mm",
+    "a2": "Push-in 6 mm",
+    "mat": "Nylon PA12",
+    "desc": "Hogedrukleiding 6 mm voor Pulsarlube verdeelblokken en installatiekits (art. 1431)",
+    "default_code": "1431",
+    "system": "pulsarlube",
+    "thread": "Push-in 6 mm"
+  },
+  {
+    "code": "1706",
+    "cat": "Nylon Leidingen",
+    "name": "Nylon tube 8 mm (per meter)",
+    "volume": "8 mm OD / 6 mm ID",
+    "vol_ml": 0,
+    "grease": "Vet",
+    "a1": "Push-in 8 mm",
+    "a2": "Push-in 8 mm",
+    "mat": "Nylon PA12",
+    "desc": "Hogedrukleiding 8 mm voor Pulsarlube vetinstallatiekits tot 4m (art. 1706)",
+    "default_code": "1706",
+    "system": "pulsarlube",
+    "thread": "Push-in 8 mm"
+  },
+  {
+    "code": "1413",
+    "cat": "Borstelsets",
+    "name": "Borstelkit 2\" plat nylon (1/8\" NPT)",
+    "volume": "2 inch (50 mm)",
+    "vol_ml": 0,
+    "grease": "Olie / Vet",
+    "a1": "1/8\" NPT F",
+    "a2": "Platte borstel nylon",
+    "mat": "Messing / Nylon borstelharen",
+    "desc": "Platte kettingsmeerborstel 2 inch inclusief montagebeugel en doorvoer (art. 1413)",
+    "default_code": "1413",
+    "system": "pulsarlube",
+    "thread": "Platte borstel nylon"
+  },
+  {
+    "code": "1414",
+    "cat": "Borstelsets",
+    "name": "Borstelkit 1\" rond nylon (1/8\" NPT)",
+    "volume": "1 inch (25 mm)",
+    "vol_ml": 0,
+    "grease": "Olie / Vet",
+    "a1": "1/8\" NPT F",
+    "a2": "Ronde borstel nylon",
+    "mat": "Messing / Nylon borstelharen",
+    "desc": "Ronde smeerborstel 1 inch voor ketting- en kabeltoepassing inclusief beugel (art. 1414)",
+    "default_code": "1414",
+    "system": "pulsarlube",
+    "thread": "Ronde borstel nylon"
+  },
+  {
+    "code": "1430",
+    "cat": "Installatiekits",
+    "name": "Installatiekit 1250RC-1",
+    "volume": "1 smeerpunt",
+    "vol_ml": 0,
+    "grease": "Vet",
+    "a1": "Montagebeugel Pulsarlube M",
+    "a2": "Leiding 6 mm + koppeling",
+    "mat": "Verzinkt staal / Polyamide",
+    "desc": "Complete montagekit op afstand voor Pulsarlube M inclusief beugel en koppelingen (art. 1430)",
+    "default_code": "1430",
+    "system": "pulsarlube",
+    "thread": "Leiding 6 mm + koppeling"
+  },
+  {
+    "code": "1415",
+    "cat": "Installatiekits",
+    "name": "Installatiekit 1 smeerpunt (olie)",
+    "volume": "1 smeerpunt",
+    "vol_ml": 0,
+    "grease": "Olie",
+    "a1": "Montagebeugel oliedispenser",
+    "a2": "Leiding 4 mm + koppeling",
+    "mat": "Verzinkt staal / Polyamide",
+    "desc": "Montagekit voor oliesmering 1 smeerpunt (art. 1415)",
+    "default_code": "1415",
+    "system": "pulsarlube",
+    "thread": "Leiding 4 mm + koppeling"
+  },
+  {
+    "code": "1416",
+    "cat": "Installatiekits",
+    "name": "Installatiekit 2 smeerpunten (olie)",
+    "volume": "2 smeerpunten",
+    "vol_ml": 0,
+    "grease": "Olie",
+    "a1": "Montagebeugel + verdeler 2",
+    "a2": "2x leiding 4 mm + koppelingen",
+    "mat": "Verzinkt staal / Messing",
+    "desc": "Montagekit voor oliesmering 2 smeerpunten (art. 1416)",
+    "default_code": "1416",
+    "system": "pulsarlube",
+    "thread": "2x leiding 4 mm + koppelingen"
+  },
+  {
+    "code": "1417",
+    "cat": "Installatiekits",
+    "name": "Installatiekit 3 smeerpunten (olie)",
+    "volume": "3 smeerpunten",
+    "vol_ml": 0,
+    "grease": "Olie",
+    "a1": "Montagebeugel + verdeler 3",
+    "a2": "3x leiding 4 mm + koppelingen",
+    "mat": "Verzinkt staal / Messing",
+    "desc": "Montagekit voor oliesmering 3 smeerpunten (art. 1417)",
+    "default_code": "1417",
+    "system": "pulsarlube",
+    "thread": "3x leiding 4 mm + koppelingen"
+  },
+  {
+    "code": "1418",
+    "cat": "Installatiekits",
+    "name": "Installatiekit 4 smeerpunten (olie)",
+    "volume": "4 smeerpunten",
+    "vol_ml": 0,
+    "grease": "Olie",
+    "a1": "Montagebeugel + verdeler 4",
+    "a2": "4x leiding 4 mm + koppelingen",
+    "mat": "Verzinkt staal / Messing",
+    "desc": "Montagekit voor oliesmering 4 smeerpunten (art. 1418)",
+    "default_code": "1418",
+    "system": "pulsarlube",
+    "thread": "4x leiding 4 mm + koppelingen"
+  },
+  {
+    "code": "1467",
+    "cat": "Koppelingen & Ventielen",
+    "name": "Hydraulische terugslagklep 1/8\" NPT",
+    "volume": "-",
+    "vol_ml": 0,
+    "grease": "Vet / Olie",
+    "a1": "1/8\" NPT M",
+    "a2": "1/8\" NPT F",
+    "mat": "Messing vernikkeld",
+    "desc": "Hydraulische terugslagklep voorkomt terugvloeien van smeermiddel (art. 1467)",
+    "default_code": "1467",
+    "system": "pulsarlube",
+    "thread": "1/8\" NPT F"
+  },
+  {
+    "code": "1453",
+    "cat": "Insteekkoppelingen",
+    "name": "Push-in koppeling 6 mm x 1/8\" NPT M",
+    "volume": "-",
+    "vol_ml": 0,
+    "grease": "Vet / Olie",
+    "a1": "Push-in 6 mm",
+    "a2": "1/8\" NPT M",
+    "mat": "Messing vernikkeld",
+    "desc": "Rechte insteekkoppeling voor Pulsarlube verdeelblokken en kits (art. 1453)",
+    "default_code": "1453",
+    "system": "pulsarlube",
+    "thread": "1/8\" NPT M"
+  },
+  {
+    "code": "1412",
+    "default_code": "1412",
+    "cat": "Batterijen & Toebehoren",
+    "system": "pulsarlube",
+    "name": "Battery pack (alkaline) + absorbing pad voor OL500",
+    "volume": "-",
+    "vol_ml": 0,
+    "grease": "Olie",
+    "thread": "-",
+    "a1": "-",
+    "a2": "-",
+    "mat": "Alkaline batterijpack / Absorptiepad",
+    "desc": "Vervangende batterijpack alkaline inclusief absorberende pad voor Pulsarlube OL500 (art. 1412)"
+  },
+  {
+    "code": "1401",
+    "default_code": "1401",
+    "cat": "Batterijen & Toebehoren",
+    "system": "pulsarlube",
+    "name": "Battery pack Pulsarlube M (Alkaline 4.5V)",
+    "volume": "-",
+    "vol_ml": 0,
+    "grease": "-",
+    "thread": "-",
+    "a1": "-",
+    "a2": "-",
+    "mat": "Alkaline batterijpack",
+    "desc": "Standaard alkaline batterijpack voor Pulsarlube M series (art. 1401)"
+  },
+  {
+    "code": "1438",
+    "default_code": "1438",
+    "cat": "Batterijen & Toebehoren",
+    "system": "pulsarlube",
+    "name": "Battery pack Pulsarlube M (Lithium 4.5V)",
+    "volume": "-",
+    "vol_ml": 0,
+    "grease": "-",
+    "thread": "-",
+    "a1": "-",
+    "a2": "-",
+    "mat": "Lithium batterijpack",
+    "desc": "Hoogwaardige lithium batterijpack voor lage temperaturen en lange levensduur Pulsarlube M (art. 1438)"
+  },
+  {
+    "code": "1466",
+    "default_code": "1466",
+    "cat": "Dispensers (Vet)",
+    "system": "pulsarlube",
+    "name": "Pulsarlube PLC interval (60 ml)",
+    "volume": "60 ml",
+    "vol_ml": 60,
+    "grease": "-",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "a1": "PLC gestuurd",
+    "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "mat": "Kunststof / RVS (IP65)",
+    "desc": "Elektro-mechanische automatische smeerunit PLC gestuurd - interval modus (art. 1466)"
+  },
+  {
+    "code": "1456",
+    "default_code": "1456",
+    "cat": "Dispensers (Vet)",
+    "system": "pulsarlube",
+    "name": "Pulsarlube PLC interval (120 ml)",
+    "volume": "120 ml",
+    "vol_ml": 120,
+    "grease": "-",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "a1": "PLC gestuurd",
+    "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "mat": "Kunststof / RVS (IP65)",
+    "desc": "Elektro-mechanische automatische smeerunit PLC gestuurd - interval modus (art. 1456)"
+  },
+  {
+    "code": "1458",
+    "default_code": "1458",
+    "cat": "Dispensers (Vet)",
+    "system": "pulsarlube",
+    "name": "Pulsarlube PLC interval (240 ml)",
+    "volume": "240 ml",
+    "vol_ml": 240,
+    "grease": "-",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "a1": "PLC gestuurd",
+    "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "mat": "Kunststof / RVS (IP65)",
+    "desc": "Elektro-mechanische automatische smeerunit PLC gestuurd - interval modus (art. 1458)"
+  },
+  {
+    "code": "1460",
+    "default_code": "1460",
+    "cat": "Dispensers (Vet)",
+    "system": "pulsarlube",
+    "name": "Pulsarlube PLC interval (480 ml)",
+    "volume": "480 ml",
+    "vol_ml": 480,
+    "grease": "-",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "a1": "PLC gestuurd",
+    "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "mat": "Kunststof / RVS (IP65)",
+    "desc": "Elektro-mechanische automatische smeerunit PLC gestuurd - interval modus (art. 1460)"
+  },
+  {
+    "code": "1451",
+    "default_code": "1451",
+    "cat": "Dispensers (Vet)",
+    "system": "pulsarlube",
+    "name": "Pulsarlube EXPL ATEX Explosieveilig (120 ml)",
+    "volume": "120 ml",
+    "vol_ml": 120,
+    "grease": "-",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "a1": "ATEX Zone 0/20",
+    "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "mat": "Antistatisch / ATEX Zone 0/20",
+    "desc": "ATEX explosieveilige automatische elektro-mechanische smeerunit (art. 1451)"
+  },
+  {
+    "code": "1452",
+    "default_code": "1452",
+    "cat": "Dispensers (Vet)",
+    "system": "pulsarlube",
+    "name": "Pulsarlube EXPL ATEX Explosieveilig (240 ml)",
+    "volume": "240 ml",
+    "vol_ml": 240,
+    "grease": "-",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "a1": "ATEX Zone 0/20",
+    "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "mat": "Antistatisch / ATEX Zone 0/20",
+    "desc": "ATEX explosieveilige automatische elektro-mechanische smeerunit (art. 1452)"
+  },
+  {
+    "code": "1461",
+    "default_code": "1461",
+    "cat": "Dispensers (Vet)",
+    "system": "pulsarlube",
+    "name": "Pulsarlube Mi trillingsgestuurd (60 ml)",
+    "volume": "60 ml",
+    "vol_ml": 60,
+    "grease": "-",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "a1": "Trillingssensor",
+    "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "mat": "Kunststof / RVS (IP65)",
+    "desc": "Automatische smeerunit met ingebouwde trillingssensor / machineactiviteit detectie (art. 1461)"
+  },
+  {
+    "code": "1462",
+    "default_code": "1462",
+    "cat": "Dispensers (Vet)",
+    "system": "pulsarlube",
+    "name": "Pulsarlube Mi trillingsgestuurd (125 ml)",
+    "volume": "125 ml",
+    "vol_ml": 125,
+    "grease": "-",
+    "thread": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "a1": "Trillingssensor",
+    "a2": "G 3/8\" M (of adapter 1/8\" NPT)",
+    "mat": "Kunststof / RVS (IP65)",
+    "desc": "Automatische smeerunit met ingebouwde trillingssensor / machineactiviteit detectie (art. 1462)"
   }
 ];

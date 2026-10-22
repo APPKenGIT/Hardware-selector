@@ -2544,25 +2544,25 @@
     <div class="modal-card modal-card-large">
       <div class="modal-title">
         <div style="display: flex; align-items: center; gap: 10px;">
-          <span>📦 Koppelingen & ISPL Database</span>
+          <span>📦 Koppelingen, ISPL &amp; Pulsarlube Database</span>
           <span style="font-size: 11px; background: #DCFCE7; color: #166534; padding: 3px 8px; border-radius: var(--radius-pill); font-weight: bold;">Geautoriseerd</span>
         </div>
         <button onclick="closeDatabaseManagerModal()" style="background: none; border: none; font-size: 22px; cursor: pointer; color: #94A3B8;">✕</button>
       </div>
 
-      <!-- Tab Switcher: Koppelingen vs ISPL -->
+      <!-- Tab Switcher: Koppelingen vs ISPL & Pulsarlube -->
       <div style="display: flex; gap: 8px; margin-bottom: 14px; border-bottom: 1px solid var(--border); padding-bottom: 10px;">
         <button id="db-tab-btn-couplings" class="btn-pill-primary" style="padding: 7px 18px; font-size: 12px;" onclick="switchDbTab('couplings')">
-          📦 Koppelingen &amp; Installatiekit (<span id="db-count-couplings">63</span>)
+          📦 Koppelingen &amp; Installatiekit (<span id="db-count-couplings">71</span>)
         </button>
         <button id="db-tab-btn-ispl" class="btn-pill-outline" style="padding: 7px 18px; font-size: 12px;" onclick="switchDbTab('ispl')">
-          🧴 ISPL Smeerunits (<span id="db-count-ispl">30</span>)
+          🛢️ ISPL &amp; Pulsarlube (<span id="db-count-ispl">115</span>)
         </button>
       </div>
 
       <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: center; margin-bottom: 16px;">
         <div style="display: flex; gap: 8px; flex: 1; min-width: 240px;">
-          <input type="text" id="db-search-input" placeholder="🔍 Zoek artikelcode, maat, type vet of omschrijving..." oninput="filterDatabaseTable()" style="padding: 8px 14px; font-size: 12.5px;">
+          <input type="text" id="db-search-input" placeholder="🔍 Zoek artikelcode, maat, type vet, model of omschrijving..." oninput="filterDatabaseTable()" style="padding: 8px 14px; font-size: 12.5px;">
         </div>
         <div style="display: flex; gap: 8px;">
           <button class="btn-pill-outline" style="padding: 8px 14px; font-size: 12px;" onclick="openAddArticleModal()">
@@ -2610,13 +2610,13 @@
         <label class="input-label">Type Artikel</label>
         <select id="new-art-type" onchange="onNewArtTypeChange()">
           <option value="coupling">Koppeling / Verloopstuk / Steekfitting</option>
-          <option value="ispl">Interflon Single Point Lubricator (ISPL)</option>
+          <option value="ispl">ISPL / Pulsarlube Smeersysteem of Onderdeel</option>
         </select>
       </div>
 
       <div class="input-group">
         <label class="input-label">Artikelcode (default_code in Odoo) *</label>
-        <input type="text" id="new-art-code" placeholder="bv. 1099.1062 of 1085..." style="font-family: monospace; font-weight: bold;" oninput="document.getElementById('new-art-code-error').style.display='none'">
+        <input type="text" id="new-art-code" placeholder="bv. 1099.1062, 1085 of 1422..." style="font-family: monospace; font-weight: bold;" oninput="document.getElementById('new-art-code-error').style.display='none'">
         <div id="new-art-code-error" style="color: #DC2626; font-size: 11px; font-weight: bold; margin-top: 4px; display: none;"></div>
       </div>
 
@@ -2647,27 +2647,64 @@
         </div>
       </div>
 
-      <!-- ISPL specifieke velden -->
+      <!-- ISPL & Pulsarlube specifieke velden -->
       <div id="new-art-ispl-fields" style="display: none;">
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
           <div class="input-group">
-            <label class="input-label">Volume patroon</label>
-            <select id="new-art-volume">
-              <option value="15ml">15 ml</option>
-              <option value="30ml">30 ml</option>
-              <option value="60ml">60 ml</option>
-              <option value="125ml" selected>125 ml</option>
-              <option value="250ml">250 ml</option>
-            </select>
+            <label class="input-label">Volume / Maat</label>
+            <input type="text" id="new-art-volume" list="db-volume-datalist" placeholder="bv. 125 ml, 250 ml, 60 ml, 2 poorten..." value="125 ml">
+            <datalist id="db-volume-datalist">
+              <option value="15ml">
+              <option value="30ml">
+              <option value="60ml">
+              <option value="120 ml">
+              <option value="125ml">
+              <option value="240 ml">
+              <option value="250ml">
+              <option value="480 ml">
+              <option value="500 ml">
+              <option value="2 poorten">
+              <option value="3 poorten">
+              <option value="4 poorten">
+              <option value="5 poorten">
+              <option value="6 poorten">
+              <option value="7 poorten">
+              <option value="8 poorten">
+              <option value="4 mm">
+              <option value="6 mm">
+              <option value="8 mm">
+              <option value="1 inch">
+              <option value="2 inch">
+              <option value="1 smeerpunt">
+              <option value="Booster">
+              <option value="Kit">
+            </datalist>
           </div>
           <div class="input-group">
-            <label class="input-label">Type Vet (bv. Food grease HD2)</label>
-            <input type="text" id="new-art-grease" placeholder="bv. Food grease HD2, Microlube...">
+            <label class="input-label">Type Vet / Medium</label>
+            <input type="text" id="new-art-grease" placeholder="bv. Grease MP2/3, Food grease HD2, Olie, -...">
           </div>
         </div>
-        <div class="input-group" style="margin-top: 10px;">
-          <label class="input-label">Schroefdraad</label>
-          <input type="text" id="new-art-thread" value="G 1/4&quot; M">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
+          <div class="input-group">
+            <label class="input-label">Schroefdraad / Aansluiting</label>
+            <input type="text" id="new-art-thread" value="G 1/4&quot; M" placeholder="bv. G 1/4&quot; M, G 3/8&quot; M, 1/8&quot; NPT...">
+          </div>
+          <div class="input-group">
+            <label class="input-label">Categorie / Systeem</label>
+            <select id="new-art-cat">
+              <option value="ISPL Smeerunits">ISPL Smeerunits</option>
+              <option value="Dispensers (Vet)">Pulsarlube Dispensers (Vet)</option>
+              <option value="Dispensers (Olie)">Pulsarlube Dispensers (Olie)</option>
+              <option value="Service Packs (Vetbalg + Batterij)">Pulsarlube Service Packs</option>
+              <option value="Verdeelblokken">Pulsarlube Verdeelblokken</option>
+              <option value="Nylon Leidingen">Pulsarlube Leidingen</option>
+              <option value="Borstelsets">Pulsarlube Borstelsets</option>
+              <option value="Installatiekits">Installatiekits</option>
+              <option value="Koppelingen &amp; Ventielen">Koppelingen &amp; Ventielen</option>
+              <option value="Batterijen &amp; Toebehoren">Batterijen &amp; Toebehoren</option>
+            </select>
+          </div>
         </div>
       </div>
 
@@ -2682,8 +2719,8 @@
   <script>
     const STORAGE_KEY = 'IF_HARDWARE_SELECTOR_DATA_V9';
     const DB_STORAGE_KEY = 'IF_CUSTOM_COUPLINGS_DB_V5';
-    const ISPL_STORAGE_KEY = 'IF_CUSTOM_ISPL_DB_V6';
-    const PULSAR_STORAGE_KEY = 'IF_CUSTOM_PULSAR_DB_V1';
+    const ISPL_STORAGE_KEY = 'IF_CUSTOM_ISPL_DB_V7';
+    const PULSAR_STORAGE_KEY = 'IF_CUSTOM_PULSAR_DB_V2';
     let currentPhotoBase64 = null;
     let savedPoints = [];
     let activePointId = null;
@@ -2731,7 +2768,8 @@
         if (stored) {
           const parsed = JSON.parse(stored);
           const hasImpulse = Array.isArray(parsed) && parsed.some(item => (item.code || item.default_code) === '7213');
-          if (hasImpulse && parsed.length >= (typeof ISPL_CATALOG !== 'undefined' ? ISPL_CATALOG.length : 0)) {
+          const hasPulsar = Array.isArray(parsed) && parsed.some(item => (item.code || item.default_code) === '1422');
+          if (hasImpulse && hasPulsar && parsed.length >= (typeof ISPL_CATALOG !== 'undefined' ? ISPL_CATALOG.length : 0)) {
             return parsed;
           }
         }
@@ -2753,29 +2791,40 @@
     }
 
     function getActivePulsarDatabase() {
-      try {
-        const stored = localStorage.getItem(PULSAR_STORAGE_KEY);
-        if (stored) {
-          const parsed = JSON.parse(stored);
-          if (Array.isArray(parsed) && parsed.length >= (typeof PULSARLUBE_CATALOG !== 'undefined' ? PULSARLUBE_CATALOG.length : 0)) {
-            return parsed;
-          }
-        }
-      } catch (e) {
-        console.error("Pulsar DB storage read error:", e);
-      }
-      const fresh = (typeof PULSARLUBE_CATALOG !== 'undefined') ? PULSARLUBE_CATALOG : [];
-      saveActivePulsarDatabase(fresh);
-      return fresh;
+      const isplDb = getActiveISPLDatabase();
+      const pulsarItems = isplDb.filter(item => 
+        item.system === 'pulsarlube' || 
+        (item.cat && (
+          item.cat.includes('Dispensers') || 
+          item.cat.includes('Service Packs') || 
+          item.cat.includes('Verdeelblokken') || 
+          item.cat.includes('Borstelsets') || 
+          item.cat.includes('Installatiekits') || 
+          item.cat.includes('Nylon Leidingen') || 
+          item.cat.includes('Koppelingen & Ventielen') || 
+          item.cat.includes('Insteekkoppelingen') || 
+          item.cat.includes('Batterijen')
+        )) ||
+        (item.name && item.name.toLowerCase().includes('pulsar'))
+      );
+      if (pulsarItems.length > 0) return pulsarItems;
+      return (typeof PULSARLUBE_CATALOG !== 'undefined') ? PULSARLUBE_CATALOG : [];
     }
 
     function saveActivePulsarDatabase(data) {
-      try {
-        localStorage.setItem(PULSAR_STORAGE_KEY, JSON.stringify(data));
-        PULSARLUBE_CATALOG = data;
-      } catch (e) {
-        console.error("Pulsar DB storage write error:", e);
-      }
+      const isplDb = getActiveISPLDatabase();
+      data.forEach(pItem => {
+        const code = pItem.code || pItem.default_code;
+        const match = isplDb.find(item => (item.code === code || item.default_code === code));
+        if (match) {
+          Object.assign(match, pItem);
+        } else {
+          pItem.system = 'pulsarlube';
+          isplDb.push(pItem);
+        }
+      });
+      saveActiveISPLDatabase(isplDb);
+      PULSARLUBE_CATALOG = data;
     }
 
     function loadSavedState() {
@@ -3727,7 +3776,10 @@
       const select = document.getElementById('sel-grease-type');
       
       const isplDb = getActiveISPLDatabase();
-      const available = isplDb.filter(item => item.volume === vol);
+      const available = isplDb.filter(item => 
+        item.volume === vol && 
+        (item.system === 'ispl' || (!item.system && (!item.cat || item.cat.includes('ISPL'))) || (item.name && item.name.toLowerCase().includes('single point')))
+      );
 
       select.innerHTML = available.map(item => `
         <option value="${item.grease}" ${item.grease === selectedGrease ? 'selected' : ''}>
@@ -4287,7 +4339,11 @@ return comps;
       let isplCode = 'ISPL';
       let isplName = `Interflon Single Point Lubricator ${cfg.lubricatorVol} + ${cfg.greaseType}`;
       const isplDb = getActiveISPLDatabase();
-      const matchISPL = isplDb.find(item => item.volume === cfg.lubricatorVol && item.grease === cfg.greaseType);
+      const matchISPL = isplDb.find(item => 
+        item.volume === cfg.lubricatorVol && 
+        item.grease === cfg.greaseType && 
+        (item.system === 'ispl' || (!item.system && (!item.cat || item.cat.includes('ISPL'))) || (item.name && item.name.toLowerCase().includes('single point')))
+      );
       if (matchISPL) {
         isplCode = matchISPL.code || matchISPL.default_code;
         isplName = matchISPL.name;
@@ -6514,18 +6570,20 @@ return comps;
       const coupDb = getActiveDatabase();
       const isplDb = getActiveISPLDatabase();
 
-      for (let i = 0; i < coupDb.length; i++) {
-        if (type === 'coupling' && i === excludeItemIndex) continue;
-        if (coupDb[i].default_code && coupDb[i].default_code.trim().toLowerCase() === trimmed) {
-          return true;
+      if (type === 'coupling') {
+        for (let i = 0; i < coupDb.length; i++) {
+          if (i === excludeItemIndex) continue;
+          if (coupDb[i].default_code && coupDb[i].default_code.trim().toLowerCase() === trimmed) {
+            return true;
+          }
         }
-      }
-
-      for (let i = 0; i < isplDb.length; i++) {
-        if (type === 'ispl' && i === excludeItemIndex) continue;
-        const c = isplDb[i].code || isplDb[i].default_code;
-        if (c && String(c).trim().toLowerCase() === trimmed) {
-          return true;
+      } else {
+        for (let i = 0; i < isplDb.length; i++) {
+          if (i === excludeItemIndex) continue;
+          const c = isplDb[i].code || isplDb[i].default_code;
+          if (c && String(c).trim().toLowerCase() === trimmed) {
+            return true;
+          }
         }
       }
 
@@ -6594,28 +6652,53 @@ return comps;
       } else {
         thead.innerHTML = `
           <tr>
-            <th style="width: 140px;">Artikelcode (Odoo)</th>
-            <th style="width: 100px;">Volume</th>
-            <th style="width: 180px;">Type Vet</th>
-            <th style="min-width: 380px;">Naam / Omschrijving</th>
-            <th style="width: 120px;">Draad</th>
-            <th style="width: 60px; text-align: center;">Actie</th>
+            <th style="width: 130px;">Artikelcode (Odoo)</th>
+            <th style="width: 120px;">Volume</th>
+            <th style="width: 160px;">Type Vet / Medium</th>
+            <th style="min-width: 360px;">Naam / Omschrijving</th>
+            <th style="width: 140px;">Draad / Aansluiting</th>
+            <th style="width: 50px; text-align: center;">Actie</th>
           </tr>
         `;
 
         const filtered = isplDb.filter(item => {
           if (!query) return true;
-          const c = item.code || item.default_code || '';
-          return c.toLowerCase().includes(query) ||
-                 (item.name && item.name.toLowerCase().includes(query)) ||
-                 (item.grease && item.grease.toLowerCase().includes(query)) ||
-                 (item.volume && item.volume.toLowerCase().includes(query));
+          const c = String(item.code || item.default_code || '').toLowerCase();
+          const n = String(item.name || '').toLowerCase();
+          const g = String(item.grease || '').toLowerCase();
+          const v = String(item.volume || '').toLowerCase();
+          const t = String(item.thread || item.a2 || '').toLowerCase();
+          const cat = String(item.cat || '').toLowerCase();
+          const d = String(item.desc || '').toLowerCase();
+          return c.includes(query) || n.includes(query) || g.includes(query) || 
+                 v.includes(query) || t.includes(query) || cat.includes(query) || d.includes(query);
         });
 
-        document.getElementById('db-item-count').innerText = `${filtered.length} van ${isplDb.length} ISPL units getoond`;
+        document.getElementById('db-item-count').innerText = `${filtered.length} van ${isplDb.length} ISPL & Pulsarlube artikelen getoond`;
 
         tbody.innerHTML = filtered.map(item => {
           const idx = isplDb.indexOf(item);
+          const volList = [
+            '15ml', '30ml', '60ml', '125ml', '250ml',
+            '60 ml', '120 ml', '125 ml', '240 ml', '250 ml', '480 ml', '500 ml',
+            '2 poorten', '3 poorten', '4 poorten', '5 poorten', '6 poorten', '7 poorten', '8 poorten',
+            '4 mm', '6 mm', '8 mm',
+            '1 inch', '2 inch',
+            '1 smeerpunt', '2 smeerpunten', '3 smeerpunten', '4 smeerpunten',
+            'Booster', 'Kit', '-'
+          ];
+          const curVol = item.volume || '-';
+          let optionsHtml = '';
+          let found = false;
+          volList.forEach(v => {
+            const sel = (curVol.toLowerCase() === v.toLowerCase());
+            if (sel) found = true;
+            optionsHtml += `<option value="${v}" ${sel ? 'selected' : ''}>${v}</option>`;
+          });
+          if (!found && curVol) {
+            optionsHtml = `<option value="${curVol}" selected>${curVol}</option>` + optionsHtml;
+          }
+
           return `
             <tr>
               <td>
@@ -6626,17 +6709,11 @@ return comps;
               <td>
                 <select style="font-size: 11.5px; padding: 6px; border: 1px solid var(--border); border-radius: 6px; width: 100%;"
                         onchange="updateIsplField(${idx}, 'volume', this.value)">
-                  <option value="15ml" ${item.volume==='15ml'?'selected':''}>15 ml</option>
-                  <option value="30ml" ${item.volume==='30ml'?'selected':''}>30 ml</option>
-                  <option value="60ml" ${item.volume==='60ml'?'selected':''}>60 ml</option>
-                  <option value="125ml" ${item.volume==='125ml'?'selected':''}>125 ml</option>
-                  <option value="250ml" ${item.volume==='250ml'?'selected':''}>250 ml</option>
-                  <option value="Booster" ${item.volume==='Booster'?'selected':''}>Booster</option>
-                  <option value="Kit" ${item.volume==='Kit'?'selected':''}>Kit</option>
+                  ${optionsHtml}
                 </select>
               </td>
               <td>
-                <input type="text" value="${item.grease || ''}" 
+                <input type="text" value="${item.grease || '-'}" 
                        style="font-size: 11.5px;"
                        onchange="updateIsplField(${idx}, 'grease', this.value)">
               </td>
@@ -6645,7 +6722,13 @@ return comps;
                        style="font-size: 11.5px;"
                        onchange="updateIsplField(${idx}, 'name', this.value)">
               </td>
-              <td style="font-size: 11px; color: var(--text-muted);">${item.thread || 'G 1/4" M'}</td>
+              <td>
+                <input type="text" value="${item.thread || item.a2 || 'G 1/4\" M'}" 
+                       style="font-size: 11px; color: var(--text-muted); width: 100%; border: 1px solid transparent; background: transparent; padding: 4px; border-radius: 4px;"
+                       onfocus="this.style.borderColor='var(--border)'; this.style.background='#fff';" 
+                       onblur="this.style.borderColor='transparent'; this.style.background='transparent';"
+                       onchange="updateIsplField(${idx}, 'thread', this.value)">
+              </td>
               <td style="text-align: center;">
                 <button onclick="deleteIsplItem(${idx})" style="background: none; border: none; color: #DC2626; cursor: pointer; font-size: 16px;" title="Verwijderen">🗑️</button>
               </td>
@@ -6695,6 +6778,9 @@ return comps;
       } else if (field === 'volume') {
         isplDb[index].volume = value;
         isplDb[index].vol_ml = parseInt(value) || 0;
+      } else if (field === 'thread') {
+        isplDb[index].thread = value;
+        isplDb[index].a2 = value;
       } else {
         isplDb[index][field] = value;
       }
@@ -6713,7 +6799,7 @@ return comps;
     }
 
     function deleteIsplItem(index) {
-      if (confirm('Deze ISPL smeerunit definitief verwijderen uit de database?')) {
+      if (confirm('Dit ISPL / Pulsarlube artikel definitief verwijderen uit de database?')) {
         const isplDb = getActiveISPLDatabase();
         isplDb.splice(index, 1);
         saveActiveISPLDatabase(isplDb);
@@ -6795,21 +6881,27 @@ return comps;
         saveActiveDatabase(db);
         currentDbTab = 'couplings';
       } else {
-        const vol = document.getElementById('new-art-volume').value;
-        const grease = document.getElementById('new-art-grease').value.trim() || 'Custom vet';
+        const vol = document.getElementById('new-art-volume').value.trim() || '125 ml';
+        const grease = document.getElementById('new-art-grease').value.trim() || '-';
         const thread = document.getElementById('new-art-thread').value.trim() || 'G 1/4" M';
+        const cat = document.getElementById('new-art-cat').value || 'ISPL Smeerunits';
+        const isPulsar = cat.toLowerCase().includes('pulsar') || cat.toLowerCase().includes('dispenser') || cat.toLowerCase().includes('service pack') || cat.toLowerCase().includes('verdeel') || cat.toLowerCase().includes('borstel');
         const isplDb = getActiveISPLDatabase();
 
         isplDb.unshift({
           code: code,
           default_code: code,
+          cat: cat,
+          system: isPulsar ? 'pulsarlube' : 'ispl',
           volume: vol,
           vol_ml: parseInt(vol) || 0,
           grease: grease,
           name: name,
           thread: thread,
-          mat: 'Polycarbonaat / Kunststof',
-          desc: `Automatische smeerunit ${vol} gevuld met Interflon ${grease} (art. ${code})`
+          a1: thread,
+          a2: thread,
+          mat: isPulsar ? 'Kunststof / Metaal' : 'Polycarbonaat / Kunststof',
+          desc: `${name} (art. ${code})`
         });
         saveActiveISPLDatabase(isplDb);
         populateGreaseTypes();
@@ -6846,30 +6938,32 @@ return comps;
         { wch: 50 }
       ];
 
-      // Sheet 2: ISPL Smeerunits
+      // Sheet 2: ISPL & Pulsarlube
       const isplRows = isplDb.map(item => ({
         "default_code": item.code || item.default_code || "",
         "name": item.name || "",
         "volume": item.volume || "",
-        "grease": item.grease || "",
-        "draad": item.thread || 'G 1/4" M',
-        "materiaal": item.mat || 'Polycarbonaat / Kunststof',
+        "grease": item.grease || "-",
+        "draad": item.thread || item.a2 || 'G 1/4" M',
+        "materiaal": item.mat || 'Kunststof / Metaal',
+        "categorie": item.cat || (item.system === 'pulsarlube' ? 'Pulsarlube' : 'ISPL Smeerunit'),
         "description": item.desc || ""
       }));
       const ws2 = XLSX.utils.json_to_sheet(isplRows);
       ws2['!cols'] = [
         { wch: 18 },
         { wch: 45 },
-        { wch: 12 },
-        { wch: 22 },
-        { wch: 16 },
-        { wch: 28 },
+        { wch: 14 },
+        { wch: 24 },
+        { wch: 24 },
+        { wch: 26 },
+        { wch: 25 },
         { wch: 50 }
       ];
 
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws1, "Koppelingen & Kits");
-      XLSX.utils.book_append_sheet(wb, ws2, "ISPL Smeerunits");
+      XLSX.utils.book_append_sheet(wb, ws2, "ISPL & Pulsarlube");
 
       const filename = `Odoo_Hardware_Database_${new Date().toISOString().slice(0,10)}.xlsx`;
       XLSX.writeFile(wb, filename);
@@ -6894,38 +6988,55 @@ return comps;
             const rows = XLSX.utils.sheet_to_json(sheet);
             if (!rows || rows.length === 0) return;
 
-            const isIsplSheet = sheetName.toLowerCase().includes('ispl') || rows.some(r => r['grease'] || r['volume']);
+            const isIsplSheet = sheetName.toLowerCase().includes('ispl') || 
+                                sheetName.toLowerCase().includes('pulsar') || 
+                                sheetName.toLowerCase().includes('smeer') || 
+                                rows.some(r => r['grease'] || r['volume'] || r['Type Vet']);
 
             if (isIsplSheet) {
               rows.forEach(r => {
-                const code = String(r['default_code'] || r['code'] || r['Artikelcode'] || '').trim();
-                const name = String(r['name'] || r['Naam'] || '').trim();
-                const volume = String(r['volume'] || r['Volume'] || '125ml').trim();
-                const grease = String(r['grease'] || r['vet'] || r['Type Vet'] || '').trim();
+                const code = String(r['default_code'] || r['code'] || r['Artikelcode'] || r['Artikelnr'] || '').trim();
+                const name = String(r['name'] || r['Naam'] || r['Omschrijving'] || '').trim();
+                const volume = String(r['volume'] || r['Volume'] || r['Inhoud'] || '-').trim();
+                const grease = String(r['grease'] || r['vet'] || r['Type Vet'] || r['Smeermiddel'] || '-').trim();
+                const thread = String(r['draad'] || r['Draad'] || r['Aansluiting 2 (Uitlaat / Onder)'] || r['a2'] || '').trim();
+                const cat = String(r['categorie'] || r['Categorie'] || '').trim();
+                const mat = String(r['materiaal'] || r['Materiaal / Eigenschappen'] || '').trim();
+                const desc = String(r['description'] || r['Toelichting / Specificatie'] || r['desc'] || '').trim();
 
                 if (code || name) {
                   const existing = isplDb.find(item => 
                     (code && (item.code === code || item.default_code === code)) ||
-                    (volume && grease && item.volume === volume && item.grease === grease)
+                    (name && item.name === name) ||
+                    (volume && grease && volume !== '-' && grease !== '-' && item.volume === volume && item.grease === grease)
                   );
 
                   if (existing) {
                     if (code) { existing.code = code; existing.default_code = code; }
                     if (name) existing.name = name;
-                    if (volume) { existing.volume = volume; existing.vol_ml = parseInt(volume) || 0; }
-                    if (grease) existing.grease = grease;
+                    if (volume && volume !== '-') { existing.volume = volume; existing.vol_ml = parseInt(volume) || 0; }
+                    if (grease && grease !== '-') existing.grease = grease;
+                    if (thread) { existing.thread = thread; existing.a2 = thread; }
+                    if (cat) existing.cat = cat;
+                    if (mat) existing.mat = mat;
+                    if (desc) existing.desc = desc;
                     updatedIspl++;
                   } else {
+                    const isPulsar = cat.toLowerCase().includes('pulsar') || name.toLowerCase().includes('pulsar');
                     isplDb.push({
                       code: code,
                       default_code: code,
+                      cat: cat || (isPulsar ? 'Pulsarlube' : 'ISPL Smeerunits'),
+                      system: isPulsar ? 'pulsarlube' : 'ispl',
                       volume: volume,
                       vol_ml: parseInt(volume) || 0,
-                      grease: grease || 'Custom vet',
-                      name: name || `Interflon Single Point Lubricator ${volume} + ${grease}`,
-                      thread: r['draad'] || 'G 1/4" M',
-                      mat: r['materiaal'] || 'Polycarbonaat / Kunststof',
-                      desc: r['description'] || `Automatische smeerunit ${volume} (${grease})`
+                      grease: grease || '-',
+                      name: name,
+                      thread: thread || (isPulsar ? 'G 3/8" M' : 'G 1/4" M'),
+                      a1: thread || (isPulsar ? 'G 3/8" M' : 'G 1/4" M'),
+                      a2: thread || (isPulsar ? 'G 3/8" M' : 'G 1/4" M'),
+                      mat: mat || (isPulsar ? 'Kunststof / Metaal' : 'Polycarbonaat / Kunststof'),
+                      desc: desc || `${name} (art. ${code})`
                     });
                     updatedIspl++;
                   }
@@ -6968,7 +7079,7 @@ return comps;
           saveActiveISPLDatabase(isplDb);
           populateGreaseTypes();
           renderDatabaseTable();
-          alert(`Succesvol ${updatedCoup} koppelingen en ${updatedIspl} ISPL smeerunits bijgewerkt vanuit ${file.name}!`);
+          alert(`Succesvol ${updatedCoup} koppelingen en ${updatedIspl} ISPL & Pulsarlube artikelen bijgewerkt vanuit ${file.name}!`);
         } catch (err) {
           alert('Fout bij inlezen van Excel-bestand: ' + err.message);
         }

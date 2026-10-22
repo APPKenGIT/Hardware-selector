@@ -1,4 +1,4 @@
-const CACHE_NAME = 'if-hardware-selector-v25';
+const CACHE_NAME = 'if-hardware-selector-v26';
 const ASSETS = [
   './',
   './index.html',
@@ -63,7 +63,7 @@ self.addEventListener('activate', (e) => {
 
 self.addEventListener('fetch', (e) => {
   // Network-first voor index.html en navigatie zodat updates onmiddellijk doorkomen
-  if (e.request.mode === 'navigate' || e.request.url.endsWith('index.html') || e.request.url.endsWith('/')) {
+  if (e.request.mode === 'navigate' || e.request.url.endsWith('index.html') || e.request.url.endsWith('/') || e.request.url.includes('couplings-data.js')) {
     e.respondWith(
       fetch(e.request)
         .then((response) => {

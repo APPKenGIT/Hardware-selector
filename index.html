@@ -1602,29 +1602,44 @@
           <!-- ============================================================= -->
           <div id="pulsarlube-params-section" style="display: none;">
             
-            <!-- Pulsarlube Model & Volume -->
+            <!-- Pulsarlube Model, Modus/Voeding & Volume -->
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
               <div class="input-group">
                 <label class="input-label" style="color: #2563EB;">Pulsarlube Model</label>
                 <select id="sel-pulsar-model" onchange="onPulsarModelChange()">
                   <option value="M2" selected>Pulsarlube M2 (Elektro-mechanisch vet)</option>
                   <option value="BT">Pulsarlube BT (Bluetooth BLE vet)</option>
-                  <option value="MSP">Pulsarlube MSP (Extern 24V vet)</option>
+                  <option value="MSP">Pulsarlube MSP (Machine-gesynch. vet)</option>
                   <option value="PLC">Pulsarlube PLC (PLC-gestuurd vet)</option>
                   <option value="OL500">Pulsarlube OL500 (Oliesmering 500 ml)</option>
-                  <option value="MSP Oil">Pulsarlube MSP Oil (Extern 24V olie)</option>
+                  <option value="MSP Oil">Pulsarlube MSP Oil (Machine-gesynch. olie)</option>
                 </select>
               </div>
 
-              <div class="input-group">
+              <div class="input-group" id="grp-pulsar-vol">
                 <label class="input-label" style="color: #2563EB;">Volume</label>
                 <select id="sel-pulsar-vol" onchange="onPulsarVolumeChange()">
-                  <option value="60 ml">60 ml</option>
-                  <option value="125 ml" selected>125 ml</option>
-                  <option value="250 ml">250 ml</option>
-                  <option value="500 ml">500 ml</option>
+                  <!-- Dynamisch gevuld per model -->
                 </select>
               </div>
+            </div>
+
+            <!-- Extra selector voor MSP voedingsspanning (230V AC vs 24V DC) -->
+            <div class="input-group" id="grp-pulsar-msp-power" style="display: none; background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 8px; padding: 10px; margin-bottom: 12px;">
+              <label class="input-label" style="color: #1E40AF; font-weight: 800;">Voedingsspanning MSP:</label>
+              <select id="sel-pulsar-msp-power" onchange="onConfigChange()">
+                <option value="230V AC" selected>230V AC (art. 230V AC wisselspanning)</option>
+                <option value="24V DC">24V DC (art. 24V DC gelijkspanning)</option>
+              </select>
+            </div>
+
+            <!-- Extra selector voor PLC Modus (Monthly vs Interval) -->
+            <div class="input-group" id="grp-pulsar-plc-type" style="display: none; background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 8px; padding: 10px; margin-bottom: 12px;">
+              <label class="input-label" style="color: #1E40AF; font-weight: 800;">PLC Aansturingsmodus:</label>
+              <select id="sel-pulsar-plc-type" onchange="onPulsarPlcTypeChange()">
+                <option value="monthly" selected>Monthly (Tijdsgestuurd in maanden 1-12)</option>
+                <option value="interval">Interval (Dosering Stand 1 t/m 6 per PLC-signaal)</option>
+              </select>
             </div>
 
             <!-- Service Pack / Vettype in Balg -->
@@ -1635,9 +1650,9 @@
               </select>
             </div>
 
-            <!-- Looptijd / Instelling (1 - 12 maanden) -->
+            <!-- Looptijd / Instelling / Dosering -->
             <div class="input-group">
-              <label class="input-label">Looptijd / Instelling (1 - 12 maanden)</label>
+              <label class="input-label" id="lbl-pulsar-months">Looptijd / Instelling</label>
               <select id="sel-pulsar-months" onchange="onConfigChange()">
                 <option value="1">1 maand</option>
                 <option value="2">2 maanden</option>
@@ -2553,10 +2568,10 @@
       <!-- Tab Switcher: Koppelingen vs ISPL & Pulsarlube -->
       <div style="display: flex; gap: 8px; margin-bottom: 14px; border-bottom: 1px solid var(--border); padding-bottom: 10px;">
         <button id="db-tab-btn-couplings" class="btn-pill-primary" style="padding: 7px 18px; font-size: 12px;" onclick="switchDbTab('couplings')">
-          📦 Koppelingen &amp; Installatiekit (<span id="db-count-couplings">71</span>)
+          📦 Koppelingen, Kits &amp; Toebehoren (<span id="db-count-couplings">92</span>)
         </button>
         <button id="db-tab-btn-ispl" class="btn-pill-outline" style="padding: 7px 18px; font-size: 12px;" onclick="switchDbTab('ispl')">
-          🛢️ ISPL &amp; Pulsarlube (<span id="db-count-ispl">115</span>)
+          🛢️ ISPL &amp; Pulsarlube Smeerunits (<span id="db-count-ispl">96</span>)
         </button>
       </div>
 
@@ -2564,9 +2579,12 @@
         <div style="display: flex; gap: 8px; flex: 1; min-width: 240px;">
           <input type="text" id="db-search-input" placeholder="🔍 Zoek artikelcode, maat, type vet, model of omschrijving..." oninput="filterDatabaseTable()" style="padding: 8px 14px; font-size: 12.5px;">
         </div>
-        <div style="display: flex; gap: 8px;">
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
           <button class="btn-pill-outline" style="padding: 8px 14px; font-size: 12px;" onclick="openAddArticleModal()">
             + Nieuw Artikel
+          </button>
+          <button class="btn-pill-outline" style="padding: 8px 14px; font-size: 12px; border-color: #3B82F6; color: #1D4ED8; background: #EFF6FF;" onclick="downloadDatabaseTemplateXLSX()">
+            📄 Download Template (.xlsx)
           </button>
           <button class="btn-pill-primary" style="padding: 8px 16px; font-size: 12px; background: #10B981; border: none;" onclick="exportDatabaseExcelXLSX()">
             ⬇️ Download Excel (.xlsx)
@@ -2715,12 +2733,12 @@
     </div>
   </div>
 
-  <script src="couplings-data.js"></script>
+  <script src="couplings-data.js?v=26"></script>
   <script>
-    const STORAGE_KEY = 'IF_HARDWARE_SELECTOR_DATA_V9';
-    const DB_STORAGE_KEY = 'IF_CUSTOM_COUPLINGS_DB_V5';
-    const ISPL_STORAGE_KEY = 'IF_CUSTOM_ISPL_DB_V7';
-    const PULSAR_STORAGE_KEY = 'IF_CUSTOM_PULSAR_DB_V2';
+    const STORAGE_KEY = 'IF_HARDWARE_SELECTOR_DATA_V10';
+    const DB_STORAGE_KEY = 'IF_CUSTOM_COUPLINGS_DB_V10';
+    const ISPL_STORAGE_KEY = 'IF_CUSTOM_ISPL_DB_V10';
+    const PULSAR_STORAGE_KEY = 'IF_CUSTOM_PULSAR_DB_V3';
     let currentPhotoBase64 = null;
     let savedPoints = [];
     let activePointId = null;
@@ -2740,8 +2758,8 @@
         const stored = localStorage.getItem(DB_STORAGE_KEY);
         if (stored) {
           const parsed = JSON.parse(stored);
-          const has6mm = Array.isArray(parsed) && parsed.some(item => item.name && item.name.includes('insteekkoppeling 6 mm'));
-          if (has6mm && parsed.length >= (typeof COUPLINGS_DATA !== 'undefined' ? COUPLINGS_DATA.length : 0)) {
+          const hasAdapter = Array.isArray(parsed) && parsed.some(item => (item.default_code === '1099.1070'));
+          if (hasAdapter && parsed.length >= (typeof COUPLINGS_DATA !== 'undefined' ? COUPLINGS_DATA.length : 0)) {
             return parsed;
           }
         }
@@ -2769,7 +2787,8 @@
           const parsed = JSON.parse(stored);
           const hasImpulse = Array.isArray(parsed) && parsed.some(item => (item.code || item.default_code) === '7213');
           const hasPulsar = Array.isArray(parsed) && parsed.some(item => (item.code || item.default_code) === '1422');
-          if (hasImpulse && hasPulsar && parsed.length >= (typeof ISPL_CATALOG !== 'undefined' ? ISPL_CATALOG.length : 0)) {
+          const hasPLC480 = Array.isArray(parsed) && parsed.some(item => (item.code || item.default_code) === '1459' && item.volume === '480 ml');
+          if (hasImpulse && hasPulsar && hasPLC480 && parsed.length >= (typeof ISPL_CATALOG !== 'undefined' ? ISPL_CATALOG.length : 0)) {
             return parsed;
           }
         }
@@ -2791,24 +2810,11 @@
     }
 
     function getActivePulsarDatabase() {
+      if (typeof PULSARLUBE_CATALOG !== 'undefined' && Array.isArray(PULSARLUBE_CATALOG) && PULSARLUBE_CATALOG.length > 0) {
+        return PULSARLUBE_CATALOG;
+      }
       const isplDb = getActiveISPLDatabase();
-      const pulsarItems = isplDb.filter(item => 
-        item.system === 'pulsarlube' || 
-        (item.cat && (
-          item.cat.includes('Dispensers') || 
-          item.cat.includes('Service Packs') || 
-          item.cat.includes('Verdeelblokken') || 
-          item.cat.includes('Borstelsets') || 
-          item.cat.includes('Installatiekits') || 
-          item.cat.includes('Nylon Leidingen') || 
-          item.cat.includes('Koppelingen & Ventielen') || 
-          item.cat.includes('Insteekkoppelingen') || 
-          item.cat.includes('Batterijen')
-        )) ||
-        (item.name && item.name.toLowerCase().includes('pulsar'))
-      );
-      if (pulsarItems.length > 0) return pulsarItems;
-      return (typeof PULSARLUBE_CATALOG !== 'undefined') ? PULSARLUBE_CATALOG : [];
+      return isplDb.filter(item => item.system === 'pulsarlube' || (item.name && item.name.toLowerCase().includes('pulsar')));
     }
 
     function saveActivePulsarDatabase(data) {
@@ -3496,8 +3502,80 @@
     }
 
     function onPulsarModelChange() {
+      const model = document.getElementById('sel-pulsar-model').value;
+      const grpPower = document.getElementById('grp-pulsar-msp-power');
+      const grpPlc = document.getElementById('grp-pulsar-plc-type');
+
+      if (grpPower) grpPower.style.display = (model === 'MSP' || model === 'MSP Oil') ? 'block' : 'none';
+      if (grpPlc) grpPlc.style.display = (model === 'PLC') ? 'block' : 'none';
+
       populatePulsarVolumes();
-      onPulsarVolumeChange();
+      populatePulsarFrequencies();
+      populatePulsarGreases();
+      onConfigChange();
+    }
+
+    function onPulsarPlcTypeChange() {
+      populatePulsarFrequencies();
+      onConfigChange();
+    }
+
+    function onPulsarMspPowerChange() {
+      onConfigChange();
+    }
+
+    function populatePulsarFrequencies(selectedFreq = null) {
+      const model = document.getElementById('sel-pulsar-model').value;
+      const plcType = document.getElementById('sel-pulsar-plc-type') ? document.getElementById('sel-pulsar-plc-type').value : 'monthly';
+      const sel = document.getElementById('sel-pulsar-months');
+      const lbl = document.getElementById('lbl-pulsar-months');
+      if (!sel) return;
+
+      let options = [];
+      if (model === 'PLC' && plcType === 'interval') {
+        if (lbl) lbl.innerText = 'Dosering / Stand per PLC-signaal (Stand 1 t/m 6)';
+        options = [
+          { val: '1', text: 'Stand 1 (1 slag = 0.34 ml / signaal)' },
+          { val: '2', text: 'Stand 2 (2 slagen = 0.68 ml / signaal)' },
+          { val: '3', text: 'Stand 3 (3 slagen = 1.02 ml / signaal)' },
+          { val: '4', text: 'Stand 4 (4 slagen = 1.36 ml / signaal)' },
+          { val: '5', text: 'Stand 5 (5 slagen = 1.70 ml / signaal)' },
+          { val: '6', text: 'Stand 6 (6 slagen = 2.04 ml / signaal)' }
+        ];
+      } else if (model === 'PLC' && plcType === 'monthly') {
+        if (lbl) lbl.innerText = 'Looptijd / Instelling (1 - 12 maanden)';
+        options = [
+          { val: '1', text: '1 maand' },
+          { val: '2', text: '2 maanden' },
+          { val: '3', text: '3 maanden' },
+          { val: '6', text: '6 maanden' },
+          { val: '12', text: '12 maanden' }
+        ];
+      } else if (model === 'BT') {
+        if (lbl) lbl.innerText = 'Looptijd / Instelling (1 - 12 maanden)';
+        options = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(m => ({ val: String(m), text: `${m} ${m === 1 ? 'maand' : 'maanden'}` }));
+      } else {
+        // M2, MSP, OL500, MSP Oil
+        if (lbl) lbl.innerText = (model === 'OL500' || model === 'MSP Oil') ? 'Looptijd / Afgiftecyclus' : 'Looptijd / Instelling';
+        options = [
+          { val: '0.5', text: '0.5 maand (Half / 15 dagen)' },
+          { val: '1', text: '1 maand' },
+          { val: '2', text: '2 maanden' },
+          { val: '4', text: '4 maanden' },
+          { val: '6', text: '6 maanden' },
+          { val: '12', text: '12 maanden' },
+          { val: '18', text: '18 maanden' },
+          { val: '24', text: '24 maanden' }
+        ];
+      }
+
+      sel.innerHTML = options.map(o => `
+        <option value="${o.val}" ${String(o.val) === String(selectedFreq) ? 'selected' : ''}>${o.text}</option>
+      `).join('');
+
+      if (!sel.value && options.length > 0) {
+        sel.value = options[0].val;
+      }
     }
 
     function populatePulsarVolumes(selectedVol = null) {
@@ -3508,8 +3586,10 @@
       let options = [];
       if (model === 'M2' || model === 'MSP') {
         options = ['60 ml', '125 ml', '250 ml', '500 ml'];
-      } else if (model === 'BT' || model === 'PLC') {
-        options = ['60 ml', '120 ml', '240 ml', '500 ml'];
+      } else if (model === 'BT') {
+        options = ['60 ml', '120 ml', '240 ml'];
+      } else if (model === 'PLC') {
+        options = ['60 ml', '120 ml', '240 ml', '480 ml'];
       } else if (model === 'OL500' || model === 'MSP Oil') {
         options = ['500 ml'];
       } else {
@@ -3518,7 +3598,6 @@
 
       selVol.innerHTML = options.map(v => `<option value="${v}" ${v === selectedVol ? 'selected' : ''}>${v}</option>`).join('');
       if (!selVol.value && options.length > 0) selVol.value = options[0];
-      populatePulsarGreases();
     }
 
     function populatePulsarGreases(selectedGrease = null) {
@@ -3541,12 +3620,13 @@
         let targetVol = vol;
         if (vol === '120 ml') targetVol = '125 ml';
         if (vol === '240 ml') targetVol = '250 ml';
+        if (vol === '480 ml') targetVol = '500 ml';
 
-        const packs = pulsarDb.filter(x => x.cat === 'Service Packs (Vetbalg + Batterij)' && x.volume === targetVol);
+        const packs = pulsarDb.filter(x => (x.cat === 'Service Packs (Vetbalg + Batterij)' || (x.name && x.name.toLowerCase().includes('servicepack'))) && (x.volume === targetVol || x.volume === targetVol.replace(' ', '')));
         if (packs.length > 0) {
           selGrease.innerHTML = packs.map(x => `
             <option value="${x.grease}" ${x.grease === selectedGrease ? 'selected' : ''}>
-              ${x.grease} (Art. ${x.code})
+              ${x.grease} (Art. ${x.code || x.default_code})
             </option>
           `).join('');
         } else {
@@ -3723,14 +3803,31 @@
       onConfigChange();
     }
 
-    function updatePulsarDispenseCalculator(volStr, months, portsCount) {
+    function updatePulsarDispenseCalculator(volStr, months, portsCount, model = 'M2', plcType = 'monthly') {
       const infoEl = document.getElementById('pulsar-dispense-info');
       if (!infoEl) return;
 
-      const volMl = parseInt(volStr) || 125;
-      const totalDays = (months * 30.5);
-      const totalDailyCc = (volMl / totalDays);
       const ports = Math.max(1, portsCount || 1);
+
+      if (model === 'PLC' && plcType === 'interval') {
+        const stand = parseInt(months) || 1;
+        const dose = (0.34 * stand);
+        const perPort = (dose / ports).toFixed(2);
+        if (ports > 1) {
+          infoEl.innerHTML = `
+            <span>⏱️ <strong>Interval Stand ${stand}:</strong> Totaal <strong>${dose.toFixed(2)} ml per PLC signaal/slag</strong> ➔ <strong>${perPort} ml per poort</strong> (verdeeld over ${ports} poorten).</span>
+          `;
+        } else {
+          infoEl.innerHTML = `
+            <span>⏱️ <strong>Interval Stand ${stand}:</strong> afgifte <strong>${dose.toFixed(2)} ml per PLC signaal/slag</strong> (${stand}x slag van 0.34 ml).</span>
+          `;
+        }
+        return;
+      }
+
+      const volMl = parseInt(volStr) || 125;
+      const totalDays = (parseFloat(months) * 30.5) || 30.5;
+      const totalDailyCc = (volMl / totalDays);
       const perPortDailyCc = (totalDailyCc / ports).toFixed(2);
       const perPortWeeklyCc = (totalDailyCc * 7 / ports).toFixed(1);
 
@@ -3801,9 +3898,11 @@
 
       if (currentSystemMode === 'pulsarlube') {
         const pulsarModel = document.getElementById('sel-pulsar-model').value;
+        const pulsarMspPower = document.getElementById('sel-pulsar-msp-power') ? document.getElementById('sel-pulsar-msp-power').value : '230V AC';
+        const pulsarPlcType = document.getElementById('sel-pulsar-plc-type') ? document.getElementById('sel-pulsar-plc-type').value : 'monthly';
         const pulsarVol = document.getElementById('sel-pulsar-vol').value;
         const pulsarGrease = document.getElementById('sel-pulsar-grease').value;
-        const months = parseInt(document.getElementById('sel-pulsar-months').value) || 6;
+        const months = parseFloat(document.getElementById('sel-pulsar-months').value) || 6;
         const pulsarMount = document.getElementById('sel-pulsar-mount').value;
 
         let pulsarDirectThread = document.getElementById('sel-pulsar-direct-thread').value;
@@ -3829,6 +3928,8 @@
           systemType: 'pulsarlube',
           material,
           pulsarModel,
+          pulsarMspPower,
+          pulsarPlcType,
           pulsarVol,
           pulsarGrease,
           months,
@@ -3843,7 +3944,15 @@
         };
 
         const bIspl = document.getElementById('badge-ispl-label');
-        if (bIspl) bIspl.innerText = `Pulsarlube ${pulsarModel} (${pulsarVol}) + ${pulsarGrease} (${months} mnd)`;
+        if (bIspl) {
+          if (pulsarModel === 'PLC' && pulsarPlcType === 'interval') {
+            bIspl.innerText = `Pulsarlube PLC Interval (${pulsarVol}) + ${pulsarGrease} (Stand ${months})`;
+          } else if (pulsarModel === 'MSP' || pulsarModel === 'MSP Oil') {
+            bIspl.innerText = `Pulsarlube ${pulsarModel} ${pulsarMspPower} (${pulsarVol}) + ${pulsarGrease} (${months} mnd)`;
+          } else {
+            bIspl.innerText = `Pulsarlube ${pulsarModel} (${pulsarVol}) + ${pulsarGrease} (${months} mnd)`;
+          }
+        }
 
         const drawLabel = document.getElementById('drawing-mode-label');
         if (drawLabel) {
@@ -3857,7 +3966,7 @@
           assBadge.innerText = `${material} | Pulsarlube ${pulsarModel} (${pulsarVol}) ➔ ${pulsarMount}`;
         }
 
-        updatePulsarDispenseCalculator(pulsarVol, months, portsCount);
+        updatePulsarDispenseCalculator(pulsarVol, months, portsCount, pulsarModel, pulsarPlcType);
 
       } else {
         // ISPL Systeem
@@ -3946,16 +4055,52 @@
         let dispenserName = `Pulsarlube ${cfg.pulsarModel} (${cfg.pulsarVol})`;
         let dispenserDesc = `Automatische elektro-mechanische smeerunit ${cfg.pulsarModel} (${cfg.pulsarVol})`;
 
-        const matchDisp = pulsarDb.find(item => 
-          item.cat.includes('Dispensers') && 
-          item.name.toLowerCase().includes(cfg.pulsarModel.toLowerCase()) && 
-          (item.volume === cfg.pulsarVol || item.name.includes(cfg.pulsarVol))
-        );
+        let matchDisp = null;
+        if (cfg.pulsarModel === 'PLC') {
+          const plcType = cfg.pulsarPlcType || 'monthly';
+          if (plcType === 'interval') {
+            matchDisp = pulsarDb.find(item => 
+              item.cat && item.cat.includes('Dispensers') && 
+              item.name.toLowerCase().includes('plc') &&
+              (item.name.toLowerCase().includes('interval') || item.code.includes('INT') || (item.desc && item.desc.toLowerCase().includes('interval'))) &&
+              (item.volume === cfg.pulsarVol || item.name.includes(cfg.pulsarVol))
+            );
+          } else {
+            matchDisp = pulsarDb.find(item => 
+              item.cat && item.cat.includes('Dispensers') && 
+              item.name.toLowerCase().includes('plc') &&
+              !item.name.toLowerCase().includes('interval') && !item.code.includes('INT') &&
+              (item.volume === cfg.pulsarVol || item.name.includes(cfg.pulsarVol))
+            );
+          }
+        } else if (cfg.pulsarModel === 'MSP' || cfg.pulsarModel === 'MSP Oil') {
+          const power = cfg.pulsarMspPower || '230V AC';
+          const isAC = power.includes('230V') || power.includes('AC');
+          matchDisp = pulsarDb.find(item => 
+            item.cat && item.cat.includes('Dispensers') && 
+            item.name.toLowerCase().includes(cfg.pulsarModel.toLowerCase()) && 
+            (isAC ? (item.name.includes('230V') || item.name.includes('AC')) : (item.name.includes('24V') || item.name.includes('DC'))) &&
+            (item.volume === cfg.pulsarVol || item.name.includes(cfg.pulsarVol))
+          );
+        } else {
+          matchDisp = pulsarDb.find(item => 
+            item.cat && item.cat.includes('Dispensers') && 
+            item.name.toLowerCase().includes(cfg.pulsarModel.toLowerCase()) && 
+            (item.volume === cfg.pulsarVol || item.name.includes(cfg.pulsarVol))
+          );
+        }
 
         if (matchDisp) {
-          dispenserCode = matchDisp.code;
+          dispenserCode = matchDisp.code || matchDisp.default_code;
           dispenserName = matchDisp.name;
           dispenserDesc = matchDisp.desc || dispenserName;
+        }
+
+        let settingDesc = '';
+        if (cfg.pulsarModel === 'PLC' && cfg.pulsarPlcType === 'interval') {
+          settingDesc = `ingesteld op Interval Stand ${cfg.months || 1} (${((cfg.months || 1) * 0.34).toFixed(2)} ml per PLC signaal/slag)`;
+        } else {
+          settingDesc = `ingesteld op ${cfg.months || 6} maanden`;
         }
 
         comps.push({
@@ -3964,7 +4109,7 @@
           a1: 'Herbruikbaar elektro-mechanisch',
           a2: 'G 3/8" M / 1/8" NPT',
           mat: isOil ? 'Kunststof / Aluminium' : 'Kunststof / RVS (IP65)',
-          desc: `${dispenserDesc}, ingesteld op ${cfg.months} maanden (art. ${dispenserCode})`,
+          desc: `${dispenserDesc}, ${settingDesc} (art. ${dispenserCode})`,
           qty: 1
         });
 
@@ -3975,15 +4120,16 @@
           let targetVol = cfg.pulsarVol;
           if (targetVol === '120 ml') targetVol = '125 ml';
           if (targetVol === '240 ml') targetVol = '250 ml';
+          if (targetVol === '480 ml') targetVol = '500 ml';
 
           const matchPack = pulsarDb.find(item => 
-            item.cat === 'Service Packs (Vetbalg + Batterij)' && 
+            (item.cat === 'Service Packs (Vetbalg + Batterij)' || (item.name && item.name.toLowerCase().includes('servicepack'))) && 
             item.grease === cfg.pulsarGrease && 
-            item.volume === targetVol
+            (item.volume === targetVol || item.volume === targetVol.replace(' ', ''))
           );
 
           if (matchPack) {
-            packCode = matchPack.code;
+            packCode = matchPack.code || matchPack.default_code;
             packName = matchPack.name;
           }
 
@@ -4000,19 +4146,21 @@
 
         // 3. Montagewijze Specifiek
         if (cfg.pulsarMountType === 'direct') {
-          // DIRECTE MONTAGE:
-          // 1. Installatiekit altijd toevoegen (converteert G 3/8" M naar G 1/8" M)
+          // DIRECTE MONTAGE OP LAGER:
+          // In plaats van installatiekit 1430: een los verloopstuk G 3/8" F naar G 1/8" M BSPP!
+          const adapterCode = (mat === 'RVS') ? '1099.1071' : '1099.1070';
+          const adapterName = (mat === 'RVS') ? 'Verloopstuk G 3/8" F x G 1/8" M (RVS)' : 'Verloopstuk G 3/8" F x G 1/8" M (Messing vernikkeld)';
           comps.push({
-            code: '1430',
-            name: 'Installatiekit 1250RC-1 voor directe montage (G 3/8" naar G 1/8")',
-            a1: 'G 3/8" F (aansluiting Pulsarlube)',
-            a2: 'G 1/8" M (uitgang naar lager/adapter)',
-            mat: 'Verzinkt staal / Messing',
-            desc: 'Complete Pulsarlube montageset 1250RC-1 converterend van G 3/8" naar G 1/8" voor directe montage (art. 1430)',
+            code: adapterCode,
+            name: adapterName,
+            a1: 'G 3/8" F (binnendraad Pulsarlube)',
+            a2: 'G 1/8" M (buitendraad naar lager/adapter)',
+            mat: mat,
+            desc: `Verloopstuk van Pulsarlube uitgang G 3/8" naar G 1/8" M BSPP (${mat}) voor directe montage (art. ${adapterCode})`,
             qty: 1
           });
 
-          // 2. Verloopstuk van lagerschroefdraad naar G 1/8" F:
+          // Verloopstuk van lagerschroefdraad naar G 1/8" F:
           // ENKEL MONTEREN ALS HET LAGER NIET REEDS G 1/8" IS!
           const bThread = cfg.pulsarDirectThread || 'M8x1';
           const isG18 = (bThread === 'G 1/8' || bThread === 'G 1/8"' || bThread === '1/8 BSPP');
@@ -4041,7 +4189,7 @@
                 a1: `${bThread} M (buitendraad)`,
                 a2: 'G 1/8" F (binnendraad)',
                 mat: mat,
-                desc: `Afwijkend verloopstuk ${bThread} M naar G 1/8" F (${mat}) voor directe montage.`,
+                desc: `Afwijkend verloopstuk ${bThread} M naar G 1/8" F (${mat}) voor directe lagermontage.`,
                 qty: 1
               });
             }
@@ -4064,19 +4212,31 @@
             qty: 1
           });
 
-          // Installatiekit ALTIJD toevoegen (zowel bij directe als indirecte borstelmontage!)
-          comps.push({
-            code: '1430',
-            name: `Installatiekit 1250RC-1 voor borstelset ${brushMount === 'direct' ? 'directe montage' : 'op afstand'} (G 3/8" naar G 1/8")`,
-            a1: 'G 3/8" F (aansluiting Pulsarlube)',
-            a2: 'G 1/8" M (naar borstel/leiding)',
-            mat: 'Verzinkt staal / Messing',
-            desc: 'Pulsarlube montagekit 1250RC-1 inclusief beugel en verloopstuk G 3/8" naar G 1/8" voor borstelmontage (art. 1430)',
-            qty: 1
-          });
+          if (brushMount === 'direct') {
+            // Directe montage op borstelkit: GEEN kit 1430, maar los verloopstuk G 3/8" F naar G 1/8" M!
+            const adapterCode = (mat === 'RVS') ? '1099.1071' : '1099.1070';
+            const adapterName = (mat === 'RVS') ? 'Verloopstuk G 3/8" F x G 1/8" M (RVS)' : 'Verloopstuk G 3/8" F x G 1/8" M (Messing vernikkeld)';
+            comps.push({
+              code: adapterCode,
+              name: adapterName,
+              a1: 'G 3/8" F (binnendraad Pulsarlube)',
+              a2: 'G 1/8" M (buitendraad in borstelkit)',
+              mat: mat,
+              desc: `Verloopstuk G 3/8" F naar G 1/8" M BSPP (${mat}) voor directe montage op borstelkit (art. ${adapterCode})`,
+              qty: 1
+            });
+          } else {
+            // Indirect met leiding: installatiekit 1430 toevoegen (beugel + verloopstuk), leiding en push-ins (geen terugslagklep)
+            comps.push({
+              code: '1430',
+              name: 'Installatiekit 1250RC-1 voor borstelmontage op afstand (G 3/8" naar G 1/8")',
+              a1: 'G 3/8" F (aansluiting Pulsarlube)',
+              a2: 'G 1/8" M (naar beugel/leiding)',
+              mat: 'Verzinkt staal / Messing',
+              desc: 'Pulsarlube montagekit 1250RC-1 inclusief beugel en verloopstuk G 3/8" naar G 1/8" voor borstelmontage op afstand (art. 1430)',
+              qty: 1
+            });
 
-          if (brushMount === 'remote') {
-            // Indirect met leiding: leiding en passende insteekkoppelingen (geen terugslagklep)
             const tubeLen = Math.min(4.0, Math.max(0.1, cfg.pulsarBrushTubeLen || 1.0));
             const tubeM = Math.ceil(tubeLen);
             const diam = cfg.pulsarBrushTubeDiam || (isOil ? '4 mm' : '6 mm');
@@ -4091,7 +4251,6 @@
               qty: tubeM
             });
 
-            // Push-in koppelingen passend bij de gekozen diameter
             const pushCode = (diam === '8 mm') ? ((mat === 'RVS') ? '1099.1066' : '1099.1031') : ((diam === '6 mm') ? ((mat === 'RVS') ? '1099.1062' : '1099.1027') : 'aan te maken');
             comps.push({
               code: pushCode,
@@ -4123,7 +4282,6 @@
 
           if (count === 1) {
             // 1 smeerpunt op afstand:
-            // Leiding, 2x push-in koppelingen (1 aan uitgang kit G 1/8" F + 1 aan lager) en lagerverloopstuk
             const port1 = (cfg.pulsarPorts && cfg.pulsarPorts[0]) ? cfg.pulsarPorts[0] : { length: 1.0, diam: isOil ? '4 mm' : '6 mm', thread: 'M8x1', customThread: '' };
             const diam1 = port1.diam || (isOil ? '4 mm' : '6 mm');
             const len1 = Math.min(4.0, Math.max(0.1, parseFloat(port1.length) || 1.0));
@@ -4283,8 +4441,8 @@
               });
             }
 
-            // Insteekkoppelingen logica volgens specificaties:
-            // 6 mm: de koppeling aan de verdeelblokzijde zit al inbegrepen in de blok! Dus enkel 1x per poort aan lagerzijde.
+            // Insteekkoppelingen:
+            // 6 mm: koppeling aan verdeelblok zit inbegrepen in de blok, dus enkel 1x per poort aan lagerzijde
             if (ports6mm > 0) {
               const code6 = (mat === 'RVS') ? '1099.1062' : '1099.1027';
               comps.push({
@@ -4298,8 +4456,7 @@
               });
             }
 
-            // 8 mm: VERDEELBLOK HEEFT STANDAARD 6 MM KOPPELINGEN.
-            // DUS: 1x 8 mm push in (G 1/8" M) toevoegen per poort aan de verdeelblokzijde + 1x aan lagerzijde = 2 per 8 mm poort!
+            // 8 mm: verdeelblok heeft standaard 6 mm. Dus 1x 8 mm push-in (G 1/8" M) aan verdeelblok + 1x aan lagerzijde = 2 per 8 mm poort!
             if (ports8mm > 0) {
               const code8 = (mat === 'RVS') ? '1099.1066' : '1099.1031';
               const total8PushIns = ports8mm * 2;
@@ -4329,11 +4486,10 @@
             }
           }
         }
-return comps;
+        return comps;
       }
 
-      // ====================================================================
-      // B. BESTAANDE ISPL SYSTEEM RESOLVER
+      // // B. BESTAANDE ISPL SYSTEEM RESOLVER
       // ====================================================================
       // 1. ISPL Unit gekoppeld aan exact artikelnummer uit ISPL database
       let isplCode = 'ISPL';
@@ -4632,11 +4788,13 @@ return comps;
       `;
 
       // Month setting badge in top right (same as ISPL red rounded rect)
+      const isPlcInterval = (model === 'PLC' && cfg.pulsarPlcType === 'interval');
+      const badgeSettingText = isPlcInterval ? `STAND ${months} (${((parseFloat(months)||1)*0.34).toFixed(2)} ml)` : `${months} ${months === 1 ? 'MAAND' : 'MAANDEN'}`;
       const settingBadge = `
         <g>
-          <rect x="290" y="10" width="220" height="26" rx="8" fill="#FFF5F5" stroke="#E30613" stroke-width="1.8"/>
-          <text x="400" y="27" font-size="10.5" font-weight="900" fill="#E30613" text-anchor="middle" letter-spacing="0.3">
-            INSTELLING: ${months} ${months === 1 ? 'MAAND' : 'MAANDEN'} | ${mount === 'remote' ? (portsCount > 1 ? `${portsCount} POORTEN` : '1 SMEERPUNT') : (mount === 'brush' ? 'BORSTEL' : 'DIRECT')}
+          <rect x="270" y="10" width="245" height="26" rx="8" fill="#FFF5F5" stroke="#E30613" stroke-width="1.8"/>
+          <text x="392" y="27" font-size="10.5" font-weight="900" fill="#E30613" text-anchor="middle" letter-spacing="0.3">
+            INSTELLING: ${badgeSettingText} | ${mount === 'remote' ? (portsCount > 1 ? `${portsCount} POORTEN` : '1 SMEERPUNT') : (mount === 'brush' ? 'BORSTEL' : 'DIRECT')}
           </text>
         </g>
       `;
@@ -4681,7 +4839,7 @@ return comps;
             <line x1="36" y1="11" x2="110" y2="11" stroke="#0F172A" stroke-width="1.2"/>
             <circle cx="36" cy="11" r="2.5" fill="#2563EB"/>
             <rect x="110" y="0" width="160" height="22" rx="5" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
-            <text x="118" y="15" font-size="10" font-weight="800" fill="#1D4ED8">Kit 1430 (G 3/8" ➔ G 1/8" M)</text>
+            <text x="118" y="15" font-size="9.5" font-weight="800" fill="#1D4ED8">Verloopstuk G 3/8" F ➔ G 1/8" M (Art. ${isRVS ? '1099.1071' : '1099.1070'})</text>
           </g>
 
           ${!isG18 ? `
@@ -4756,7 +4914,7 @@ return comps;
               <line x1="36" y1="9" x2="105" y2="9" stroke="#0F172A" stroke-width="1.2"/>
               <circle cx="36" cy="9" r="2" fill="#2563EB"/>
               <rect x="105" y="-1" width="165" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
-              <text x="112" y="13" font-size="9.5" font-weight="800" fill="#1D4ED8">Kit 1430 (G 3/8" ➔ G 1/8" M)</text>
+              <text x="112" y="13" font-size="9.5" font-weight="800" fill="#1D4ED8">Verloopstuk G 3/8" F ➔ G 1/8" M (Art. ${isRVS ? '1099.1071' : '1099.1070'})</text>
             </g>
 
             <!-- 3. Borstel Applicator Rechtstreeks Gemonteerd (Geen terugslagklep) -->
@@ -4913,7 +5071,7 @@ return comps;
               <line x1="36" y1="9" x2="105" y2="9" stroke="#0F172A" stroke-width="1.2"/>
               <circle cx="36" cy="9" r="2" fill="#2563EB"/>
               <rect x="105" y="-1" width="165" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
-              <text x="112" y="13" font-size="9.5" font-weight="800" fill="#1D4ED8">Kit 1430 (G 3/8" ➔ G 1/8" M)</text>
+              <text x="112" y="13" font-size="9.5" font-weight="800" fill="#1D4ED8">Verloopstuk G 3/8" F ➔ G 1/8" M (Art. ${isRVS ? '1099.1071' : '1099.1070'})</text>
             </g>
 
             <!-- 3. HU TYPE VERDEELBLOK RECHTSTREEKS OP HET VERLOOPSTUK OPENGESCHROEFD (GEEN tussenleiding!) -->
@@ -5661,9 +5819,11 @@ return comps;
 
       if (currentSystemMode === 'pulsarlube') {
         const pulsarModel = document.getElementById('sel-pulsar-model').value;
+        const pulsarMspPower = document.getElementById('sel-pulsar-msp-power') ? document.getElementById('sel-pulsar-msp-power').value : '230V AC';
+        const pulsarPlcType = document.getElementById('sel-pulsar-plc-type') ? document.getElementById('sel-pulsar-plc-type').value : 'monthly';
         const pulsarVol = document.getElementById('sel-pulsar-vol').value;
         const pulsarGrease = document.getElementById('sel-pulsar-grease').value;
-        const months = parseInt(document.getElementById('sel-pulsar-months').value) || 6;
+        const months = parseFloat(document.getElementById('sel-pulsar-months').value) || 6;
         const pulsarMountType = document.getElementById('sel-pulsar-mount').value;
 
         let pulsarDirectThread = document.getElementById('sel-pulsar-direct-thread').value;
@@ -5688,6 +5848,8 @@ return comps;
           systemType: 'pulsarlube',
           material,
           pulsarModel,
+          pulsarMspPower,
+          pulsarPlcType,
           pulsarVol,
           pulsarGrease,
           months,
@@ -5794,8 +5956,23 @@ return comps;
       switchSystemMode(sys, false);
 
       if (sys === 'pulsarlube') {
-        document.getElementById('sel-pulsar-model').value = p.pulsarModel || 'M2';
+        const model = p.pulsarModel || 'M2';
+        document.getElementById('sel-pulsar-model').value = model;
+
+        if (document.getElementById('sel-pulsar-msp-power')) {
+          document.getElementById('sel-pulsar-msp-power').value = p.pulsarMspPower || '230V AC';
+        }
+        if (document.getElementById('sel-pulsar-plc-type')) {
+          document.getElementById('sel-pulsar-plc-type').value = p.pulsarPlcType || 'monthly';
+        }
+
+        const grpPower = document.getElementById('grp-pulsar-msp-power');
+        const grpPlc = document.getElementById('grp-pulsar-plc-type');
+        if (grpPower) grpPower.style.display = (model === 'MSP' || model === 'MSP Oil') ? 'block' : 'none';
+        if (grpPlc) grpPlc.style.display = (model === 'PLC') ? 'block' : 'none';
+
         populatePulsarVolumes(p.pulsarVol || '125 ml');
+        populatePulsarFrequencies(p.months || 6);
         populatePulsarGreases(p.pulsarGrease || 'Grease MP2/3');
         document.getElementById('sel-pulsar-months').value = p.months || 6;
         document.getElementById('sel-pulsar-mount').value = p.pulsarMountType || 'remote';
@@ -6913,7 +7090,92 @@ return comps;
       alert(`Artikel "${code}" succesvol toegevoegd aan de database!`);
     }
 
-    function exportDatabaseExcelXLSX() {
+        function downloadDatabaseTemplateXLSX() {
+      // Sheet 1: Koppelingen & Kits
+      const coupTemplateRows = [
+        {
+          "default_code": "1099.1000",
+          "name": "Verloopstuk M6x1 M x G 1/4\" F (Messing vernikkeld)",
+          "aansluiting 1": "M6x1 M (buitendraad recht)",
+          "aansluiting 2": "G 1/4\" F (binnendraad)",
+          "materiaal": "Messing vernikkeld",
+          "categorie": "Verloopstukken naar G 1/4\"",
+          "description": "Draadadapter buitendraad M6x1 naar binnendraad G 1/4\" BSPP (Messing vernikkeld)"
+        },
+        {
+          "default_code": "1099.1070",
+          "name": "Verloopstuk G 3/8\" F x G 1/8\" M (Messing vernikkeld)",
+          "aansluiting 1": "G 3/8\" F (binnendraad Pulsarlube)",
+          "aansluiting 2": "G 1/8\" M (buitendraad)",
+          "materiaal": "Messing vernikkeld",
+          "categorie": "Verloopstukken naar G 1/8\"",
+          "description": "Draadadapter binnendraad G 3/8\" BSPP naar buitendraad G 1/8\" BSPP voor Pulsarlube directe montage (art. 1099.1070)"
+        }
+      ];
+      const ws1 = XLSX.utils.json_to_sheet(coupTemplateRows);
+      ws1['!cols'] = [
+        { wch: 18 },
+        { wch: 45 },
+        { wch: 25 },
+        { wch: 25 },
+        { wch: 20 },
+        { wch: 25 },
+        { wch: 50 }
+      ];
+
+      // Sheet 2: ISPL & Pulsarlube
+      const isplTemplateRows = [
+        {
+          "default_code": "1082",
+          "name": "Interflon Single Point Lubricator 15 ml + Grease MP2/3",
+          "volume": "15ml",
+          "grease": "Grease MP2/3",
+          "draad": "G 1/4\" M",
+          "materiaal": "Polycarbonaat / Kunststof",
+          "categorie": "ISPL Smeerunits",
+          "description": "Automatische smeerunit 15ml gevuld met Grease MP2/3"
+        },
+        {
+          "default_code": "1423",
+          "name": "Pulsarlube M250 elektro-mechanische smeerunit 250 ml (leeg)",
+          "volume": "250 ml",
+          "grease": "-",
+          "draad": "G 3/8\" M",
+          "materiaal": "Kunststof / RVS (IP65)",
+          "categorie": "Dispensers (Vet)",
+          "description": "Herbruikbare elektro-mechanische dispenser unit Pulsarlube M250 (art. 1423)"
+        },
+        {
+          "default_code": "4203",
+          "name": "Servicepack Pulsarlube M250 + Grease MP2/3 (250 ml)",
+          "volume": "250 ml",
+          "grease": "Grease MP2/3",
+          "draad": "G 3/8\" M",
+          "materiaal": "Mylar balg / Lithium batterij",
+          "categorie": "Service Packs (Vetbalg + Batterij)",
+          "description": "OEM Servicepack 250 ml gevuld met Grease MP2/3 inclusief lithium batterijpack (art. 4203)"
+        }
+      ];
+      const ws2 = XLSX.utils.json_to_sheet(isplTemplateRows);
+      ws2['!cols'] = [
+        { wch: 18 },
+        { wch: 45 },
+        { wch: 14 },
+        { wch: 24 },
+        { wch: 24 },
+        { wch: 26 },
+        { wch: 25 },
+        { wch: 50 }
+      ];
+
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws1, "Koppelingen & Kits");
+      XLSX.utils.book_append_sheet(wb, ws2, "ISPL & Pulsarlube");
+
+      XLSX.writeFile(wb, "Odoo_Hardware_Database_Template.xlsx");
+    }
+
+function exportDatabaseExcelXLSX() {
       const coupDb = getActiveDatabase();
       const isplDb = getActiveISPLDatabase();
 

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'if-hardware-selector-v22';
+const CACHE_NAME = 'if-hardware-selector-v23';
 const ASSETS = [
   './',
   './index.html',
@@ -31,6 +31,15 @@ const ASSETS = [
   './ispl-60.png',
   './ispl-125.png',
   './ispl-250.png',
+  './pulsar-m-60.png',
+  './pulsar-m-125.png',
+  './pulsar-m-250.png',
+  './pulsar-m-500.png',
+  './pulsar-bt.png',
+  './pulsar-msp.png',
+  './pulsar-plc.png',
+  './pulsar-ol500.png',
+  './pulsarlube-thumb.png',
   './Brochure_Interflon_Single_Point_Lubricators-NL.pdf'
 ];
 

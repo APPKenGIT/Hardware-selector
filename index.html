@@ -2733,7 +2733,7 @@
     </div>
   </div>
 
-  <script src="couplings-data.js?v=27"></script>
+  <script src="couplings-data.js?v=28"></script>
   <script>
     const STORAGE_KEY = 'IF_HARDWARE_SELECTOR_DATA_V10';
     const DB_STORAGE_KEY = 'IF_CUSTOM_COUPLINGS_DB_V11';
@@ -3528,12 +3528,14 @@
 
     function populatePulsarFrequencies(selectedFreq = null) {
       const model = document.getElementById('sel-pulsar-model').value;
+      const vol = document.getElementById('sel-pulsar-vol') ? document.getElementById('sel-pulsar-vol').value : '125 ml';
       const plcType = document.getElementById('sel-pulsar-plc-type') ? document.getElementById('sel-pulsar-plc-type').value : 'monthly';
       const sel = document.getElementById('sel-pulsar-months');
       const lbl = document.getElementById('lbl-pulsar-months');
       if (!sel) return;
 
       let options = [];
+
       if (model === 'PLC' && plcType === 'interval') {
         if (lbl) lbl.innerText = 'Dosering / Stand per PLC-signaal (Stand 1 t/m 6)';
         options = [
@@ -3544,21 +3546,14 @@
           { val: '5', text: 'Stand 5 (5 slagen = 1.70 ml / signaal)' },
           { val: '6', text: 'Stand 6 (6 slagen = 2.04 ml / signaal)' }
         ];
-      } else if (model === 'PLC' && plcType === 'monthly') {
+      } else if (model === 'BT' || (model === 'PLC' && plcType === 'monthly')) {
         if (lbl) lbl.innerText = 'Looptijd / Instelling (1 - 12 maanden)';
-        options = [
-          { val: '1', text: '1 maand' },
-          { val: '2', text: '2 maanden' },
-          { val: '3', text: '3 maanden' },
-          { val: '6', text: '6 maanden' },
-          { val: '12', text: '12 maanden' }
-        ];
-      } else if (model === 'BT') {
-        if (lbl) lbl.innerText = 'Looptijd / Instelling (1 - 12 maanden)';
-        options = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(m => ({ val: String(m), text: `${m} ${m === 1 ? 'maand' : 'maanden'}` }));
-      } else {
-        // M2, MSP, OL500, MSP Oil
-        if (lbl) lbl.innerText = (model === 'OL500' || model === 'MSP Oil') ? 'Looptijd / Afgiftecyclus' : 'Looptijd / Instelling';
+        options = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(m => ({
+          val: String(m),
+          text: `${m} ${m === 1 ? 'maand' : 'maanden'}`
+        }));
+      } else if (model === 'OL500' || model === 'MSP Oil') {
+        if (lbl) lbl.innerText = 'Looptijd / Afgiftecyclus';
         options = [
           { val: '0.5', text: '0.5 maand (Half / 15 dagen)' },
           { val: '1', text: '1 maand' },
@@ -3569,14 +3564,53 @@
           { val: '18', text: '18 maanden' },
           { val: '24', text: '24 maanden' }
         ];
+      } else {
+        // M2, MSP, EX/EXPL, Mi: instellingen variëren per volume!
+        if (lbl) lbl.innerText = 'Looptijd / Instelling';
+        const v = String(vol || '');
+
+        if (v.includes('60')) {
+          // 60 ml: 1 t/m 12 maanden
+          options = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(m => ({
+            val: String(m),
+            text: `${m} ${m === 1 ? 'maand' : 'maanden'}`
+          }));
+        } else if (v.includes('500')) {
+          // 500 ml: Half, 1, 2, 4, 6, 12, 18, 24 maanden
+          options = [
+            { val: '0.5', text: '0.5 maand (Half / 15 dagen)' },
+            { val: '1', text: '1 maand' },
+            { val: '2', text: '2 maanden' },
+            { val: '4', text: '4 maanden' },
+            { val: '6', text: '6 maanden' },
+            { val: '12', text: '12 maanden' },
+            { val: '18', text: '18 maanden' },
+            { val: '24', text: '24 maanden' }
+          ];
+        } else {
+          // 125 ml & 250 ml: Half, 1, 2, 3, 6, 12 maanden
+          options = [
+            { val: '0.5', text: '0.5 maand (Half / 15 dagen)' },
+            { val: '1', text: '1 maand' },
+            { val: '2', text: '2 maanden' },
+            { val: '3', text: '3 maanden' },
+            { val: '6', text: '6 maanden' },
+            { val: '12', text: '12 maanden' }
+          ];
+        }
       }
 
       sel.innerHTML = options.map(o => `
         <option value="${o.val}" ${String(o.val) === String(selectedFreq) ? 'selected' : ''}>${o.text}</option>
       `).join('');
 
-      if (!sel.value && options.length > 0) {
-        sel.value = options[0].val;
+      // Zorg dat de selectie behouden blijft indien mogelijk, of een logische default kiest
+      const hasPrev = options.some(o => String(o.val) === String(selectedFreq || sel.value));
+      if (!hasPrev && options.length > 0) {
+        const defOpt = options.find(o => o.val === '6') || options.find(o => o.val === '1') || options[0];
+        sel.value = defOpt.val;
+      } else if (selectedFreq) {
+        sel.value = String(selectedFreq);
       }
     }
 
@@ -3642,6 +3676,8 @@
     }
 
     function onPulsarVolumeChange() {
+      const curFreq = document.getElementById('sel-pulsar-months') ? document.getElementById('sel-pulsar-months').value : null;
+      populatePulsarFrequencies(curFreq);
       populatePulsarGreases();
       onConfigChange();
     }
@@ -3828,18 +3864,20 @@
       }
 
       const volMl = parseInt(volStr) || 125;
-      const totalDays = (parseFloat(months) * 30.5) || 30.5;
+      const mVal = parseFloat(months) || 1;
+      const totalDays = (mVal === 0.5) ? 15 : (mVal * 30.5);
       const totalDailyCc = (volMl / totalDays);
+      const mText = (mVal === 0.5) ? '0.5 maand (Half / 15 dagen)' : `${mVal} ${mVal === 1 ? 'maand' : 'maanden'}`;
       const perPortDailyCc = (totalDailyCc / ports).toFixed(2);
       const perPortWeeklyCc = (totalDailyCc * 7 / ports).toFixed(1);
 
       if (ports > 1) {
         infoEl.innerHTML = `
-          <span>⏱️ <strong>${months} maanden:</strong> Totaal <strong>${totalDailyCc.toFixed(2)} ml/dag</strong> (${(totalDailyCc*7).toFixed(1)} ml/week) ➔ <strong>${perPortDailyCc} ml/dag per poort</strong> (${perPortWeeklyCc} ml/week verdeeld over ${ports} poorten).</span>
+          <span>⏱️ <strong>${mText}:</strong> Totaal <strong>${totalDailyCc.toFixed(2)} ml/dag</strong> (${(totalDailyCc*7).toFixed(1)} ml/week) ➔ <strong>${perPortDailyCc} ml/dag per poort</strong> (${perPortWeeklyCc} ml/week verdeeld over ${ports} poorten).</span>
         `;
       } else {
         infoEl.innerHTML = `
-          <span>⏱️ <strong>${months} maanden:</strong> afgifte ca. <strong>${totalDailyCc.toFixed(2)} ml/dag</strong> (${(totalDailyCc*7).toFixed(1)} ml/week) bij ${volMl} ml unit.</span>
+          <span>⏱️ <strong>${mText}:</strong> afgifte ca. <strong>${totalDailyCc.toFixed(2)} ml/dag</strong> (${(totalDailyCc*7).toFixed(1)} ml/week) bij ${volMl} ml unit.</span>
         `;
       }
     }
@@ -4032,7 +4070,7 @@
       const weeklyCc = (dailyCc * 7).toFixed(1);
 
       document.getElementById('calc-dispense-info').innerHTML = `
-        <span>⏱️ <strong>${months} maanden:</strong> afgifte ca. <strong>${dailyCc} ml/dag</strong> (${weeklyCc} ml/week) bij ${volMl} ml patroon.</span>
+        <span>⏱️ <strong>${mText}:</strong> afgifte ca. <strong>${dailyCc} ml/dag</strong> (${weeklyCc} ml/week) bij ${volMl} ml patroon.</span>
       `;
     }
 
@@ -4609,11 +4647,16 @@
           }
         }
       } else {
-        // DIRECT: Lager ➔ Verloopstuk ➔ Kniestuk ➔ Verlengstuk ➔ (Impulse Connect) ➔ ISPL
-        if (cfg.bearingThread !== 'G 1/4') {
+        // DIRECT: Lager ➔ (Optioneel Verloopstuk indien lager != G 1/4) ➔ Kniestuk ➔ Verlengstuk ➔ (Impulse Connect) ➔ ISPL
+        // ISPL (en Impulse Connect) heeft standaard G 1/4" M buitendraad.
+        // Indien lager G 1/4" BSPP is: GEEN extra koppelstukken / verloopstuk gebruiken!
+        const bThread = cfg.bearingThread || 'M8x1';
+        const isG14 = (bThread === 'G 1/4' || bThread === 'G 1/4"' || bThread === 'G1/4' || bThread === '1/4 BSPP' || bThread === 'G 1/4 BSPP' || bThread === 'G 1/4" BSPP' || bThread === '1/4" BSPP');
+
+        if (!isG14) {
           const matchAdapt = findInCatalog(item => 
             item.name.includes("Verloopstuk") && 
-            (item.name.includes(cfg.bearingThread + " M") || item.name.includes(cfg.bearingThread + " ")) && 
+            (item.name.includes(bThread + " M") || item.name.includes(bThread + " ")) && 
             item.name.includes('G 1/4" F') &&
             item.mat === mat
           );
@@ -4631,11 +4674,11 @@
           } else {
             comps.push({
               code: 'aan te maken',
-              name: `Verloopstuk ${cfg.bearingThread} M x G 1/4" F (${mat})`,
-              a1: `${cfg.bearingThread} M (buitendraad)`,
+              name: `Verloopstuk ${bThread} M x G 1/4" F (${mat})`,
+              a1: `${bThread} M (buitendraad)`,
               a2: 'G 1/4" F (binnendraad)',
               mat: mat,
-              desc: `Afwijkende maat ${cfg.bearingThread} naar G 1/4". Dient door binnendienst in Odoo aangemaakt te worden.`,
+              desc: `Afwijkende maat ${bThread} naar G 1/4". Dient door binnendienst in Odoo aangemaakt te worden.`,
               qty: 1
             });
           }
@@ -5366,8 +5409,10 @@
         const extH = (cfg.extension === '15') ? 22 : (cfg.extension === '25') ? 30 : (cfg.extension === '35') ? 38 : (cfg.extension === '50') ? 48 : 0;
         const extY = layout.bottom + 26 + (hasImpulse ? (impH + 20) : 0);
         const elbowY = extY + (cfg.extension !== '0' ? (extH + 26) : 0);
+        const bThread = cfg.bearingThread || 'M8x1';
+        const isG14 = (bThread === 'G 1/4' || bThread === 'G 1/4"' || bThread === 'G1/4' || bThread === '1/4 BSPP' || bThread === 'G 1/4 BSPP' || bThread === 'G 1/4" BSPP' || bThread === '1/4" BSPP');
         const reducerY = elbowY + (cfg.angle !== 'straight' ? 44 : 0);
-        const bearingY = reducerY + 46;
+        const bearingY = isG14 ? (reducerY + 8) : (reducerY + 46);
 
         totalH = Math.max(500, bearingY + 130);
 
@@ -5485,7 +5530,8 @@
           </g>
           ` : ''}
 
-          <!-- 4. VERLOOPSTUK NAAR LAGER (Massief 3D Zeskant Verloopbus) -->
+          <!-- 4. VERLOOPSTUK NAAR LAGER (Massief 3D Zeskant Verloopbus) - ENKEL WANNEER LAGER != G 1/4 BSPP -->
+          ${!isG14 ? `
           <g transform="translate(190, ${reducerY})">
             <!-- Vrouwelijke Ingangskraag -->
             <rect x="33" y="0" width="34" height="4" rx="1.5" fill="${cylGrad}" stroke="${metalStroke}" stroke-width="0.5"/>
@@ -5520,8 +5566,9 @@
             <line x1="69" y1="12" x2="110" y2="12" stroke="#0F172A" stroke-width="1.5"/>
             <circle cx="69" cy="12" r="3" fill="#0F172A"/>
             <rect x="110" y="0" width="205" height="24" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
-            <text x="120" y="16" font-size="12" font-weight="900" fill="#0F172A">Buitendraad: ${cfg.bearingThread} M</text>
+            <text x="120" y="16" font-size="12" font-weight="900" fill="#0F172A">Adapter: ${cfg.bearingThread} M x G 1/4" F</text>
           </g>
+          ` : ''}
 
           <!-- 5. REALISTISCH GIETIJZEREN STAAND LAGERHUIS (Pillow Block Bearing) -->
           <g>
@@ -5531,7 +5578,7 @@
             <line x1="240" y1="${bearingY + 12}" x2="300" y2="${bearingY + 12}" stroke="#0F172A" stroke-width="1.5"/>
             <circle cx="240" cy="${bearingY + 12}" r="3" fill="#E30613"/>
             <rect x="300" y="${bearingY}" width="205" height="24" rx="6" fill="#FFFFFF" stroke="#E30613" stroke-width="1.5"/>
-            <text x="310" y="${bearingY + 16}" font-size="12" font-weight="900" fill="#E30613">Lagerpoort: ${cfg.bearingThread}</text>
+            <text x="310" y="${bearingY + 16}" font-size="12" font-weight="900" fill="#E30613">Lagerpoort: ${isG14 ? 'G 1/4" BSPP (Direct)' : cfg.bearingThread}</text>
           </g>
         `;
       } else {

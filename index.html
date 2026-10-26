@@ -2733,7 +2733,7 @@
     </div>
   </div>
 
-  <script src="couplings-data.js?v=28"></script>
+  <script src="couplings-data.js?v=29"></script>
   <script>
     const STORAGE_KEY = 'IF_HARDWARE_SELECTOR_DATA_V10';
     const DB_STORAGE_KEY = 'IF_CUSTOM_COUPLINGS_DB_V11';
@@ -2947,6 +2947,8 @@
         const activeP = savedPoints.find(p => p.id == activePointId) || savedPoints[0];
         if (activeP) {
           loadPointIntoForm(activeP);
+        } else {
+          switchSystemMode('ispl', true);
         }
         updateHeaderPointDropdown();
         renderSavedPointsList();
@@ -3470,6 +3472,13 @@
         if (isplSection) isplSection.style.display = 'block';
         if (pulsarSection) pulsarSection.style.display = 'none';
         if (dirLabel) dirLabel.innerText = 'Lager ➔ ISPL';
+
+        populateGreaseTypes(activeP ? activeP.greaseType : null);
+        if (activeP && activeP.mountType) {
+          const mountEl = document.getElementById('sel-mount-type');
+          if (mountEl) mountEl.value = activeP.mountType;
+        }
+        onMountTypeChange();
       }
 
       if (triggerUpdate) {
@@ -3909,23 +3918,52 @@
     }
 
     function populateGreaseTypes(selectedGrease = null) {
-      const vol = document.getElementById('sel-lubricator-vol').value;
+      const volSelect = document.getElementById('sel-lubricator-vol');
+      const vol = volSelect ? volSelect.value : '125ml';
       const select = document.getElementById('sel-grease-type');
+      if (!select) return;
       
       const isplDb = getActiveISPLDatabase();
-      const available = isplDb.filter(item => 
-        item.volume === vol && 
-        (item.system === 'ispl' || (!item.system && (!item.cat || item.cat.includes('ISPL'))) || (item.name && item.name.toLowerCase().includes('single point')))
-      );
+      const norm = v => String(v || '').replace(/\s+/g, '').toLowerCase();
+      const normVol = norm(vol);
 
-      select.innerHTML = available.map(item => `
-        <option value="${item.grease}" ${item.grease === selectedGrease ? 'selected' : ''}>
-          ${item.grease} (Art. ${item.code || item.default_code})
-        </option>
-      `).join('');
+      const available = isplDb.filter(item => {
+        const itemVol = norm(item.volume);
+        const isISPL = item.system === 'ispl' || (!item.system && (!item.cat || item.cat.includes('ISPL'))) || (item.name && item.name.toLowerCase().includes('single point'));
+        const hasGrease = item.grease && item.grease.trim() !== '' && item.grease !== '-';
+        return itemVol === normVol && isISPL && hasGrease;
+      });
 
-      if (!select.value && available.length > 0) {
-        select.value = available[0].grease;
+      // Filter unieke vettypes
+      const seenGreases = new Set();
+      const uniqueItems = [];
+      for (const item of available) {
+        if (!seenGreases.has(item.grease)) {
+          seenGreases.add(item.grease);
+          uniqueItems.push(item);
+        }
+      }
+
+      if (uniqueItems.length === 0) {
+        // Betrouwbare fallback als er niets gematcht wordt
+        select.innerHTML = `
+          <option value="Grease MP2/3">Grease MP2/3 (Standaard)</option>
+          <option value="Food grease HD2">Food grease HD2</option>
+          <option value="Food grease LT2">Food grease LT2</option>
+          <option value="Grease MP1">Grease MP1</option>
+        `;
+      } else {
+        select.innerHTML = uniqueItems.map(item => `
+          <option value="${item.grease}" ${item.grease === selectedGrease ? 'selected' : ''}>
+            ${item.grease} (Art. ${item.code || item.default_code})
+          </option>
+        `).join('');
+      }
+
+      if (selectedGrease && Array.from(select.options).some(o => o.value === selectedGrease)) {
+        select.value = selectedGrease;
+      } else if (select.options.length > 0) {
+        select.selectedIndex = 0;
       }
     }
 
@@ -4027,7 +4065,12 @@
         const lubricatorVol = document.getElementById('sel-lubricator-vol').value;
         const impulseConnectEl = document.getElementById('chk-impulse-connect');
         const impulseConnect = impulseConnectEl ? impulseConnectEl.checked : false;
-        const greaseType = document.getElementById('sel-grease-type').value;
+
+        const greaseSelect = document.getElementById('sel-grease-type');
+        if (!greaseSelect.value || greaseSelect.options.length === 0) {
+          populateGreaseTypes();
+        }
+        const greaseType = greaseSelect.value || 'Grease MP2/3';
         const months = parseInt(document.getElementById('sel-months').value) || 6;
 
         cfg = {
@@ -4066,12 +4109,17 @@
       else if (lubricatorVol.includes('60')) volMl = 60;
       else if (lubricatorVol.includes('250')) volMl = 250;
 
-      const dailyCc = (volMl / (months * 30.5)).toFixed(2);
+      const mVal = parseFloat(months) || 6;
+      const mText = `${mVal} ${mVal === 1 ? 'maand' : 'maanden'}`;
+      const dailyCc = (volMl / (mVal * 30.5)).toFixed(2);
       const weeklyCc = (dailyCc * 7).toFixed(1);
 
-      document.getElementById('calc-dispense-info').innerHTML = `
-        <span>⏱️ <strong>${mText}:</strong> afgifte ca. <strong>${dailyCc} ml/dag</strong> (${weeklyCc} ml/week) bij ${volMl} ml patroon.</span>
-      `;
+      const infoEl = document.getElementById('calc-dispense-info');
+      if (infoEl) {
+        infoEl.innerHTML = `
+          <span>⏱️ <strong>${mText}:</strong> afgifte ca. <strong>${dailyCc} ml/dag</strong> (${weeklyCc} ml/week) bij ${volMl} ml patroon.</span>
+        `;
+      }
     }
 
     function findInCatalog(predicate) {

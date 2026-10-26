@@ -1101,7 +1101,8 @@
       .card {
         box-shadow: none !important;
         border: 1px solid #ddd !important;
-        page-break-inside: avoid !important;
+        page-break-inside: auto !important;
+        break-inside: auto !important;
         margin-bottom: 14px !important;
       }
       .print-header {
@@ -1111,6 +1112,33 @@
         border-bottom: 3px solid var(--primary);
         padding-bottom: 12px;
         margin-bottom: 16px;
+      }
+      body.printing-report .print-header {
+        display: none !important;
+      }
+      #print-report-container {
+        display: block !important;
+        width: 100% !important;
+      }
+      table {
+        border-collapse: collapse !important;
+        width: 100% !important;
+        page-break-inside: auto !important;
+        break-inside: auto !important;
+      }
+      thead {
+        display: table-header-group !important;
+      }
+      tfoot {
+        display: table-footer-group !important;
+      }
+      tr, tbody tr {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+      td, th {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
       }
     }
 
@@ -2502,7 +2530,7 @@
         <label class="radio-option">
           <input type="radio" name="pdf-detail" value="bom-only">
           <div>
-            <strong>Enkel Geaggregeerde Stuklijst (Offerte overzicht)</strong>
+            <strong>Stuklijst (offerte overzicht)</strong>
             <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">Enkel de totale materiaallijst zonder individuele smeerpunten, ideaal voor calculatie.</div>
           </div>
         </label>
@@ -2733,7 +2761,7 @@
     </div>
   </div>
 
-  <script src="couplings-data.js?v=29"></script>
+  <script src="couplings-data.js?v=30"></script>
   <script>
     const STORAGE_KEY = 'IF_HARDWARE_SELECTOR_DATA_V10';
     const DB_STORAGE_KEY = 'IF_CUSTOM_COUPLINGS_DB_V11';
@@ -6472,16 +6500,72 @@
 
       closeExportModal();
 
-      if (detailType === 'bom-only') {
-        switchTab('bom');
-        setTimeout(() => window.print(), 300);
-        return;
-      }
-
       const filteredPoints = savedPoints.filter(p => selectedMachines.includes(p.machine || 'Algemeen'));
       const container = document.getElementById('print-report-container');
 
-      if (detailType === 'detail') {
+      if (detailType === 'bom-only') {
+        // ====================================================================
+        // STUKLIJST (OFFERTE OVERZICHT) - BEGINT DIRECT OP BLAD 1
+        // ====================================================================
+        const bomMap = new Map();
+        filteredPoints.forEach(p => {
+          const mult = parseInt(p.quantityMultiplier) || 1;
+          (p.components || []).forEach(c => {
+            const effQty = c.qty * mult;
+            if (bomMap.has(c.code)) bomMap.get(c.code).qty += effQty;
+            else bomMap.set(c.code, { ...c, qty: effQty });
+          });
+        });
+
+        let bomHtml = `
+          <div style="margin-bottom: 14px;">
+            <div style="border-bottom: 3px solid #E30613; padding-bottom: 8px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: flex-end;">
+              <div>
+                <h1 style="color: #E30613; font-size: 20px; font-weight: 900; margin: 0; letter-spacing: -0.3px;">STUKLIJST (OFFERTE OVERZICHT)</h1>
+                <div style="font-size: 13px; color: #0F172A; font-weight: bold; margin-top: 4px;">Klant: ${generalInfo.client || '-'} | Project: ${generalInfo.project || '-'}</div>
+                <div style="font-size: 11px; color: #64748B;">Contact: ${generalInfo.contact || '-'} | Adviseur: ${generalInfo.advisor || '-'}</div>
+              </div>
+              <div style="text-align: right; font-size: 11px; color: #64748B;">
+                Aantal geselecteerde smeerpunten: <strong>${filteredPoints.length}</strong><br>
+                Datum: ${new Date().toLocaleDateString('nl-BE')}
+              </div>
+            </div>
+            ${generalInfo.notes ? `<div style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 10px; border-radius: 8px; font-size: 11.5px; margin-bottom: 12px;"><strong>Projectnotities:</strong> ${generalInfo.notes}</div>` : ''}
+          </div>
+
+          <table class="print-table" style="width: 100%; border-collapse: collapse; font-size: 11.5px;">
+            <thead>
+              <tr style="background: #F1F5F9; text-align: left; border-bottom: 2px solid #CBD5E1;">
+                <th style="padding: 7px 9px; width: 110px;">Artikelnummer</th>
+                <th style="padding: 7px 9px;">Omschrijving & Specificaties</th>
+                <th style="padding: 7px 9px; width: 170px;">Aansluitingen</th>
+                <th style="padding: 7px 9px; width: 130px;">Materiaal</th>
+                <th style="padding: 7px 9px; text-align: center; width: 75px;">Totaal Aantal</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${bomMap.size === 0 ? `
+                <tr><td colspan="5" style="text-align: center; padding: 30px; color: #94A3B8;">Geen onderdelen gevonden voor de geselecteerde machines.</td></tr>
+              ` : Array.from(bomMap.values()).map(item => `
+                <tr style="border-bottom: 1px solid #E2E8F0; break-inside: avoid; page-break-inside: avoid;">
+                  <td style="padding: 7px 9px; font-family: monospace; font-weight: bold; vertical-align: top;">${item.code}</td>
+                  <td style="padding: 7px 9px; vertical-align: top;">
+                    <strong style="color: #0F172A; font-size: 12px;">${item.name}</strong>
+                    ${item.desc ? `<div style="font-size: 10.5px; color: #64748B; margin-top: 3px; line-height: 1.35;">${item.desc}</div>` : ''}
+                  </td>
+                  <td style="padding: 7px 9px; font-size: 10.5px; color: #475569; vertical-align: top;">
+                    ${item.a1 || item.a2 ? `1: ${item.a1 || '-'}<br>2: ${item.a2 || '-'}` : '-'}
+                  </td>
+                  <td style="padding: 7px 9px; font-size: 11px; vertical-align: top;">${item.mat || '-'}</td>
+                  <td style="padding: 7px 9px; text-align: center; font-weight: 900; font-size: 13px; color: #0F172A; vertical-align: top;">${item.qty}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        `;
+
+        container.innerHTML = bomHtml;
+      } else if (detailType === 'detail') {
         // ====================================================================
         // VOLLEDIG GEDETAILLEERD TECHNISCH RAPPORT MET ALLE FICHE DETAILS
         // ====================================================================
@@ -6521,47 +6605,42 @@
             `;
           } else {
             specRows = `
-              <tr><td style="padding: 4px 0; color: #64748B; width: 140px;">Aansluiting 1 (Lager):</td><td style="padding: 4px 0; font-weight: bold;">${p.bearingThread}</td></tr>
-              <tr><td style="padding: 4px 0; color: #64748B;">ISPL Smeerunit:</td><td style="padding: 4px 0; font-weight: bold; color: #E30613;">${p.lubricatorVol} + ${p.greaseType}</td></tr>
-              <tr><td style="padding: 4px 0; color: #64748B;">Impulse Connect:</td><td style="padding: 4px 0; font-weight: bold;">${p.impulseConnect ? 'Ja (Drukversterker 10 bar + Bluetooth, art. 7213)' : 'Nee'}</td></tr>
-              <tr><td style="padding: 4px 0; color: #64748B;">Looptijd instelling:</td><td style="padding: 4px 0; font-weight: bold;">${p.months} maanden</td></tr>
-              <tr><td style="padding: 4px 0; color: #64748B;">Kniestuk / Hoek:</td><td style="padding: 4px 0; font-weight: bold;">${p.angle === 'straight' ? 'Recht (geen)' : p.angle + '° knie'}</td></tr>
-              <tr><td style="padding: 4px 0; color: #64748B;">Verlengstuk:</td><td style="padding: 4px 0; font-weight: bold;">${p.extension === '0' ? 'Geen verlenging' : p.extension + ' mm'}</td></tr>
-              <tr><td style="padding: 4px 0; color: #64748B;">Montagewijze:</td><td style="padding: 4px 0; font-weight: bold;">${p.mountType === 'remote' ? 'Afstand (Pulsarlube 2000RC-1 kit art. 1702)' : 'Direct op lager'}</td></tr>
+              <tr><td style="padding: 4px 0; color: #64748B; width: 140px;">Smeersysteem:</td><td style="padding: 4px 0; font-weight: bold; color: #E30613;">Interflon Single Point Lubricator (ISPL)</td></tr>
+              <tr><td style="padding: 4px 0; color: #64748B;">Patroon Volume:</td><td style="padding: 4px 0; font-weight: bold;">${p.lubricatorVol || '125ml'}</td></tr>
+              <tr><td style="padding: 4px 0; color: #64748B;">Vettype:</td><td style="padding: 4px 0; font-weight: bold;">${p.greaseType || 'Grease MP2/3'}</td></tr>
+              <tr><td style="padding: 4px 0; color: #64748B;">Looptijd instelling:</td><td style="padding: 4px 0; font-weight: bold;">${p.months || 6} maanden</td></tr>
+              <tr><td style="padding: 4px 0; color: #64748B;">Montagewijze:</td><td style="padding: 4px 0; font-weight: bold;">${p.mountType === 'remote' ? 'Afstandsmontage (kit 1702)' : 'Directe montage'}</td></tr>
+              <tr><td style="padding: 4px 0; color: #64748B;">Lager schroefdraad:</td><td style="padding: 4px 0; font-weight: bold;">${p.bearingThread || 'M8x1'}</td></tr>
               <tr><td style="padding: 4px 0; color: #64748B;">Aantal opstellingen:</td><td style="padding: 4px 0; font-weight: bold; color: #B45309;">${mult}x identieke opstelling${mult > 1 ? 'en' : ''}</td></tr>
             `;
           }
 
           detailHtml += `
-            <div style="border: 1px solid #CBD5E1; border-radius: 12px; padding: 16px; margin-bottom: 20px; background: white; page-break-inside: avoid;">
+            <div style="border: 1px solid #CBD5E1; border-radius: 12px; padding: 16px; margin-bottom: 20px; background: white; page-break-inside: avoid; break-inside: avoid;">
               <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #F1F5F9; padding-bottom: 8px; margin-bottom: 12px;">
                 <div>
-                  <span style="background: ${isPulsar ? '#2563EB' : '#E30613'}; color: white; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 900; margin-right: 6px;">
-                    ${isPulsar ? 'PULSARLUBE' : 'ISPL'} • PUNT ${idx + 1}
-                  </span>
-                  <strong style="font-size: 15px; color: #0F172A;">${p.machine || 'Machine'} ➔ ${p.point || 'Smeerpunt'}</strong>
-                  ${mult > 1 ? `<span style="background: #FEF3C7; color: #B45309; font-weight: 900; font-size: 11px; padding: 2px 7px; border-radius: 6px; margin-left: 8px;">${mult}x opstelling</span>` : ''}
+                  <span style="font-size: 14px; font-weight: 900; color: #0F172A;">${idx + 1}. Machine: ${p.machine || 'Algemeen'} ➔ Smeerpunt: ${p.point || 'Smeerpunt'}</span>
+                  ${mult > 1 ? `<span style="background: #FEF3C7; color: #B45309; font-weight: 900; font-size: 11px; padding: 2px 8px; border-radius: 6px; margin-left: 8px;">${mult}x opstelling</span>` : ''}
                 </div>
-                <div style="font-size: 11.5px; color: #64748B; font-weight: bold;">
-                  Materiaal: ${p.material}
-                </div>
+                <div style="font-size: 11px; color: #64748B;">Systeem: <strong>${p.systemType === 'pulsarlube' ? 'Pulsarlube' : 'ISPL'}</strong> | Materiaal: <strong>${p.material || 'Messing'}</strong></div>
               </div>
 
               <!-- 2-koloms detailweergave: Specificaties & 3D Exploded View Tekening -->
               <div style="display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 16px; margin-bottom: 14px; align-items: start;">
                 <div>
-                  <table style="width: 100%; border-collapse: collapse; font-size: 11.5px; margin-bottom: 10px;">
+                  <div style="font-size: 11px; font-weight: 800; color: #475569; text-transform: uppercase; margin-bottom: 6px;">Configuratie Specificaties:</div>
+                  <table style="width: 100%; font-size: 11.5px; border-collapse: collapse;">
                     ${specRows}
                   </table>
 
                   ${p.photo ? `
-                    <div style="border: 1px solid #CBD5E1; border-radius: 8px; overflow: hidden; width: 180px; height: 135px; margin-top: 8px;">
-                      <img src="${p.photo}" style="width: 100%; height: 100%; object-fit: cover;">
+                    <div style="margin-top: 10px;">
+                      <div style="font-size: 10px; font-weight: 800; color: #64748B; margin-bottom: 4px;">FOTO SITUATIE TER PLAATSE:</div>
+                      <img src="${p.photo}" style="max-height: 120px; border-radius: 6px; border: 1px solid #E2E8F0;" alt="Foto">
                     </div>
                   ` : ''}
                 </div>
 
-                <!-- Volledige 3D Exploded View SVG Samenstelling -->
                 <div style="border: 1px solid #E2E8F0; border-radius: 10px; padding: 10px; background: #FFFFFF; text-align: center;">
                   <div style="font-size: 10px; font-weight: 800; color: ${isPulsar ? '#2563EB' : '#E30613'}; margin-bottom: 6px; text-transform: uppercase;">3D Exploded View Samenstelling</div>
                   ${generateAssemblySvgMarkup(p, true)}
@@ -6575,20 +6654,23 @@
                 </div>
                 <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
                   <thead>
-                    <tr style="background: #F1F5F9; text-align: left;">
+                    <tr style="background: #F1F5F9; text-align: left; border-bottom: 1.5px solid #CBD5E1;">
                       <th style="padding: 5px 8px; width: 110px;">Art. Code</th>
-                      <th style="padding: 5px 8px;">Omschrijving</th>
-                      <th style="padding: 5px 8px;">Aansluitingen</th>
+                      <th style="padding: 5px 8px;">Omschrijving & Specificaties</th>
+                      <th style="padding: 5px 8px; width: 170px;">Aansluitingen</th>
                       <th style="padding: 5px 8px; text-align: center; width: 60px;">Aantal</th>
                     </tr>
                   </thead>
                   <tbody>
                     ${(p.components || []).map(c => `
-                      <tr style="border-bottom: 1px solid #F1F5F9;">
-                        <td style="padding: 5px 8px; font-family: monospace; font-weight: bold;">${c.code}</td>
-                        <td style="padding: 5px 8px;"><strong>${c.name}</strong></td>
-                        <td style="padding: 5px 8px; color: #64748B;">${c.a1} ➔ ${c.a2}</td>
-                        <td style="padding: 5px 8px; text-align: center; font-weight: 900;">${c.qty * mult}</td>
+                      <tr style="border-bottom: 1px solid #F1F5F9; break-inside: avoid; page-break-inside: avoid;">
+                        <td style="padding: 5px 8px; font-family: monospace; font-weight: bold; vertical-align: top;">${c.code}</td>
+                        <td style="padding: 5px 8px; vertical-align: top;">
+                          <strong style="color: #0F172A;">${c.name}</strong>
+                          ${c.desc ? `<div style="font-size: 10px; color: #64748B; margin-top: 2px; line-height: 1.3;">${c.desc}</div>` : ''}
+                        </td>
+                        <td style="padding: 5px 8px; color: #64748B; font-size: 10.5px; vertical-align: top;">${c.a1} ➔ ${c.a2}</td>
+                        <td style="padding: 5px 8px; text-align: center; font-weight: 900; vertical-align: top;">${c.qty * mult}</td>
                       </tr>
                     `).join('')}
                   </tbody>
@@ -6610,26 +6692,33 @@
         });
 
         detailHtml += `
-          <div style="margin-top: 24px; page-break-before: always; break-before: page; page-break-inside: avoid;">
+          <div style="margin-top: 24px; page-break-before: always; break-before: page; page-break-inside: auto; break-inside: auto;">
             <h3 style="color: #0F172A; font-size: 14px; font-weight: 900; border-bottom: 2px solid #0F172A; padding-bottom: 4px; margin-bottom: 10px;">
-              TOTALE GEAGGREGEERDE STUKLIJST (VOOR OFFERTE & BESTELLING)
+              TOTALE STUKLIJST (VOOR OFFERTE & BESTELLING)
             </h3>
             <table style="width: 100%; border-collapse: collapse; font-size: 11.5px;">
               <thead>
-                <tr style="background: #F1F5F9; text-align: left;">
-                  <th style="padding: 6px 8px;">Artikelnummer</th>
-                  <th style="padding: 6px 8px;">Omschrijving</th>
-                  <th style="padding: 6px 8px;">Materiaal</th>
-                  <th style="padding: 6px 8px; text-align: center;">Totaal Aantal</th>
+                <tr style="background: #F1F5F9; text-align: left; border-bottom: 2px solid #CBD5E1;">
+                  <th style="padding: 6px 8px; width: 110px;">Artikelnummer</th>
+                  <th style="padding: 6px 8px;">Omschrijving & Specificaties</th>
+                  <th style="padding: 6px 8px; width: 150px;">Aansluitingen</th>
+                  <th style="padding: 6px 8px; width: 130px;">Materiaal</th>
+                  <th style="padding: 6px 8px; text-align: center; width: 70px;">Totaal Aantal</th>
                 </tr>
               </thead>
               <tbody>
                 ${Array.from(bomMap.values()).map(item => `
-                  <tr style="border-bottom: 1px solid #E2E8F0;">
-                    <td style="padding: 6px 8px; font-family: monospace; font-weight: bold;">${item.code}</td>
-                    <td style="padding: 6px 8px;"><strong>${item.name}</strong></td>
-                    <td style="padding: 6px 8px;">${item.mat}</td>
-                    <td style="padding: 6px 8px; text-align: center; font-weight: 900; font-size: 13px;">${item.qty}</td>
+                  <tr style="border-bottom: 1px solid #E2E8F0; break-inside: avoid; page-break-inside: avoid;">
+                    <td style="padding: 6px 8px; font-family: monospace; font-weight: bold; vertical-align: top;">${item.code}</td>
+                    <td style="padding: 6px 8px; vertical-align: top;">
+                      <strong style="color: #0F172A;">${item.name}</strong>
+                      ${item.desc ? `<div style="font-size: 10.5px; color: #64748B; margin-top: 3px; line-height: 1.35;">${item.desc}</div>` : ''}
+                    </td>
+                    <td style="padding: 6px 8px; font-size: 10.5px; color: #475569; vertical-align: top;">
+                      ${item.a1 || item.a2 ? `1: ${item.a1 || '-'}<br>2: ${item.a2 || '-'}` : '-'}
+                    </td>
+                    <td style="padding: 6px 8px; vertical-align: top;">${item.mat || '-'}</td>
+                    <td style="padding: 6px 8px; text-align: center; font-weight: 900; font-size: 13px; color: #0F172A; vertical-align: top;">${item.qty}</td>
                   </tr>
                 `).join('')}
               </tbody>
@@ -6639,13 +6728,15 @@
 
         container.innerHTML = detailHtml;
       } else {
+        // ====================================================================
         // COMPACT RAPPORT
+        // ====================================================================
         let compactHtml = `
           <div style="margin-bottom: 16px;">
-            <div style="border-bottom: 3px solid #E30613; padding-bottom: 6px; margin-bottom: 12px; display: flex; justify-content: space-between;">
+            <div style="border-bottom: 3px solid #E30613; padding-bottom: 6px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: flex-end;">
               <div>
                 <h1 style="color: #E30613; font-size: 18px; font-weight: 900; margin: 0;">COMPACT MONTAGE OVERZICHT</h1>
-                <div style="font-size: 12px; color: #0F172A; font-weight: bold;">Klant: ${generalInfo.client || '-'} | Project: ${generalInfo.project || '-'}</div>
+                <div style="font-size: 12px; color: #0F172A; font-weight: bold; margin-top: 2px;">Klant: ${generalInfo.client || '-'} | Project: ${generalInfo.project || '-'}</div>
               </div>
               <div style="text-align: right; font-size: 11px; color: #64748B;">
                 Datum: ${new Date().toLocaleDateString('nl-BE')}
@@ -6662,7 +6753,7 @@
             : `ISPL ${p.lubricatorVol}${p.impulseConnect ? ' + Impulse' : ''} + ${p.greaseType} (${p.months} mnd)`;
 
           compactHtml += `
-            <div style="border: 1px solid #E2E8F0; border-radius: 8px; padding: 12px; margin-bottom: 12px; background: white; page-break-inside: avoid;">
+            <div style="border: 1px solid #E2E8F0; border-radius: 8px; padding: 12px; margin-bottom: 12px; background: white; page-break-inside: avoid; break-inside: avoid;">
               <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #F1F5F9; padding-bottom: 6px; margin-bottom: 8px;">
                 <div style="font-weight: 900; font-size: 13.5px; color: #0F172A;">
                   ${idx + 1}. Machine: ${p.machine || 'Machine'} ➔ Smeerpunt: ${p.point || 'Smeerpunt'}
@@ -6672,20 +6763,23 @@
               </div>
               <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
                 <thead>
-                  <tr style="background: #F8FAFC; text-align: left;">
-                    <th style="padding: 5px 8px;">Art. Code</th>
-                    <th style="padding: 5px 8px;">Onderdeel</th>
-                    <th style="padding: 5px 8px;">Aansluitingen</th>
-                    <th style="padding: 5px 8px; text-align: center;">Aantal</th>
+                  <tr style="background: #F8FAFC; text-align: left; border-bottom: 1.5px solid #CBD5E1;">
+                    <th style="padding: 5px 8px; width: 110px;">Art. Code</th>
+                    <th style="padding: 5px 8px;">Onderdeel & Specificaties</th>
+                    <th style="padding: 5px 8px; width: 170px;">Aansluitingen</th>
+                    <th style="padding: 5px 8px; text-align: center; width: 60px;">Aantal</th>
                   </tr>
                 </thead>
                 <tbody>
                   ${(p.components || []).map(c => `
-                    <tr style="border-bottom: 1px solid #F1F5F9;">
-                      <td style="padding: 5px 8px; font-weight: bold; font-family: monospace;">${c.code}</td>
-                      <td style="padding: 5px 8px;">${c.name}</td>
-                      <td style="padding: 5px 8px; color: #64748B;">${c.a1} ➔ ${c.a2}</td>
-                      <td style="padding: 5px 8px; text-align: center; font-weight: 900;">${c.qty * mult}</td>
+                    <tr style="border-bottom: 1px solid #F1F5F9; break-inside: avoid; page-break-inside: avoid;">
+                      <td style="padding: 5px 8px; font-weight: bold; font-family: monospace; vertical-align: top;">${c.code}</td>
+                      <td style="padding: 5px 8px; vertical-align: top;">
+                        <strong style="color: #0F172A;">${c.name}</strong>
+                        ${c.desc ? `<div style="font-size: 10px; color: #64748B; margin-top: 2px; line-height: 1.3;">${c.desc}</div>` : ''}
+                      </td>
+                      <td style="padding: 5px 8px; color: #64748B; font-size: 10.5px; vertical-align: top;">${c.a1} ➔ ${c.a2}</td>
+                      <td style="padding: 5px 8px; text-align: center; font-weight: 900; vertical-align: top;">${c.qty * mult}</td>
                     </tr>
                   `).join('')}
                 </tbody>
@@ -6706,26 +6800,33 @@
         });
 
         compactHtml += `
-          <div style="margin-top: 20px; page-break-before: always; break-before: page; page-break-inside: avoid;">
+          <div style="margin-top: 20px; page-break-before: always; break-before: page; page-break-inside: auto; break-inside: auto;">
             <h3 style="color: #0F172A; font-size: 14px; font-weight: 900; border-bottom: 2px solid #0F172A; padding-bottom: 4px; margin-bottom: 10px;">
-              TOTALE GEAGGREGEERDE STUKLIJST (OFFERTE OVERZICHT)
+              TOTALE STUKLIJST (OFFERTE OVERZICHT)
             </h3>
             <table style="width: 100%; border-collapse: collapse; font-size: 11.5px;">
               <thead>
-                <tr style="background: #F1F5F9; text-align: left;">
-                  <th style="padding: 6px 8px;">Artikelnummer</th>
-                  <th style="padding: 6px 8px;">Omschrijving</th>
-                  <th style="padding: 6px 8px;">Materiaal</th>
-                  <th style="padding: 6px 8px; text-align: center;">Totaal Aantal</th>
+                <tr style="background: #F1F5F9; text-align: left; border-bottom: 2px solid #CBD5E1;">
+                  <th style="padding: 6px 8px; width: 110px;">Artikelnummer</th>
+                  <th style="padding: 6px 8px;">Omschrijving & Specificaties</th>
+                  <th style="padding: 6px 8px; width: 150px;">Aansluitingen</th>
+                  <th style="padding: 6px 8px; width: 130px;">Materiaal</th>
+                  <th style="padding: 6px 8px; text-align: center; width: 70px;">Totaal Aantal</th>
                 </tr>
               </thead>
               <tbody>
                 ${Array.from(bomMap.values()).map(item => `
-                  <tr style="border-bottom: 1px solid #E2E8F0;">
-                    <td style="padding: 6px 8px; font-family: monospace; font-weight: bold;">${item.code}</td>
-                    <td style="padding: 6px 8px;"><strong>${item.name}</strong></td>
-                    <td style="padding: 6px 8px;">${item.mat}</td>
-                    <td style="padding: 6px 8px; text-align: center; font-weight: 900; font-size: 13px;">${item.qty}</td>
+                  <tr style="border-bottom: 1px solid #E2E8F0; break-inside: avoid; page-break-inside: avoid;">
+                    <td style="padding: 6px 8px; font-family: monospace; font-weight: bold; vertical-align: top;">${item.code}</td>
+                    <td style="padding: 6px 8px; vertical-align: top;">
+                      <strong style="color: #0F172A;">${item.name}</strong>
+                      ${item.desc ? `<div style="font-size: 10.5px; color: #64748B; margin-top: 3px; line-height: 1.35;">${item.desc}</div>` : ''}
+                    </td>
+                    <td style="padding: 6px 8px; font-size: 10.5px; color: #475569; vertical-align: top;">
+                      ${item.a1 || item.a2 ? `1: ${item.a1 || '-'}<br>2: ${item.a2 || '-'}` : '-'}
+                    </td>
+                    <td style="padding: 6px 8px; vertical-align: top;">${item.mat || '-'}</td>
+                    <td style="padding: 6px 8px; text-align: center; font-weight: 900; font-size: 13px; color: #0F172A; vertical-align: top;">${item.qty}</td>
                   </tr>
                 `).join('')}
               </tbody>
@@ -6736,14 +6837,16 @@
         container.innerHTML = compactHtml;
       }
 
+      document.body.classList.add('printing-report');
       container.style.display = 'block';
       document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
 
       setTimeout(() => {
         window.print();
         container.style.display = 'none';
+        container.innerHTML = '';
+        document.body.classList.remove('printing-report');
         document.querySelectorAll('.tab-content').forEach(c => c.style.display = '');
-        switchTab('projects');
       }, 300);
     }
 

@@ -41,10 +41,17 @@
       -webkit-tap-highlight-color: transparent;
     }
 
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
       background-color: var(--bg);
       color: var(--text);
-      min-height: 100vh;
+      height: 100vh;
+      overflow: hidden;
       display: flex;
     }
 
@@ -255,9 +262,11 @@
     /* ======================================================================== */
     main.content-area {
       flex: 1;
+      height: 100vh;
       padding: 26px 34px;
       overflow-y: auto;
       max-width: 1400px;
+      position: relative;
     }
 
     .page-header {
@@ -472,14 +481,20 @@
 
     @media (min-width: 980px) {
       .config-grid {
+        display: grid;
         grid-template-columns: 1.05fr 0.95fr;
         align-items: start;
+        gap: 20px;
       }
       .card-sim-3d {
+        position: -webkit-sticky;
         position: sticky;
         top: 16px;
         z-index: 10;
         margin-bottom: 0 !important;
+        align-self: start;
+        max-height: calc(100vh - 32px);
+        overflow-y: auto;
       }
       .card-assembly-params {
         display: flex;
@@ -2771,7 +2786,7 @@
     </div>
   </div>
 
-  <script src="couplings-data.js?v=33"></script>
+  <script src="couplings-data.js?v=34"></script>
   <script>
     const STORAGE_KEY = 'IF_HARDWARE_SELECTOR_DATA_V10';
     const DB_STORAGE_KEY = 'IF_CUSTOM_COUPLINGS_DB_V11';
@@ -5136,7 +5151,6 @@
 
               <!-- Montagebeugel indicatie (Kit 1430) -->
               <rect x="0" y="40" width="22" height="70" rx="3" fill="#64748B" opacity="0.35"/>
-              <text x="11" y="125" font-size="8" font-weight="bold" fill="#64748B" text-anchor="middle">Kit 1430</text>
             </g>
 
             <!-- 2. Flexibele Leiding van unit naar borstel -->
@@ -5241,7 +5255,6 @@
 
             <!-- Montagebeugel indicatie (Kit 1430) -->
             <rect x="195" y="${yUnitBottom - 26}" width="130" height="28" rx="4" fill="#64748B" opacity="0.25"/>
-            <text x="260" y="${yUnitBottom - 8}" font-size="8.5" font-weight="bold" fill="#475569" text-anchor="middle">Montagebeugel (Kit ${kitCode})</text>
 
             <!-- 2. Installatiekit Verloopstuk (G 3/8" naar G 1/8" M) direct onder unit -->
             <g transform="translate(242, ${yAdapter})">
@@ -5260,9 +5273,9 @@
               <!-- Bloklichaam in geanodiseerd aluminium -->
               <rect x="0" y="0" width="130" height="${manifoldH}" rx="6" fill="url(#manifoldAlu)" stroke="#334155" stroke-width="1.5"/>
               
-              <!-- Inwendige kanalen en aanduiding -->
-              <text x="65" y="14" font-size="9" font-weight="900" fill="#0F172A" text-anchor="middle" letter-spacing="0.5">HU DIVIDER • ${portsCount} POORTEN</text>
-              <text x="65" y="24" font-size="7.5" font-weight="bold" fill="#475569" text-anchor="middle">Rechtstreeks opgeschroefd</text>
+              <!-- Inwendige kanalen en aanduiding (volledig binnen het bloklichaam, geen overlappende externe kaders) -->
+              <text x="65" y="13" font-size="9" font-weight="900" fill="#0F172A" text-anchor="middle" letter-spacing="0.3">HU VERDEELBLOK • ${portsCount}P</text>
+              <text x="65" y="24" font-size="8" font-weight="bold" fill="#1D4ED8" text-anchor="middle">Art. ${1480 + (portsCount - 2)}</text>
               <line x1="15" y1="27" x2="115" y2="27" stroke="#64748B" stroke-width="1"/>
 
               <!-- Poorten Links (P1..P_nLeft) van boven naar beneden -->
@@ -5286,12 +5299,6 @@
                   <text x="107" y="${yOff + 3}" font-size="8.5" font-weight="bold" fill="#1E293B" text-anchor="end">P${pIdx + 1}</text>
                 `;
               }).join('')}
-
-              <!-- Annotatie Verdeelblok (Onderste box) -->
-              <line x1="130" y1="${manifoldH / 2}" x2="165" y2="${manifoldH / 2}" stroke="#0F172A" stroke-width="1.2"/>
-              <circle cx="130" cy="${manifoldH / 2}" r="2.5" fill="#2563EB"/>
-              <rect x="165" y="${(manifoldH / 2) - 12}" width="152" height="24" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
-              <text x="173" y="${(manifoldH / 2) + 4}" font-size="10.5" font-weight="900" fill="#1D4ED8">HU Blok (${portsCount} poorten)</text>
             </g>
 
             <!-- 4. Leidingen die vertakken naar de smeerpunten onderaan ZONDER ELKAAR TE KRUISEN -->
@@ -5393,7 +5400,6 @@
 
             <!-- Montagebeugel indicatie (Kit 1430) -->
             <rect x="195" y="${yUnitBottom - 26}" width="130" height="28" rx="4" fill="#64748B" opacity="0.25"/>
-            <text x="260" y="${yUnitBottom - 8}" font-size="8.5" font-weight="bold" fill="#475569" text-anchor="middle">Montagebeugel (Kit ${kitCode1})</text>
 
             <!-- Installatiekit 1250RC-1 beugel + verloopstuk (G 3/8" naar G 1/8" F) -->
             <g transform="translate(242, ${yUnitBottom + 6})">

@@ -473,17 +473,21 @@
     @media (min-width: 980px) {
       .config-grid {
         grid-template-columns: 1.05fr 0.95fr;
-        align-items: stretch;
+        align-items: start;
       }
-      .card-sim-3d, .card-assembly-params {
-        height: 100%;
+      .card-sim-3d {
+        position: sticky;
+        top: 16px;
+        z-index: 10;
+        margin-bottom: 0 !important;
+      }
+      .card-assembly-params {
         display: flex;
         flex-direction: column;
         margin-bottom: 0 !important;
       }
       .card-sim-3d .drawing-container {
-        flex: 1;
-        height: 100%;
+        min-height: 440px;
       }
     }
 
@@ -532,12 +536,12 @@
       background: #FFFFFF;
       border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 16px;
+      padding: 14px 12px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      min-height: 480px;
+      justify-content: flex-start;
+      min-height: 420px;
       position: relative;
       overflow: hidden;
     }
@@ -559,9 +563,10 @@
     svg.assembly-svg {
       width: 100%;
       max-width: 520px;
-      height: 100%;
-      min-height: 480px;
+      height: auto;
+      max-height: 600px;
       display: block;
+      margin: 0 auto;
     }
 
     /* Photo Upload Area */
@@ -1381,7 +1386,7 @@
               <input type="text" id="cfg-machine" value="" placeholder="bv. Flessenspoelmachine Lijn 1" oninput="autoSaveActivePoint()">
             </div>
             <div class="input-group">
-              <label class="input-label">Smeerpunt Omschrijving (Tag / Positie)</label>
+              <label class="input-label" id="lbl-cfg-point">Smeerpunt Omschrijving (Tag / Positie)</label>
               <input type="text" id="cfg-point" value="" placeholder="bv. Aandrijfas Lager Positie 1" oninput="autoSaveActivePoint()">
             </div>
             <div class="input-group" style="margin-bottom: 0;">
@@ -2761,7 +2766,7 @@
     </div>
   </div>
 
-  <script src="couplings-data.js?v=30"></script>
+  <script src="couplings-data.js?v=31"></script>
   <script>
     const STORAGE_KEY = 'IF_HARDWARE_SELECTOR_DATA_V10';
     const DB_STORAGE_KEY = 'IF_CUSTOM_COUPLINGS_DB_V11';
@@ -3494,12 +3499,14 @@
           if (portsCountEl) portsCountEl.value = activeP.pulsarPortsCount;
         }
         onPulsarMountChange();
+        updateHeaderPointLabelText();
       } else {
         if (isplBtn) isplBtn.classList.add('active');
         if (pulsarBtn) pulsarBtn.classList.remove('active');
         if (isplSection) isplSection.style.display = 'block';
         if (pulsarSection) pulsarSection.style.display = 'none';
         if (dirLabel) dirLabel.innerText = 'Lager ➔ ISPL';
+        updateHeaderPointLabelText();
 
         populateGreaseTypes(activeP ? activeP.greaseType : null);
         if (activeP && activeP.mountType) {
@@ -3760,7 +3767,7 @@
 
       let html = '';
       for (let i = 1; i <= count; i++) {
-        const existing = currentPorts[i - 1] || { length: 1.0, diam: isOil ? '4 mm' : '6 mm', thread: 'M8x1', customThread: '' };
+        const existing = currentPorts[i - 1] || { length: 1.0, diam: isOil ? '4 mm' : '6 mm', thread: 'M8x1', customThread: '', name: '' };
         const lenVal = Math.min(4.0, Math.max(0.1, parseFloat(existing.length) || 1.0));
         const isCustom = (existing.thread === 'custom');
 
@@ -3786,6 +3793,15 @@
               </div>
               <span style="font-size: 11px; color: #64748B;">Max. 4.0 m leiding</span>
             </div>
+
+            <!-- Specifieke omschrijving per poort (tot 8 smeerpunten) -->
+            <div style="margin-bottom: 8px;">
+              <label class="input-label" style="font-size: 10.5px; margin-bottom: 3px; font-weight: 700; color: #1E293B;">
+                Smeerpunt Omschrijving / Positie (Tag)
+              </label>
+              <input type="text" class="pulsar-port-name" placeholder="bv. Aandrijfas Lager Positie ${i}" value="${existing.name || ''}" oninput="onPortParamChange()">
+            </div>
+
             <div class="pulsar-port-grid">
               <div>
                 <label class="input-label" style="font-size: 10.5px; margin-bottom: 4px;">Leidinglengte</label>
@@ -3816,6 +3832,25 @@
       }
 
       container.innerHTML = html;
+      updateHeaderPointLabelText();
+    }
+
+    function updateHeaderPointLabelText() {
+      const lblPoint = document.getElementById('lbl-cfg-point');
+      const inpPoint = document.getElementById('cfg-point');
+      if (!lblPoint || !inpPoint) return;
+
+      const isPulsarMulti = (currentSystemMode === 'pulsarlube') &&
+        (document.getElementById('sel-pulsar-mount')?.value === 'remote') &&
+        (parseInt(document.getElementById('sel-pulsar-ports-count')?.value || 1) > 1);
+
+      if (isPulsarMulti) {
+        lblPoint.innerText = 'Verdeelblok Groep / Centrale Locatie (Tag)';
+        inpPoint.placeholder = 'bv. Verdeelblok Aandrijfzijde Lijn 1';
+      } else {
+        lblPoint.innerText = 'Smeerpunt Omschrijving (Tag / Positie)';
+        inpPoint.placeholder = 'bv. Aandrijfas Lager Positie 1';
+      }
     }
 
     function onPortThreadChange(portIdx) {
@@ -3852,7 +3887,10 @@
         const customInput = card.querySelector('.pulsar-port-custom-thread');
         const customThread = customInput ? customInput.value.trim() : '';
 
-        portsData.push({ length, diam, thread, customThread });
+        const nameInput = card.querySelector('.pulsar-port-name');
+        const name = nameInput ? nameInput.value.trim() : '';
+
+        portsData.push({ length, diam, thread, customThread, name });
       });
 
       if (activeP) {
@@ -4850,24 +4888,24 @@
     // ========================================================================
         function getPulsarImageInfo(model, vol) {
       if (model === 'OL500' || model === 'MSP Oil') {
-        return { src: 'pulsar-ol500.png', width: 68, height: 155 };
+        return { src: 'pulsar-ol500.png', width: 88, height: 195 };
       } else if (model === 'BT') {
-        return { src: 'pulsar-bt.png', width: 70, height: 155 };
+        return { src: 'pulsar-bt.png', width: 90, height: 195 };
       } else if (model === 'MSP') {
-        return { src: 'pulsar-msp.png', width: 105, height: 142 };
+        return { src: 'pulsar-msp.png', width: 125, height: 172 };
       } else if (model === 'PLC') {
-        return { src: 'pulsar-plc.png', width: 72, height: 148 };
+        return { src: 'pulsar-plc.png', width: 92, height: 188 };
       } else {
         // M2
         const v = String(vol || '');
         if (v.includes('60')) {
-          return { src: 'pulsar-m-60.png', width: 68, height: 125 };
+          return { src: 'pulsar-m-60.png', width: 86, height: 158 };
         } else if (v.includes('125')) {
-          return { src: 'pulsar-m-125.png', width: 68, height: 135 };
+          return { src: 'pulsar-m-125.png', width: 88, height: 172 };
         } else if (v.includes('500')) {
-          return { src: 'pulsar-m-500.png', width: 72, height: 168 };
+          return { src: 'pulsar-m-500.png', width: 92, height: 215 };
         } else {
-          return { src: 'pulsar-m-250.png', width: 70, height: 145 };
+          return { src: 'pulsar-m-250.png', width: 90, height: 185 };
         }
       }
     }
@@ -5160,25 +5198,28 @@
           // HU Verdeelblok 2..8 poorten:
           // RECHTSTREEKS op de beugel / adapter van de unit geschroefd (GEEN leiding of toevoerkoppeling ertussen!)
           const imgX = 260 - (imgW / 2);
-          const imgY = 16;
+          const imgY = 10;
           const yUnitBottom = imgY + imgH;
           const yAdapter = yUnitBottom + 2;
-          const yManifold = yAdapter + 20;
-          const manifoldH = 32 + portsCount * 13;
-          totalH = (portsCount > 4) ? 640 : 560;
+          const yManifold = yAdapter + 18;
+          const manifoldH = 34 + portsCount * 13;
+          
+          // Compacte, ergonomische hoogte zonder overbodige dode witruimte
+          const targetY = yManifold + manifoldH + 54;
+          totalH = Math.max(460, targetY + 95);
 
           inner = `
             ${defs}
             ${settingBadge}
 
-            <!-- 1. Pulsarlube Unit (Real Image) -->
+            <!-- 1. Pulsarlube Unit (Real Image - Prominente weergave) -->
             <g>
               <image href="${imgInfo.src}" x="${imgX}" y="${imgY}" width="${imgW}" height="${imgH}" preserveAspectRatio="xMidYMid meet"/>
               
               <line x1="${imgX + imgW - 6}" y1="${imgY + 36}" x2="355" y2="${imgY + 36}" stroke="#0F172A" stroke-width="1.2"/>
               <circle cx="${imgX + imgW - 6}" cy="${imgY + 36}" r="2.5" fill="#2563EB"/>
-              <rect x="355" y="${imgY + 24}" width="155" height="24" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
-              <text x="365" y="${imgY + 40}" font-size="11" font-weight="900" fill="#1D4ED8">Pulsarlube ${model} (${vol})</text>
+              <rect x="355" y="${imgY + 22}" width="155" height="24" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
+              <text x="365" y="${imgY + 38}" font-size="11.5" font-weight="900" fill="#1D4ED8">Pulsarlube ${model} (${vol})</text>
             </g>
 
             <!-- Montagebeugel indicatie (Kit 1430) -->
@@ -5186,52 +5227,51 @@
 
             <!-- 2. Installatiekit Verloopstuk (G 3/8" naar G 1/8" M) direct onder unit -->
             <g transform="translate(242, ${yAdapter})">
-              <rect x="0" y="0" width="36" height="18" rx="3" fill="${metalFill}" stroke="${metalStroke}" stroke-width="1.2"/>
-              <rect x="8" y="18" width="20" height="6" fill="#475569" stroke="#1E293B" stroke-width="1"/>
+              <rect x="0" y="0" width="36" height="16" rx="3" fill="${metalFill}" stroke="${metalStroke}" stroke-width="1.2"/>
+              <rect x="8" y="16" width="20" height="5" fill="#475569" stroke="#1E293B" stroke-width="1"/>
 
-              <line x1="36" y1="9" x2="105" y2="9" stroke="#0F172A" stroke-width="1.2"/>
-              <circle cx="36" cy="9" r="2" fill="#2563EB"/>
-              <rect x="105" y="-1" width="165" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
-              <text x="112" y="13" font-size="9.5" font-weight="800" fill="#1D4ED8">Verloopstuk G 3/8" F ➔ G 1/8" M (Art. ${isRVS ? '1099.1071' : '1099.1070'})</text>
+              <line x1="36" y1="8" x2="105" y2="8" stroke="#0F172A" stroke-width="1.2"/>
+              <circle cx="36" cy="8" r="2" fill="#2563EB"/>
+              <rect x="105" y="-3" width="168" height="22" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+              <text x="112" y="12" font-size="9.5" font-weight="800" fill="#1D4ED8">Verloopstuk G 3/8" F ➔ G 1/8" M (Art. ${isRVS ? '1099.1071' : '1099.1070'})</text>
             </g>
 
-            <!-- 3. HU TYPE VERDEELBLOK RECHTSTREEKS OP HET VERLOOPSTUK OPENGESCHROEFD (GEEN tussenleiding!) -->
+            <!-- 3. HU TYPE VERDEELBLOK RECHTSTREEKS OP HET VERLOOPSTUK (GEEN tussenleiding!) -->
             <g transform="translate(195, ${yManifold})">
               <!-- Bloklichaam in geanodiseerd aluminium -->
               <rect x="0" y="0" width="130" height="${manifoldH}" rx="6" fill="url(#manifoldAlu)" stroke="#334155" stroke-width="1.5"/>
               
               <!-- Inwendige kanalen en aanduiding -->
-              <text x="65" y="16" font-size="9" font-weight="900" fill="#0F172A" text-anchor="middle" letter-spacing="0.5">HU DIVIDER • ${portsCount}P</text>
-              <text x="65" y="26" font-size="7.5" font-weight="bold" fill="#475569" text-anchor="middle">Rechtstreeks opgeschroefd</text>
-              <line x1="15" y1="30" x2="115" y2="30" stroke="#64748B" stroke-width="1"/>
+              <text x="65" y="15" font-size="9" font-weight="900" fill="#0F172A" text-anchor="middle" letter-spacing="0.5">HU DIVIDER • ${portsCount} POORTEN</text>
+              <text x="65" y="25" font-size="7.5" font-weight="bold" fill="#475569" text-anchor="middle">Rechtstreeks opgeschroefd</text>
+              <line x1="15" y1="28" x2="115" y2="28" stroke="#64748B" stroke-width="1"/>
 
               <!-- Poorten en voorgemonteerde insteekkoppelingen aan weerszijden -->
               ${Array.from({ length: portsCount }).map((_, i) => {
-                const yOff = 38 + i * 13;
+                const yOff = 36 + i * 13;
                 const isLeft = (i % 2 === 0);
                 const xPort = isLeft ? -10 : 130;
                 return `
                   <rect x="${xPort}" y="${yOff - 4}" width="10" height="8" fill="url(#pulsarBrass)" stroke="#78350F" stroke-width="0.8"/>
                   <circle cx="${isLeft ? 15 : 115}" cy="${yOff}" r="3" fill="#0F172A"/>
-                  <text x="${isLeft ? 23 : 107}" y="${yOff + 3}" font-size="7.5" font-weight="bold" fill="#334155" text-anchor="${isLeft ? 'start' : 'end'}">P${i+1}</text>
+                  <text x="${isLeft ? 23 : 107}" y="${yOff + 3}" font-size="8" font-weight="bold" fill="#1E293B" text-anchor="${isLeft ? 'start' : 'end'}">P${i+1}</text>
                 `;
               }).join('')}
 
               <!-- Annotatie Verdeelblok -->
-              <line x1="130" y1="20" x2="165" y2="20" stroke="#0F172A" stroke-width="1.2"/>
-              <circle cx="130" cy="20" r="2.5" fill="#2563EB"/>
-              <rect x="165" y="8" width="150" height="24" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
-              <text x="175" y="24" font-size="11" font-weight="900" fill="#1D4ED8">HU Blok (${portsCount} poorten)</text>
+              <line x1="130" y1="18" x2="165" y2="18" stroke="#0F172A" stroke-width="1.2"/>
+              <circle cx="130" cy="18" r="2.5" fill="#2563EB"/>
+              <rect x="165" y="6" width="155" height="24" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
+              <text x="175" y="22" font-size="11" font-weight="900" fill="#1D4ED8">HU Blok (${portsCount} poorten)</text>
             </g>
 
-            <!-- 4. Leidingen die vertakken naar de smeerpunten onderaan MET PUSH-INS EN VERLOOPSTUKKEN AAN LAGERZIJDE -->
+            <!-- 4. Leidingen die vertakken naar de smeerpunten onderaan MET VERGROTE, GOED LEESBARE BADGES -->
             <g>
               ${Array.from({ length: portsCount }).map((_, i) => {
                 const isLeft = (i % 2 === 0);
                 const startX = isLeft ? 185 : 335;
-                const startY = yManifold + 38 + i * 13;
-                const targetX = 55 + (i * (410 / Math.max(1, portsCount - 1)));
-                const targetY = (portsCount > 4) ? (totalH - 95) : (totalH - 85);
+                const startY = yManifold + 36 + i * 13;
+                const targetX = 50 + (i * (420 / Math.max(1, portsCount - 1)));
                 const strokeColor = ['#2563EB', '#0D9488', '#D97706', '#E11D48', '#7C3AED', '#0284C7', '#059669', '#DC2626'][i % 8];
 
                 const portData = (cfg.pulsarPorts && cfg.pulsarPorts[i]) ? cfg.pulsarPorts[i] : {};
@@ -5240,44 +5280,52 @@
                 const isG18 = (thread === 'G 1/8' || thread === 'G 1/8"' || thread === '1/8 BSPP');
                 const strokeW = (diam === '8 mm') ? 3.2 : ((diam === '4 mm') ? 1.8 : 2.5);
 
+                const bWidth = (portsCount > 6) ? 52 : ((portsCount > 4) ? 58 : 66);
+                const bHalf = bWidth / 2;
+                const portTag = (portData.name || '').trim();
+
                 return `
                   <!-- Flexibele nylon leiding -->
-                  <path d="M ${startX} ${startY} C ${startX + (isLeft ? -45 : 45)} ${startY + 35}, ${targetX} ${targetY - 35}, ${targetX} ${targetY}" fill="none" stroke="${strokeColor}" stroke-width="${strokeW}" stroke-dasharray="5 3"/>
+                  <path d="M ${startX} ${startY} C ${startX + (isLeft ? -35 : 35)} ${startY + 25}, ${targetX} ${targetY - 25}, ${targetX} ${targetY}" fill="none" stroke="${strokeColor}" stroke-width="${strokeW}" stroke-dasharray="5 3"/>
                   
                   <!-- Insteekkoppeling (lagerzijde) passend bij leidingdiameter (${diam}) -->
                   <g transform="translate(${targetX}, ${targetY})">
-                    <rect x="-6" y="0" width="12" height="10" rx="2" fill="${metalFill}" stroke="${metalStroke}" stroke-width="0.9"/>
+                    <rect x="-6" y="0" width="12" height="9" rx="2" fill="${metalFill}" stroke="${metalStroke}" stroke-width="0.9"/>
                     <rect x="-4" y="-3" width="8" height="3" fill="#64748B"/>
-                    <rect x="-3" y="10" width="6" height="5" fill="#475569" stroke="#1E293B" stroke-width="0.7"/>
+                    <rect x="-3" y="9" width="6" height="4" fill="#475569" stroke="#1E293B" stroke-width="0.7"/>
 
                     ${!isG18 ? `
                       <!-- Verloopstuk ${thread} M x G 1/8" F -->
-                      <rect x="-8" y="15" width="16" height="12" rx="2" fill="${metalFill}" stroke="${metalStroke}" stroke-width="1"/>
-                      <rect x="-4" y="27" width="8" height="6" fill="#475569" stroke="#1E293B" stroke-width="0.7"/>
-                      <line x1="-4" y1="29" x2="4" y2="29" stroke="#CBD5E1" stroke-width="0.8"/>
-                      <line x1="-4" y1="31" x2="4" y2="31" stroke="#CBD5E1" stroke-width="0.8"/>
+                      <rect x="-8" y="13" width="16" height="10" rx="2" fill="${metalFill}" stroke="${metalStroke}" stroke-width="1"/>
+                      <rect x="-4" y="23" width="8" height="5" fill="#475569" stroke="#1E293B" stroke-width="0.7"/>
 
                       <!-- Lagerhuis miniatuur -->
-                      <rect x="-14" y="33" width="28" height="15" rx="3" fill="url(#pillowBlockGrad)" stroke="#042F2E" stroke-width="1"/>
-                      <circle cx="0" cy="40" r="4.5" fill="#E2E8F0"/>
+                      <rect x="-14" y="28" width="28" height="14" rx="3" fill="url(#pillowBlockGrad)" stroke="#042F2E" stroke-width="1"/>
+                      <circle cx="0" cy="35" r="4.5" fill="#E2E8F0"/>
                     ` : `
                       <!-- Direct in G 1/8" Lagerhuis (geen verloopstuk) -->
-                      <rect x="-14" y="15" width="28" height="15" rx="3" fill="url(#pillowBlockGrad)" stroke="#042F2E" stroke-width="1"/>
-                      <circle cx="0" cy="22" r="4.5" fill="#E2E8F0"/>
+                      <rect x="-14" y="13" width="28" height="14" rx="3" fill="url(#pillowBlockGrad)" stroke="#042F2E" stroke-width="1"/>
+                      <circle cx="0" cy="20" r="4.5" fill="#E2E8F0"/>
                     `}
 
-                    <!-- Label Badge: P-nummer, diameter en draad -->
-                    <rect x="-24" y="${!isG18 ? 52 : 34}" width="48" height="24" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
-                    <text x="0" y="${!isG18 ? 63 : 45}" font-size="7.5" font-weight="900" fill="#0F172A" text-anchor="middle">P${i+1} (${diam})</text>
-                    <text x="0" y="${!isG18 ? 72 : 54}" font-size="7" font-weight="bold" fill="${!isG18 ? '#E11D48' : '#0D9488'}" text-anchor="middle">${thread}</text>
+                    <!-- DUIDELIJKE, GROTE BADGE PER POORT (10-11px bold tekst, uitstekend leesbaar) -->
+                    <g transform="translate(0, ${!isG18 ? 45 : 30})">
+                      <rect x="-${bHalf}" y="0" width="${bWidth}" height="28" rx="5" fill="#FFFFFF" stroke="${strokeColor}" stroke-width="1.4" filter="drop-shadow(0 1px 2px rgba(0,0,0,0.06))"/>
+                      <text x="0" y="12" font-size="10.5" font-weight="900" fill="#0F172A" text-anchor="middle">P${i+1} (${diam})</text>
+                      <text x="0" y="23" font-size="9.5" font-weight="800" fill="${!isG18 ? '#E11D48' : '#0D9488'}" text-anchor="middle">${thread}</text>
+                      ${portTag ? `
+                        <title>Poort ${i+1}: ${portTag}</title>
+                      ` : ''}
+                    </g>
                   </g>
                 `;
               }).join('')}
             </g>
 
-            <!-- Lagersymbool aan de basis -->
-            <g transform="translate(170, ${totalH - 24})">
-              <text x="90" y="15" font-size="8.5" font-weight="900" fill="#64748B" text-anchor="middle" letter-spacing="0.5">SMEERPUNTEN AAN MACHINE</text>
+            <!-- Lagersymbool aan de basis (duidelijke capsule badge) -->
+            <g transform="translate(140, ${totalH - 28})">
+              <rect x="0" y="0" width="240" height="24" rx="6" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2"/>
+              <text x="120" y="16" font-size="11" font-weight="900" fill="#334155" text-anchor="middle" letter-spacing="0.4">SMEERPUNTEN AAN MACHINE</text>
             </g>
           `;
 
@@ -6596,11 +6644,29 @@
               ? `Borstelset (${p.pulsarBrushType === '1413' ? '2" Plat nylon' : '1" Rond nylon'})` 
               : (p.pulsarMountType === 'direct' ? `Directe montage op lager (${p.pulsarDirectThread || 'M8x1'})` : `Afstandsmontage via Verdeelblok (${p.pulsarPortsCount || 1} poorten)`);
 
+            let multiPortLines = '';
+            if (p.pulsarMountType === 'remote' && p.pulsarPorts && p.pulsarPorts.length > 1) {
+              const pCount = p.pulsarPortsCount || p.pulsarPorts.length;
+              multiPortLines = `
+                <tr>
+                  <td style="padding: 4px 0; color: #64748B; vertical-align: top;">Aangesloten punten:</td>
+                  <td style="padding: 4px 0; font-size: 11px; line-height: 1.45;">
+                    ${p.pulsarPorts.slice(0, pCount).map((pt, i) => {
+                      const ptName = pt.name ? `<strong>${pt.name}</strong>` : `Poort ${i+1}`;
+                      const ptTh = (pt.thread === 'custom') ? (pt.customThread || 'Afw.') : (pt.thread || 'M8x1');
+                      return `<div style="margin-bottom: 2px;">• Poort ${i+1}: ${ptName} (${pt.diam || '6 mm'} leiding, ${pt.length || 1} m, lager ${ptTh})</div>`;
+                    }).join('')}
+                  </td>
+                </tr>
+              `;
+            }
+
             specRows = `
               <tr><td style="padding: 4px 0; color: #64748B; width: 140px;">Smeersysteem:</td><td style="padding: 4px 0; font-weight: bold; color: #2563EB;">Pulsarlube ${p.pulsarModel || 'M2'} (${p.pulsarVol || '125 ml'})</td></tr>
               <tr><td style="padding: 4px 0; color: #64748B;">Smeermiddel / Vet:</td><td style="padding: 4px 0; font-weight: bold;">${p.pulsarGrease || 'Grease'}</td></tr>
               <tr><td style="padding: 4px 0; color: #64748B;">Looptijd instelling:</td><td style="padding: 4px 0; font-weight: bold;">${p.months || 6} maanden</td></tr>
               <tr><td style="padding: 4px 0; color: #64748B;">Montagewijze:</td><td style="padding: 4px 0; font-weight: bold;">${mountStr}</td></tr>
+              ${multiPortLines}
               <tr><td style="padding: 4px 0; color: #64748B;">Aantal opstellingen:</td><td style="padding: 4px 0; font-weight: bold; color: #B45309;">${mult}x identieke opstelling${mult > 1 ? 'en' : ''}</td></tr>
             `;
           } else {
@@ -6752,6 +6818,23 @@
             ? `Pulsarlube ${p.pulsarModel} (${p.pulsarVol}) + ${p.pulsarGrease} (${p.months} mnd)` 
             : `ISPL ${p.lubricatorVol}${p.impulseConnect ? ' + Impulse' : ''} + ${p.greaseType} (${p.months} mnd)`;
 
+          let compactPortsList = '';
+          if (isPulsar && p.pulsarMountType === 'remote' && p.pulsarPorts && p.pulsarPorts.length > 1) {
+            const pCount = p.pulsarPortsCount || p.pulsarPorts.length;
+            compactPortsList = `
+              <div style="font-size: 10.5px; color: #475569; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 6px; padding: 6px 10px; margin-bottom: 8px;">
+                <strong>Aangesloten smeerpunten via verdeelblok:</strong>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 4px; margin-top: 4px;">
+                  ${p.pulsarPorts.slice(0, pCount).map((pt, i) => {
+                    const ptName = pt.name ? `<strong>${pt.name}</strong>` : `Poort ${i+1}`;
+                    const ptTh = (pt.thread === 'custom') ? (pt.customThread || 'Afw.') : (pt.thread || 'M8x1');
+                    return `<div>• P${i+1}: ${ptName} (${pt.diam || '6 mm'}, lager ${ptTh})</div>`;
+                  }).join('')}
+                </div>
+              </div>
+            `;
+          }
+
           compactHtml += `
             <div style="border: 1px solid #E2E8F0; border-radius: 8px; padding: 12px; margin-bottom: 12px; background: white; page-break-inside: avoid; break-inside: avoid;">
               <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #F1F5F9; padding-bottom: 6px; margin-bottom: 8px;">
@@ -6761,6 +6844,7 @@
                 </div>
                 <div style="font-size: 11.5px; color: #64748B;">${sysSummary} | ${p.material}</div>
               </div>
+              ${compactPortsList}
               <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
                 <thead>
                   <tr style="background: #F8FAFC; text-align: left; border-bottom: 1.5px solid #CBD5E1;">

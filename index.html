@@ -547,9 +547,7 @@
     }
 
     .drawing-badge {
-      position: absolute;
-      top: 12px;
-      left: 12px;
+      display: inline-block;
       background: #FFF5F5;
       color: var(--primary);
       font-size: 11px;
@@ -558,6 +556,10 @@
       border-radius: var(--radius-pill);
       border: 1px solid #FECACA;
       text-transform: uppercase;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
     }
 
     svg.assembly-svg {
@@ -1436,9 +1438,12 @@
             <span id="drawing-mode-label" style="font-size: 11px; background: #FFF5F5; color: var(--primary); padding: 3px 10px; border-radius: var(--radius-pill); font-weight: 800; border: 1px solid #FECACA;">Directe montage</span>
           </div>
 
-          <div class="drawing-container">
+          <!-- Subheader met dynamische aanduiding (geen overlap met tekening) -->
+          <div style="margin-bottom: 8px; display: flex; align-items: center; justify-content: flex-start;">
             <span class="drawing-badge" id="assembly-badge">Exploded View</span>
+          </div>
 
+          <div class="drawing-container">
             <!-- 3D Exploded View SVG -->
             <svg id="assembly-svg" class="assembly-svg" viewBox="0 0 520 500" xmlns="http://www.w3.org/2000/svg">
               <!-- Dynamically rendered -->
@@ -2766,7 +2771,7 @@
     </div>
   </div>
 
-  <script src="couplings-data.js?v=32"></script>
+  <script src="couplings-data.js?v=33"></script>
   <script>
     const STORAGE_KEY = 'IF_HARDWARE_SELECTOR_DATA_V10';
     const DB_STORAGE_KEY = 'IF_CUSTOM_COUPLINGS_DB_V11';
@@ -4912,7 +4917,7 @@
       }
     }
 
-            function generatePulsarAssemblySvgMarkup(cfg, isPrint = false) {
+    function generatePulsarAssemblySvgMarkup(cfg, isPrint = false) {
       const isRVS = (cfg.material === 'RVS');
       const metalStroke = isRVS ? '#334155' : '#78350F';
       const metalFill = isRVS ? '#E2E8F0' : 'url(#pulsarBrass)';
@@ -4921,6 +4926,7 @@
       const vol = cfg.pulsarVol || '125 ml';
       const mount = cfg.pulsarMountType || 'remote';
       const portsCount = parseInt(cfg.pulsarPortsCount) || 1;
+      const isOil = (cfg.greaseType === 'oil' || (cfg.pulsarGrease && cfg.pulsarGrease.toLowerCase().includes('oil')));
 
       const imgInfo = getPulsarImageInfo(model, vol);
 
@@ -4953,8 +4959,8 @@
       const badgeSettingText = isPlcInterval ? `STAND ${months} (${((parseFloat(months)||1)*0.34).toFixed(2)} ml)` : `${months} ${months === 1 ? 'MAAND' : 'MAANDEN'}`;
       const settingBadge = `
         <g>
-          <rect x="270" y="10" width="245" height="26" rx="8" fill="#FFF5F5" stroke="#E30613" stroke-width="1.8"/>
-          <text x="392" y="27" font-size="10.5" font-weight="900" fill="#E30613" text-anchor="middle" letter-spacing="0.3">
+          <rect x="270" y="8" width="245" height="26" rx="8" fill="#FFF5F5" stroke="#E30613" stroke-width="1.8"/>
+          <text x="392" y="25" font-size="10.5" font-weight="900" fill="#E30613" text-anchor="middle" letter-spacing="0.3">
             INSTELLING: ${badgeSettingText} | ${mount === 'remote' ? (portsCount > 1 ? `${portsCount} POORTEN` : '1 SMEERPUNT') : (mount === 'brush' ? 'BORSTEL' : 'DIRECT')}
           </text>
         </g>
@@ -4969,73 +4975,73 @@
         const imgW = imgInfo.width;
         const imgH = imgInfo.height;
         const imgX = 260 - (imgW / 2);
-        const imgY = 20;
+        const imgY = 42;
         const yUnitBottom = imgY + imgH;
         totalH = isG18 ? (yUnitBottom + 195) : (yUnitBottom + 230);
 
         inner = `
           ${defs}
           ${settingBadge}
-          <line x1="260" y1="20" x2="260" y2="${totalH - 60}" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.4"/>
+          <line x1="260" y1="42" x2="260" y2="${totalH - 60}" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.4"/>
 
           <!-- 1. Pulsarlube Unit Echte Productafbeelding -->
           <g>
             <image href="${imgInfo.src}" x="${imgX}" y="${imgY}" width="${imgW}" height="${imgH}" preserveAspectRatio="xMidYMid meet"/>
             
             <!-- Annotatie Unit -->
-            <line x1="${imgX + imgW - 6}" y1="${imgY + 36}" x2="355" y2="${imgY + 36}" stroke="#0F172A" stroke-width="1.2"/>
+            <line x1="${imgX + imgW - 6}" y1="${imgY + 36}" x2="360" y2="${imgY + 36}" stroke="#0F172A" stroke-width="1.2"/>
             <circle cx="${imgX + imgW - 6}" cy="${imgY + 36}" r="2.5" fill="#2563EB"/>
-            <rect x="355" y="${imgY + 24}" width="155" height="24" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
-            <text x="365" y="${imgY + 40}" font-size="11" font-weight="900" fill="#1D4ED8">Pulsarlube ${model} (${vol})</text>
+            <rect x="360" y="${imgY + 24}" width="152" height="24" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
+            <text x="368" y="${imgY + 40}" font-size="11" font-weight="900" fill="#1D4ED8">Pulsarlube ${model} (${vol})</text>
           </g>
 
-          <!-- 2. Installatiekit 1250RC-1 (G 3/8" naar G 1/8") -->
+          <!-- 2. Verloopstuk G 3/8" F naar G 1/8" M direct onder de Pulsarlube unit -->
           <g transform="translate(242, ${yUnitBottom + 4})">
             <rect x="0" y="0" width="36" height="22" rx="3" fill="${metalFill}" stroke="${metalStroke}" stroke-width="1.2"/>
             <rect x="8" y="22" width="20" height="12" fill="#475569" stroke="#1E293B" stroke-width="1"/>
             <line x1="8" y1="25" x2="28" y2="25" stroke="#CBD5E1" stroke-width="1"/>
             <line x1="8" y1="29" x2="28" y2="29" stroke="#CBD5E1" stroke-width="1"/>
 
-            <!-- Annotatie Kit -->
-            <line x1="36" y1="11" x2="110" y2="11" stroke="#0F172A" stroke-width="1.2"/>
+            <!-- Annotatie Verloopstuk -->
+            <line x1="36" y1="11" x2="118" y2="11" stroke="#0F172A" stroke-width="1.2"/>
             <circle cx="36" cy="11" r="2.5" fill="#2563EB"/>
-            <rect x="110" y="0" width="160" height="22" rx="5" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
-            <text x="118" y="15" font-size="9.5" font-weight="800" fill="#1D4ED8">Verloopstuk G 3/8" F ➔ G 1/8" M (Art. ${isRVS ? '1099.1071' : '1099.1070'})</text>
+            <rect x="118" y="0" width="152" height="22" rx="5" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+            <text x="124" y="15" font-size="9" font-weight="800" fill="#1D4ED8">Verloop G 3/8" F ➔ G 1/8" M (${isRVS ? '1099.1071' : '1099.1070'})</text>
           </g>
 
           ${!isG18 ? `
             <!-- 3. Adapter Verloopstuk naar Lager (ENKEL BIJ AFWIJKENDE MAAT != G 1/8) -->
-            <g transform="translate(242, ${yUnitBottom + 44})">
+            <g transform="translate(242, ${yUnitBottom + 46})">
               <rect x="3" y="0" width="30" height="20" rx="2" fill="${metalFill}" stroke="${metalStroke}" stroke-width="1.2"/>
               <rect x="9" y="20" width="18" height="12" fill="#475569" stroke="#1E293B" stroke-width="1"/>
               <line x1="9" y1="23" x2="27" y2="23" stroke="#CBD5E1" stroke-width="1"/>
               <line x1="9" y1="27" x2="27" y2="27" stroke="#CBD5E1" stroke-width="1"/>
 
               <!-- Annotatie Adapter -->
-              <line x1="33" y1="10" x2="110" y2="10" stroke="#0F172A" stroke-width="1.2"/>
+              <line x1="33" y1="10" x2="118" y2="10" stroke="#0F172A" stroke-width="1.2"/>
               <circle cx="33" cy="10" r="2.5" fill="#E30613"/>
-              <rect x="110" y="-1" width="165" height="22" rx="5" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
-              <text x="118" y="14" font-size="10" font-weight="800" fill="#0F172A">Adapter: ${bThread} M x G 1/8" F</text>
+              <rect x="118" y="-1" width="152" height="22" rx="5" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+              <text x="124" y="14" font-size="9.5" font-weight="800" fill="#0F172A">Adapter: ${bThread} M x G 1/8" F</text>
             </g>
 
             <!-- 4. Pillow Block Lagerhuis aan de basis -->
-            <g transform="translate(180, ${yUnitBottom + 84})">
+            <g transform="translate(180, ${yUnitBottom + 86})">
               <image href="bearing-pillow-block.png" x="0" y="0" width="160" height="130" preserveAspectRatio="xMidYMid meet"/>
 
-              <line x1="130" y1="15" x2="175" y2="15" stroke="#0F172A" stroke-width="1.2"/>
+              <line x1="130" y1="15" x2="180" y2="15" stroke="#0F172A" stroke-width="1.2"/>
               <circle cx="130" cy="15" r="2.5" fill="#0F766E"/>
-              <rect x="175" y="3" width="135" height="24" rx="6" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.5"/>
-              <text x="185" y="19" font-size="11" font-weight="900" fill="#0F766E">Lager: ${bThread}</text>
+              <rect x="180" y="3" width="132" height="24" rx="6" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.5"/>
+              <text x="190" y="19" font-size="11" font-weight="900" fill="#0F766E">Lager: ${bThread}</text>
             </g>
           ` : `
-            <!-- 3. Direct in G 1/8" Lagerhuis (Geen verloopstuk nodig, kit past direct) -->
+            <!-- 3. Direct in G 1/8" Lagerhuis (Geen verloopstuk nodig) -->
             <g transform="translate(180, ${yUnitBottom + 48})">
               <image href="bearing-pillow-block.png" x="0" y="0" width="160" height="130" preserveAspectRatio="xMidYMid meet"/>
 
-              <line x1="130" y1="15" x2="175" y2="15" stroke="#0F172A" stroke-width="1.2"/>
+              <line x1="130" y1="15" x2="180" y2="15" stroke="#0F172A" stroke-width="1.2"/>
               <circle cx="130" cy="15" r="2.5" fill="#0F766E"/>
-              <rect x="175" y="3" width="135" height="24" rx="6" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.5"/>
-              <text x="185" y="19" font-size="11" font-weight="900" fill="#0F766E">Lager: G 1/8" (Direct)</text>
+              <rect x="180" y="3" width="132" height="24" rx="6" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.5"/>
+              <text x="190" y="19" font-size="11" font-weight="900" fill="#0F766E">Lager: G 1/8" (Direct)</text>
             </g>
           `}
         `;
@@ -5049,33 +5055,33 @@
 
         if (isDirectBrush) {
           const imgX = 260 - (imgW / 2);
-          const imgY = 20;
+          const imgY = 42;
           const yUnitBottom = imgY + imgH;
           totalH = Math.max(500, yUnitBottom + 210);
 
           inner = `
             ${defs}
             ${settingBadge}
-            <line x1="260" y1="20" x2="260" y2="${totalH - 60}" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.4"/>
+            <line x1="260" y1="42" x2="260" y2="${totalH - 60}" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.4"/>
 
             <!-- 1. Pulsarlube Unit Rechtstreeks Bovenop Borstel (Real Image) -->
             <g>
               <image href="${imgInfo.src}" x="${imgX}" y="${imgY}" width="${imgW}" height="${imgH}" preserveAspectRatio="xMidYMid meet"/>
-              <line x1="${imgX + imgW - 6}" y1="${imgY + 36}" x2="355" y2="${imgY + 36}" stroke="#0F172A" stroke-width="1.2"/>
+              <line x1="${imgX + imgW - 6}" y1="${imgY + 36}" x2="360" y2="${imgY + 36}" stroke="#0F172A" stroke-width="1.2"/>
               <circle cx="${imgX + imgW - 6}" cy="${imgY + 36}" r="2.5" fill="#2563EB"/>
-              <rect x="355" y="${imgY + 24}" width="155" height="24" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
-              <text x="365" y="${imgY + 40}" font-size="11" font-weight="900" fill="#1D4ED8">Pulsarlube ${model} (${vol})</text>
+              <rect x="360" y="${imgY + 24}" width="152" height="24" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
+              <text x="368" y="${imgY + 40}" font-size="11" font-weight="900" fill="#1D4ED8">Pulsarlube ${model} (${vol})</text>
             </g>
 
-            <!-- 2. Installatiekit 1250RC-1 beugel & verloopstuk (art. 1430) -->
+            <!-- 2. Verloopstuk G 3/8" F naar G 1/8" M direct op borstel -->
             <g transform="translate(242, ${yUnitBottom + 4})">
               <rect x="0" y="0" width="36" height="18" rx="3" fill="${metalFill}" stroke="${metalStroke}" stroke-width="1.2"/>
               <rect x="8" y="18" width="20" height="8" fill="#475569" stroke="#1E293B" stroke-width="1"/>
               
-              <line x1="36" y1="9" x2="105" y2="9" stroke="#0F172A" stroke-width="1.2"/>
-              <circle cx="36" cy="9" r="2" fill="#2563EB"/>
-              <rect x="105" y="-1" width="165" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
-              <text x="112" y="13" font-size="9.5" font-weight="800" fill="#1D4ED8">Verloopstuk G 3/8" F ➔ G 1/8" M (Art. ${isRVS ? '1099.1071' : '1099.1070'})</text>
+              <line x1="36" y1="9" x2="118" y2="9" stroke="#0F172A" stroke-width="1.2"/>
+              <circle cx="36" cy="9" r="2.5" fill="#2563EB"/>
+              <rect x="118" y="-1" width="152" height="20" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+              <text x="124" y="13" font-size="9" font-weight="800" fill="#1D4ED8">Verloop G 3/8" ➔ G 1/8" (${isRVS ? '1099.1071' : '1099.1070'})</text>
             </g>
 
             <!-- 3. Borstel Applicator Rechtstreeks Gemonteerd (Geen terugslagklep) -->
@@ -5111,10 +5117,10 @@
                 <line x1="0" y1="3" x2="120" y2="3" stroke="#F59E0B" stroke-width="2"/>
               </g>
 
-              <line x1="45" y1="30" x2="110" y2="30" stroke="#0F172A" stroke-width="1.2"/>
+              <line x1="45" y1="30" x2="120" y2="30" stroke="#0F172A" stroke-width="1.2"/>
               <circle cx="45" cy="30" r="2.5" fill="#1D4ED8"/>
-              <rect x="110" y="18" width="180" height="24" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
-              <text x="120" y="34" font-size="11" font-weight="900" fill="#1D4ED8">${isRound ? 'Borstel 1" Rond (1414)' : 'Borstel 2" Plat (1413)'}</text>
+              <rect x="120" y="18" width="152" height="24" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
+              <text x="128" y="34" font-size="10" font-weight="900" fill="#1D4ED8">${isRound ? 'Borstel 1" Rond (1414)' : 'Borstel 2" Plat (1413)'}</text>
             </g>
           `;
         } else {
@@ -5125,26 +5131,26 @@
             ${settingBadge}
 
             <!-- 1. Pulsarlube Unit op Beugel Links/Boven (Real Image) -->
-            <g transform="translate(70, 20)">
+            <g transform="translate(70, 36)">
               <image href="${imgInfo.src}" x="20" y="0" width="${imgW}" height="${imgH}" preserveAspectRatio="xMidYMid meet"/>
 
-              <!-- Montagebeugel indicatie (Art. 1430) -->
+              <!-- Montagebeugel indicatie (Kit 1430) -->
               <rect x="0" y="40" width="22" height="70" rx="3" fill="#64748B" opacity="0.35"/>
               <text x="11" y="125" font-size="8" font-weight="bold" fill="#64748B" text-anchor="middle">Kit 1430</text>
             </g>
 
             <!-- 2. Flexibele Leiding van unit naar borstel -->
-            <path d="M 125 ${20 + imgH} C 125 210, 280 200, 280 260" fill="none" stroke="#2563EB" stroke-width="4.5" stroke-linecap="round"/>
-            <path d="M 125 ${20 + imgH} C 125 210, 280 200, 280 260" fill="none" stroke="#93C5FD" stroke-width="2"/>
+            <path d="M 125 ${36 + imgH} C 125 210, 280 200, 280 260" fill="none" stroke="#2563EB" stroke-width="4.5" stroke-linecap="round"/>
+            <path d="M 125 ${36 + imgH} C 125 210, 280 200, 280 260" fill="none" stroke="#93C5FD" stroke-width="2"/>
 
             <!-- Insteekkoppeling beugelzijde -->
-            <rect x="117" y="${20 + imgH}" width="16" height="10" fill="${metalFill}" stroke="${metalStroke}" stroke-width="1"/>
+            <rect x="117" y="${36 + imgH}" width="16" height="10" fill="${metalFill}" stroke="${metalStroke}" stroke-width="1"/>
 
             <!-- Annotatie Leiding -->
-            <line x1="210" y1="210" x2="280" y2="190" stroke="#0F172A" stroke-width="1.2"/>
+            <line x1="210" y1="210" x2="310" y2="190" stroke="#0F172A" stroke-width="1.2"/>
             <circle cx="210" cy="210" r="2.5" fill="#2563EB"/>
-            <rect x="280" y="178" width="190" height="24" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
-            <text x="290" y="194" font-size="11" font-weight="800" fill="#1D4ED8">Nylon Leiding: max 4.0 m</text>
+            <rect x="310" y="178" width="180" height="24" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
+            <text x="318" y="194" font-size="10.5" font-weight="800" fill="#1D4ED8">Nylon Leiding: max 4.0 m</text>
 
             <!-- 3. Insteekkoppeling borstelzijde -->
             <rect x="272" y="250" width="16" height="10" fill="${metalFill}" stroke="${metalStroke}" stroke-width="1"/>
@@ -5182,10 +5188,10 @@
                 <line x1="0" y1="3" x2="100" y2="3" stroke="#F59E0B" stroke-width="2"/>
               </g>
 
-              <line x1="50" y1="42" x2="90" y2="42" stroke="#0F172A" stroke-width="1.2"/>
+              <line x1="50" y1="42" x2="100" y2="42" stroke="#0F172A" stroke-width="1.2"/>
               <circle cx="50" cy="42" r="2.5" fill="#1D4ED8"/>
-              <rect x="90" y="30" width="175" height="24" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
-              <text x="100" y="46" font-size="11" font-weight="900" fill="#1D4ED8">${isRound ? 'Borstel 1" Rond (1414)' : 'Borstel 2" Plat (1413)'}</text>
+              <rect x="100" y="30" width="165" height="24" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
+              <text x="108" y="46" font-size="10.5" font-weight="900" fill="#1D4ED8">${isRound ? 'Borstel 1" Rond (1414)' : 'Borstel 2" Plat (1413)'}</text>
             </g>
           `;
         }
@@ -5198,17 +5204,25 @@
 
         if (isMulti) {
           // HU Verdeelblok 2..8 poorten:
-          // RECHTSTREEKS op de beugel / adapter van de unit geschroefd (GEEN leiding of toevoerkoppeling ertussen!)
+          // RECHTSTREEKS op de beugel / adapter van de unit geschroefd (GEEN tussenleiding!)
+          const nLeft = Math.ceil(portsCount / 2);
+          const nRight = portsCount - nLeft;
+          const nRows = Math.max(nLeft, nRight);
+          const rowH = 20;
+
           const imgX = 260 - (imgW / 2);
-          const imgY = 10;
+          const imgY = 42;
           const yUnitBottom = imgY + imgH;
-          const yAdapter = yUnitBottom + 2;
-          const yManifold = yAdapter + 18;
-          const manifoldH = 34 + portsCount * 13;
+          const yAdapter = yUnitBottom + 6;
+          const yManifold = yAdapter + 22;
+          const manifoldH = 34 + nRows * rowH;
+          const yManifoldCenter = yManifold + (manifoldH / 2);
           
-          // Compacte, ergonomische hoogte zonder overbodige dode witruimte
-          const targetY = yManifold + manifoldH + 54;
-          totalH = Math.max(460, targetY + 95);
+          const targetY = yManifold + manifoldH + 60;
+          totalH = Math.max(480, targetY + 95);
+
+          const kitCode = isOil ? (portsCount <= 1 ? '1415' : portsCount === 2 ? '1416' : portsCount === 3 ? '1417' : '1418') : '1430';
+          const kitTitle = isOil ? `Installatiekit Olie (Art. ${kitCode})` : 'Installatiekit 1250RC-1 (Art. 1430)';
 
           inner = `
             ${defs}
@@ -5218,24 +5232,27 @@
             <g>
               <image href="${imgInfo.src}" x="${imgX}" y="${imgY}" width="${imgW}" height="${imgH}" preserveAspectRatio="xMidYMid meet"/>
               
-              <line x1="${imgX + imgW - 6}" y1="${imgY + 36}" x2="355" y2="${imgY + 36}" stroke="#0F172A" stroke-width="1.2"/>
+              <!-- Annotatie Unit (Bovenste box) -->
+              <line x1="${imgX + imgW - 6}" y1="${imgY + 36}" x2="360" y2="${imgY + 36}" stroke="#0F172A" stroke-width="1.2"/>
               <circle cx="${imgX + imgW - 6}" cy="${imgY + 36}" r="2.5" fill="#2563EB"/>
-              <rect x="355" y="${imgY + 22}" width="155" height="24" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
-              <text x="365" y="${imgY + 38}" font-size="11.5" font-weight="900" fill="#1D4ED8">Pulsarlube ${model} (${vol})</text>
+              <rect x="360" y="${imgY + 24}" width="152" height="24" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
+              <text x="368" y="${imgY + 40}" font-size="11" font-weight="900" fill="#1D4ED8">Pulsarlube ${model} (${vol})</text>
             </g>
 
             <!-- Montagebeugel indicatie (Kit 1430) -->
-            <rect x="195" y="${yUnitBottom - 30}" width="130" height="34" rx="4" fill="#64748B" opacity="0.25"/>
+            <rect x="195" y="${yUnitBottom - 26}" width="130" height="28" rx="4" fill="#64748B" opacity="0.25"/>
+            <text x="260" y="${yUnitBottom - 8}" font-size="8.5" font-weight="bold" fill="#475569" text-anchor="middle">Montagebeugel (Kit ${kitCode})</text>
 
             <!-- 2. Installatiekit Verloopstuk (G 3/8" naar G 1/8" M) direct onder unit -->
             <g transform="translate(242, ${yAdapter})">
               <rect x="0" y="0" width="36" height="16" rx="3" fill="${metalFill}" stroke="${metalStroke}" stroke-width="1.2"/>
               <rect x="8" y="16" width="20" height="5" fill="#475569" stroke="#1E293B" stroke-width="1"/>
 
-              <line x1="36" y1="8" x2="105" y2="8" stroke="#0F172A" stroke-width="1.2"/>
-              <circle cx="36" cy="8" r="2" fill="#2563EB"/>
-              <rect x="105" y="-3" width="168" height="22" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
-              <text x="112" y="12" font-size="9.5" font-weight="800" fill="#1D4ED8">Verloopstuk G 3/8" F ➔ G 1/8" M (Art. ${isRVS ? '1099.1071' : '1099.1070'})</text>
+              <!-- Annotatie Installatiekit (Middelste box) -->
+              <line x1="36" y1="8" x2="118" y2="8" stroke="#0F172A" stroke-width="1.2"/>
+              <circle cx="36" cy="8" r="2.5" fill="#2563EB"/>
+              <rect x="118" y="-4" width="152" height="24" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
+              <text x="124" y="12" font-size="9" font-weight="900" fill="#1D4ED8">${kitTitle}</text>
             </g>
 
             <!-- 3. HU TYPE VERDEELBLOK RECHTSTREEKS OP HET VERLOOPSTUK (GEEN tussenleiding!) -->
@@ -5244,39 +5261,50 @@
               <rect x="0" y="0" width="130" height="${manifoldH}" rx="6" fill="url(#manifoldAlu)" stroke="#334155" stroke-width="1.5"/>
               
               <!-- Inwendige kanalen en aanduiding -->
-              <text x="65" y="15" font-size="9" font-weight="900" fill="#0F172A" text-anchor="middle" letter-spacing="0.5">HU DIVIDER • ${portsCount} POORTEN</text>
-              <text x="65" y="25" font-size="7.5" font-weight="bold" fill="#475569" text-anchor="middle">Rechtstreeks opgeschroefd</text>
-              <line x1="15" y1="28" x2="115" y2="28" stroke="#64748B" stroke-width="1"/>
+              <text x="65" y="14" font-size="9" font-weight="900" fill="#0F172A" text-anchor="middle" letter-spacing="0.5">HU DIVIDER • ${portsCount} POORTEN</text>
+              <text x="65" y="24" font-size="7.5" font-weight="bold" fill="#475569" text-anchor="middle">Rechtstreeks opgeschroefd</text>
+              <line x1="15" y1="27" x2="115" y2="27" stroke="#64748B" stroke-width="1"/>
 
-              <!-- Poorten en voorgemonteerde insteekkoppelingen aan weerszijden -->
-              ${Array.from({ length: portsCount }).map((_, i) => {
-                const yOff = 36 + i * 13;
-                const isLeft = (i % 2 === 0);
-                const xPort = isLeft ? -10 : 130;
+              <!-- Poorten Links (P1..P_nLeft) van boven naar beneden -->
+              ${Array.from({ length: nLeft }).map((_, i) => {
+                const pIdx = i;
+                const yOff = 36 + i * rowH;
                 return `
-                  <rect x="${xPort}" y="${yOff - 4}" width="10" height="8" fill="url(#pulsarBrass)" stroke="#78350F" stroke-width="0.8"/>
-                  <circle cx="${isLeft ? 15 : 115}" cy="${yOff}" r="3" fill="#0F172A"/>
-                  <text x="${isLeft ? 23 : 107}" y="${yOff + 3}" font-size="8" font-weight="bold" fill="#1E293B" text-anchor="${isLeft ? 'start' : 'end'}">P${i+1}</text>
+                  <rect x="-10" y="${yOff - 4}" width="10" height="8" fill="url(#pulsarBrass)" stroke="#78350F" stroke-width="0.8"/>
+                  <circle cx="15" cy="${yOff}" r="3" fill="#0F172A"/>
+                  <text x="23" y="${yOff + 3}" font-size="8.5" font-weight="bold" fill="#1E293B" text-anchor="start">P${pIdx + 1}</text>
                 `;
               }).join('')}
 
-              <!-- Annotatie Verdeelblok -->
-              <line x1="130" y1="18" x2="165" y2="18" stroke="#0F172A" stroke-width="1.2"/>
-              <circle cx="130" cy="18" r="2.5" fill="#2563EB"/>
-              <rect x="165" y="6" width="155" height="24" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
-              <text x="175" y="22" font-size="11" font-weight="900" fill="#1D4ED8">HU Blok (${portsCount} poorten)</text>
+              <!-- Poorten Rechts (P_total..P_nLeft+1) van boven naar beneden (gespiegeld voor niet-kruisende leidingen) -->
+              ${Array.from({ length: nRight }).map((_, j) => {
+                const pIdx = (portsCount - 1) - j;
+                const yOff = 36 + j * rowH;
+                return `
+                  <rect x="130" y="${yOff - 4}" width="10" height="8" fill="url(#pulsarBrass)" stroke="#78350F" stroke-width="0.8"/>
+                  <circle cx="115" cy="${yOff}" r="3" fill="#0F172A"/>
+                  <text x="107" y="${yOff + 3}" font-size="8.5" font-weight="bold" fill="#1E293B" text-anchor="end">P${pIdx + 1}</text>
+                `;
+              }).join('')}
+
+              <!-- Annotatie Verdeelblok (Onderste box) -->
+              <line x1="130" y1="${manifoldH / 2}" x2="165" y2="${manifoldH / 2}" stroke="#0F172A" stroke-width="1.2"/>
+              <circle cx="130" cy="${manifoldH / 2}" r="2.5" fill="#2563EB"/>
+              <rect x="165" y="${(manifoldH / 2) - 12}" width="152" height="24" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
+              <text x="173" y="${(manifoldH / 2) + 4}" font-size="10.5" font-weight="900" fill="#1D4ED8">HU Blok (${portsCount} poorten)</text>
             </g>
 
-            <!-- 4. Leidingen die vertakken naar de smeerpunten onderaan MET VERGROTE, GOED LEESBARE BADGES -->
+            <!-- 4. Leidingen die vertakken naar de smeerpunten onderaan ZONDER ELKAAR TE KRUISEN -->
             <g>
-              ${Array.from({ length: portsCount }).map((_, i) => {
-                const isLeft = (i % 2 === 0);
+              ${Array.from({ length: portsCount }).map((_, p) => {
+                const isLeft = (p < nLeft);
+                const slotIdx = isLeft ? p : ((portsCount - 1) - p);
                 const startX = isLeft ? 185 : 335;
-                const startY = yManifold + 36 + i * 13;
-                const targetX = 50 + (i * (420 / Math.max(1, portsCount - 1)));
-                const strokeColor = ['#2563EB', '#0D9488', '#D97706', '#E11D48', '#7C3AED', '#0284C7', '#059669', '#DC2626'][i % 8];
+                const startY = yManifold + 36 + slotIdx * rowH;
+                const targetX = 50 + (p * (420 / Math.max(1, portsCount - 1)));
+                const strokeColor = ['#2563EB', '#0D9488', '#D97706', '#E11D48', '#7C3AED', '#0284C7', '#059669', '#DC2626'][p % 8];
 
-                const portData = (cfg.pulsarPorts && cfg.pulsarPorts[i]) ? cfg.pulsarPorts[i] : {};
+                const portData = (cfg.pulsarPorts && cfg.pulsarPorts[p]) ? cfg.pulsarPorts[p] : {};
                 const diam = portData.diam || '6 mm';
                 const thread = (portData.thread === 'custom') ? (portData.customThread || 'Afw.') : (portData.thread || 'M8x1');
                 const isG18 = (thread === 'G 1/8' || thread === 'G 1/8"' || thread === '1/8 BSPP');
@@ -5286,9 +5314,12 @@
                 const bHalf = bWidth / 2;
                 const portTag = (portData.name || '').trim();
 
+                const dx = isLeft ? (28 + (nLeft - 1 - slotIdx) * 12) : (28 + (p - nLeft) * 12);
+                const c1x = isLeft ? (startX - dx) : (startX + dx);
+
                 return `
-                  <!-- Flexibele nylon leiding -->
-                  <path d="M ${startX} ${startY} C ${startX + (isLeft ? -35 : 35)} ${startY + 25}, ${targetX} ${targetY - 25}, ${targetX} ${targetY}" fill="none" stroke="${strokeColor}" stroke-width="${strokeW}" stroke-dasharray="5 3"/>
+                  <!-- Flexibele nylon leiding naar smeerpunt P${p + 1} -->
+                  <path d="M ${startX} ${startY} C ${c1x} ${startY + 20}, ${targetX} ${targetY - 25}, ${targetX} ${targetY}" fill="none" stroke="${strokeColor}" stroke-width="${strokeW}" stroke-dasharray="5 3"/>
                   
                   <!-- Insteekkoppeling (lagerzijde) passend bij leidingdiameter (${diam}) -->
                   <g transform="translate(${targetX}, ${targetY})">
@@ -5313,10 +5344,10 @@
                     <!-- DUIDELIJKE, GROTE BADGE PER POORT (10-11px bold tekst, uitstekend leesbaar) -->
                     <g transform="translate(0, ${!isG18 ? 45 : 30})">
                       <rect x="-${bHalf}" y="0" width="${bWidth}" height="28" rx="5" fill="#FFFFFF" stroke="${strokeColor}" stroke-width="1.4" filter="drop-shadow(0 1px 2px rgba(0,0,0,0.06))"/>
-                      <text x="0" y="12" font-size="10.5" font-weight="900" fill="#0F172A" text-anchor="middle">P${i+1} (${diam})</text>
+                      <text x="0" y="12" font-size="10.5" font-weight="900" fill="#0F172A" text-anchor="middle">P${p + 1} (${diam})</text>
                       <text x="0" y="23" font-size="9.5" font-weight="800" fill="${!isG18 ? '#E11D48' : '#0D9488'}" text-anchor="middle">${thread}</text>
                       ${portTag ? `
-                        <title>Poort ${i+1}: ${portTag}</title>
+                        <title>Poort ${p + 1}: ${portTag}</title>
                       ` : ''}
                     </g>
                   </g>
@@ -5334,9 +5365,12 @@
         } else {
           // 1 Smeerpunt op afstand:
           const imgX = 260 - (imgW / 2);
-          const imgY = 20;
+          const imgY = 42;
           const yUnitBottom = imgY + imgH;
           totalH = 500;
+
+          const kitCode1 = isOil ? '1415' : '1430';
+          const kitTitle1 = isOil ? 'Installatiekit Olie (Art. 1415)' : 'Installatiekit 1250RC-1 (Art. 1430)';
 
           const port1 = (cfg.pulsarPorts && cfg.pulsarPorts[0]) ? cfg.pulsarPorts[0] : {};
           const diam1 = port1.diam || '6 mm';
@@ -5351,32 +5385,36 @@
             <g>
               <image href="${imgInfo.src}" x="${imgX}" y="${imgY}" width="${imgW}" height="${imgH}" preserveAspectRatio="xMidYMid meet"/>
               
-              <line x1="${imgX + imgW - 6}" y1="${imgY + 36}" x2="355" y2="${imgY + 36}" stroke="#0F172A" stroke-width="1.2"/>
+              <line x1="${imgX + imgW - 6}" y1="${imgY + 36}" x2="360" y2="${imgY + 36}" stroke="#0F172A" stroke-width="1.2"/>
               <circle cx="${imgX + imgW - 6}" cy="${imgY + 36}" r="2.5" fill="#2563EB"/>
-              <rect x="355" y="${imgY + 24}" width="155" height="24" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
-              <text x="365" y="${imgY + 40}" font-size="11" font-weight="900" fill="#1D4ED8">Pulsarlube ${model} (${vol})</text>
+              <rect x="360" y="${imgY + 24}" width="152" height="24" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
+              <text x="368" y="${imgY + 40}" font-size="11" font-weight="900" fill="#1D4ED8">Pulsarlube ${model} (${vol})</text>
             </g>
 
+            <!-- Montagebeugel indicatie (Kit 1430) -->
+            <rect x="195" y="${yUnitBottom - 26}" width="130" height="28" rx="4" fill="#64748B" opacity="0.25"/>
+            <text x="260" y="${yUnitBottom - 8}" font-size="8.5" font-weight="bold" fill="#475569" text-anchor="middle">Montagebeugel (Kit ${kitCode1})</text>
+
             <!-- Installatiekit 1250RC-1 beugel + verloopstuk (G 3/8" naar G 1/8" F) -->
-            <g transform="translate(242, ${yUnitBottom + 2})">
+            <g transform="translate(242, ${yUnitBottom + 6})">
               <rect x="0" y="0" width="36" height="18" rx="3" fill="${metalFill}" stroke="${metalStroke}" stroke-width="1.2"/>
               <rect x="8" y="18" width="20" height="8" fill="#475569" stroke="#1E293B" stroke-width="1"/>
 
-              <line x1="36" y1="9" x2="105" y2="9" stroke="#0F172A" stroke-width="1.2"/>
+              <line x1="36" y1="9" x2="118" y2="9" stroke="#0F172A" stroke-width="1.2"/>
               <circle cx="36" cy="9" r="2.5" fill="#2563EB"/>
-              <rect x="105" y="-2" width="165" height="22" rx="5" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
-              <text x="113" y="13" font-size="10" font-weight="900" fill="#1D4ED8">Kit 1430 (G 3/8" ➔ G 1/8" F)</text>
+              <rect x="118" y="-3" width="152" height="24" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
+              <text x="124" y="13" font-size="9" font-weight="900" fill="#1D4ED8">${kitTitle1}</text>
             </g>
 
             <!-- Insteekkoppeling ingedraaid in uitgang van kit 1430 -->
-            <g transform="translate(252, ${yUnitBottom + 28})">
+            <g transform="translate(252, ${yUnitBottom + 32})">
               <rect x="0" y="0" width="16" height="12" rx="2" fill="${metalFill}" stroke="${metalStroke}" stroke-width="0.9"/>
               <rect x="3" y="-3" width="10" height="3" fill="#64748B"/>
             </g>
 
             <!-- 2. Flexibele leiding van beugel naar lager (max 4.0 m) -->
-            <path d="M 260 ${yUnitBottom + 40} C 260 250, 260 270, 260 330" fill="none" stroke="#2563EB" stroke-width="4.5"/>
-            <path d="M 260 ${yUnitBottom + 40} C 260 250, 260 270, 260 330" fill="none" stroke="#93C5FD" stroke-width="2"/>
+            <path d="M 260 ${yUnitBottom + 44} C 260 250, 260 270, 260 330" fill="none" stroke="#2563EB" stroke-width="4.5"/>
+            <path d="M 260 ${yUnitBottom + 44} C 260 250, 260 270, 260 330" fill="none" stroke="#93C5FD" stroke-width="2"/>
 
             <!-- Annotatie Leiding -->
             <line x1="260" y1="280" x2="330" y2="280" stroke="#0F172A" stroke-width="1.2"/>
@@ -5439,7 +5477,7 @@
 
       return { inner, totalH };
     }
-    function generateAssemblySvgMarkup(cfg, isPrint = false) {
+        function generateAssemblySvgMarkup(cfg, isPrint = false) {
       if (cfg && cfg.systemType === 'pulsarlube') {
         return generatePulsarAssemblySvgMarkup(cfg, isPrint);
       }
